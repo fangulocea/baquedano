@@ -75,21 +75,10 @@
 <script>
 
 
-    $('#listusers').DataTable({
-        dom: 'Bfrtip',
-    // buttons: [
-    //     'copy', 'csv', 'excel', 'pdf', 'print',{
-    //         text: 'Ingresar Captación',
-    //         action: function ( e, dt, node, config ) {
-    //              window.location.href = '{{ route("captacion.create") }}';
-    //         }
-    //     }
+$('.sorting_desc').hide();
 
-    // ],
-     columnDefs: [{
-             "targets": [8, 9],
-             "orderable": false
-         }],
+var table = $('#listusers').DataTable({
+        dom: 'Bfrtip',
     language: {
         "sProcessing": "Procesando...",
         "sLengthMenu": "Mostrar _MENU_ registros",

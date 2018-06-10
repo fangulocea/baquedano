@@ -77,13 +77,10 @@
 <!-- end - This is for export functionality only -->
 <script>
 
+$('.sorting_desc').hide();
 
-   var table = $('#listusers').DataTable({
-  
-     columnDefs: [{
-             "targets": [8, 9],
-             "orderable": false
-         }],
+var table = $('#listusers').DataTable({
+
     language: {
         "sProcessing": "Procesando...",
         "sLengthMenu": "Mostrar _MENU_ registros",
