@@ -56,7 +56,16 @@ class PrimeraGestionController extends Controller
     return view('primeraGestion.index',compact('publica','correo','tipo','tipo_f'));
 }
 
-
+    public function volver_proceso($id)
+    {   
+        
+      $correo = DB::table('correos')
+      ->where('estado','=',1)
+      ->get();
+      $est=2;
+        return view('importar.index',compact('correo','est'));
+    }
+    
     /**
      * Show the form for creating a new resource.
      *
