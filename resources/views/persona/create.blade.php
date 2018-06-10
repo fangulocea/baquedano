@@ -101,13 +101,13 @@
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label>Provincia</label>
-                                        {{ Form::select('id_provincia',[''=>'Selecciona provincia'], null, array('class'=>'form-control','required'=>'required','style'=>'','id'=>'provincias')) }} </div>
+                                        {{ Form::select('id_provincia',[''=>'Selecciona provincia'], null, array('class'=>'form-control','style'=>'','id'=>'provincias')) }} </div>
                                 </div>
                                 <!--/span-->
                                  <div class="col-md-4">
                                     <div class="form-group">
                                         <label>Comuna</label>
-                                        {{ Form::select('id_comuna',[''=>'Selecciona comuna'], null, array('class'=>'form-control','required'=>'required','style'=>'','id'=>'comunas')) }}
+                                        {{ Form::select('id_comuna',[''=>'Selecciona comuna'], null, array('class'=>'form-control','style'=>'','id'=>'comunas')) }}
                                         </div>
                                 </div>
                             </div>
