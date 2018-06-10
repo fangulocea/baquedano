@@ -77,6 +77,8 @@
 <!-- end - This is for export functionality only -->
 <script>
 
+    //PRUEBA
+
 $('.sorting_desc').hide();
 
 var table = $('#listusers').DataTable({
