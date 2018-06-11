@@ -272,15 +272,18 @@ var table2 = $('#listusers2').DataTable({
                        for (i = 0; i < response.length; i++) {
                         var num=response[i].numero==null?'':response[i].numero;
                         var dpto=response[i].departamento==null?'':response[i].departamento;
-                        
+                        var apepc=response[i].apep_c==null?'':response[i].apep_c;
+                        var apemc=response[i].apem_c==null?'':response[i].apem_c;
+                        var apepp=response[i].apep_p==null?'':response[i].apep_p;
+                        var apemp=response[i].apem_p==null?'':response[i].apem_p;
                         table.rows.add([ 
                             {
                                 0 : response[i].id_publicacion,
                                 1 : response[i].direccion+", "+ num+", Dtpo: "+dpto,
                                 2 : response[i].comuna_nombre,
-                                3 : response[i].nom_p+" "+response[i].apep_p +" "+response[i].apem_p,
+                                3 : response[i].nom_p+" "+apepp +" "+apemp,
                                 4 : response[i].fecha_creacion,
-                                5 : response[i].nom_c+" "+response[i].apep_c +" "+response[i].apem_c,
+                                5 : response[i].nom_c+" "+apepc +" "+apemc,
                                 6 : response[i].portal,
                                 7 : "<input value='"+response[i].id_publicacion+"' name='check[]'' type='checkbox'  >"
                             }]).draw();;
@@ -292,15 +295,18 @@ var table2 = $('#listusers2').DataTable({
                        for (i = 0; i < response.length; i++) {
                         var num=response[i].numero==null?'':response[i].numero;
                         var dpto=response[i].departamento==null?'':response[i].departamento;
-
+                        var apepc=response[i].apep_c==null?'':response[i].apep_c;
+                        var apemc=response[i].apem_c==null?'':response[i].apem_c;
+                        var apepp=response[i].apep_p==null?'':response[i].apep_p;
+                        var apemp=response[i].apem_p==null?'':response[i].apem_p;
                         table2.rows.add([ 
                             {
                                 0 : response[i].id_publicacion,
                                 1 : response[i].direccion+", "+ num+", Dtpo: "+dpto,
                                 2 : response[i].comuna_nombre,
-                                3 : response[i].nom_p+" "+response[i].apep_p +" "+response[i].apem_p,
+                                3 : response[i].nom_p+" "+apepp +" "+apemp,
                                 4 : response[i].fecha_creacion,
-                                5 : response[i].nom_c+" "+response[i].apep_c +" "+response[i].apem_c,
+                                5 : response[i].nom_c+" "+apepc +" "+apemc,
                                 6 : response[i].portal,
                                 7 : "<a href='/importar/gestion/"+response[i].id_publicacion+"'><span class='btn btn-warning btn-circle btn-lg'><i class='ti-pencil-alt'></i></span></a> "
                             }]).draw();;
