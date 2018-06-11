@@ -221,6 +221,9 @@
                                 @can('primeraGestion.index')
                                 <li> <a href="{{ route('primeraGestion.index',2) }}"><i class=" fa-fw">EC</i><span class="hide-menu">Envío de Correos</span></a> </li>
                                 @endcan
+                                @can('captacion.index')
+                                <li> <a href="{{ route('captacioncorredor.index') }}"><i class=" fa-fw">CC</i><span class="hide-menu">Captación de corredores</span></a> </li>
+                                @endcan
 
                             </ul>
                         </li>

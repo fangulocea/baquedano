@@ -20,37 +20,25 @@
                 <div class="content-wrap">
                     <section id="section-iconbox-1">
                         <div class="panel panel-info">
-                            <div class="panel-heading"> Nuevo Aviso Portal Inmobiliario</div>
+                            <div class="panel-heading"> Nuevo Aviso de Corredor</div>
                             <div class="panel-wrapper collapse in" aria-expanded="true">
                                 <div class="panel-body">
-                                    <form action="{{ route('captacion.store') }}" method="post">
+                                    <form action="{{ route('captacioncorredor.store') }}" method="post">
                                         {!! csrf_field() !!}
                                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                         <div class="form-body">
-                                            <h3 class="box-title">Información de la publicación web del portal</h3>
+                                            <h3 class="box-title">Información de la publicación del corredor</h3>
                                             <hr>
                                             <div class="row">
-                                                <div class="col-md-12">
+                                                <div class="col-md-6">
                                                     <div class="form-group">
-                                                        <label class="control-label">URL</label>
-                                                        <input type="text" name="url" class="form-control" required="required" placeholder="http://portal.dominio.com/publicacion" > <span class="help-block"> Url del Portal </span> </div>
-                                                </div>
+                                                        <label>Corredor de Propiedades</label>
+                                                        <div class="input-group">
+                                                    {{ Form::select('corredor',$corredores, null,array('class'=>'form-control','style'=>'','id'=>'i_id_region','placeholder'=>'Seleccione corredor','required'=>'required')) }}
+                                                </div></div></div>
 
-                                            </div>
-                                            <hr>
-                                            <div class="row">
-                                                <div class="col-md-3 ">
-                                                    <div class="form-group">
-                                                        <label>Portal</label>
-                                                {{ Form::select('portal',$portales, null,array('class'=>'form-control','style'=>'','id'=>'portal','placeholder'=>'Seleccione portal','required'=>'required')) }}
-                                                </div>
-                                            </div>
-                                                <div class="col-md-3">
-                                                    <div class="form-group">
-                                                        <label>Código publicación</label>
-                                                        <input name='codigo_publicacion' type="text" class="form-control"> </div>
-                                                </div>
-                                                <div class="col-md-3">
+                                            
+                                                                   <div class="col-md-3">
                                                     <div class="form-group">
                                                         <label>Fecha Publicación</label>
                                                         <div class="input-group">
@@ -82,7 +70,7 @@
                                         </div>
                                         <div class="form-actions">
                                             <button type="submit" class="btn btn-success"> <i class="fa fa-check"></i> Guardar</button>
-                                            <a href="{{ route('captacion.index') }}" class="btn btn-info" style="color:white"><i class="fa fa-times-circle"></i>&nbsp;&nbsp;Calcelar</a>
+                                            <a href="{{ route('captacioncorredor.index') }}" class="btn btn-info" style="color:white"><i class="fa fa-times-circle"></i>&nbsp;&nbsp;Calcelar</a>
                                         </div>
                                     </form>
                                 </div>
@@ -123,19 +111,19 @@ SweetAlert.prototype.init = function () {
 
     //Basic
     $("#2").click(function (event) {
-        swal("Debe crear publicación web");
+        swal("Debe crear captación");
         return false;
     });
     $("#3").click(function (event) {
-        swal("Debe crear publicación web");
+        swal("Debe crear captación");
         return false;
     });
     $("#4").click(function (event) {
-        swal("Debe crear publicación web");
+        swal("Debe crear captación");
         return false;
     });
     $("#5").click(function (event) {
-        swal("Debe crear publicación web");
+        swal("Debe crear captación");
         return false;
     });
     $.SweetAlert = new SweetAlert, $.SweetAlert.Constructor = SweetAlert

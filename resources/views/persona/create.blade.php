@@ -122,6 +122,7 @@
                                             <option value="Propietario">Propietario</option>
                                             <option value="Arrendatario">Arrendatario</option>
                                             <option value="Empleado">Empleado</option>
+                                            <option value="Corredor">Corredor</option>
                                         </select>
                                     </div>
                                 </div>                                                                       
