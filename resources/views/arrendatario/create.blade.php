@@ -1,5 +1,4 @@
 @extends('admin.layout')
-
 @section('contenido')
 <link href="{{ URL::asset('/plugins/bower_components/typeahead.js-master/dist/typehead-min.css') }}" rel="stylesheet">
 
