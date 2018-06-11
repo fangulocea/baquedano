@@ -43,7 +43,8 @@ class ArrendatarioController extends Controller
      */
     public function create()
     {
-        //
+        $regiones=Region::pluck('region_nombre','region_id');
+        return view('arrendatario.create',compact('regiones')); 
     }
 
     /**
