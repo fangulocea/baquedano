@@ -112,7 +112,7 @@
                                     <div class="form-group">
                                         <label>Tipo Persona</label>
                                        
-                                         {{ Form::select('tipo_cargo',['Propietario'=>'Propietario','Arrendatario'=>'Arrendatario','Empleado'=>'Empleado'], $_persona->tipo_cargo ,array('class'=>'form-control','style'=>'','id'=>'tipo_cargo','required'=>'required','onChange'=>'mostrar(this.value)')) }}
+                                         {{ Form::select('tipo_cargo',['Propietario'=>'Propietario','Arrendatario'=>'Arrendatario','Empleado'=>'Empleado','Corredor'=>'Corredor'], $_persona->tipo_cargo ,array('class'=>'form-control','style'=>'','id'=>'tipo_cargo','required'=>'required','onChange'=>'mostrar(this.value)')) }}
                                     </div>
                                 </div>                                                                       
                                 <div class="col-md-3">
