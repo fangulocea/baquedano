@@ -210,16 +210,19 @@
                         <li> <a href="#" class="waves-effect"><i class="mdi mdi-settings fa-fw" data-icon="v"></i> <span class="hide-menu"> Captaciones <span class="fa arrow"></span> <span class="label label-rouded label-primary pull-right">4</span></span></a>
                             <ul class="nav nav-second-level">
                                 @can('captacion.index')
-                                <li> <a href="{{ route('captacion.index') }}"><i class=" fa-fw">CP</i><span class="hide-menu">Captación Principal</span></a> </li>
+                                <li> <a href="{{ route('captacion.index') }}"><i class=" fa-fw">CP</i><span class="hide-menu">Captación Arrendador</span></a> </li>
                                 @endcan
-                                 @can('captacion.index')
+                                @can('captacionArrendador.index')
+                                <li> <a href="{{ route('captacionArrendador.index') }}"><i class=" fa-fw">CA</i><span class="hide-menu">Captación Arrendatario</span></a> </li>
+                                @endcan
+                                @can('captacion.index')
                                 <li> <a href="{{ route('captacion.importExport') }}"><i class=" fa-fw">PC</i><span class="hide-menu">Proceso de Captación</span></a> </li>
                                 @endcan
                                  @can('captacion.index')
                                 <li> <a href="{{ route('captacion.reportes') }}"><i class=" fa-fw">RS</i><span class="hide-menu">Reporte de seguimiento</span></a> </li>
                                 @endcan
                                 @can('primeraGestion.index')
-                                <li> <a href="{{ route('primeraGestion.index',2) }}"><i class=" fa-fw">EC</i><span class="hide-menu">Envío de Correos</span></a> </li>
+                                <li> <a href="{{ route('primeraGestion.index',1) }}"><i class=" fa-fw">EC</i><span class="hide-menu">Envío de Correos</span></a> </li>
                                 @endcan
                                 @can('captacion.index')
                                 <li> <a href="{{ route('captacioncorredor.index') }}"><i class=" fa-fw">CC</i><span class="hide-menu">Captación de corredores</span></a> </li>

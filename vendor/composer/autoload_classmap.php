@@ -6,6 +6,7 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+    'App\\Arrendatario' => $baseDir . '/app/Arrendatario.php',
     'App\\Captacion' => $baseDir . '/app/Captacion.php',
     'App\\CaptacionCorredor' => $baseDir . '/app/CaptacionCorredor.php',
     'App\\CaptacionFoto' => $baseDir . '/app/CaptacionFoto.php',
@@ -21,6 +22,7 @@ return array(
     'App\\Exceptions\\Handler' => $baseDir . '/app/Exceptions/Handler.php',
     'App\\Flexibilidad' => $baseDir . '/app/Flexibilidad.php',
     'App\\FormasDePago' => $baseDir . '/app/FormasDePago.php',
+    'App\\Http\\Controllers\\ArrendatarioController' => $baseDir . '/app/Http/Controllers/ArrendatarioController.php',
     'App\\Http\\Controllers\\Auth\\ForgotPasswordController' => $baseDir . '/app/Http/Controllers/Auth/ForgotPasswordController.php',
     'App\\Http\\Controllers\\Auth\\LoginController' => $baseDir . '/app/Http/Controllers/Auth/LoginController.php',
     'App\\Http\\Controllers\\Auth\\RegisterController' => $baseDir . '/app/Http/Controllers/Auth/RegisterController.php',
@@ -111,6 +113,9 @@ return array(
     'Collective\\Html\\HtmlServiceProvider' => $vendorDir . '/laravelcollective/html/src/HtmlServiceProvider.php',
     'Comunas' => $baseDir . '/database/migrations/2018_05_21_212619_comunas.php',
     'ComunasTableSeeder' => $baseDir . '/database/seeds/ComunasTableSeeder.php',
+    'CreateArrendatario' => $baseDir . '/database/migrations/2018_06_10_210533_create_Arrendatario.php',
+    'CreateArrendatarioCita' => $baseDir . '/database/migrations/2018_06_10_210342_create_ArrendatarioCita.php',
+    'CreateArrendatarioImg' => $baseDir . '/database/migrations/2018_06_10_210309_create_ArrendatarioImg.php',
     'CreateCargosTable' => $baseDir . '/database/migrations/2012_05_19_003554_create_cargos_table.php',
     'CreateComisionesTable' => $baseDir . '/database/migrations/2018_05_26_124820_create_comisiones_table.php',
     'CreateCondicionsTable' => $baseDir . '/database/migrations/2018_05_16_013516_create_condicions_table.php',

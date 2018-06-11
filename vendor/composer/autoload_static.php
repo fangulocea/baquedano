@@ -348,6 +348,7 @@ class ComposerStaticInit0178ccda3db7603c96af3e22d130f715
     );
 
     public static $classMap = array (
+        'App\\Arrendatario' => __DIR__ . '/../..' . '/app/Arrendatario.php',
         'App\\Captacion' => __DIR__ . '/../..' . '/app/Captacion.php',
         'App\\CaptacionCorredor' => __DIR__ . '/../..' . '/app/CaptacionCorredor.php',
         'App\\CaptacionFoto' => __DIR__ . '/../..' . '/app/CaptacionFoto.php',
@@ -363,6 +364,7 @@ class ComposerStaticInit0178ccda3db7603c96af3e22d130f715
         'App\\Exceptions\\Handler' => __DIR__ . '/../..' . '/app/Exceptions/Handler.php',
         'App\\Flexibilidad' => __DIR__ . '/../..' . '/app/Flexibilidad.php',
         'App\\FormasDePago' => __DIR__ . '/../..' . '/app/FormasDePago.php',
+        'App\\Http\\Controllers\\ArrendatarioController' => __DIR__ . '/../..' . '/app/Http/Controllers/ArrendatarioController.php',
         'App\\Http\\Controllers\\Auth\\ForgotPasswordController' => __DIR__ . '/../..' . '/app/Http/Controllers/Auth/ForgotPasswordController.php',
         'App\\Http\\Controllers\\Auth\\LoginController' => __DIR__ . '/../..' . '/app/Http/Controllers/Auth/LoginController.php',
         'App\\Http\\Controllers\\Auth\\RegisterController' => __DIR__ . '/../..' . '/app/Http/Controllers/Auth/RegisterController.php',
@@ -453,6 +455,9 @@ class ComposerStaticInit0178ccda3db7603c96af3e22d130f715
         'Collective\\Html\\HtmlServiceProvider' => __DIR__ . '/..' . '/laravelcollective/html/src/HtmlServiceProvider.php',
         'Comunas' => __DIR__ . '/../..' . '/database/migrations/2018_05_21_212619_comunas.php',
         'ComunasTableSeeder' => __DIR__ . '/../..' . '/database/seeds/ComunasTableSeeder.php',
+        'CreateArrendatario' => __DIR__ . '/../..' . '/database/migrations/2018_06_10_210533_create_Arrendatario.php',
+        'CreateArrendatarioCita' => __DIR__ . '/../..' . '/database/migrations/2018_06_10_210342_create_ArrendatarioCita.php',
+        'CreateArrendatarioImg' => __DIR__ . '/../..' . '/database/migrations/2018_06_10_210309_create_ArrendatarioImg.php',
         'CreateCargosTable' => __DIR__ . '/../..' . '/database/migrations/2012_05_19_003554_create_cargos_table.php',
         'CreateComisionesTable' => __DIR__ . '/../..' . '/database/migrations/2018_05_26_124820_create_comisiones_table.php',
         'CreateCondicionsTable' => __DIR__ . '/../..' . '/database/migrations/2018_05_16_013516_create_condicions_table.php',
