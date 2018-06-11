@@ -46,9 +46,6 @@
                             <td>{{ $p->estado }}</td>
                             <td width="10px">  </td>
                             <td width="10px" style="text-align: center;">
-                                
-        
-                                
                             </td>
                         </tr>
                         @endforeach

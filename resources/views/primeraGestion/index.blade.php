@@ -13,15 +13,21 @@
             <div class="row"> 
                 <div class="col-md-2">
                     <div class="form-group">
-                        <a href="{{ route('primeraGestion.index',2) }}" class="btn btn-info" style="color:white"><i class="fa fa-check"></i>&nbsp;&nbsp;Sin Respuesta</a>
+                        <a href="{{ route('primeraGestion.index',1) }}" class="btn btn-info" style="color:white"><i class="fa fa-check"></i>&nbsp;&nbsp;Sin Respuesta</a>
                     </div>
                 </div>
 
                 <div class="col-md-2">
                     <div class="form-group">
-                        <a href="{{ route('primeraGestion.index',3) }}" class="btn btn-info" style="color:white"><i class="fa fa-check"></i>&nbsp;&nbsp;Reenvío</a>
+                        <a href="{{ route('primeraGestion.index',2) }}" class="btn btn-info" style="color:white"><i class="fa fa-check"></i>&nbsp;&nbsp;Reenvío</a>
                     </div>
                 </div>                                        
+
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <a href="{{ route('primeraGestion.index',3) }}" class="btn btn-info" style="color:white"><i class="fa fa-check"></i>&nbsp;&nbsp;Seguimiento</a>
+                    </div>
+                </div>  
             </div>
 
             <div class="table-responsive" style="padding-bottom: 50px;">

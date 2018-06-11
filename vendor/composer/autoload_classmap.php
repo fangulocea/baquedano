@@ -6,6 +6,7 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+    'App\\Arrendatario' => $baseDir . '/app/Arrendatario.php',
     'App\\Captacion' => $baseDir . '/app/Captacion.php',
     'App\\CaptacionFoto' => $baseDir . '/app/CaptacionFoto.php',
     'App\\CaptacionGestion' => $baseDir . '/app/CaptacionGestion.php',
@@ -19,6 +20,7 @@ return array(
     'App\\Exceptions\\Handler' => $baseDir . '/app/Exceptions/Handler.php',
     'App\\Flexibilidad' => $baseDir . '/app/Flexibilidad.php',
     'App\\FormasDePago' => $baseDir . '/app/FormasDePago.php',
+    'App\\Http\\Controllers\\ArrendatarioController' => $baseDir . '/app/Http/Controllers/ArrendatarioController.php',
     'App\\Http\\Controllers\\Auth\\ForgotPasswordController' => $baseDir . '/app/Http/Controllers/Auth/ForgotPasswordController.php',
     'App\\Http\\Controllers\\Auth\\LoginController' => $baseDir . '/app/Http/Controllers/Auth/LoginController.php',
     'App\\Http\\Controllers\\Auth\\RegisterController' => $baseDir . '/app/Http/Controllers/Auth/RegisterController.php',
@@ -44,6 +46,8 @@ return array(
     'App\\Http\\Controllers\\PrimeraGestionController' => $baseDir . '/app/Http/Controllers/PrimeraGestionController.php',
     'App\\Http\\Controllers\\ProvinciaController' => $baseDir . '/app/Http/Controllers/ProvinciaController.php',
     'App\\Http\\Controllers\\RegionController' => $baseDir . '/app/Http/Controllers/RegionController.php',
+    'App\\Http\\Controllers\\ReporteCaptacionesController' => $baseDir . '/app/Http/Controllers/ReporteCaptacionesController.php',
+    'App\\Http\\Controllers\\ReporteGestionController' => $baseDir . '/app/Http/Controllers/ReporteGestionController.php',
     'App\\Http\\Controllers\\RoleController' => $baseDir . '/app/Http/Controllers/RoleController.php',
     'App\\Http\\Controllers\\RoleUserController' => $baseDir . '/app/Http/Controllers/RoleUserController.php',
     'App\\Http\\Controllers\\ServicioController' => $baseDir . '/app/Http/Controllers/ServicioController.php',
@@ -68,6 +72,8 @@ return array(
     'App\\Providers\\RouteServiceProvider' => $baseDir . '/app/Providers/RouteServiceProvider.php',
     'App\\Provincia' => $baseDir . '/app/Provincia.php',
     'App\\Region' => $baseDir . '/app/Region.php',
+    'App\\ReporteCaptaciones' => $baseDir . '/app/ReporteCaptaciones.php',
+    'App\\ReporteGestion' => $baseDir . '/app/ReporteGestion.php',
     'App\\Role_User' => $baseDir . '/app/Role_User.php',
     'App\\Servicio' => $baseDir . '/app/Servicio.php',
     'App\\User' => $baseDir . '/app/User.php',
@@ -100,6 +106,9 @@ return array(
     'Collective\\Html\\HtmlServiceProvider' => $vendorDir . '/laravelcollective/html/src/HtmlServiceProvider.php',
     'Comunas' => $baseDir . '/database/migrations/2018_05_21_212619_comunas.php',
     'ComunasTableSeeder' => $baseDir . '/database/seeds/ComunasTableSeeder.php',
+    'CreateArrendatario' => $baseDir . '/database/migrations/2018_06_10_210533_create_Arrendatario.php',
+    'CreateArrendatarioCita' => $baseDir . '/database/migrations/2018_06_10_210342_create_ArrendatarioCita.php',
+    'CreateArrendatarioImg' => $baseDir . '/database/migrations/2018_06_10_210309_create_ArrendatarioImg.php',
     'CreateCargosTable' => $baseDir . '/database/migrations/2012_05_19_003554_create_cargos_table.php',
     'CreateComisionesTable' => $baseDir . '/database/migrations/2018_05_26_124820_create_comisiones_table.php',
     'CreateCondicionsTable' => $baseDir . '/database/migrations/2018_05_16_013516_create_condicions_table.php',
