@@ -39,15 +39,15 @@
                                 <td>{{ $arr->Creador }}</td>
                                 <td>{{ $arr->fecha_creacion }}</td>
                                 <td>{{ trans_choice('mensajes.arrendatario', $arr->id_estado) }}</td>
-                                @can('captacionArrendador.edit')
+                                @can('arrendatario.edit')
                                 <td width="10px">
-                                    <a href="{{ route('captacionArrendador.edit', $arr->id) }}"><span class="btn btn-warning btn-circle btn-sm"><i class="ti-pencil-alt"></i></span></a>
+                                    <a href="{{ route('arrendatario.edit', $arr->id) }}"><span class="btn btn-warning btn-circle btn-sm"><i class="ti-pencil-alt"></i></span></a>
                                 </td>
                                 @endcan
-                                @can('captacionArrendador.destroy')
+                                @can('arrendatario.destroy')
                                 <td width="10px">
 
-                                    {!! Form::open(['route' => ['captacionArrendador.destroy', $arr->id], 
+                                    {!! Form::open(['route' => ['arrendatario.destroy', $arr->id], 
                                     'method' => 'DELETE']) !!}
                                         <button class="btn btn-danger btn-circle btn-sm"><i class="ti-trash"></i>
                                         </button>
@@ -88,7 +88,7 @@ var table = $('#listusers').DataTable({
         'copy', 'csv', 'excel', 'pdf', 'print',{
             text: 'Ingresar Arrendatario',
             action: function ( e, dt, node, config ) {
-                 window.location.href = '{{ route("captacionArrendador.create") }}';
+                 window.location.href = '{{ route("arrendatario.create") }}';
             }
         }
 

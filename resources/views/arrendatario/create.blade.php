@@ -21,7 +21,7 @@
                             <div class="panel-heading"> Nuevo Arrendatario</div>
                             <div class="panel-wrapper collapse in" aria-expanded="true">
                                 <div class="panel-body">
-                                    <form action="{{ route('captacionArrendador.store') }}" method="post">
+                                    <form action="{{ route('arrendatario.store') }}" method="post">
                                         {!! csrf_field() !!}
                                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                         <div class="form-body">
@@ -127,8 +127,9 @@
 
                         </div>
                         <div class="form-actions">
+                            <input type="hidden" name="id_creador" value="{{ Auth::user()->id_persona}}">
                             <button type="submit" class="btn btn-success"> <i class="fa fa-check"></i> Guardar</button>
-                            <a href="{{ route('captacionArrendador.index') }}" class="btn btn-info" style="color:white"><i class="fa fa-times-circle"></i>&nbsp;&nbsp;Calcelar</a>
+                            <a href="{{ route('arrendatario.index') }}" class="btn btn-info" style="color:white"><i class="fa fa-times-circle"></i>&nbsp;&nbsp;Calcelar</a>
                         </div>
                     </form>
                                 </div>

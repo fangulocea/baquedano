@@ -17,7 +17,7 @@ class CreateArrendatarioImg extends Migration
         Schema::create('ArrendatarioImgs', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('id_arrendatario')->unsigned();
-            $table->foreign('id_arrendatario')->references('id')->on('Arrendatarios');
+            $table->foreign('id_arrendatario')->references('id')->on('arrendatarios');
             $table->string('descripcion')->nullable();
             $table->string('nombre');
             $table->string('ruta');

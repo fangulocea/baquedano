@@ -16,8 +16,8 @@ class CreateArrendatario extends Migration
         Schema::dropIfExists('Arrendatarios');
         Schema::create('Arrendatarios', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('id_arrendador')->unsigned()->nullable();
-            $table->foreign('id_arrendador')->references('id')->on('personas');
+            $table->integer('id_arrendatario')->unsigned()->nullable();
+            $table->foreign('id_arrendatario')->references('id')->on('personas');
             $table->integer('id_creador')->unsigned()->nullable();
             $table->foreign('id_creador')->references('id')->on('personas');   
             $table->integer('id_modificador')->unsigned()->nullable();

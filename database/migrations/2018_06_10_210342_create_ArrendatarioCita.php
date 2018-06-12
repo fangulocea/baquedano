@@ -13,15 +13,26 @@ class CreateArrendatarioCita extends Migration
      */
     public function up()
     {
-        Schema::dropIfExists('ArrendatarioCitas');
-        Schema::create('ArrendatarioCitas', function (Blueprint $table) {
+        Schema::dropIfExists('Arrendatariocitas');
+        Schema::create('Arrendatariocitas', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('id_arrendatario')->unsigned();
-            $table->foreign('id_arrendatario')->references('id')->on('Arrendatarios');
-            $table->string('descripcion')->nullable();
+            $table->string('nombre')->nullable();
+            $table->string('telefono')->nullable();
+            $table->string('email')->nullable();
+            $table->string('direccion')->nullable();
+            $table->string('numero')->nullable();
+            $table->string('departamento')->nullable();
+            $table->integer('id_comuna')->nullable();
+            $table->integer('id_region')->nullable();
+            $table->integer('id_provincia')->nullable();
+            $table->string('nombre_c')->nullable();
+            $table->string('telefono_c')->nullable();
+            $table->string('email_c')->nullable();
             $table->date('fecha');
-            $table->string('hora');
+            $table->integer('id_estado');
             $table->string('id_creador')->nullable();
+            $table->integer('id_arrendatario')->unsigned();
+            $table->foreign('id_arrendatario')->references('id')->on('arrendatarios');
             $table->timestamps();
             $table->softDeletes();
         });
@@ -34,6 +45,6 @@ class CreateArrendatarioCita extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('ArrendatarioCitas');
+        Schema::dropIfExists('Arrendatariocitas');
     }
 }

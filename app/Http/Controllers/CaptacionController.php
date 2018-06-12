@@ -465,7 +465,6 @@ class CaptacionController extends Controller
     public function store(Request $request)
     {
        
-
         $fecha_publicacion = DateTime::createFromFormat('d/m/Y', $request->fecha_publicacion);
         array_set($request, 'fecha_publicacion', $fecha_publicacion);
         
@@ -540,6 +539,7 @@ class CaptacionController extends Controller
          ->get();
 
         $imagenes=CaptacionFoto::where('id_captacion','=',$id)->get();
+
         return view('captaciones.edit',compact('captacion','regiones','persona','inmueble','idr','captaciones_persona','captaciones_inmueble','imagenes','portales','gestion'));
 
     }

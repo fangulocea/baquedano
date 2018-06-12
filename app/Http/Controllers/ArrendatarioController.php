@@ -8,10 +8,11 @@ use App\Http\Controllers\Controller;
 use App\Persona;
 use App\Inmueble;
 use App\Region;
-use App\CaptacionFoto;
+use App\ArrendatarioFoto;
 use App\CaptacionGestion;
 use App\Portales;
 use App\CaptacionImport;
+use App\ArrendatarioCitas;
 use DB;
 use Image;
 use DateTime;
@@ -28,7 +29,7 @@ class ArrendatarioController extends Controller
     public function index()
     {
          $arrendador = DB::table('arrendatarios as a')
-         ->leftjoin('personas as p1', 'a.id_arrendador', '=', 'p1.id')
+         ->leftjoin('personas as p1', 'a.id_arrendatario', '=', 'p1.id')
          ->leftjoin('personas as p2', 'a.id_creador', '=', 'p2.id')
          ->leftjoin('personas as p3', 'a.id_modificador', '=', 'p3.id')
          ->select(DB::raw('a.id, DATE_FORMAT(a.created_at, "%d/%m/%Y") as fecha_creacion, a.id_estado, CONCAT_WS(" ", p1.nombre, p1.apellido_paterno, p1.apellido_materno) as Arrendador, CONCAT_WS(" ", p2.nombre, p2.apellido_paterno, p2.apellido_materno) as Creador'))->get();
@@ -55,7 +56,20 @@ class ArrendatarioController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request = array_add($request, 'id_estado', 1);
+        $request = array_add($request, 'tipo_cargo', 'Arrendatario');
+        
+        $persona = Persona::create($request->all());
+
+        $arrendatario=Arrendatario::create([                      
+                            'id_arrendatario'   => $persona->id,
+                            'id_creador'        => $request->id_creador,
+                            'id_modificador'    => $request->id_creador,
+                            'id_estado'         => '1',
+                    ]);
+
+        return redirect()->route('arrendatario.edit', $arrendatario->id)
+            ->with('status', 'Persona guardada con éxito');
     }
 
     /**
@@ -75,9 +89,14 @@ class ArrendatarioController extends Controller
      * @param  \App\Arrendatario  $arrendatario
      * @return \Illuminate\Http\Response
      */
-    public function edit(Arrendatario $arrendatario)
+    public function edit($id)
     {
-        //
+        $regiones=Region::pluck('region_nombre','region_id');
+        $arrendatario = Arrendatario::find($id);
+        $persona = Persona::find(isset($arrendatario->id_arrendatario)?$arrendatario->id_arrendatario:0);
+        $imagenes=ArrendatarioFoto::where('id_arrendatario','=',$id)->get();
+        $citas=ArrendatarioCitas::where('id_arrendatario','=',$id)->first();
+        return view('arrendatario.edit',compact('arrendatario','regiones','persona','imagenes','citas'));
     }
 
     /**
@@ -87,9 +106,127 @@ class ArrendatarioController extends Controller
      * @param  \App\Arrendatario  $arrendatario
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Arrendatario $arrendatario)
+    public function update(Request $request, $id)
     {
-        //
+        if($request->paso=='2')
+        {
+             $arrendatario = Arrendatario::find($id);
+            //Propietario Nuevo
+            if($arrendatario->id_arrendatario==null)
+            {
+                    $p = Persona::where('rut', '=', $request->p_rut)->first();
+                    if ($p != null && isset($request->p_rut)) 
+                    {
+                       return back()->with('error', 'Rut existente en el sistema');
+                    }
+                    $persona=Persona::create([
+                            'rut'               => $request->p_rut,
+                            'nombre'            => $request->p_nombre,
+                            'apellido_paterno'  => $request->p_apellido_paterno,
+                            'apellido_materno'  => $request->p_apellido_materno,
+                            'direccion'         => $request->p_direccion,
+                            'numero'            => $request->p_numero,
+                            'departamento'      => $request->p_departamento,
+                            'id_estado'         => '1',
+                            'telefono'          => $request->p_telefono,
+                            'email'             => $request->p_email,
+                            'id_comuna'         => $request->p_id_comuna,
+                            'id_region'         => $request->p_id_region,
+                            'id_provincia'      => $request->p_id_provincia,
+                            'tipo_cargo'        => 'Arrendatario',
+          
+                    ]);
+            }
+            //Propietario ya ingresado
+            else
+            {
+                    $persona=Persona::whereId($arrendatario->id_arrendatario)->update([
+                            'rut'               => $request->p_rut,
+                            'nombre'            => $request->p_nombre,
+                            'apellido_paterno'  => $request->p_apellido_paterno,
+                            'apellido_materno'  => $request->p_apellido_materno,
+                            'direccion'         => $request->p_direccion,
+                            'numero'            => $request->p_numero,
+                            'departamento'      => $request->p_departamento,
+                            'telefono'          => $request->p_telefono,
+                            'email'             => $request->p_email,
+                            'id_comuna'         => $request->p_id_comuna,
+                            'id_region'         => $request->p_id_region,
+                            'id_provincia'      => $request->p_id_provincia,
+                            'tipo_cargo'        => 'Propietario',
+          
+                    ]);
+                    $persona = Persona::find($arrendatario->id_arrendatario);
+            }
+            
+
+            $arrendatario = Arrendatario::whereId($id)->update([
+                'id_modificador' => $request->id_modificador,
+                'id_arrendatario' => $persona->id,
+            ]
+            );
+            
+        }elseif($request->paso=='3'){
+
+            $citaArr = ArrendatarioCitas::where('id_arrendatario','=',$id)->get();
+            $fecha=date("Y-m-d",strtotime($request->fecha));
+            if(isset($citaArr))
+            {
+                    $citas=ArrendatarioCitas::create([
+                            'nombre'            => $request->c_nombre,
+                            'telefono'          => $request->c_telefono,
+                            'email'             => $request->c_email,
+                            'direccion'         => $request->c_direccion,
+                            'numero'            => $request->c_numero,
+                            'departamento'      => $request->c_departamento,
+                            'nombre_c'          => $request->cc_nombre,
+                            'telefono_c'        => $request->cc_telefono,
+                            'email_c'           => $request->cc_email,
+                            'fecha'             => $fecha,
+                            'id_estado'         => $request->id_estado,
+                            'id_creador'        => $request->id_modificador,
+                            'id_arrendatario'   => $request->idarriendos,
+                    ]);
+            }
+            //Cita ya ingresado
+            else
+            {
+                    $persona=ArrendatarioCitas::whereId($citaArr->id)->update([
+                            'nombre'            => $request->c_nombre,
+                            'telefono'          => $request->c_telefono,
+                            'email'             => $request->c_email,
+                            'direccion'         => $request->c_direccion,
+                            'numero'            => $request->c_numero,
+                            'departamento'      => $request->c_departamento,
+                            'nombre_c'          => $request->cc_nombre,
+                            'telefono_c'        => $request->cc_telefono,
+                            'email_c'           => $request->cc_email,
+                            'fecha'             => $fecha,
+                            'id_estado'         => $request->id_estado,
+                            'id_creador'        => $request->id_modificador,
+                            'id_arrendatario'   => $request->idarriendos,
+          
+                    ]);
+                   
+            }
+            
+
+            
+            
+
+
+        }elseif($request->paso=='4'){
+            
+        }else{
+
+        }
+
+        $regiones=Region::pluck('region_nombre','region_id');
+        $arrendatario = Arrendatario::find($id);
+
+        // $imagenes=CaptacionFoto::where('id_captacion','=',$id)->get();
+
+        return redirect()->route('arrendatario.edit', $id)->with('status', 'Captación grabado con éxito');
     }
 
     /**
@@ -102,4 +239,52 @@ class ArrendatarioController extends Controller
     {
         //
     }
+
+
+    public function savefotos(Request $request, $id){
+     /*    if ($_FILES['foto']['size'] > 1000000) 
+         {
+            return back()->with('error', 'Imágen supera 1MB');      
+         } */
+        if(isset($request->foto))
+        {
+            $path='uploads/arrendatarios';
+            $archivo=rand().$request->foto->getClientOriginalName();
+            $img = Image::make($_FILES['foto']['tmp_name'])->resize(600,400, function ($constraint){ 
+                            $constraint->aspectRatio();
+                        });
+            $img->save($path.'/'.$archivo,72);
+
+            $imagen=ArrendatarioFoto::create([
+                   'id_arrendatario'      => $id,
+                   'descripcion'          => '',
+                   'nombre'               => $archivo,
+                   'ruta'                 => $path,
+                   'id_creador'           => $request->id_creador
+            ]);
+        }
+        else
+        {
+            return redirect()->route('arrendatario.edit', $id)->with('status', 'No se ha actualizado ninguna imágen');
+        }
+        return redirect()->route('arrendatario.edit', $id)->with('status', 'Foto guardada con éxito');
+    }
+
+
+/**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\captacion  $captacion
+     * @return \Illuminate\Http\Response
+     */
+    public function eliminarfoto($idf,$idc){
+        $imagen=ArrendatarioFoto::find($idf);
+        File::delete($imagen->ruta.'/'.$imagen->nombre);
+        $foto = ArrendatarioFoto::find($idf)->delete();
+        return redirect()->route('arrendatario.edit', $idc)->with('status', 'Foto eliminada con éxito');
+    }
+
+
+
 }
