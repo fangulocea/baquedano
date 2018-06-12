@@ -256,7 +256,7 @@ Route::middleware(['auth'])->group(function(){
 		->middleware('permission:multa.edit');
 
 
-//Captacion Arrendador
+//Captacion Propietario
 
 	Route::get('importExport', 'CaptacionController@importExport')->name('captacion.importExport')
 		->middleware('permission:captacion.edit');
@@ -523,52 +523,32 @@ Route::middleware(['auth'])->group(function(){
 
 
 
-	Route::post('captacionArrendador/foto/{captacion}','CaptacionController@savefotos')->name('captacion.savefotos')
+	Route::post('captacionArrendador/foto/{captacion}','ArrendatarioController@savefotos')->name('captacionArrendador.savefotos')
 		->middleware('permission:captacion.edit');
 
-	Route::post('captacionArrendador/gestion/create','CaptacionController@crearGestion')->name('captacion.crearGestion')
+	Route::post('captacionArrendador/gestion/create','ArrendatarioController@crearGestion')->name('captacionArrendador.crearGestion')
 		->middleware('permission:captacion.edit');
 
-	Route::post('captacionArrendador/gestion/update','CaptacionController@editarGestion')->name('captacion.editarGestion')
+	Route::post('captacionArrendador/gestion/update','ArrendatarioController@editarGestion')->name('captacionArrendador.editarGestion')
 		->middleware('permission:captacion.edit');
 
-	Route::post('captacionArrendador/gestion/proceso/create','CaptacionController@crearGestion_proceso')->name('captacion.crearGestion_proceso')
-		->middleware('permission:captacion.edit');
+	Route::get('captacionArrendador/gestion/{idg}','ArrendatarioController@mostrarGestion');
 
-	Route::post('captacionArrendador/gestion/proceso/update','CaptacionController@editarGestion_proceso')->name('captacion.editarGestion_proceso')
-		->middleware('permission:captacion.edit');
-
-	Route::get('captacionArrendador/gestion/{idg}','CaptacionController@mostrarGestion');
-	
-		Route::get('procesoCaptacion/{id}', 'PrimeraGestionController@volver_proceso')->name('captacion.volver_proceso')
-		->middleware('permission:captacion.edit');
-
-    Route::post('procesoCaptacion/store','PrimeraGestionController@storeCaptacion')->name('primeraGestion.storeCaptacion')
-		->middleware('permission:captacion.create');
-
-	Route::get('captacion/reportes','CaptacionController@reportes')->name('captacion.reportes')
-		->middleware('permission:captacion.edit');
-
-	Route::get('captacion/{captacion}','CaptacionController@show')->name('captacion.show')
-		->middleware('permission:captacion.show');
-
-	Route::delete('captacion/{captacion}','CaptacionController@destroy')->name('captacion.destroy')
+	Route::delete('captacionArrendador/{captacion}','ArrendatarioController@destroy')->name('captacionArrendador.destroy')
 		->middleware('permission:captacion.destroy');
 
-	Route::get('captacion/{captacion}/edit','CaptacionController@edit')->name('captacion.edit')
+	Route::get('captacionArrendador/{captacion}/edit','ArrendatarioController@edit')->name('captacionArrendador.edit')
 		->middleware('permission:captacion.edit');
 
-	Route::get('captacion/agregarinmueble/{idc}/{idi}','CaptacionController@agregarInmueble')->name('captacion.agregarinmueble')
+	Route::get('captacionArrendador/agregarinmueble/{idc}/{idi}','ArrendatarioController@agregarInmueble')->name('captacionArrendador.agregarinmueble')
 		->middleware('permission:captacion.edit');
 
-	Route::get('captacion/agregarpersona/{idc}/{idp}','CaptacionController@agregarPropietario')->name('captacion.agregarpersona')
+	Route::get('captacionArrendador/agregarpersona/{idc}/{idp}','ArrendatarioController@agregarPropietario')->name('captacionArrendador.agregarpersona')
 		->middleware('permission:captacion.edit');
 
-	Route::get('captacion/eliminarfoto/{idf}/{idc}','CaptacionController@eliminarfoto')->name('captacion.eliminarfoto')
+	Route::get('captacionArrendador/eliminarfoto/{idf}/{idc}','ArrendatarioController@eliminarfoto')->name('captacionArrendador.eliminarfoto')
 		->middleware('permission:captacion.edit');
 
-		Route::get('importar/gestion/{idc}','CaptacionController@importarGestion')->name('captacion.importarGestion')
-		->middleware('permission:captacion.edit');
 
 //Captacion Corredor
 

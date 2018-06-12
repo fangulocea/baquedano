@@ -14,11 +14,11 @@
                         <th>ID</th>
                         <th>Dirección</th>
                         <th>Comuna</th>
+                        <th>Corredor</th>
                         <th>Propietario</th>
                         <th>Fecha</th>
                         <th>Creador</th>
                         <th>Estado</th>
-                        <th>Portal</th>
                         <th></th>
                         <th></th>
                     </tr>
@@ -28,11 +28,11 @@
                         <th>ID</th>
                         <th>Dirección</th>
                         <th>Comuna</th>
+                        <th>Corredor</th>
                         <th>Propietario</th>
                         <th>Fecha</th>
                         <th>Creador</th>
                         <th>Estado</th>
-                        <th>Portal</th>
                         <th></th>
                         <th></th>
                     </tr>
@@ -45,11 +45,11 @@
                                 <td >{{ $p->direccion }} #{{ $p->numero }} , Dpto {{ $p->departamento }}</td>
                                 
                                 <td>{{ $p->comuna_nombre }}</td>
+                                <td></td>
                                 <td>{{ $p->nom_p }} {{ $p->apep_p }} {{ $p->apem_p }}</td>
                                 <td>{{ $p->fecha_creacion }}</td>
                                 <td>{{ $p->nom_c }} {{ $p->apep_c }} {{ $p->apem_c }}</td>
                                  <td>{{ trans_choice('mensajes.vigencia', $p->id_estado) }}</td>
-                                 <td>{{ substr(substr($p->portal, 4),0,10) }}</td>
                                 @can('captacion.edit')
                                 <td width="10px">
                                     <a href="{{ route('captacioncorredor.edit', $p->id_publicacion) }}"><span class="btn btn-warning btn-circle btn-sm"><i class="ti-pencil-alt"></i></span></a>

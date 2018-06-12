@@ -750,7 +750,9 @@ class CaptacionController extends Controller
          {
             return back()->with('error', 'Imágen supera 1MB');      
          } */
-
+         if(!isset($request->foto)){
+            return redirect()->route('captacion.edit', $id)->with('error', 'Debe seleccionar una imagen');
+         }
         $path='uploads/captaciones';
         $archivo=rand().$request->foto->getClientOriginalName();
         $img = Image::make($_FILES['foto']['tmp_name'])->resize(600,400, function ($constraint){ 
