@@ -231,6 +231,16 @@
 
                             </ul>
                         </li>
+                        <li> <a href="#" class="waves-effect"><i class="mdi mdi-settings fa-fw" data-icon="v"></i> <span class="hide-menu"> Administración <span class="fa arrow"></span> <span class="label label-rouded label-primary pull-right">2</span></span></a>
+                            <ul class="nav nav-second-level">
+                                @can('captacion.index')
+                                <li> <a href="{{ route('captacion.index') }}"><i class=" fa-fw">CP</i><span class="hide-menu">Revisión Comercial Persona</span></a> </li>
+                                @endcan
+                                @can('captacionArrendador.index')
+                                <li> <a href="{{ route('captacionArrendador.index') }}"><i class=" fa-fw">CA</i><span class="hide-menu">Revisión Comercial Inmueble</span></a> </li>
+                                @endcan
+                            </ul>
+                        </li>
                         <li><a href="{{ route('logout') }}"
                                        onclick="event.preventDefault();
                                                document.getElementById('logout-form').submit();" class="waves-effect"><i class="mdi mdi-logout fa-fw"></i>

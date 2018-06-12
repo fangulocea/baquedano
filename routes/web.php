@@ -592,4 +592,34 @@ Route::middleware(['auth'])->group(function(){
 		->middleware('permission:captacion.edit');
 
 
+//Revisión comercial persona
+
+
+	Route::post('revisionpersona/store','RevisionPersonaController@store')->name('revisionpersona.store')
+		->middleware('permission:revisioncomercial.create');
+
+	Route::get('revisionpersona','RevisionPersonaController@index')->name('revisionpersona.index')
+		->middleware('permission:revisioncomercial.index');
+
+	Route::get('revisionpersona/create','RevisionPersonaController@create')->name('revisionpersona.create')
+		->middleware('permission:revisioncomercial.create');
+
+	Route::post('revisionpersona/{rev}','RevisionPersonaController@update')->name('revisionpersona.update')
+		->middleware('permission:revisioncomercial.edit');
+
+//Revisión comercial inmueble
+
+
+	Route::post('revisioninmueble/store','RevisionInmuebleController@store')->name('revisioninmueble.store')
+		->middleware('permission:revisioncomercial.create');
+
+	Route::get('revisioninmueble','RevisionInmuebleController@index')->name('revisioninmueble.index')
+		->middleware('permission:revisioncomercial.index');
+
+	Route::get('revisioninmueble/create','RevisionInmuebleController@create')->name('revisioninmueble.create')
+		->middleware('permission:revisioncomercial.create');
+
+	Route::post('revisioninmueble/{rev}','RevisionInmuebleController@update')->name('revisioninmueble.update')
+		->middleware('permission:revisioncomercial.edit');
+
 });
