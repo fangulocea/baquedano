@@ -2,12 +2,12 @@
 
 @section('contenido')
 
-<div id="tabla" >
+<div id="tabla2" >
     <div class="white-box">
         <h3 class="box-title m-b-0">Gestión de Captaciones por Corredores</h3>
         <p class="text-muted m-b-30">Administración de registros para el proceso de captación</p>
         <div class="table-responsive" style="padding-bottom: 50px;">
-            <table id="listusers" class="display compact" cellspacing="0" width="200%">
+            <table id="listusers2" class="display compact" cellspacing="0" width="200%">
       
                 <thead>
                     <tr>
@@ -92,7 +92,7 @@
 <script>
 $('.sorting_desc').hide();
 
-var table = $('#listusers').DataTable({
+var table = $('#listusers2').DataTable({
 
     dom: 'Bfrtip',
     buttons: [
@@ -144,7 +144,7 @@ var table = $('#listusers').DataTable({
 
 
     // Setup - add a text input to each footer cell
-    $('#listusers thead th').each( function () {
+    $('#listusers2 thead th').each( function () {
         var title = $(this).text();
         if(title!='ID' && title!= "")
         $(this).html( '<input type="text" style="width:100px" placeholder="'+title+'" />' );
