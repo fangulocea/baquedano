@@ -60,8 +60,10 @@
                                                         <label>Estado</label>
                                                         <select class="form-control" name="id_estado" required="required">
                                                             <option value="">Seleccione Estado</option>
-                                                            <option value="0">Descartado</option>
                                                             <option value="1">Sin Gestión (Activo)</option>
+                                                            <option value="9">Captación Terreno</option>
+                                                            <option value="0">Descartado</option>
+                                                            
                                                         </select>
                                                     </div>
                                                 </div>
