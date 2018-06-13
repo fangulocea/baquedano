@@ -4,21 +4,15 @@
 
 <div id="tabla" class="col-sm-12">
     <div class="white-box">
-        <h3 class="box-title m-b-0">Administración de inmuebles</h3>
-        <p class="text-muted m-b-30">Gestionar inmuebles del sistema</p>
+        <h3 class="box-title m-b-0">Administrar información comercial de inmuebles</h3>
         <div class="table-responsive" style="padding-bottom: 50px;">
             <table id="listusers" class="display compact" cellspacing="0" width="100%">
                 <thead>
                     <tr>
                         <th>ID</th>
                         <th>Dirección</th>
-                        <th>Nro</th>
                         <th>Comuna</th>
-                        <th>Precio</th>
-                        <th>G.Comunes</th>
-                        <th>Estado</th>
-                        <th></th>
-                        <th></th>
+                        <th># Registros</th>
                         <th></th>
                     </tr>
                 </thead>
@@ -26,13 +20,8 @@
                     <tr>
                         <th>ID</th>
                         <th>Dirección</th>
-                        <th>Nro</th>
                         <th>Comuna</th>
-                        <th>Precio</th>
-                        <th>G.Comunes</th>
-                        <th>Estado</th>
-                        <th></th>
-                        <th></th>
+                        <th># Registros</th>
                         <th></th>
                     </tr>
                 </tfoot>
@@ -40,35 +29,15 @@
                     @foreach($inm as $i)
                             <tr>
                                 <td>{{ $i->id }}</td>
-                                <td>{{ $i->direccion }}</td>
-                                <td>{{ $i->numero }}</td>
+                                <td>{{ $i->direccion }} #{{ $i->numero }} Dpto {{ $i->departamento }}</td>
                                 <td>{{ $i->comuna_nombre }}</td>
-                                <td>{{ $i->precio }}</td>
-                                <td>{{ $i->gastosComunes }}</td>
-                                <td>{{ trans_choice('mensajes.vigencia', $i->estado ) }}</td>
-                                @can('inmueble.show')
+                                <td></td>
+                                @can('revisioncomercial.edit')
                                 <td width="10px">
-                                    <a href="{{ route('inmueble.show', $i->id) }}" 
-                                    class="btn btn-success btn-circle btn-lg">
-                                      <i class="fa fa-check"></i>
-                                    </a>
+                                    <a href="{{ route('revisioninmueble.create', $i->id) }}"><span class="btn btn-warning btn-circle btn-lg"><i class="ti-pencil-alt"></i></span></a>
                                 </td>
                                 @endcan
-                                @can('inmueble.edit')
-                                <td width="10px">
-                                    <a href="{{ route('inmueble.edit', $i->id) }}"><span class="btn btn-warning btn-circle btn-lg"><i class="ti-pencil-alt"></i></span></a>
-                                </td>
-                                @endcan
-                                @can('inmueble.destroy')
-                                <td width="10px">
-
-                                    {!! Form::open(['route' => ['inmueble.destroy', $i->id], 
-                                    'method' => 'DELETE']) !!}
-                                        <button class="btn btn-danger btn-circle btn-lg"><i class="ti-trash"></i>
-                                        </button>
-                                    {!! Form::close() !!}
-                                </td>
-                                @endcan
+                              
                             </tr>
                             @endforeach
 
@@ -95,20 +64,15 @@
 <!-- end - This is for export functionality only -->
 <script>
 
-$('#listusers').DataTable({
+var table = $('#listusers').DataTable({
     dom: 'Bfrtip',
     buttons: [
-        'copy', 'csv', 'excel', 'pdf', 'print',{
-            text: 'Crear Inmueble',
-            action: function ( e, dt, node, config ) {
-                 window.location.href = '{{ route("inmueble.create") }}';
-            }
-        }
+        'copy', 'excel', 'pdf', 'print'
 
     ],
 
     columnDefs: [{
-            "targets": [12, 13, 14],
+            "targets": [4],
             "orderable": false
         }],
 
@@ -142,6 +106,26 @@ $('#listusers').DataTable({
     }
 });
 
+    $('#listusers thead th').each( function () {
+        var title = $(this).text();
+        if(title!='ID' && title!= "" )
+        $(this).html( '<input type="text" style="width:100px" placeholder="'+title+'" />' );
+    } );
+ 
+
+ 
+    // Apply the search
+    table.columns().every( function () {
+        var that = this;
+ 
+        $( 'input', this.footer() ).on( 'keyup change', function () {
+            if ( that.search() !== this.value ) {
+                that
+                    .search( this.value )
+                    .draw();
+            }
+        } );
+    } );
 </script>
 
 

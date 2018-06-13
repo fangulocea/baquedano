@@ -7,28 +7,28 @@
         <h3 class="box-title m-b-0">Administración de Personas</h3>
         <p class="text-muted m-b-30">Gestionar Personas del sistema</p>
         <div class="table-responsive">
-            <table id="listusers" class="display nowrap" cellspacing="0" width="100%">
+            <table id="listusers" class="display compact" cellspacing="0" width="100%">
                 <thead>
                     <tr>
                         <th>ID</th>
+                        <th>Rut</th>
+                        <th>Teléfono</th>
+                        <th>Email</th>
                         <th>Nombre</th>
                         <th>Tipo</th>
-                        <th>Estado</th>
-                        
-                        <th></th>
-                        <th></th>
+                        <th># Registros</th>
                         <th></th>
                     </tr>
                 </thead>
                 <tfoot>
                     <tr>
                         <th>ID</th>
+                        <th>Rut</th>
+                        <th>Teléfono</th>
+                        <th>Email</th>
                         <th>Nombre</th>
                         <th>Tipo</th>
-                        <th>Estado</th>
-                        
-                        <th></th>
-                        <th></th>
+                        <th># Registros</th>
                         <th></th>
                     </tr>
                 </tfoot>
@@ -36,30 +36,15 @@
                     @foreach($personas as $persona)
                             <tr>
                                 <td>{{ $persona->id }}</td>
+                                <td>{{ $persona->rut }} </td>
+                                <td>{{ $persona->telefono }} </td>
+                                <td>{{ $persona->email }} </td>
                                 <td>{{ $persona->nombre }} {{ $persona->apellido_paterno }} {{ $persona->apellido_materno }}</td>
                                 <td>{{ $persona->tipo_cargo }}</td>
-                                <td>{{ trans_choice('mensajes.vigencia', $persona->id_estado ) }}</td>
-                                @can('persona.show')
+                                <td></td>
+                                @can('revisioncomercial.edit')
                                 <td width="10px">
-                                    <a href="{{ route('persona.show', $persona->id) }}" 
-                                    class="btn btn-success btn-circle btn-lg">
-                                      <i class="fa fa-check"></i>
-                                    </a>
-                                </td>
-                                @endcan
-                                @can('persona.edit')
-                                <td width="10px">
-                                    <a href="{{ route('persona.edit', $persona->id) }}"><span class="btn btn-warning btn-circle btn-lg"><i class="ti-pencil-alt"></i></span></a>
-                                </td>
-                                @endcan
-                                @can('persona.destroy')
-                                <td width="10px">
-
-                                    {!! Form::open(['route' => ['persona.destroy', $persona->id, $persona->tipo_cargo], 
-                                    'method' => 'DELETE']) !!}
-                                        <button class="btn btn-danger btn-circle btn-lg"><i class="ti-trash"></i>
-                                        </button>
-                                    {!! Form::close() !!}
+                                    <a href="{{ route('revisionpersona.create', $persona->id) }}"><span class="btn btn-warning btn-circle btn-lg"><i class="ti-pencil-alt"></i></span></a>
                                 </td>
                                 @endcan
                                
@@ -90,21 +75,13 @@
 <!-- end - This is for export functionality only -->
 <script>
 
-$('#listusers').DataTable({
+var table =$('#listusers').DataTable({
     dom: 'Bfrtip',
     buttons: [
-        'copy', 'csv', 'excel', 'pdf', 'print',{
-            text: 'Crear Persona',
-            action: function ( e, dt, node, config ) {
-                 window.location.href = '{{ route("persona.create") }}';
-            }
-        }
+        'copy', 'excel', 'pdf'
 
     ],
-    columnDefs: [{
-            "targets": [4, 5, 6],
-            "orderable": false
-        }],
+
 
     language: {
         "sProcessing": "Procesando...",
@@ -135,7 +112,26 @@ $('#listusers').DataTable({
         }
     }
 });
+ $('#listusers thead th').each( function () {
+        var title = $(this).text();
+        if(title!='ID' && title!= "" )
+        $(this).html( '<input type="text" style="width:100px" placeholder="'+title+'" />' );
+    } );
+ 
 
+ 
+    // Apply the search
+    table.columns().every( function () {
+        var that = this;
+ 
+        $( 'input', this.footer() ).on( 'keyup change', function () {
+            if ( that.search() !== this.value ) {
+                that
+                    .search( this.value )
+                    .draw();
+            }
+        } );
+    } );
 </script>
 
 

@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\RevisionPersona;
 use Illuminate\Http\Request;
+use App\Region;
+use App\Persona;
+use DB;
 
 class RevisionPersonaController extends Controller
 {
@@ -14,7 +17,11 @@ class RevisionPersonaController extends Controller
      */
     public function index()
     {
-        //
+          $personas = DB::table('personas')
+        ->leftjoin('comunas', 'personas.id_comuna', '=', 'comunas.comuna_id')
+        ->Where('personas.id','<>',1)
+        ->get();
+        return view('revisionpersona.index', compact('personas'));
     }
 
     /**

@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\RevisionInmueble;
 use Illuminate\Http\Request;
+use App\Inmueble;
+use App\Region;
+use DB;
 
 class RevisionInmuebleController extends Controller
 {
@@ -14,7 +17,9 @@ class RevisionInmuebleController extends Controller
      */
     public function index()
     {
-        //
+                   $inm = DB::table('inmuebles')->join('comunas', 'inmuebles.id_comuna', '=', 'comunas.comuna_id')->get();
+
+            return view('revisioninmueble.index',compact('inm'));
     }
 
     /**
@@ -24,7 +29,7 @@ class RevisionInmuebleController extends Controller
      */
     public function create()
     {
-        //
+
     }
 
     /**
