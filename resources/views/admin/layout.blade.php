@@ -213,7 +213,7 @@
                                 <li> <a href="{{ route('captacion.index') }}"><i class=" fa-fw">CP</i><span class="hide-menu">Captación de Propietarios</span></a> </li>
                                 @endcan
                                 @can('captacionArrendador.index')
-                                <li> <a href="{{ route('captacionArrendador.index') }}"><i class=" fa-fw">CA</i><span class="hide-menu">Captación de Arrendatarios</span></a> </li>
+                                <li> <a href="{{ route('arrendatario.index') }}"><i class=" fa-fw">CA</i><span class="hide-menu">Captación de Arrendatarios</span></a> </li>
                                 @endcan
                                 @can('captacion.index')
                                 <li> <a href="{{ route('captacioncorredor.index') }}"><i class=" fa-fw">CC</i><span class="hide-menu">Captación por corredores</span></a> </li>

@@ -32,9 +32,9 @@
                                             <div class="row">
                                                 <div class="col-md-3">
                                                     <div class="form-group">
-                                                        <label>Corredor de Propiedades{{ print_r($captacion) }}</label>
+                                                        <label>Corredor de Propiedades</label>
                                                         <div class="input-group">
-                                                    {{ Form::select('id_corredor',$corredores, $captacion->id_corredor,array('class'=>'form-control','style'=>'','id'=>'id_corredor','placeholder'=>'Seleccione corredor','required'=>'required')) }}
+                                                    {{ Form::select('id_corredor',$corredores, null,array('class'=>'form-control','style'=>'','id'=>'id_corredor','placeholder'=>'Seleccione corredor','required'=>'required')) }}
                                                 </div></div></div>
 
                                             
