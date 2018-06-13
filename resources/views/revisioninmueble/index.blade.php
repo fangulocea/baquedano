@@ -32,7 +32,7 @@
                                 <td>{{ $i->direccion }} #{{ $i->numero }} Dpto {{ $i->departamento }}</td>
                                 <td>{{ $i->comuna_nombre }}</td>
                                 <td></td>
-                                @can('inmueble.edit')
+                                @can('revisioncomercial.edit')
                                 <td width="10px">
                                     <a href="{{ route('revisioninmueble.create', $i->id) }}"><span class="btn btn-warning btn-circle btn-lg"><i class="ti-pencil-alt"></i></span></a>
                                 </td>
