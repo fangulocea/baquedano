@@ -460,5 +460,31 @@ class PermissionsTableSeeder extends Seeder
             'slug'          =>  'portal.destroy',
             'description'   =>  'Desactiva Portales del sistema',
         ]);
+//revisioncomercial
+        Permission::create([
+            'name'          =>  'Listado de revisiones comerciales',
+            'slug'          =>  'revisioncomercial.index',
+            'description'   =>  'Despliega revisiones comerciales',
+        ]);
+        Permission::create([
+            'name'          =>  'Ver detalle de revisión comercial',
+            'slug'          =>  'revisioncomercial.show',
+            'description'   =>  'Despliega el detalle de Portales ',
+        ]);
+        Permission::create([
+            'name'          =>  'Crea revisión comercial',
+            'slug'          =>  'revisioncomercial.create',
+            'description'   =>  'Crear revisión comercial del sistema',
+        ]);
+        Permission::create([
+            'name'          =>  'Edición de revisión comercial',
+            'slug'          =>  'revisioncomercial.edit',
+            'description'   =>  'Editar revisión comercial del sistema',
+        ]);
+        Permission::create([
+            'name'          =>  'Desactiva  revisión comercial',
+            'slug'          =>  'revisioncomercial.destroy',
+            'description'   =>  'Desactiva revisión comercial del sistema',
+        ]);
     }
 }

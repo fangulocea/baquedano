@@ -256,7 +256,7 @@ Route::middleware(['auth'])->group(function(){
 		->middleware('permission:multa.edit');
 
 
-//Captacion Propietario
+//Captacion Arrendador
 
 	Route::get('importExport', 'CaptacionController@importExport')->name('captacion.importExport')
 		->middleware('permission:captacion.edit');
@@ -530,10 +530,50 @@ Route::middleware(['auth'])->group(function(){
 	Route::get('arrendatario/eliminarfoto/{idf}/{idc}','ArrendatarioController@eliminarfoto')->name('arrendatario.eliminarfoto')
 		->middleware('permission:arrendatario.edit');
 
+		
 
 
 
 
+
+
+
+
+	Route::post('captacionArrendador/gestion/create','CaptacionController@crearGestion')->name('captacion.crearGestion')
+		->middleware('permission:captacion.edit');
+
+	Route::post('captacionArrendador/gestion/update','CaptacionController@editarGestion')->name('captacion.editarGestion')
+		->middleware('permission:captacion.edit');
+
+	Route::post('captacionArrendador/gestion/proceso/create','CaptacionController@crearGestion_proceso')->name('captacion.crearGestion_proceso')
+		->middleware('permission:captacion.edit');
+
+	Route::post('captacionArrendador/gestion/proceso/update','CaptacionController@editarGestion_proceso')->name('captacion.editarGestion_proceso')
+		->middleware('permission:captacion.edit');
+
+	Route::get('captacionArrendador/gestion/{idg}','CaptacionController@mostrarGestion');
+	
+		Route::get('procesoCaptacion/{id}', 'PrimeraGestionController@volver_proceso')->name('captacion.volver_proceso')
+		->middleware('permission:captacion.edit');
+
+    Route::post('procesoCaptacion/store','PrimeraGestionController@storeCaptacion')->name('primeraGestion.storeCaptacion')
+		->middleware('permission:captacion.create');
+
+	Route::get('captacion/reportes','CaptacionController@reportes')->name('captacion.reportes')
+		->middleware('permission:captacion.edit');
+
+	Route::get('captacion/{captacion}','CaptacionController@show')->name('captacion.show')
+		->middleware('permission:captacion.show');
+
+
+	Route::get('captacion/agregarinmueble/{idc}/{idi}','CaptacionController@agregarInmueble')->name('captacion.agregarinmueble')
+		->middleware('permission:captacion.edit');
+
+	Route::get('captacion/agregarpersona/{idc}/{idp}','CaptacionController@agregarPropietario')->name('captacion.agregarpersona')
+		->middleware('permission:captacion.edit');
+
+		Route::get('importar/gestion/{idc}','CaptacionController@importarGestion')->name('captacion.importarGestion')
+		->middleware('permission:captacion.edit');
 
 //Captacion Corredor
 
@@ -576,35 +616,5 @@ Route::middleware(['auth'])->group(function(){
 	Route::get('captacioncorredor/eliminarfoto/{idf}/{idc}','CaptacionCorredorController@eliminarfoto')->name('captacioncorredor.eliminarfoto')
 		->middleware('permission:captacion.edit');
 
-
-//Revisión comercial persona
-
-
-	Route::post('revisionpersona/store','RevisionPersonaController@store')->name('revisionpersona.store')
-		->middleware('permission:revisioncomercial.create');
-
-	Route::get('revisionpersona','RevisionPersonaController@index')->name('revisionpersona.index')
-		->middleware('permission:revisioncomercial.index');
-
-	Route::get('revisionpersona/create','RevisionPersonaController@create')->name('revisionpersona.create')
-		->middleware('permission:revisioncomercial.create');
-
-	Route::post('revisionpersona/{rev}','RevisionPersonaController@update')->name('revisionpersona.update')
-		->middleware('permission:revisioncomercial.edit');
-
-//Revisión comercial inmueble
-
-
-	Route::post('revisioninmueble/store','RevisionInmuebleController@store')->name('revisioninmueble.store')
-		->middleware('permission:revisioncomercial.create');
-
-	Route::get('revisioninmueble','RevisionInmuebleController@index')->name('revisioninmueble.index')
-		->middleware('permission:revisioncomercial.index');
-
-	Route::get('revisioninmueble/create','RevisionInmuebleController@create')->name('revisioninmueble.create')
-		->middleware('permission:revisioncomercial.create');
-
-	Route::post('revisioninmueble/{rev}','RevisionInmuebleController@update')->name('revisioninmueble.update')
-		->middleware('permission:revisioncomercial.edit');
 
 });
