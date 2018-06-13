@@ -531,7 +531,48 @@ Route::middleware(['auth'])->group(function(){
 		->middleware('permission:arrendatario.edit');
 
 
+	Route::post('captacionArrendador/gestion/create','CaptacionController@crearGestion')->name('captacion.crearGestion')
+		->middleware('permission:captacion.edit');
 
+	Route::post('captacionArrendador/gestion/update','CaptacionController@editarGestion')->name('captacion.editarGestion')
+		->middleware('permission:captacion.edit');
+
+	Route::post('captacionArrendador/gestion/proceso/create','CaptacionController@crearGestion_proceso')->name('captacion.crearGestion_proceso')
+		->middleware('permission:captacion.edit');
+
+	Route::post('captacionArrendador/gestion/proceso/update','CaptacionController@editarGestion_proceso')->name('captacion.editarGestion_proceso')
+
+	Route::post('captacionArrendador/foto/{captacion}','ArrendatarioController@savefotos')->name('captacionArrendador.savefotos')
+
+		->middleware('permission:captacion.edit');
+
+	Route::post('captacionArrendador/gestion/create','ArrendatarioController@crearGestion')->name('captacionArrendador.crearGestion')
+		->middleware('permission:captacion.edit');
+
+	Route::post('captacionArrendador/gestion/update','ArrendatarioController@editarGestion')->name('captacionArrendador.editarGestion')
+		->middleware('permission:captacion.edit');
+
+	Route::get('captacionArrendador/gestion/{idg}','ArrendatarioController@mostrarGestion');
+
+	Route::delete('captacionArrendador/{captacion}','ArrendatarioController@destroy')->name('captacionArrendador.destroy')
+		->middleware('permission:captacion.destroy');
+
+	Route::get('captacionArrendador/{captacion}/edit','ArrendatarioController@edit')->name('captacionArrendador.edit')
+		->middleware('permission:captacion.edit');
+
+
+	Route::get('captacionArrendador/agregarinmueble/{idc}/{idi}','ArrendatarioController@agregarInmueble')->name('captacionArrendador.agregarinmueble')
+		->middleware('permission:captacion.edit');
+
+	Route::get('captacionArrendador/agregarpersona/{idc}/{idp}','ArrendatarioController@agregarPropietario')->name('captacionArrendador.agregarpersona')
+		->middleware('permission:captacion.edit');
+
+
+		Route::get('importar/gestion/{idc}','CaptacionController@importarGestion')->name('captacion.importarGestion')
+		->middleware('permission:captacion.edit');
+
+	Route::get('captacionArrendador/eliminarfoto/{idf}/{idc}','ArrendatarioController@eliminarfoto')->name('captacionArrendador.eliminarfoto')
+		->middleware('permission:captacion.edit');
 
 
 
