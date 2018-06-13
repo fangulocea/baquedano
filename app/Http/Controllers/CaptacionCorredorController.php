@@ -71,6 +71,7 @@ class CaptacionCorredorController extends Controller
      */
     public function create()
     {
+        
         $corredores=Persona::where('tipo_cargo','=','Corredor')
         ->select(DB::raw('id , CONCAT(nombre," ",apellido_paterno," ",apellido_materno) as Corredor'))
         ->pluck('Corredor', 'id');

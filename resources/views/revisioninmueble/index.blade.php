@@ -12,7 +12,8 @@
                         <th>ID</th>
                         <th>Dirección</th>
                         <th>Comuna</th>
-                        <th># Registros</th>
+                        <th># Revisión</th>
+                        <th># Documentos</th>
                         <th></th>
                     </tr>
                 </thead>
@@ -21,7 +22,8 @@
                         <th>ID</th>
                         <th>Dirección</th>
                         <th>Comuna</th>
-                        <th># Registros</th>
+                        <th># Revisión</th>
+                        <th># Documentos</th>
                         <th></th>
                     </tr>
                 </tfoot>
@@ -31,10 +33,11 @@
                                 <td>{{ $i->id }}</td>
                                 <td>{{ $i->direccion }} #{{ $i->numero }} Dpto {{ $i->departamento }}</td>
                                 <td>{{ $i->comuna_nombre }}</td>
-                                <td></td>
+                                <td>{{ $i->cant_revisiones }}</td>
+                                <td>{{ $i->cant_fotos }}</td>
                                 @can('revisioncomercial.edit')
                                 <td width="10px">
-                                    <a href="{{ route('revisioninmueble.create', $i->id) }}"><span class="btn btn-warning btn-circle btn-lg"><i class="ti-pencil-alt"></i></span></a>
+                                    <a href="{{ route('revisioninmueble.edit', $i->id) }}"><span class="btn btn-warning btn-circle btn-lg"><i class="ti-pencil-alt"></i></span></a>
                                 </td>
                                 @endcan
                               

@@ -584,11 +584,28 @@ Route::middleware(['auth'])->group(function(){
 	Route::get('revisionpersona','RevisionPersonaController@index')->name('revisionpersona.index')
 		->middleware('permission:revisioncomercial.index');
 
-	Route::get('revisionpersona/create','RevisionPersonaController@create')->name('revisionpersona.create')
+	Route::get('revisionpersona/create/{id}','RevisionPersonaController@create')->name('revisionpersona.create')
 		->middleware('permission:revisioncomercial.create');
 
 	Route::post('revisionpersona/{rev}','RevisionPersonaController@update')->name('revisionpersona.update')
 		->middleware('permission:revisioncomercial.edit');
+
+	Route::get('revisionpersona/edit/{id}','RevisionPersonaController@edit')->name('revisionpersona.edit')
+		->middleware('permission:revisioncomercial.edit');
+
+		Route::post('revisionpersona/foto/{captacion}','RevisionPersonaController@savefotos')->name('revisionpersona.savefotos')
+		->middleware('permission:captacion.edit');
+
+Route::get('revisionpersona/eliminarfoto/{idf}/{idc}','RevisionPersonaController@eliminarfoto')->name('revisionpersona.eliminarfoto')
+		->middleware('permission:captacion.edit');
+
+	Route::post('revisionpersona/gestion/create','RevisionPersonaController@crearGestion')->name('revisionpersona.crearGestion')
+		->middleware('permission:captacion.edit');
+
+	Route::post('revisionpersona/gestion/update','RevisionPersonaController@editarGestion')->name('revisionpersona.editarGestion')
+		->middleware('permission:captacion.edit');
+
+	Route::get('revisionpersona/gestion/{idg}','RevisionPersonaController@mostrarGestion');
 
 //Revisión comercial inmueble
 
@@ -599,10 +616,27 @@ Route::middleware(['auth'])->group(function(){
 	Route::get('revisioninmueble','RevisionInmuebleController@index')->name('revisioninmueble.index')
 		->middleware('permission:revisioncomercial.index');
 
-	Route::get('revisioninmueble/create','RevisionInmuebleController@create')->name('revisioninmueble.create')
+	Route::get('revisioninmueble/create/{id}','RevisionInmuebleController@create')->name('revisioninmueble.create')
 		->middleware('permission:revisioncomercial.create');
+
+	Route::get('revisioninmueble/edit/{id}','RevisionInmuebleController@edit')->name('revisioninmueble.edit')
+		->middleware('permission:revisioncomercial.edit');
 
 	Route::post('revisioninmueble/{rev}','RevisionInmuebleController@update')->name('revisioninmueble.update')
 		->middleware('permission:revisioncomercial.edit');
+
+		Route::post('revisioninmueble/foto/{captacion}','RevisionInmuebleController@savefotos')->name('revisioninmueble.savefotos')
+		->middleware('permission:revisioncomercial.edit');
+
+Route::get('revisioninmueble/eliminarfoto/{idf}/{idc}','RevisionInmuebleController@eliminarfoto')->name('revisioninmueble.eliminarfoto')
+		->middleware('permission:captacion.edit');
+
+	Route::post('revisioninmueble/gestion/create','RevisionInmuebleController@crearGestion')->name('revisioninmueble.crearGestion')
+		->middleware('permission:captacion.edit');
+
+	Route::post('revisioninmueble/gestion/update','RevisionInmuebleController@editarGestion')->name('revisioninmueble.editarGestion')
+		->middleware('permission:captacion.edit');
+
+	Route::get('revisioninmueble/gestion/{idg}','RevisionInmuebleController@mostrarGestion');
 
 });
