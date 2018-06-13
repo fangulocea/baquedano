@@ -87,7 +87,7 @@
                         <!-- MODAL GESTION CREAR -->
                    <div class="row">
                                 <div class="col-lg-2 col-sm-3 col-xs-12">
-                                    <button class="btn btn-block btn-primary" data-toggle="modal" id='via_portal' data-target="#modal-contacto1_c" >Revisión SII</button>
+                                    <button class="btn btn-block btn-primary" data-toggle="modal" id='via_sii' data-target="#modal-contacto1_c" >Revisión SII</button>
                                     <div id="modal-contacto1_c" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel_c" aria-hidden="true" style="display: none;">
                                             <div class="modal-dialog modal-lg">
                                                 <div class="modal-content">
@@ -139,13 +139,13 @@
                                     <!-- FIN MODAL GESTION CREAR -->
                                 </div>
                                 <div class="col-lg-2 col-sm-3 col-xs-12">
-                                    <button class="btn btn-block btn-info" id='via_correo' data-toggle="modal" data-target="#modal-contacto1_c">Revisión Tesorería</button>
+                                    <button class="btn btn-block btn-info" id='via_tesoreria' data-toggle="modal" data-target="#modal-contacto1_c">Revisión Tesorería</button>
                                 </div>
                                 <div class="col-lg-2 col-sm-3 col-xs-12">
-                                    <button class="btn btn-block btn-success" id='via_fono' data-toggle="modal" data-target="#modal-contacto1_c">Revisión Rutificador</button>
+                                    <button class="btn btn-block btn-success" id='via_rutificador' data-toggle="modal" data-target="#modal-contacto1_c">Revisión Rutificador</button>
                                 </div>
                                 <div class="col-lg-2 col-sm-3 col-xs-12">
-                                    <button class="btn btn-block btn-warning" id='via_presencial' data-toggle="modal" data-target="#modal-contacto1_c">Revisión Trans Union</button>
+                                    <button class="btn btn-block btn-warning" id='via_transunion' data-toggle="modal" data-target="#modal-contacto1_c">Revisión Trans Union</button>
                                 </div>
                                 <div class="col-lg-2 col-sm-3 col-xs-12">
                                     <button class="btn btn-block btn-danger" id='via_otras' data-toggle="modal" data-target="#modal-contacto1_c">Otras Revisiones</button>
@@ -164,15 +164,15 @@
                 </thead>
                 <tbody>
                     @foreach($gestion as $p)
-                            <tr>@if($p->tipo_contacto=='Portal')
+                            <tr>@if($p->tipo_contacto=='SII')
                                     <td style="background: #707cd2; color:white">
-                                @elseif($p->tipo_contacto=='Correo Eléctronico')
+                                @elseif($p->tipo_contacto=='Tesorería')
                                     <td style="background: #2cabe3; color:white">
-                                @elseif($p->tipo_contacto=='Presencial')
+                                @elseif($p->tipo_contacto=='Rutificador')
                                     <td style="background: #ffc36d; color:white">
-                                @elseif($p->tipo_contacto=='Teléfono/WhatsApp')
+                                @elseif($p->tipo_contacto=='TransUnion')
                                     <td style="background: #53e69d; color:white">
-                                @elseif($p->tipo_contacto=='Otras Gestiones')
+                                @elseif($p->tipo_contacto=='Otras Revisiones')
                                     <td style="background: #ff7676; color:white">
                                 @else
                                     <td>
@@ -181,7 +181,7 @@
                                 <td>{{ $p->dir }}</td>
                                 <td>{{ $p->Creador }}</td>
                                 <td>{{ $p->fecha_gestion }} {{ $p->hora_gestion }}</td>
-                                @can('captacion.edit')
+                                @can('revisioninmueble.edit')
                                 <td width="10px">
                                     <div class="col-lg-2 col-sm-3 col-xs-12">
                                     <button class="btn btn-success btn-circle btn-lg" id='via_edit' onclick="mostrar_modal({{ $p->id }})" ><i class="fa fa-check"></i></span></button>
@@ -368,20 +368,20 @@ $('#listusers1_c').DataTable({
 });
 
 
-$("#via_portal").click(function(){
-    $("#tipo_contacto").val("Portal");
+$("#via_sii").click(function(){
+    $("#tipo_contacto").val("SII");
 });
-$("#via_correo").click(function(){
-    $("#tipo_contacto").val("Correo Eléctronico");
+$("#via_transunion").click(function(){
+    $("#tipo_contacto").val("TransUnion");
 });
-$("#via_fono").click(function(){
-    $("#tipo_contacto").val("Teléfono/WhatsApp");
+$("#via_tesoreria").click(function(){
+    $("#tipo_contacto").val("Tesoreria");
 });
-$("#via_presencial").click(function(){
-    $("#tipo_contacto").val("Presencial");
+$("#via_rutificador").click(function(){
+    $("#tipo_contacto").val("Rutificador");
 });
 $("#via_otras").click(function(){
-    $("#tipo_contacto").val("Otras Gestiones");
+    $("#tipo_contacto").val("Otras Revisiones");
 });
 
             tinymce.init({

@@ -29,6 +29,8 @@ class RevisionInmuebleController extends Controller
      */
     public function create()
     {
+        $inmueble = DB::table('inmuebles')->join('comunas', 'inmuebles.id_comuna', '=', 'comunas.comuna_id')->get();
+
 
     }
 
