@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\RevisionInmueble;
 use App\FotoRevisionInmueble;
-use App\CaptacionImageCorredor;
 use Illuminate\Http\Request;
 use App\Inmueble;
 use App\Region;

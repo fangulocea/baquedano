@@ -601,16 +601,16 @@ Route::middleware(['auth'])->group(function(){
 		->middleware('permission:revisioncomercial.edit');
 
 		Route::post('revisionpersona/foto/{captacion}','RevisionPersonaController@savefotos')->name('revisionpersona.savefotos')
-		->middleware('permission:captacion.edit');
+		->middleware('permission:revisioncomercial.edit');
 
 Route::get('revisionpersona/eliminarfoto/{idf}/{idc}','RevisionPersonaController@eliminarfoto')->name('revisionpersona.eliminarfoto')
-		->middleware('permission:captacion.edit');
+		->middleware('permission:revisioncomercial.edit');
 
 	Route::post('revisionpersona/gestion/create','RevisionPersonaController@crearGestion')->name('revisionpersona.crearGestion')
-		->middleware('permission:captacion.edit');
+		->middleware('permission:revisioncomercial.edit');
 
 	Route::post('revisionpersona/gestion/update','RevisionPersonaController@editarGestion')->name('revisionpersona.editarGestion')
-		->middleware('permission:captacion.edit');
+		->middleware('permission:revisioncomercial.edit');
 
 	Route::get('revisionpersona/gestion/{idg}','RevisionPersonaController@mostrarGestion');
 

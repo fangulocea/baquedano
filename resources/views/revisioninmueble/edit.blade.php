@@ -118,7 +118,7 @@
                                 {{ $p->tipo_revision }}</td>
                                 <td>{{ $p->Creador }}</td>
                                 <td>{{ $p->fecha_gestion }} {{ $p->hora_gestion }}</td>
-                                @can('revisioninmueble.edit')
+                                @can('revisioncomercial.edit')
                                 <td width="10px">
                                     <div class="col-lg-2 col-sm-3 col-xs-12">
                                     <button class="btn btn-success btn-circle btn-lg" id='via_edit' onclick="mostrar_modal({{ $p->id }})" ><i class="fa fa-check"></i></span></button>
@@ -207,10 +207,10 @@
                                                         <tr>
                                                             <td  width="10px" height="10px">
                                                                
-                                                            <center><a href="{{ URL::asset($p->ruta.'/'.$p->nombre) }}" >BAJAR ARCHIVO<br> {{ $p->nombre }} </a></center>
+                                                            <center><a href="{{ URL::asset($p->ruta.'/'.$p->nombre) }} " target="_blank">BAJAR ARCHIVO<br> {{ $p->nombre }} </a></center>
 
                                                            
-                                                            @can('revisioninmueble.edit')
+                                                            @can('revisioncomercial.edit')
                                                             <td width="10px">
 
                                                                 <a href="{{ route('revisioninmueble.eliminarfoto', [$p->id,$inmueble->id]) }}" 

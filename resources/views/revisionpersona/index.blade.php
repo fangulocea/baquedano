@@ -44,7 +44,7 @@
                                 <td>{{ $persona->cant_fotos }}</td>
                                 @can('revisioncomercial.edit')
                                 <td width="10px">
-                                    <a href="{{ route('revisionpersona.create', $persona->id) }}"><span class="btn btn-warning btn-circle btn-lg"><i class="ti-pencil-alt"></i></span></a>
+                                    <a href="{{ route('revisionpersona.edit', $persona->id) }}"><span class="btn btn-warning btn-circle btn-lg"><i class="ti-pencil-alt"></i></span></a>
                                 </td>
                                 @endcan
                                

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\RevisionPersona;
+use App\FotoRevisionPersona;
 use Illuminate\Http\Request;
 use App\Region;
 use App\Persona;
@@ -71,7 +72,7 @@ class RevisionPersonaController extends Controller
      */
     public function edit($id)
     {
-        $personas = DB::table('personas')
+        $persona = DB::table('personas')
         ->where("id","=",$id)
         ->join('comunas', 'personas.id_comuna', '=', 'comunas.comuna_id')->get()->first();
         
@@ -83,7 +84,7 @@ class RevisionPersonaController extends Controller
 
         $imagenes=FotoRevisionPersona::where('id_persona','=',$id)->get();
 
-        return view('revisionpersona.edit',compact('personas','gestion','imagenes'));
+        return view('revisionpersona.edit',compact('persona','gestion','imagenes'));
     }
 
     /**
@@ -114,8 +115,8 @@ class RevisionPersonaController extends Controller
     {
         $fecha_gestion = DateTime::createFromFormat('d-m-Y', $request->fecha_gestion);
         array_set($request, 'fecha_gestion', $fecha_gestion);
-        $revisioninmueble = RevisionInmueble::create($request->all());
-        return redirect()->route('revisioninmueble.edit', $request->id_inmueble)
+        $revisionpersona = RevisionPersona::create($request->all());
+        return redirect()->route('revisionpersona.edit', $request->id_persona)
 
             ->with('status', 'Gestión guardada con éxito');
     }
@@ -124,20 +125,20 @@ class RevisionPersonaController extends Controller
     {
         $fecha_gestion = DateTime::createFromFormat('d-m-Y', $request->fecha_gestion);
         array_set($request, 'fecha_gestion', $fecha_gestion);
-        $revisiones = RevisionInmueble::where('id','=',$request->id_revisioninmueble)
+        $revisiones = RevisionPersona::where('id','=',$request->id_revisionpersona)
         ->update([
             'detalle_revision' => $request->detalle_revision,
             'id_modificador' => $request->id_modificador,
             'fecha_gestion' => $request->fecha_gestion,
             'hora_gestion' => $request->hora_gestion
         ]);
-        return redirect()->route('revisioninmueble.edit', $request->id_inmueble)
+        return redirect()->route('revisionpersona.edit', $request->id_persona)
 
             ->with('status', 'Gestión guardada con éxito');
     }
 
       public function mostrarGestion(Request $request, $idg){
-            $gestion=RevisionInmueble::where('id','=',$idg)->get();
+            $gestion=RevisionPersona::where('id','=',$idg)->get();
             return response()->json($gestion);  
     }
 
@@ -145,16 +146,16 @@ class RevisionPersonaController extends Controller
 public function savefotos(Request $request, $id){
 
          if(!isset($request->foto)){
-            return redirect()->route('revisioninmueble.edit', $id)->with('error', 'Debe seleccionar archivo');
+            return redirect()->route('revisionpersona.edit', $id)->with('error', 'Debe seleccionar archivo');
          }
 
-        $destinationPath='uploads/adm_revisioninmueble';
+        $destinationPath='uploads/adm_revisionpersona';
         $archivo=rand().$request->foto->getClientOriginalName();
         $file = $request->file('foto');
         $file->move($destinationPath,$archivo);
 
-                $imagen=FotoRevisionInmueble::create([
-                            'id_inmueble'         => $id,
+                $imagen=FotoRevisionPersona::create([
+                            'id_persona'         => $id,
                             'descripcion'          => '',
                             'nombre'               => $archivo,
                             'ruta'                 => $destinationPath,
@@ -162,7 +163,7 @@ public function savefotos(Request $request, $id){
                         ]);
 
 
-        return redirect()->route('revisioninmueble.edit', $id)->with('status', 'Archivo guardada con éxito');
+        return redirect()->route('revisionpersona.edit', $id)->with('status', 'Archivo guardada con éxito');
     }
 
 
@@ -174,10 +175,10 @@ public function savefotos(Request $request, $id){
      * @return \Illuminate\Http\Response
      */
     public function eliminarfoto($idf,$idc){
-        $imagen=FotoRevisionInmueble::find($idf);
+        $imagen=FotoRevisionPersona::find($idf);
         File::delete($imagen->ruta.'/'.$imagen->nombre);
-        $foto = FotoRevisionInmueble::find($idf)->delete();
+        $foto = FotoRevisionPersona::find($idf)->delete();
 
-        return redirect()->route('revisioninmueble.edit', $idc)->with('status', 'Archivo eliminada con éxito');
+        return redirect()->route('revisionpersona.edit', $idc)->with('status', 'Archivo eliminada con éxito');
     }
 }
