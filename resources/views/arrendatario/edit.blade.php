@@ -210,35 +210,62 @@
 
                 </div>
             </section>
-                    <section id="section-iconbox-5">
+                   <section id="section-iconbox-5">
+                        <!-- MODAL GESTION CREAR -->
+                   <div class="row">
+                                <div class="col-lg-2 col-sm-3 col-xs-12">
+                                    <button class="btn btn-block btn-primary" data-toggle="modal" id='via_portal' data-target="#modal-contacto1" >Nueva Cita</button>
+                                    <div id="modal-contacto1" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+                                            <div class="modal-dialog modal-lg">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                                        <h4 class="modal-title">Ingrese información de la cita</h4> </div>
+                                                 <form id="form1" action="{{ route('arrendatario.crearGestion') }}" method="post">
+                                                <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                                {!! csrf_field() !!}
+                                                    <input type="hidden" class="form-control" name="id_creador" id="id_creador" value="{{ Auth::user()->id }}">
+                                                    <input type="hidden" class="form-control" name="id_arrendatario" id="id_arrendatario" value="{{ $arrendatario->id }}">
+                                                    
+                                                    <div class="modal-body">
 
-                            <h3 class="box-title">Agendamiento Visitas</h3>
-                            <div class="panel-wrapper collapse in" aria-expanded="true">
-                                <div class="panel-body">
-                                    <form action="{{ route('arrendatario.update',$arrendatario->id) }}" method="post">
-                                        {!! csrf_field() !!}
-                                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                                        <div class="form-body">
-                                            <h3 class="box-title">Información de Agendamiento</h3>
-                                            <hr>
-                                            <div class="row"> 
-                                                <div class="col-md-4">
+                                                <div class="row">
+                                                        <div class="col-sm-4">
+                                                            <label class="control-label">Nombre Contacto</label>
+                                                        <input type="text" name="nombre" id="nombre"  class="form-control" placeholder="" required="required" value='{{ $citas->nombre or '' }}' > 
+                                                        </div>
+                                                        <div class="col-sm-4">
+                                                        <label>Fecha Cita</label>
+                                                        <div class="input-group">
+                                                            <input type="text" autocomplete="off" class="form-control datepicker-fecha_contacto1" placeholder="dd/mm/yyyy" id="datepicker-fecha_contacto1" name="fecha" required="required"> <span class="input-group-addon"><i class="icon-calender"></i></span> 
+                                                                
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4">
                                                     <div class="form-group">
-                                                        <label class="control-label">Nombre Contacto</label>
-                                                        <input type="text" name="c_nombre" id="c_nombre"  class="form-control" placeholder="" required="required" value='{{ $citas->nombre or '' }}' > 
+                                                        <label>Estado</label>
+                                                        <select name='estado' id='estado' class='form-control' required="required">
+                                                                <option value="Cancelado">Cancelado</option>
+                                                                <option value="Pendiente">Pendiente</option>
+                                                                <option value="ReAgendado">ReAgendado</option>
+                                                                <option value="Realizada">Realizada</option>
+                                                        </select>
                                                     </div>
                                                 </div>
+                                                </div>
+
+                                            <div class="row"> 
                                                 
                                                 <div class="col-md-4">
                                                     <div class="form-group">
                                                         <label>Teléfono Contacto</label>
-                                                        <input name='c_telefono' id='c_telefono' type="numero" class="form-control" value="{{ $citas->telefono or '' }}" > </div>
+                                                        <input name='telefono' id='telefono' type="numero" class="form-control" value="{{ $citas->telefono or '' }}" > </div>
                                                 </div>
                                                 
                                                 <div class="col-md-4">
                                                     <div class="form-group">
                                                         <label>Email Contacto</label>
-                                                        <input name='c_email' id='c_email' type="email" class="form-control"  value="{{ $citas->email or '' }}" > </div>
+                                                        <input name='email' id='email' type="email" class="form-control"  value="{{ $citas->email or '' }}" > </div>
                                                 </div>
                                             </div>
 
@@ -246,94 +273,229 @@
                                                 <div class="col-md-6 ">
                                                     <div class="form-group">
                                                         <label>Dirección Contacto</label>
-                                                        <input name='c_direccion' id='c_direccion' type="text" class="form-control"  value="{{ $citas->direccion or '' }}" > </div>
+                                                        <input name='direccion' id='direccion' type="text" class="form-control"  value="{{ $citas->direccion or '' }}" > </div>
                                                 </div>
                                                 <div class="col-md-3 ">
                                                     <div class="form-group">
                                                         <label>Número</label>
-                                                        <input name='c_numero' id='c_numero' class="typeahead form-control" type="text" placeholder="Dirección" value="{{ $citas->numero or '' }}" > 
+                                                        <input name='numero' id='numero' class="typeahead form-control" type="text" placeholder="Dirección" value="{{ $citas->numero or '' }}" > 
                                                     </div>
                                                 </div>
                                                 <div class="col-md-3 ">
                                                     <div class="form-group">
                                                         <label>Departamento</label>
-                                                        <input name='c_departamento' id='c_departamento' class="typeahead form-control" type="text" value="{{ $citas->departamento or ''}}" placeholder="Dirección" > 
+                                                        <input name='departamento' id='departamento' class="typeahead form-control" type="text" value="{{ $citas->departamento or ''}}" placeholder="Dirección" > 
                                                     </div>
                                                 </div>
                                             </div>
-                                           
-                                            <hr>
+
+
                                             <div class="row"> 
                                                 <div class="col-md-4">
                                                     <div class="form-group">
                                                         <label class="control-label">Nombre Captador</label>
-                                                        <input type="text" name="cc_nombre" id="c_nombre"  class="form-control" placeholder="" required="required" value='{{ $citas->nombre_c or '' }}' > 
+                                                        <input type="text" name="nombre_c" id="nombre_c"  class="form-control" placeholder="" required="required" value='{{ $citas->nombre_c or '' }}' > 
                                                     </div>
                                                 </div>
                                                 
                                                 <div class="col-md-4">
                                                     <div class="form-group">
                                                         <label>Teléfono Captador</label>
-                                                        <input name='cc_telefono' id='c_telefono' type="numero" class="form-control" value="{{ $citas->telefono_c or '' }}" > </div>
+                                                        <input name='telefono_c' id='telefono_c' type="numero" class="form-control" value="{{ $citas->telefono_c or '' }}" > </div>
                                                 </div>
                                                 
                                                 <div class="col-md-4">
                                                     <div class="form-group">
                                                         <label>Email Captador</label>
-                                                        <input name='cc_email' id='c_email' type="email" class="form-control"  value="{{ $citas->email_c or '' }}" > </div>
+                                                        <input name='email_c' id='email_c' type="email" class="form-control"  value="{{ $citas->email_c or '' }}" > </div>
                                                 </div>
                                             </div>
+                                            
+                                            <hr>
+
+                                            <div class="row">
+                                                <div class="col-md-12 ">
+                                                    <div class="form-group">
+                                                        <label>Detalle</label>
+                                                        <input name='detalle' id='detalle' type="text" class="form-control"  value="{{ $citas->detalle or '' }}" > </div>
+                                                </div>
+                                            </div>                                            
+
+                                                        
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">Cerrar</button>
+                                                        <button type="submit" class="btn btn-danger waves-effect waves-light">Guardar</button>
+                                                    </div>
+                                                </form>
+                                                </div>
+                                            </div>
+                                    </div> 
+                                    <!-- FIN MODAL GESTION CREAR -->
+                                </div>
+                                
+                            </div>
+                            <br/><br/>
+                <table id="listusers1" class="display nowrap" cellspacing="0" width="100%">
+                <thead>
+                    <tr>
+                        <th>Cita</th>
+                        <th>Contacto</th>
+                        <th>Captador</th>
+                        <th>Detalle</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach($citas as $p)
+                            <tr>
+                                <td style="background: #707cd2; color:white">
+                                {{ $p->fecha }}</td>
+                                <td>{{ $p->nombre }}</td>
+                                <td>{{ $p->nombre_c }}</td>
+                                <td>{{ $p->detalle }}</td>
+                                @can('captacion.edit')
+                                <td width="10px">
+                                    <div class="col-lg-2 col-sm-3 col-xs-12">
+                                    <button class="btn btn-success btn-circle btn-lg" id='via_edit' onclick="mostrar_modal({{ $p->id }})" ><i class="fa fa-check"></i></span></button>
+                                </div>
+
+                                </td>
+                                @endcan
+                            </tr>
+                            @endforeach
+
+                            <!-- MODAL GESTION UPDATE -->
+                                    <div id="modal-contacto_edit" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+                                            <div class="modal-dialog modal-lg">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                                        <h4 class="modal-title">Actualice su información de contacto</h4> </div>
+                                                 <form action="{{ route('arrendatario.editarGestion') }}" method="post">
+                                                <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                                {!! csrf_field() !!}
+
+                                                    
+                                                    <div class="modal-body">
+                                                    <input type="hidden" class="form-control" name="id_creador" id="id_creador" value="{{ Auth::user()->id }}">
+                                                    <input type="hidden" class="form-control" name="id_arrendatario" id="id_arrendatario" value="{{ $arrendatario->id }}">
+                                                    <input type="text" class="form-control" name="id_citas" id="id_citas_e">
+                                                <div class="row">
+                                                        <div class="col-sm-4">
+                                                            <label class="control-label">Nombre Contacto</label>
+                                                        <input type="text" name="nombre" id="nombre_e"  class="form-control" placeholder="" required="required" > 
+                                                        </div>
+                                                        <div class="col-sm-4">
+                                                        <label>Fecha Cita</label>
+                                                        <div class="input-group">
+                                                            <input type="text" autocomplete="off" class="form-control datepicker-fecha_contacto1" placeholder="dd/mm/yyyy" id="datepicker-fecha_cita" name="fecha" required="required"> <span class="input-group-addon"><i class="icon-calender"></i></span> 
+                                                                
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label>Estado</label>
+                                                        <select name="estado" id="estado_e" class='form-control' required="required">
+                                                                <option value="Cancelado">Cancelado</option>
+                                                                <option value="Pendiente">Pendiente</option>
+                                                                <option value="ReAgendado">ReAgendado</option>
+                                                                <option value="Realizada">Realizada</option>
+                                                        </select>
+
+                                                    </div>
+                                                </div>
+                                                </div>
+
+                                            <div class="row"> 
+                                                
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label>Teléfono Contacto</label>
+                                                        <input name='telefono' id='telefono_e' type="numero" class="form-control"  > </div>
+                                                </div>
+                                                
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label>Email Contacto</label>
+                                                        <input name='email' id='email_e' type="email" class="form-control"  > </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="col-md-6 ">
+                                                    <div class="form-group">
+                                                        <label>Dirección Contacto</label>
+                                                        <input name='direccion' id='direccion_e' type="text" class="form-control" > </div>
+                                                </div>
+                                                <div class="col-md-3 ">
+                                                    <div class="form-group">
+                                                        <label>Número</label>
+                                                        <input name='numero' id='numero_e' class="typeahead form-control" type="text" placeholder="Dirección"  > 
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3 ">
+                                                    <div class="form-group">
+                                                        <label>Departamento</label>
+                                                        <input name='departamento' id='departamento_e' class="typeahead form-control" type="text"  placeholder="Dirección" > 
+                                                    </div>
+                                                </div>
+                                            </div>
+
+
                                             <div class="row"> 
                                                 <div class="col-md-4">
                                                     <div class="form-group">
-                                                        <label class="control-label">Fecha Visita</label>
-                                                        <input type="text" autocomplete="off" class="form-control datepicker-fecha_contacto1" placeholder="dd/mm/yyyy" value="{{ $citas->fecha or '' }}" id="datepicker-fecha_contacto1" name="fecha"  required="required"><span class="input-group-addon"><i class="icon-calender"></i></span> 
-                                                    </div>
-                                                </div>
-
-                                                <div class="col-md-4">
-                                                    <div class="form-group">
-                                                        <label>Estado</label>
-                                                        @if(!isset($citas->id_estado))
-                                                        <?php $idr = null; ?>
-                                                        @else
-                                                        <?php $idr = $citas->id_estado; ?>
-                                                        @endif
-                                                        {{ Form::select('id_estado',['0'=>'Cancelado','1'=>'Pendiente','2'=>'Re Agendado','3'=>'Realizada'], $idr,array('class'=>'form-control','style'=>'','id'=>'id_estado','placeholder'=>'Seleccione estado','required'=>'required')) }}
+                                                        <label class="control-label">Nombre Captador</label>
+                                                        <input type="text" name="nombre_c" id="nombre_c_e"  class="form-control" placeholder="" required="required" > 
                                                     </div>
                                                 </div>
                                                 
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label>Teléfono Captador</label>
+                                                        <input name='telefono_c' id='telefono_c_e' type="numero" class="form-control" > </div>
+                                                </div>
+                                                
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label>Email Captador</label>
+                                                        <input name='email_c' id='email_c_e' type="email" class="form-control"   > </div>
+                                                </div>
                                             </div>
+                                            
+                                            <hr>
 
+                                            <div class="row">
+                                                <div class="col-md-12 ">
+                                                    <div class="form-group">
+                                                        <label>Detalle</label>
+                                                        <input name='detalle' id='detalle_e' type="text" class="form-control"  > </div>
+                                                </div>
+                                            </div>                                            
 
-                            <!--/row-->
-                            <div class="row">
-                                <!--/span-->
-                            </div>
-
+                                                        
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">Cerrar</button>
+                                                        <button type="submit" class="btn btn-danger waves-effect waves-light">Guardar</button>
+                                                    </div>
+                                                </form>
+                                                </div>
+                                            </div>
+                                    </div>
+                             <!-- FIN MODAL GESTION UPDATE -->
+                        </tbody>
+                    </table>
+                            </section>
                         </div>
-                        <div class="form-actions">
-
-                        <input type="hidden" name="paso" value="3">
-                        <input type="hidden" name="idarriendos" id="idarriendos" value='{{ $arrendatario->id }}'>
-                        <input type="hidden" name="id_modificador"value="{{ Auth::user()->id_persona }}">
-
-                            <button type="submit" class="btn btn-success"> <i class="fa fa-check"></i> Guardar</button>
-                            <a href="{{ route('arrendatario.index') }}" class="btn btn-info" style="color:white"><i class="fa fa-times-circle"></i>&nbsp;&nbsp;Calcelar</a>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-
-                    </section>
-                </div>
-                <!-- /content -->
+                        <!-- /content -->
+                    </div>
+                    <!-- /tabs -->
+                </section>
             </div>
-            <!-- /tabs -->
-        </section>
-    </div>
-</div>
+        </div>
+
 
 
 <script src="{{ URL::asset('plugins/bower_components/jquery/dist/jquery.min.js') }}"></script>
@@ -385,6 +547,35 @@ $(function(){
       'resizeDuration': 200,
       'wrapAround': true
     })
+
+function mostrar_modal(obj){
+    var url= "{{ URL::to('arrendatario/gestion')}}"+"/"+obj;
+    $.ajax({
+        type:"get",
+        url:url,
+        data:"",
+        success:function(response){
+
+            $('#modal-contacto_edit').modal('show');
+            $('#id_citas_e').val(response[0].id);
+            $('#nombre_e').val(response[0].nombre);
+            $('#tipo_contacto_e').val(response[0].tipo_contacto);
+            var d = response[0].fecha.split('-');
+            $('#datepicker-fecha_cita').val(d[2] + '-' + d[1] + '-' + d[0]);
+            $('#telefono_e').val(response[0].telefono);
+            $('#email_e').val(response[0].email);
+            $('#direccion_e').val(response[0].direccion);
+            $('#numero_e').val(response[0].numero);
+            $('#departamento_e').val(response[0].departamento);
+            $('#nombre_c_e').val(response[0].nombre_c);
+            $('#telefono_c_e').val(response[0].telefono_c);
+            $('#email_c_e').val(response[0].email_c);
+            $('#detalle_e').val(response[0].detalle);
+            $('#estado_e').val(response[0].estado);
+            
+        }
+});
+}
 
 
 

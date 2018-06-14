@@ -95,7 +95,7 @@ class ArrendatarioController extends Controller
         $arrendatario = Arrendatario::find($id);
         $persona = Persona::find(isset($arrendatario->id_arrendatario)?$arrendatario->id_arrendatario:0);
         $imagenes=ArrendatarioFoto::where('id_arrendatario','=',$id)->get();
-        $citas=ArrendatarioCitas::where('id_arrendatario','=',$id)->first();
+        $citas=ArrendatarioCitas::where('id_arrendatario','=',$id)->get();
         return view('arrendatario.edit',compact('arrendatario','regiones','persona','imagenes','citas'));
     }
 
@@ -209,12 +209,7 @@ class ArrendatarioController extends Controller
                     ]);
                    
             }
-            
-
-            
-            
-
-
+ 
         }elseif($request->paso=='4'){
             
         }else{
@@ -226,7 +221,7 @@ class ArrendatarioController extends Controller
 
         // $imagenes=CaptacionFoto::where('id_captacion','=',$id)->get();
 
-        return redirect()->route('arrendatario.edit', $id)->with('status', 'Captación grabado con éxito');
+        return redirect()->route('arrendatario.edit', $id)->with('status', 'Datos almacenados correctamente');
     }
 
     /**
@@ -235,9 +230,13 @@ class ArrendatarioController extends Controller
      * @param  \App\Arrendatario  $arrendatario
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Arrendatario $arrendatario)
+    public function destroy($id)
     {
-        //
+        $arr = Arrendatario::where('id','=',$id)->update([
+            'id_estado' => '0'
+        ]);
+
+        return redirect()->route('arrendatario.edit', $id)->with('status', 'Arrendatario desactivado con éxito');
     }
 
 
@@ -284,6 +283,51 @@ class ArrendatarioController extends Controller
         $foto = ArrendatarioFoto::find($idf)->delete();
         return redirect()->route('arrendatario.edit', $idc)->with('status', 'Foto eliminada con éxito');
     }
+
+
+  public function crearGestion(Request $request)
+    {
+        $fecha = DateTime::createFromFormat('d-m-Y', $request->fecha);
+        array_set($request, 'fecha', $fecha);
+
+        $citas = ArrendatarioCitas::create($request->all());
+        return redirect()->route('arrendatario.edit', $request->id_arrendatario)
+
+            ->with('status', 'Cita guardada con éxito');
+    }
+
+  public function editarGestion(Request $request)
+    {
+        $fecha = DateTime::createFromFormat('d-m-Y', $request->fecha);
+        array_set($request, 'fecha', $fecha);
+
+        $captacion = ArrendatarioCitas::where('id','=',$request->id_citas)
+        ->update([
+            'nombre'            => $request->nombre,
+            'telefono'          => $request->telefono,
+            'email'             => $request->email,
+            'direccion'         => $request->direccion,
+            'numero'            => $request->numero,
+            'departamento'      => $request->departamento,
+            'nombre_c'          => $request->nombre_c,
+            'telefono_c'        => $request->telefono_c,
+            'email_c'           => $request->email_c,
+            'fecha'             => $request->fecha,
+            'estado'            => $request->estado,
+            'id_creador'        => $request->id_creador,
+            'id_arrendatario'   => $request->id_arrendatario
+        ]);
+        return redirect()->route('arrendatario.edit', $request->id_citas)
+
+            ->with('status', 'Cita guardada con éxito');
+    }
+
+public function mostrarGestion(Request $request, $idg){
+            $gestion=ArrendatarioCitas::where('id','=',$idg)->get();
+            return response()->json($gestion);  
+    }
+
+
 
 
 
