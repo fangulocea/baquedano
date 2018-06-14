@@ -603,7 +603,7 @@ Route::middleware(['auth'])->group(function(){
 		Route::post('revisionpersona/foto/{captacion}','RevisionPersonaController@savefotos')->name('revisionpersona.savefotos')
 		->middleware('permission:captacion.edit');
 
-Route::get('revisionpersona/eliminarfoto/{idf}/{idc}','RevisionPersonaController@eliminarfoto')->name('revisionpersona.eliminarfoto')
+	Route::get('revisionpersona/eliminarfoto/{idf}/{idc}','RevisionPersonaController@eliminarfoto')->name('revisionpersona.eliminarfoto')
 		->middleware('permission:captacion.edit');
 
 	Route::post('revisionpersona/gestion/create','RevisionPersonaController@crearGestion')->name('revisionpersona.crearGestion')
@@ -635,15 +635,22 @@ Route::get('revisionpersona/eliminarfoto/{idf}/{idc}','RevisionPersonaController
 		Route::post('revisioninmueble/foto/{captacion}','RevisionInmuebleController@savefotos')->name('revisioninmueble.savefotos')
 		->middleware('permission:revisioncomercial.edit');
 
-Route::get('revisioninmueble/eliminarfoto/{idf}/{idc}','RevisionInmuebleController@eliminarfoto')->name('revisioninmueble.eliminarfoto')
+		Route::get('revisioninmueble/eliminarfoto/{idf}/{idc}','RevisionInmuebleController@eliminarfoto')->name('revisioninmueble.eliminarfoto')
 		->middleware('permission:captacion.edit');
 
-	Route::post('revisioninmueble/gestion/create','RevisionInmuebleController@crearGestion')->name('revisioninmueble.crearGestion')
+		Route::post('revisioninmueble/gestion/create','RevisionInmuebleController@crearGestion')->name('revisioninmueble.crearGestion')
 		->middleware('permission:captacion.edit');
 
-	Route::post('revisioninmueble/gestion/update','RevisionInmuebleController@editarGestion')->name('revisioninmueble.editarGestion')
+		Route::post('revisioninmueble/gestion/update','RevisionInmuebleController@editarGestion')->name('revisioninmueble.editarGestion')
 		->middleware('permission:captacion.edit');
 
-	Route::get('revisioninmueble/gestion/{idg}','RevisionInmuebleController@mostrarGestion');
+		Route::get('revisioninmueble/gestion/{idg}','RevisionInmuebleController@mostrarGestion');
+
+
+
+
+
+
+
 
 });
