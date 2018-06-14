@@ -543,42 +543,42 @@ Route::middleware(['auth'])->group(function(){
 //Captacion Corredor
 
 
-	Route::post('captacioncorredor/store','CaptacionCorredorController@store')->name('captacioncorredor.store')
+	Route::post('corredor/store','CaptacionCorredorController@store')->name('corredor.store')
 		->middleware('permission:captacion.create');
 
-	Route::get('captacioncorredor','CaptacionCorredorController@index')->name('captacioncorredor.index')
+	Route::get('corredor','CaptacionCorredorController@index')->name('corredor.index')
 		->middleware('permission:captacion.index');
 
-	Route::get('captacioncorredor/create','CaptacionCorredorController@create')->name('captacioncorredor.create')
+	Route::get('corredor/create','CaptacionCorredorController@create')->name('corredor.create')
 		->middleware('permission:captacion.create');
 
-	Route::post('captacioncorredor/{captacion}','CaptacionCorredorController@update')->name('captacioncorredor.update')
+	Route::post('corredor/{captacion}','CaptacionCorredorController@update')->name('corredor.update')
 		->middleware('permission:captacion.edit');
 
-	Route::post('captacioncorredor/foto/{captacion}','CaptacionCorredorController@savefotos')->name('captacioncorredor.savefotos')
+	Route::post('corredor/foto/{captacion}','CaptacionCorredorController@savefotos')->name('corredor.savefotos')
 		->middleware('permission:captacion.edit');
 
-	Route::post('captacioncorredor/gestion/create','CaptacionCorredorController@crearGestion')->name('captacioncorredor.crearGestion')
+	Route::post('corredor/gestion/create','CaptacionCorredorController@crearGestion')->name('corredor.crearGestion')
 		->middleware('permission:captacion.edit');
 
-	Route::post('captacioncorredor/gestion/update','CaptacionCorredorController@editarGestion')->name('captacioncorredor.editarGestion')
+	Route::post('corredor/gestion/update','CaptacionCorredorController@editarGestion')->name('corredor.editarGestion')
 		->middleware('permission:captacion.edit');
 
-	Route::get('captacioncorredor/gestion/{idg}','CaptacionCorredorController@mostrarGestion');
+	Route::get('corredor/gestion/{idg}','CaptacionCorredorController@mostrarGestion');
 
-	Route::delete('captacioncorredor/{captacion}','CaptacionCorredorController@destroy')->name('captacioncorredor.destroy')
+	Route::delete('corredor/{captacion}','CaptacionCorredorController@destroy')->name('corredor.destroy')
 		->middleware('permission:captacion.destroy');
 
-	Route::get('captacioncorredor/{captacion}/edit','CaptacionCorredorController@edit')->name('captacioncorredor.edit')
+	Route::get('corredor/{captacion}/edit','CaptacionCorredorController@edit')->name('corredor.edit')
 		->middleware('permission:captacion.edit');
 
-	Route::get('captacioncorredor/agregarinmueble/{idc}/{idi}','CaptacionCorredorController@agregarInmueble')->name('captacioncorredor.agregarinmueble')
+	Route::get('corredor/agregarinmueble/{idc}/{idi}','CaptacionCorredorController@agregarInmueble')->name('corredor.agregarinmueble')
 		->middleware('permission:captacion.edit');
 
-	Route::get('captacioncorredor/agregarpersona/{idc}/{idp}','CaptacionCorredorController@agregarPropietario')->name('captacioncorredor.agregarpersona')
+	Route::get('corredor/agregarpersona/{idc}/{idp}','CaptacionCorredorController@agregarPropietario')->name('corredor.agregarpersona')
 		->middleware('permission:captacion.edit');
 
-	Route::get('captacioncorredor/eliminarfoto/{idf}/{idc}','CaptacionCorredorController@eliminarfoto')->name('captacioncorredor.eliminarfoto')
+	Route::get('corredor/eliminarfoto/{idf}/{idc}','CaptacionCorredorController@eliminarfoto')->name('corredor.eliminarfoto')
 		->middleware('permission:captacion.edit');
 
 
@@ -601,16 +601,21 @@ Route::middleware(['auth'])->group(function(){
 		->middleware('permission:revisioncomercial.edit');
 
 		Route::post('revisionpersona/foto/{captacion}','RevisionPersonaController@savefotos')->name('revisionpersona.savefotos')
-		->middleware('permission:captacion.edit');
+		->middleware('permission:revisioncomercial.edit');
+
 
 	Route::get('revisionpersona/eliminarfoto/{idf}/{idc}','RevisionPersonaController@eliminarfoto')->name('revisionpersona.eliminarfoto')
 		->middleware('permission:captacion.edit');
 
+Route::get('revisionpersona/eliminarfoto/{idf}/{idc}','RevisionPersonaController@eliminarfoto')->name('revisionpersona.eliminarfoto')
+		->middleware('permission:revisioncomercial.edit');
+
+
 	Route::post('revisionpersona/gestion/create','RevisionPersonaController@crearGestion')->name('revisionpersona.crearGestion')
-		->middleware('permission:captacion.edit');
+		->middleware('permission:revisioncomercial.edit');
 
 	Route::post('revisionpersona/gestion/update','RevisionPersonaController@editarGestion')->name('revisionpersona.editarGestion')
-		->middleware('permission:captacion.edit');
+		->middleware('permission:revisioncomercial.edit');
 
 	Route::get('revisionpersona/gestion/{idg}','RevisionPersonaController@mostrarGestion');
 

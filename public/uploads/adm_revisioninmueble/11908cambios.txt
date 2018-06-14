@@ -1,0 +1,7 @@
+Personas
+PersonaController
+custom.js
+captacion
+captacionController
+blades de captaciones
+index primera gestion

@@ -1,230 +1,423 @@
 @extends('admin.layout')
 
 @section('contenido')
+<link href="{{ URL::asset('/plugins/bower_components/typeahead.js-master/dist/typehead-min.css') }}" rel="stylesheet">
+
+<link href="{{ URL::asset('plugins/bower_components/bootstrap-datepicker/bootstrap-datepicker.min.css') }}" rel="stylesheet" type="text/css" />
+<link href="{{ URL::asset('plugins/bower_components/sweetalert/sweetalert.css')}}" rel="stylesheet" type="text/css">
+
+ <link href="{{ URL::asset('plugins/bower_components/lightbox/css/lightbox.css') }}" rel="stylesheet">
+
+<link rel="stylesheet" href="{{ URL::asset('plugins/bower_components/dropify/dist/css/dropify.min.css')}}">
+
+<link href="{{ URL::asset('plugins/bower_components/timepicker/bootstrap-timepicker.min.css')}} rel="stylesheet">
+
+<link href="{{ URL::asset('plugins/bower_components/clockpicker/dist/jquery-clockpicker.min.css')}}" rel="stylesheet">
 
 <div class="row">
     <div class="col-md-12">
-        <div class="panel panel-info">
-            <div class="panel-heading"> Editar nueva Persona</div>
-            <div class="panel-wrapper collapse in" aria-expanded="true">
-                <div class="panel-body">
-                    <form action="{{ route('persona.update',$_persona->id) }}" method="post">
-                        {!! csrf_field() !!}
-                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                        <div class="form-body">
-                            <h3 class="box-title">Información de Persona</h3>
-                            <hr>
+         <center><h3 class="box-title m-b-0">{{ $persona->nombre or null }} {{ $persona->apellido_paterno or null }} {{ $persona->apellido_materno or null }}, {{ $persona->telefono or null }}, {{ $persona->email or null }}, {{ $persona->tipo_cargo or null }}</h3></center>
+         <br/><br/>
+        <section>
+            <div class="sttabs tabs-style-iconbox">
+                <nav>
+                    <ul>
+                        <li id="li_5_c"><a id="5" href="#section-iconbox-5_c" class="sticon ti-agenda"><span>Revisiones</span></a></li>
+                        <li id="li_4_c"><a id="4" href="#section-iconbox-4_c" class="sticon ti-camera"><span>Documentos de la Revisión</span></a></li>
+                        
+                    </ul>
+                </nav>
+                <div class="content-wrap">
+                    
+                    <section id="section-iconbox-5_c">
+                        <!-- MODAL GESTION CREAR -->
+                   <div class="row">
+                                <div class="col-lg-2 col-sm-3 col-xs-12">
+                                    <button class="btn btn-block btn-primary" data-toggle="modal" id='via_sii' data-target="#modal-contacto1_c" >SII</button>
+                                    <div id="modal-contacto1_c" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel_c" aria-hidden="true" style="display: none;">
+                                            <div class="modal-dialog modal-lg">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                                        <h4 class="modal-title">Ingrese información de revisión</h4> </div>
+                                                 <form id="form1_c" action="{{ route('revisionpersona.crearGestion') }}" method="post">
+                                                <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                                {!! csrf_field() !!}
+                                                    <input type="hidden" class="form-control" name="id_creador" id="id_creador" value="{{ Auth::user()->id }}">
+                                                    <input type="hidden" class="form-control" name="id_persona" id="id_persona" value="{{ $persona->id }}">
+                                                    <input type="hidden" class="form-control" name="tipo_revision" id="tipo_revision">
+                                                    <div class="modal-body">
 
-                            <div class="row">
-                                <div class="col-md-2">
-                                    <div class="form-group">
-                                        <label class="control-label">Rut</label>
-                                        <input type="text" name="rut" class="form-control" placeholder="" oninput='checkRut(this)' value="{{ $_persona->rut }}" > 
-                                    </div>
+                                                            <div class="row">
+                                                                  <div class="col-sm-7">
+                                                        <label>Fecha/Hora de Revisión</label>
+                                                        <div class="input-group">
+                                                            <input type="text" autocomplete="off" class="form-control datepicker-fecha_contacto1_c" placeholder="dd/mm/yyyy" id="datepicker-fecha_contacto1_c" name="fecha_gestion" required="required"> <span class="input-group-addon"><i class="icon-calender"></i></span> 
+                                                                <div class="input-group clockpicker">
+                                                                    <input type="time" class="form-control" name="hora_gestion" placeholder="HH:MM" required="required" > <span class="input-group-addon"> <span class="glyphicon glyphicon-time"></span> </span>
+                                                                </div>
+                                                        </div>
+                                                    </div>
+                                                    
+                                                </div>
+                                                        <div class="form-group">
+                                                                <label for="detalle_contacto" class="control-label">Detalle:</label>
+                                                                <textarea class="form-control" name="detalle_revision" id="detalle_revision" cols="25" rows="10" class="form-control" required="required"></textarea>
+                                                            </div>
+                                                        
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">Cerrar</button>
+                                                        <button type="submit" class="btn btn-danger waves-effect waves-light">Guardar</button>
+                                                    </div>
+                                                </form>
+                                                </div>
+                                            </div>
+                                    </div> 
+                                    <!-- FIN MODAL GESTION CREAR -->
                                 </div>
-                                
-                                <div class="col-md-10">
+                                <div class="col-lg-2 col-sm-3 col-xs-12">
+                                    <button class="btn btn-block btn-info" id='via_tesoreria' data-toggle="modal" data-target="#modal-contacto1_c">Tesorería</button>
+                                </div>
+                                <div class="col-lg-2 col-sm-3 col-xs-12">
+                                    <button class="btn btn-block btn-success" id='via_rutificador' data-toggle="modal" data-target="#modal-contacto1_c">Rutificador</button>
+                                </div>
+                                <div class="col-lg-2 col-sm-3 col-xs-12">
+                                    <button class="btn btn-block btn-warning" id='via_dicom' data-toggle="modal" data-target="#modal-contacto1_c">DICOM</button>
+                                </div>
+                                <div class="col-lg-2 col-sm-3 col-xs-12">
+                                    <button class="btn btn-block btn-danger" id='via_otras' data-toggle="modal" data-target="#modal-contacto1_c">Otras Revisiones</button>
                                 </div>
                             </div>
-
-                            <div class="row"> 
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label class="control-label">Nombre</label>
-                                        <input type="text" name="nombre" class="form-control" placeholder="" required="required" value="{{ $_persona->nombre }}" > 
-                                     </div>
+                            <br/><br/>
+                <table id="listusers1_c" class="display nowrap" cellspacing="0" width="100%">
+                <thead>
+                    <tr>
+                        <th>Tipo Contacto</th>
+                        <th>Creador</th>
+                        <th>Fecha / Hora Gestión</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach($gestion as $p)
+                            <tr>@if($p->tipo_revision=='SII')
+                                    <td style="background: #707cd2; color:white">
+                                @elseif($p->tipo_revision=='Tesoreria')
+                                    <td style="background: #2cabe3; color:white">
+                                @elseif($p->tipo_revision=='Rutificador')
+                                    <td style="background: #ffc36d; color:white">
+                                @elseif($p->tipo_revision=='DICOM')
+                                    <td style="background: #53e69d; color:white">
+                                @elseif($p->tipo_revision=='Otras Revisiones')
+                                    <td style="background: #ff7676; color:white">
+                                @else
+                                    <td>
+                                @endif
+                                {{ $p->tipo_revision }}</td>
+                                <td>{{ $p->Creador }}</td>
+                                <td>{{ $p->fecha_gestion }} {{ $p->hora_gestion }}</td>
+                                @can('revisioncomercial.edit')
+                                <td width="10px">
+                                    <div class="col-lg-2 col-sm-3 col-xs-12">
+                                    <button class="btn btn-success btn-circle btn-lg" id='via_edit' onclick="mostrar_modal({{ $p->id }})" ><i class="fa fa-check"></i></span></button>
                                 </div>
-                                <!--/span-->
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label>Apellido Paterno</label>
-                                        <input type="text" name="apellido_paterno" class="form-control" placeholder=""  value="{{ $_persona->apellido_paterno }}"  > 
+
+                                </td>
+                                @endcan
+                            </tr>
+                            @endforeach
+
+                            <!-- MODAL GESTION UPDATE -->
+                                    <div id="modal-contacto_edit_c" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+                                            <div class="modal-dialog modal-lg">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                                        <h4 class="modal-title">Actualice su información de contacto</h4> </div>
+                                                 <form id="form1_e" action="{{ route('revisionpersona.editarGestion') }}" method="post">
+                                                <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                                {!! csrf_field() !!}
+                                                    <input type="hidden" class="form-control" name="id_modificador" id="id_modificador_e" value="{{ Auth::user()->id }}">
+                                                    <input type="hidden" class="form-control" name="id_persona" id="id_persona_e" value="{{ $persona->id }}">
+                                                     <input type="hidden" class="form-control" name="id_revisionpersona" id="id_revisionpersona_e" >
+                                                    <input type="hidden" class="form-control" name="tipo_revision" id="tipo_revision_e">
+                                                    <div class="modal-body">
+
+                                                            <div class="row">
+                                                           <div class="col-sm-7">
+                                                        <label>Fecha/Hora de Revisión</label>
+                                                        <div class="input-group">
+                                                            <input type="text" autocomplete="off" class="form-control datepicker-fecha_contacto1_C" placeholder="dd/mm/yyyy" id="datepicker-fecha_contacto_e_c" name="fecha_gestion" required="required"> <span class="input-group-addon"><i class="icon-calender"></i></span> 
+                                                                <div class="input-group clockpicker">
+                                                                    <input type="time" class="form-control" name="hora_gestion" placeholder="HH:MM" required="required" id="hora_gestion_e" > <span class="input-group-addon"> <span class="glyphicon glyphicon-time"></span> </span>
+                                                                </div>
+                                                        </div>
+                                                    </div>
+                                                    
+                                                </div>
+                                                        <div class="form-group">
+                                                                <label for="detalle_contacto" class="control-label">Detalle:</label>
+                                                                <textarea class="form-control" name="detalle_revision" id="detalle_revision_e" cols="25" rows="10" class="form-control" required="required"></textarea>
+                                                            </div>
+                                                        
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">Cerrar</button>
+                                                        <button type="submit" class="btn btn-danger waves-effect waves-light">Guardar</button>
+                                                    </div>
+                                                </form>
+                                                </div>
+                                            </div>
                                     </div>
-                                </div>
-                                <!--/span-->
-                                 <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label>Apellido Materno</label>
-                                        <input type="text" name="apellido_materno" class="form-control" placeholder="" value="{{ $_persona->apellido_materno }}"  >
-                                        </div>
-                                </div>
-                            </div>
-                            
-                            <div class="row">
-                                <div class="col-md-6 ">
-                                    <div class="form-group">
-                                        <label>Dirección</label>
-                                        <input name='direccion' type="text" class="form-control" value="{{ $_persona->direccion }}" > </div>
-                                </div>
-                                  <div class="col-md-3 ">
-                                    <div class="form-group">
-                                        <label>Número</label>
-                                            <input name='numero' id='numero' class="typeahead form-control" type="text" placeholder="Dirección" value="{{ $_persona->numero }}" > 
-                                    </div>
-                                </div>
-                                  <div class="col-md-3 ">
-                                    <div class="form-group">
-                                        <label>Departamento</label>
-                                            <input name='departamento' id='departamento' class="typeahead form-control" type="text" value="{{ $_persona->departamento }}" placeholder="Dirección" > 
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-4 ">
-                                    <div class="form-group">
-                                        <label>Teléfono</label>
-                                        <input name='telefono' type="numero" class="form-control" value="{{ $_persona->telefono }}" > </div>
-                                </div>
-                                <div class="col-md-8 ">
-                                    <div class="form-group">
-                                        <label>Email</label>
-                                        <input name='email' type="text" class="form-control"  value="{{ $_persona->email }}" > </div>
-                                </div>
+                                    <!-- FIN MODAL GESTION UPDATE -->
+                </tbody>
+            </table>
+                    </section>
+                    <section id="section-iconbox-4_c">
+                     <div class="row">
+                    <div class="col-sm-6">
+                        <div class="white-box"> 
+                           <form action="{{ route('revisionpersona.savefotos',$persona->id) }}" method="post" enctype='multipart/form-data'>
+                                        {!! csrf_field() !!}
+                                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                <h3 class="box-title">Subir Archivo</h3>
+                                <label for="input-file-now-custom-1">Archivos de la captación</label>
+                                <input type="file" id="foto" name="foto"  class="dropify"  /> 
+                                <input type="hidden" id="id_creador" name="id_creador" value="{{ Auth::user()->id_persona }}"  /> 
+                                <button type="submit" class="btn btn-success"> <i class="fa fa-check"></i> Subir Archivo</button>
 
-                            </div>
-
-                            <div class="row"> 
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label>Región</label>
-                                        {{ Form::select('id_region',$regiones, $_persona->id_region,array('class'=>'form-control','style'=>'','id'=>'regiones','placeholder'=>'Seleccione región')) }}
-                                     </div>
-                                </div>
-
-                                <!--/span-->
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label>Provincia</label>
-                                        {{ Form::select('id_provincia',[], null, array('class'=>'form-control','style'=>'','id'=>'provincias')) }} </div>
-                                </div>
-                                <!--/span-->
-                                 <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label>Comuna</label>
-                                        {{ Form::select('id_comuna',[], null, array('class'=>'form-control','style'=>'','id'=>'comunas')) }}
-                                        </div>
-                                </div>
-                            </div>
-                            <!--/row-->
-                            <div class="row">
-                                <!--/span-->
-                                <div class="col-md-3">
-                                    <div class="form-group">
-                                        <label>Tipo Persona</label>
-                                       
-                                         {{ Form::select('tipo_cargo',['Propietario'=>'Propietario','Arrendatario'=>'Arrendatario','Empleado'=>'Empleado','Corredor'=>'Corredor'], $_persona->tipo_cargo ,array('class'=>'form-control','style'=>'','id'=>'tipo_cargo','required'=>'required','onChange'=>'mostrar(this.value)')) }}
-                                    </div>
-                                </div>                                                                       
-                                <div class="col-md-3">
-                                    <div id="SelectEmpleado"  >
-                                        <div class="form-group">
-                                            <label>Cargo</label>
-                                            {{ Form::select('cargo_id',$cargos, $_persona->cargo_id,array('class'=>'form-control','style'=>''
-                                            ,'id'=>'cargo_id','placeholder'=>'Selecciona Cargo')) }}
-                                        </div>
-                                    </div>
-                                </div> 
-
-                                 <div class="col-md-4">
-                                        <div class="form-group">
-                                            <label>Estado</label>
-                                            {{ Form::select('id_estado',['1'=>'Vigente','0'=>'No Vigente'], $_persona->id_estado ,array('class'=>'form-control','style'=>'','id'=>'estado','placeholder'=>'Selecciona estado','required'=>'required')) }}
-                                        </div>
-                                    </div>
-
-                            </div>
-
+                            </form>
                         </div>
-                        <div class="form-actions">
-                            <button type="submit" class="btn btn-success"> <i class="fa fa-check"></i> Guardar</button>
-                            <a href="{{ route('persona.index') }}" class="btn btn-info" style="color:white"><i class="fa fa-times-circle"></i>&nbsp;&nbsp;Calcelar</a>
+                    </div>
+                     <div class="col-sm-6">
+                        <div class="white-box"> 
+                             <table id="ssss"  cellspacing="0" width="100%">
+                                                    <thead>
+                                                        <tr>
+                                                         
+                                                            <th><center>Click Ver Imágen</center></th>
+                                                            <th>Borrar</th>
+                                                        </tr>
+                                                    </thead>
+                                                   
+                                                    <tbody>
+                                                        @foreach($imagenes as $p)
+                                                        <tr>
+                                                            <td  width="10px" height="10px">
+                                                               
+                                                            <center><a href="{{ URL::asset($p->ruta.'/'.$p->nombre) }}" target="_blank">BAJAR ARCHIVO<br> {{ $p->nombre }} </a></center>
+
+                                                           
+                                                            @can('revisioncomercial.edit')
+                                                            <td width="10px">
+
+                                                                <a href="{{ route('revisionpersona.eliminarfoto', [$p->id,$persona->id]) }}" 
+                                                                   class="btn btn-danger btn-circle btn-lg">
+                                                                    <i class="fa fa-check"></i>
+                                                                </a>
+                                                            </td>
+                                                            @endcan
+                                                        </tr>
+                                                        @endforeach
+
+                                                    </tbody>
+                                                </table>
                         </div>
-                    </form>
+                    </div>
+
                 </div>
+            </section>
+                </div>
+                <!-- /content -->
             </div>
-        </div>
+            <!-- /tabs -->
+        </section>
     </div>
 </div>
+  <a href="{{ route('revisionpersona.index') }}" class="btn btn-info" style="color:white"><i class="fa fa-times-circle"></i>&nbsp;&nbsp;Volver</a>
 <script src="{{ URL::asset('plugins/bower_components/jquery/dist/jquery.min.js') }}"></script>
+<!-- Bootstrap Core JavaScript -->
+<script src="{{ URL::asset('bootstrap/dist/js/bootstrap.min.js') }}"></script>
+
+<script src="{{ URL::asset('plugins/bower_components/typeahead.js-master/dist/typeahead.bundle.min.js') }}"></script>
+
+<script src="{{ URL::asset('plugins/bower_components/bootstrap-datepicker/bootstrap-datepicker.min.js') }}"></script>
+
+<script src="{{ URL::asset('plugins/bower_components/sweetalert/sweetalert.min.js') }}"></script>
+
+<script src="{{ URL::asset('plugins/bower_components/dropify/dist/js/dropify.min.js') }}"></script>
+
+<script src="{{ URL::asset('js/custom.js') }}"></script>
+
+<script src="{{ URL::asset('plugins/bower_components/lightbox/js/lightbox.js') }}"></script>
+
+<script src="{{ URL::asset('plugins/bower_components/tinymce/tinymce.min.js') }}"></script>
+
+<link href = "{{ URL::asset('plugins/bower_components/datatables/jquery.dataTables.min.css')   }}" rel="stylesheet" type="text/css"   />
+<link href = "{{ URL::asset('plugins/DataTables/Buttons-1.5.1/css/buttons.dataTables.min.css') }}" rel="stylesheet" type="text/css"   />
+
+
+<script  src="{{ URL::asset('plugins/DataTables/datatables.min.js') }}"></script>
+<script src="{{ URL::asset('plugins/DataTables/DataTables-1.10.16/js/jquery.dataTables.min.js') }}"></script>
+<script src="{{ URL::asset('plugins/DataTables/Buttons-1.5.1/js/dataTables.buttons.min.js') }}"></script>
+<script src="{{ URL::asset('plugins/DataTables/Buttons-1.5.1/js/buttons.flash.min.js') }}"></script>
+<script src="{{ URL::asset('plugins/DataTables/JSZip-2.5.0/jszip.min.js') }}"></script>
+<script src="{{ URL::asset('plugins/DataTables/pdfmake-0.1.32/pdfmake.min.js') }}"></script>
+<script src="{{ URL::asset('plugins/DataTables/pdfmake-0.1.32/vfs_fonts.js') }}"></script>
+<script src="{{ URL::asset('plugins/DataTables/Buttons-1.5.1/js/buttons.html5.min.js') }}"></script>
+<script src="{{ URL::asset('plugins/DataTables/Buttons-1.5.1/js/buttons.print.min.js') }}"></script>
+
 <script>
-    $(function() {
-           var ocu="{{ $_persona->tipo_cargo }} ";
 
-            $("#provincias").empty();
-            $("#comunas").empty();
-            $.get("/provincias/"+{{ $_persona->id_region }}+"",function(response,state){
-                for(i=0; i<= response.length;i++){
-                    sel='';
-                    if(response[i].provincia_id=={{ $_persona->id_provincia }}){
-                        sel=' selected="selected"';
-                    }
-                    $("#provincias").append("<option value='"+response[i].provincia_id+"' "+sel+">"+response[i].provincia_nombre+"</option>");
-                }
-            });
-            
-            $.get("/comunas/"+{{ $_persona->id_provincia }}+"",function(response,state){
-                for(i=0; i<= response.length;i++){
-                    sel='';
-                    if(response[i].comuna_id=={{ $_persona->id_comuna }}){
-                        sel=' selected="selected"';
-                    }
-                    $("#comunas").append("<option value='"+response[i].comuna_id+"' "+sel+">"+response[i].comuna_nombre+"</option>");
-                }
-            });
-
-
-           
-            if(ocu.trim()=='Empleado')
-                {  
-                    $("#SelectEmpleado").show();
-                    $('#cargo_id').attr('disabled', false);   
-                    $('#cargo_id').attr('required', true);   
-                }
-            else
-                { 
-                    $('#cargo_id').attr('disabled', true);  
-                    $("#SelectEmpleado").hide(); 
-                    $('#cargo_id').attr('required', true);  
-            }
-
+$(function(){
+    
+    $('#modal-contacto1_c').on('hidden.bs.modal', function () {
+        $("#form1_c")[0].reset();
     });
 
-$("#regiones").change(function (event) {
-    $("#provincias").empty();
-    $("#comunas").empty();
-    $.get("/provincias/" + event.target.value + "", function (response, state) {
-        $("#provincias").append("<option value=''>Seleccione provincia</option>");
-        for (i=0; i<= response.length; i++) {
-            $("#provincias").append("<option value='" + response[i].provincia_id + "'>" + response[i].provincia_nombre + "</option>");
+        $('#modal-contacto1_c').on('shown.bs.modal', function () {
+        $("#form1_c")[0].reset();
+    });
+    
+    $('#modal-contacto_edit_c').on('hidden.bs.modal', function () {
+        $("#form1_e")[0].reset();
+    });
+
+});
+
+    lightbox.option({
+      'resizeDuration': 200,
+      'wrapAround': true
+    })
+
+function mostrar_modal(obj){
+    var url= "{{ URL::to('revisionpersona/gestion')}}"+"/"+obj;
+    $.ajax({
+        type:"get",
+        url:url,
+        data:"",
+        success:function(response){
+
+            $('#modal-contacto_edit_c').modal('show');
+            $('#id_revisionpersona_e').val(response[0].id);
+            $('#detalle_revision_e').val(response[0].detalle_revision);
+            $('#tipo_revision_e').val(response[0].tipo_revision);
+            var d = response[0].fecha_gestion.split('-');
+            $('#datepicker-fecha_contacto_e_c').val(d[2] + '-' + d[1] + '-' + d[0]);
+            $('#hora_gestion_e').val(response[0].hora_gestion);
+            tinyMCE.activeEditor.setContent(response[0].detalle_revision);
         }
-    });
-})
-
-$("#provincias").change(function (event) {
-    $("#comunas").empty();
-    $.get("/comunas/" + event.target.value + "", function (response, state) {
-        $("#comunas").append("<option value=''>Seleccione comuna</option>");
-        for (i=0; i<= response.length; i++) {
-            $("#comunas").append("<option value='" + response[i].comuna_id + "'>" + response[i].comuna_nombre + "</option>");
-        }
-    });
-})
-
-
-
-function mostrar(id) {
-    if (id == "Empleado") {
-        $("#SelectEmpleado").show();
-        $('#cargo_id').attr('disabled', false);  
-    }
-    else
-    {
-        $('#cargo_id').attr('disabled', true);  
-        $("#SelectEmpleado").hide();
-    }
+});
 }
 
 
+$('#listusers1_c').DataTable({
+    dom: 'Bfrtip',
+    buttons: [
+        'excel', 'pdf', 'print'
+
+    ],
+    language: {
+        "sProcessing": "Procesando...",
+        "sLengthMenu": "Mostrar _MENU_ registros",
+        "sZeroRecords": "No se encontraron resultados",
+        "sEmptyTable": "Ningún dato disponible en esta tabla",
+        "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+        "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+        "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+        "sInfoPostFix": "",
+        "sSearch": "Buscar:",
+        "sUrl": "",
+        "sInfoThousands": ",",
+        "sLoadingRecords": "Cargando...",
+        "oPaginate": {
+            "sFirst": "Primero",
+            "sLast": "Último",
+            "sNext": "Siguiente",
+            "sPrevious": "Anterior"
+        },
+        "buttons": {
+            "copy": 'Copiar',
+            "csv": 'Exportar a CSV',
+            "print": 'Imprimir'},
+        "oAria": {
+            "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+            "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+        }
+    }
+});
+
+
+$("#via_sii").click(function(){
+    $("#tipo_revision").val("SII");
+});
+$("#via_dicom").click(function(){
+    $("#tipo_revision").val("Dicom");
+});
+$("#via_tesoreria").click(function(){
+    $("#tipo_revision").val("Tesoreria");
+});
+$("#via_rutificador").click(function(){
+    $("#tipo_revision").val("Rutificador");
+});
+$("#via_otras").click(function(){
+    $("#tipo_revision").val("Otras Revisiones");
+});
+
+            tinymce.init({
+                selector: "textarea",
+                theme: "modern",
+            height: 250,
+            menubar: false,
+                plugins: [
+                    "advlist autolink link lists charmap print preview hr anchor pagebreak spellchecker", "searchreplace wordcount visualblocks visualchars code fullscreen insertdatetime nonbreaking", "save table contextmenu directionality template paste textcolor"
+                ],
+                toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | l      ink | print preview fullpage | forecolor backcolor ",
+            setup: function (editor) {
+                editor.on('change', function (e) {
+                    editor.save();
+                });
+            }
+        });
+        
+      
+
+
+
+jQuery(document).ready(function () {
+
+
+        // delegate calls to data-toggle="lightbox"
+        $(document).delegate('[data-toggle="lightbox"]', 'click', function(event) {
+            event.preventDefault();
+           $(this).ekkoLightbox();
+
+        });
+        //Programatically call
+        $('#open-image').click(function(e) {
+            e.preventDefault();
+            $(this).ekkoLightbox();
+        });
+        $('#open-youtube').click(function(e) {
+            e.preventDefault();
+            $(this).ekkoLightbox();
+        });
+        // navigateTo
+        $(document).delegate('*[data-gallery="navigateTo"]', 'click', function(event) {
+            event.preventDefault();
+            var lb;
+            return $(this).ekkoLightbox({
+                onShown: function() {
+                    lb = this;
+                    $(lb.modal_content).on('click', '.modal-footer a', function(e) {
+                        e.preventDefault();
+                        lb.navigateTo(2);
+                    });
+                }
+            });
+        });
+    });
 
 
 

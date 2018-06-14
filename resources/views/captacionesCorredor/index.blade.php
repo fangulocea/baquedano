@@ -52,13 +52,13 @@
                                  <td>{{ trans_choice('mensajes.vigencia', $p->id_estado) }}</td>
                                 @can('captacion.edit')
                                 <td width="10px">
-                                    <a href="{{ route('captacioncorredor.edit', $p->id_publicacion) }}"><span class="btn btn-warning btn-circle btn-sm"><i class="ti-pencil-alt"></i></span></a>
+                                    <a href="{{ route('corredor.edit', $p->id_publicacion) }}"><span class="btn btn-warning btn-circle btn-sm"><i class="ti-pencil-alt"></i></span></a>
                                 </td>
                                 @endcan
-                                @can('captacioncorredor.destroy')
+                                @can('corredor.destroy')
                                 <td width="10px">
 
-                                    {!! Form::open(['route' => ['captacioncorredor.destroy', $p->id_publicacion], 
+                                    {!! Form::open(['route' => ['corredor.destroy', $p->id_publicacion], 
                                     'method' => 'DELETE']) !!}
                                         <button class="btn btn-danger btn-circle btn-sm"><i class="ti-trash"></i>
                                         </button>
@@ -99,7 +99,7 @@ var table = $('#listusers2').DataTable({
         'copy', 'csv', 'excel', 'pdf', 'print',{
             text: 'Nueva Captación Corredor',
             action: function ( e, dt, node, config ) {
-                 window.location.href = '{{ route("captacioncorredor.create") }}';
+                 window.location.href = '{{ route("corredor.create") }}';
             }
         }
 

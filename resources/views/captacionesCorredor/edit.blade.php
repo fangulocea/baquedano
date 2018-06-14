@@ -39,7 +39,7 @@
                             <div class="panel-heading"> Nuevo Aviso de Corredor</div>
                             <div class="panel-wrapper collapse in" aria-expanded="true">
                                 <div class="panel-body">
-                                    <form action="{{ route('captacioncorredor.update',$captacion->id) }}" method="post">
+                                    <form action="{{ route('corredor.update',$captacion->id) }}" method="post">
                                         {!! csrf_field() !!}
                                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                         <input type="hidden" name="paso" value="1">
@@ -97,14 +97,14 @@
 
                                         <div class="form-actions">
                                             <button type="submit" class="btn btn-success"> <i class="fa fa-check"></i> Guardar</button>
-                                            <a href="{{ route('captacioncorredor.index') }}" class="btn btn-info" style="color:white"><i class="fa fa-times-circle"></i>&nbsp;&nbsp;Calcelar</a>
+                                            <a href="{{ route('corredor.index') }}" class="btn btn-info" style="color:white"><i class="fa fa-times-circle"></i>&nbsp;&nbsp;Calcelar</a>
                                         </div>
                                     </form>
                                 </div>
                           
                     </section>
                     <section id="section-iconbox-2_c" >
-                        <form action="{{ route('captacioncorredor.update',$captacion->id) }}" method="post">
+                        <form action="{{ route('corredor.update',$captacion->id) }}" method="post">
                             {!! csrf_field() !!}
                             <div class="row"> 
                                 <div class="panel panel-info">
@@ -286,7 +286,7 @@
                                                             <td>{{ $p->Creador }}</td>
                                                             @can('captacion.show')
                                                             <td width="10px">
-                                                                <a href="{{ route('captacioncorredor.edit', $p->id_publicacion) }}" 
+                                                                <a href="{{ route('corredor.edit', $p->id_publicacion) }}" 
                                                                    class="btn btn-success btn-circle btn-lg">
                                                                     <i class="fa fa-check"></i>
                                                                 </a>
@@ -455,7 +455,7 @@
                                                             <td>{{ $p->Creador }}</td>
                                                             @can('captacion.show')
                                                             <td width="10px">
-                                                                <a href="{{ route('captacioncorredor.edit', $p->id_publicacion) }}" 
+                                                                <a href="{{ route('corredor.edit', $p->id_publicacion) }}" 
                                                                    class="btn btn-success btn-circle btn-lg">
                                                                     <i class="fa fa-check"></i>
                                                                 </a>
@@ -479,7 +479,7 @@
                             </div>
                                 <div class="form-actions">
                                     <button type="submit" class="btn btn-success"> <i class="fa fa-check"></i> Guardar</button>
-                                    <a href="{{ route('captacioncorredor.index') }}" class="btn btn-info" style="color:white"><i class="fa fa-times-circle"></i>&nbsp;&nbsp;Calcelar</a>
+                                    <a href="{{ route('corredor.index') }}" class="btn btn-info" style="color:white"><i class="fa fa-times-circle"></i>&nbsp;&nbsp;Calcelar</a>
                                 </div>
                         </form>
                     </section>
@@ -487,7 +487,7 @@
                      <div class="row">
                     <div class="col-sm-6">
                         <div class="white-box"> 
-                           <form action="{{ route('captacioncorredor.savefotos',$captacion->id) }}" method="post" enctype='multipart/form-data'>
+                           <form action="{{ route('corredor.savefotos',$captacion->id) }}" method="post" enctype='multipart/form-data'>
                                         {!! csrf_field() !!}
                                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                 <h3 class="box-title">Subir imágen</h3>
@@ -521,7 +521,7 @@
                                                             @can('captacion.show')
                                                             <td width="10px">
 
-                                                                <a href="{{ route('captacioncorredor.eliminarfoto', [$p->id,$p->id_capcorredor]) }}" 
+                                                                <a href="{{ route('corredor.eliminarfoto', [$p->id,$p->id_capcorredor]) }}" 
                                                                    class="btn btn-danger btn-circle btn-lg">
                                                                     <i class="fa fa-check"></i>
                                                                 </a>
@@ -548,7 +548,7 @@
                                                     <div class="modal-header">
                                                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                                                         <h4 class="modal-title">Ingrese información de contacto</h4> </div>
-                                                 <form id="form1_c" action="{{ route('captacioncorredor.crearGestion') }}" method="post">
+                                                 <form id="form1_c" action="{{ route('corredor.crearGestion') }}" method="post">
                                                 <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                                 {!! csrf_field() !!}
                                                     <input type="hidden" class="form-control" name="id_creador_gestion" id="id_creador_gestion" value="{{ Auth::user()->id }}">
@@ -653,7 +653,7 @@
                                                     <div class="modal-header">
                                                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                                                         <h4 class="modal-title">Actualice su información de contacto</h4> </div>
-                                                 <form action="{{ route('captacioncorredor.editarGestion') }}" method="post">
+                                                 <form action="{{ route('corredor.editarGestion') }}" method="post">
                                                 <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                                 {!! csrf_field() !!}
                                                     <input type="hidden" class="form-control" name="id_modificador_gestion" id="id_modificador_gestion" value="{{ Auth::user()->id }}">
@@ -760,7 +760,7 @@ $(function(){
     })
 
 function mostrar_modal(obj){
-    var url= "{{ URL::to('captacioncorredor/gestion')}}"+"/"+obj;
+    var url= "{{ URL::to('corredor/gestion')}}"+"/"+obj;
     $.ajax({
         type:"get",
         url:url,
