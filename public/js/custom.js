@@ -392,7 +392,7 @@ jQuery('#i_direccion_c').on('typeahead:selected', function (e, datum) {
             confirmButtonText: "SI",   
             closeOnConfirm: false 
         }, function(){   
-             window.location.href = '/captacioncorredor/agregarinmueble/'+$('#idcaptacion_c').val()+'/'+datum.option; 
+             window.location.href = '/corredor/agregarinmueble/'+$('#idcaptacion_c').val()+'/'+datum.option; 
         });
 
    
@@ -507,7 +507,7 @@ jQuery('#p_email_c').on('typeahead:selected', function (e, datum) {
             confirmButtonText: "SI",   
             closeOnConfirm: false 
         }, function(){   
-             window.location.href = '/captacioncorredor/agregarpersona/'+$('#idcaptacion_c').val()+'/'+datum.option; 
+             window.location.href = '/corredor/agregarpersona/'+$('#idcaptacion_c').val()+'/'+datum.option; 
         });
 });
 

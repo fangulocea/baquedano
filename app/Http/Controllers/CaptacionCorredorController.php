@@ -28,7 +28,7 @@ class CaptacionCorredorController extends Controller
                 'estado'=> 1
             ]
             );
-        return redirect()->route('captacioncorredor.edit', $idc)->with('status', 'Inmueble agregado con éxito');
+        return redirect()->route('corredor.edit', $idc)->with('status', 'Inmueble agregado con éxito');
     }
 
         public function agregarPropietario($idc,$idp)
@@ -42,7 +42,7 @@ class CaptacionCorredorController extends Controller
             ]
             );
         
-        return redirect()->route('captacioncorredor.edit', $idc)->with('status', 'Propietario agregado con éxito');
+        return redirect()->route('corredor.edit', $idc)->with('status', 'Propietario agregado con éxito');
     }
 
     /**
@@ -73,7 +73,7 @@ class CaptacionCorredorController extends Controller
     {
         
         $corredores=Persona::where('tipo_cargo','=','Corredor')
-        ->select(DB::raw('id , CONCAT(nombre," ",apellido_paterno," ",apellido_materno) as Corredor'))
+        ->select(DB::raw('id , CONCAT_WS(" ",nombre,apellido_paterno,apellido_materno) as Corredor'))
         ->pluck('Corredor', 'id');
         return view('captacionesCorredor.create',compact('corredores'));
     }
@@ -96,7 +96,7 @@ class CaptacionCorredorController extends Controller
 
 
         $captacion = CaptacionCorredor::create($request->all());
-        return redirect()->route('captacioncorredor.edit', $captacion->id)
+        return redirect()->route('corredor.edit', $captacion->id)
 
             ->with('status', 'Publicación guardada con éxito');
     }
@@ -121,7 +121,7 @@ class CaptacionCorredorController extends Controller
     public function edit($id)
     {
         $corredores=Persona::where('tipo_cargo','=','Corredor')
-        ->select(DB::raw('id , CONCAT(nombre," ",apellido_paterno," ",apellido_materno) as Corredor'))
+        ->select(DB::raw('id , CONCAT_WS(" ",nombre,apellido_paterno,apellido_materno) as Corredor'))
         ->pluck('Corredor', 'id');
          $regiones=Region::pluck('region_nombre','region_id');
         $captacion = CaptacionCorredor::find($id);
@@ -173,7 +173,7 @@ class CaptacionCorredorController extends Controller
    public function update(Request $request, $id)
     {
          $corredores=Persona::where('tipo_cargo','=','Corredor')
-        ->select(DB::raw('id , CONCAT(nombre," ",apellido_paterno," ",apellido_materno) as Corredor'))
+        ->select(DB::raw('id , CONCAT_WS(" ",nombre,apellido_paterno,apellido_materno) as Corredor'))
         ->pluck('Corredor', 'id');
         if($request->paso=='1'){
         $fecha_publicacion = DateTime::createFromFormat('d/m/Y', $request->fecha_publicacion);
@@ -357,7 +357,7 @@ class CaptacionCorredorController extends Controller
         public function savefotos(Request $request, $id){
 
          if(!isset($request->foto)){
-            return redirect()->route('captacioncorredor.edit', $id)->with('error', 'Debe seleccionar una imagen');
+            return redirect()->route('corredor.edit', $id)->with('error', 'Debe seleccionar una imagen');
          }
         $path='uploads/captacionesCorredor';
         $archivo=rand().$request->foto->getClientOriginalName();
@@ -376,7 +376,7 @@ class CaptacionCorredorController extends Controller
 
         
 
-        return redirect()->route('captacioncorredor.edit', $id)->with('status', 'Foto guardada con éxito');
+        return redirect()->route('corredor.edit', $id)->with('status', 'Foto guardada con éxito');
     }
 
        public function eliminarfoto($idf,$idc){
@@ -384,7 +384,7 @@ class CaptacionCorredorController extends Controller
         File::delete($imagen->ruta.'/'.$imagen->nombre);
         $foto = CaptacionImageCorredor::find($idf)->delete();
 
-        return redirect()->route('captacioncorredor.edit', $idc)->with('status', 'Foto eliminada con éxito');
+        return redirect()->route('corredor.edit', $idc)->with('status', 'Foto eliminada con éxito');
     }
 
 //FIN FOTOS
@@ -396,7 +396,7 @@ class CaptacionCorredorController extends Controller
         $fecha_gestion = DateTime::createFromFormat('d-m-Y', $request->fecha_gestion);
         array_set($request, 'fecha_gestion', $fecha_gestion);
         $captacion = CaptacionGestionCorredor::create($request->all());
-        return redirect()->route('captacioncorredor.edit', $request->id_capcorredor_gestion)
+        return redirect()->route('corredor.edit', $request->id_capcorredor_gestion)
 
             ->with('status', 'Gestión guardada con éxito');
     }
@@ -413,7 +413,7 @@ class CaptacionCorredorController extends Controller
             'fecha_gestion' => $request->fecha_gestion,
             'hora_gestion' => $request->hora_gestion
         ]);
-        return redirect()->route('captacioncorredor.edit', $request->id_capcorredor_gestion)
+        return redirect()->route('corredor.edit', $request->id_capcorredor_gestion)
 
             ->with('status', 'Gestión guardada con éxito');
     }

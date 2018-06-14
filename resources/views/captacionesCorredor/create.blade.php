@@ -23,7 +23,7 @@
                             <div class="panel-heading"> Nuevo Aviso de Corredor</div>
                             <div class="panel-wrapper collapse in" aria-expanded="true">
                                 <div class="panel-body">
-                                    <form action="{{ route('captacioncorredor.store') }}" method="post">
+                                    <form action="{{ route('corredor.store') }}" method="post">
                                         {!! csrf_field() !!}
                                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                         <div class="form-body">
@@ -72,7 +72,7 @@
                                         </div>
                                         <div class="form-actions">
                                             <button type="submit" class="btn btn-success"> <i class="fa fa-check"></i> Guardar</button>
-                                            <a href="{{ route('captacioncorredor.index') }}" class="btn btn-info" style="color:white"><i class="fa fa-times-circle"></i>&nbsp;&nbsp;Calcelar</a>
+                                            <a href="{{ route('corredor.index') }}" class="btn btn-info" style="color:white"><i class="fa fa-times-circle"></i>&nbsp;&nbsp;Calcelar</a>
                                         </div>
                                     </form>
                                 </div>
