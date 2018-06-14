@@ -11,24 +11,24 @@
                 <thead>
                     <tr>
                         <th>ID</th>
-                        <th>Rut</th>
                         <th>Teléfono</th>
                         <th>Email</th>
                         <th>Nombre</th>
                         <th>Tipo</th>
-                        <th># Registros</th>
+                        <th># Rev</th>
+                         <th># Doc</th>
                         <th></th>
                     </tr>
                 </thead>
                 <tfoot>
                     <tr>
                         <th>ID</th>
-                        <th>Rut</th>
                         <th>Teléfono</th>
                         <th>Email</th>
                         <th>Nombre</th>
                         <th>Tipo</th>
-                        <th># Registros</th>
+                        <th># Rev</th>
+                        <th># Doc</th>
                         <th></th>
                     </tr>
                 </tfoot>
@@ -36,12 +36,12 @@
                     @foreach($personas as $persona)
                             <tr>
                                 <td>{{ $persona->id }}</td>
-                                <td>{{ $persona->rut }} </td>
                                 <td>{{ $persona->telefono }} </td>
                                 <td>{{ $persona->email }} </td>
                                 <td>{{ $persona->nombre }} {{ $persona->apellido_paterno }} {{ $persona->apellido_materno }}</td>
                                 <td>{{ $persona->tipo_cargo }}</td>
-                                <td></td>
+                                <td>{{ $persona->cant_revisiones }}</td>
+                                <td>{{ $persona->cant_fotos }}</td>
                                 @can('revisioncomercial.edit')
                                 <td width="10px">
                                     <a href="{{ route('revisionpersona.create', $persona->id) }}"><span class="btn btn-warning btn-circle btn-lg"><i class="ti-pencil-alt"></i></span></a>
@@ -114,7 +114,7 @@ var table =$('#listusers').DataTable({
 });
  $('#listusers thead th').each( function () {
         var title = $(this).text();
-        if(title!='ID' && title!= "" )
+        if(title!='ID' && title!= "" && title!= "# Rev"&& title!= "# Doc" )
         $(this).html( '<input type="text" style="width:100px" placeholder="'+title+'" />' );
     } );
  
