@@ -48,7 +48,7 @@
                                 <td>{{ $p->nom_p }} {{ $p->apep_p }} {{ $p->apem_p }}</td>
                                 <td>{{ $p->fecha_creacion }}</td>
                                 <td>{{ $p->nom_c }} {{ $p->apep_c }} {{ $p->apem_c }}</td>
-                                 <td>{{ trans_choice('mensajes.vigencia', $p->id_estado) }}</td>
+                                 <td>{{ trans_choice('mensajes.captacion', $p->id_estado) }}</td>
                                  <td>{{ substr(substr($p->portal, 4),0,10) }}</td>
                                 @can('captacion.edit')
                                 <td width="10px">

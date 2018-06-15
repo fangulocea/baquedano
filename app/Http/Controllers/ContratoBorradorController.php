@@ -70,9 +70,56 @@ class ContratoBorradorController extends Controller
      * @param  \App\ContratoBorrador  $contratoBorrador
      * @return \Illuminate\Http\Response
      */
-    public function edit(ContratoBorrador $contratoBorrador)
+    public function edit($id)
     {
-        //
+        $borrador = DB::table('cap_publicaciones as c')
+         ->leftjoin('personas as p1', 'c.id_propietario', '=', 'p1.id')
+         ->leftjoin('inmuebles as i', 'c.id_inmueble', '=', 'i.id')
+         ->leftjoin('personas as p2', 'c.id_creador', '=', 'p2.id')
+         ->leftjoin('personas as p3', 'c.id_modificador', '=', 'p3.id')
+         ->leftjoin('comunas as o', 'i.id_comuna', '=', 'o.comuna_id')
+         ->leftjoin('portales as po', 'c.portal', '=', 'po.id')
+         ->where('c.id','=',$id)
+         ->select(DB::raw('c.id as id_publicacion, CONCAT(i.direccion," N°",i.numero,", ",o.comuna_nombre) as Dirección' ))
+         ->first();
+
+         $borradoresIndex = DB::table('borradores as b')
+         ->leftjoin('notarias as n', 'b.id_notaria', '=', 'n.id')
+         ->leftjoin('servicios as s', 'b.id_servicios', '=', 's.id')
+         ->leftjoin('comisiones as c', 'b.id_comisiones', '=', 'c.id')
+         ->leftjoin('flexibilidads as f', 'b.id_flexibilidad', '=', 'f.id')
+         ->leftjoin('cap_publicaciones as cp', 'b.id_publicacion', '=', 'cp.id')
+            ->where('b.id','=',$id)
+         ->select(DB::raw(' b.id as id, n.razonsocial as n_n, s.nombre as n_s, c.nombre as n_c, f.nombre as n_f , cp.id as id_publicacion,DATE_FORMAT(b.fecha_gestion, "%d/%m/%Y") as fecha'))
+         ->get();
+
+
+            
+        $gestBorradores = DB::table('borradores as g')
+         ->where("g.id_publicacion","=",$id)
+         ->get();
+
+         $notaria = DB::table('notarias as n')
+         ->where("n.estado","<>",0)
+         ->select(DB::raw('n.id as id,n.razonsocial as nombre'))
+         ->get();
+
+        $servicio = DB::table('servicios as s')
+         ->where("s.estado","<>",0)
+         ->select(DB::raw('s.id as id,s.nombre as nombre'))
+         ->get();
+
+         $comision = DB::table('comisiones as c')
+         ->where("c.estado","<>",0)
+         ->select(DB::raw('c.id as id,c.nombre as nombre'))
+         ->get();
+
+         $flexibilidad = DB::table('flexibilidads as f')
+         ->where("f.estado","<>",0)
+         ->select(DB::raw('f.id as id,f.nombre as nombre'))
+         ->get();
+
+        return view('contratoBorrador.edit',compact('borrador','borradoresIndex','gestBorradores','notaria','servicio','comision','flexibilidad'));
     }
 
     /**
@@ -93,8 +140,44 @@ class ContratoBorradorController extends Controller
      * @param  \App\ContratoBorrador  $contratoBorrador
      * @return \Illuminate\Http\Response
      */
-    public function destroy(ContratoBorrador $contratoBorrador)
+    public function destroy($id)
     {
         //
     }
+
+    public function crearBorrador(Request $request)
+    {
+        $fecha_gestion = DateTime::createFromFormat('d-m-Y', $request->fecha_gestion);
+        array_set($request, 'fecha_gestion', $fecha_gestion);
+        array_set($request, 'detalle_revision', '');   
+        $borrador = ContratoBorrador::create($request->all());
+        return redirect()->route('contratoBorrador.edit', $request->id_publicacion)
+        ->with('status', 'Borrador guardado con éxito');
+    }
+
+  public function editarGestion(Request $request)
+    {
+        // $fecha_gestion = DateTime::createFromFormat('d-m-Y', $request->fecha_gestion);
+        // array_set($request, 'fecha_gestion', $fecha_gestion);
+        // $captacion = CaptacionGestion::where('id','=',$request->id_captacion_gestion)
+        // ->update([
+        //     'dir' => $request->dir,
+        //     'detalle_contacto' => $request->detalle_contacto,
+        //     'id_modificador_gestion' => $request->id_modificador_gestion,
+        //     'fecha_gestion' => $request->fecha_gestion,
+        //     'hora_gestion' => $request->hora_gestion
+        // ]);
+        // return redirect()->route('captacion.edit', $request->id_captacion_gestion)
+
+        //     ->with('status', 'Gestión guardada con éxito');
+    }
+
+
+public function mostrarGestion(Request $request, $idg){
+            $gestion=ContratoBorrador::where('id','=',$idg)->get();
+            dd($gestion);
+            return response()->json($gestion);  
+    }
+
+
 }

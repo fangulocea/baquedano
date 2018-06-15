@@ -45,7 +45,11 @@
                             <td>{{ $p->fecha }}</td>
                             <td>{{ $p->estado }}</td>
                             <td width="10px">  </td>
-                            <td width="10px" style="text-align: center;">
+                            @can('captacion.edit')
+                                <td width="10px">
+                                    <a href="{{ route('captacion.edit', $p->id) }}"><span class="btn btn-warning btn-circle btn-sm"><i class="ti-pencil-alt"></i></span></a>
+                                </td>
+                                @endcan
                             </td>
                         </tr>
                         @endforeach

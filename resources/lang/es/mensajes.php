@@ -8,3 +8,5 @@ return [
 
 		'arrendatario' => '{0}No Vigente|{1}Vigente',
 ];
+
+	
