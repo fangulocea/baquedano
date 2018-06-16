@@ -11,6 +11,7 @@ use App\CaptacionGestion;
 use App\Portales;
 use App\CaptacionImport;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use DB;
 use Image;
 use DateTime;
@@ -38,13 +39,22 @@ class CaptacionController extends Controller
     }
 
 
-    public function importExport()
+    public function importExportcap()
     {
 
       $correo = DB::table('correos')
       ->where('estado','=',1)
       ->get();
-        return view('importar.index',compact('correo'));
+        return view('importarbaquedano.index',compact('correo'));
+    }
+
+    public function importExportcontact()
+    {
+
+      $correo = DB::table('correos')
+      ->where('estado','=',1)
+      ->get();
+        return view('importarcontact.index',compact('correo'));
     }
 
     public function getCaptacionesCorreo($id)
@@ -60,7 +70,7 @@ class CaptacionController extends Controller
            ->where('p1.email','like','%@%')
            ->where('c.id_creador','=',$id)
            ->where('c.id_estado','=','1')
-           ->select(DB::raw('c.id as id_publicacion, DATE_FORMAT(c.created_at, "%d/%m/%Y") as fecha_creacion, c.id_estado as id_estado, CONCAT(p1.nombre," ",p1.apellido_paterno," ",p1.apellido_materno) as Propietario, CONCAT(p2.nombre," ",p2.apellido_paterno," ",p2.apellido_materno) as Creador'),'i.id as id_inmueble','i.direccion','i.numero','i.departamento', 'o.comuna_nombre','po.nombre as portal','c.id_propietario','c.id_creador','p1.email','p1.nombre as nom_p','p1.apellido_paterno as apep_p','p1.apellido_materno as apem_p','p2.nombre as nom_c','p2.apellido_paterno as apep_c','p2.apellido_materno as apem_c','p3.nombre as nom_m','p3.apellido_paterno as apep_m','p3.apellido_materno as apem_m')
+           ->select(DB::raw('c.id as id_publicacion, DATE_FORMAT(c.created_at, "%d/%m/%Y") as fecha_creacion, c.id_estado as id_estado, CONCAT(p1.nombre," ",p1.apellido_paterno," ",p1.apellido_materno) as Propietario, CONCAT(p2.nombre," ",p2.apellido_paterno," ",p2.apellido_materno) as Creador'),'i.id as id_inmueble','i.direccion','i.numero','i.departamento', 'o.comuna_nombre','po.nombre as portal','c.id_propietario','c.id_creador','p1.email','p1.nombre as nom_p','p1.apellido_paterno as apep_p','p1.apellido_materno as apem_p','p2.nombre as nom_c','p2.apellido_paterno as apep_c','p2.apellido_materno as apem_c','p3.nombre as nom_m','p3.apellido_paterno as apep_m','p3.apellido_materno as apem_m, p1.email')
            ->get();
            return response()->json($publica);
 
@@ -91,6 +101,7 @@ class CaptacionController extends Controller
     {
         $data = CaptacionImport::
         whereRaw('Date(created_at) = CURDATE()')
+        ->where("id_creador","=",Auth::user()->id)
         ->orderBy('created_at','DESC')
         ->get()->toArray();
         return Excel::create('captaciones', function($excel) use ($data) {

@@ -23,7 +23,7 @@
         <!-- animation CSS -->
         <link href="{{ URL::asset('css/animate.css') }}" rel="stylesheet">
         <!-- Custom CSS -->
-        <link href="{{ URL::asset('css/style.css') }}" rel="stylesheet">
+        <link href="{{ URL::asset('css/style_contact.css') }}" rel="stylesheet">
         <!-- color CSS -->
         <link href="{{ URL::asset('css/colors/megna-dark.css') }}" id="theme" rel="stylesheet">
 
@@ -40,7 +40,7 @@
     <![endif]-->
     </head>
 
-    <body class="fix-header">
+    <body class="fix-header show-sidebar hide-sidebar content-wrapper">
         <!-- ============================================================== -->
         <!-- Preloader -->
         <!-- ============================================================== -->
@@ -93,15 +93,9 @@
                                         <div class="u-img"><img src="{{ URL::asset('plugins/images/users/baquedano.png') }}" alt="user" /></div>
                                         <div class="u-text">
                                             <h4>{{ Auth::user()->name }}</h4>
-                                            <p class="text-muted">{{ Auth::user()->email }}</p><a href="{{ route('persona.edithome',Auth::user()->id_persona) }}" class="btn btn-rounded btn-danger btn-sm">Ver Perfil</a></div>
+                                            <p class="text-muted">{{ Auth::user()->email }}</p></div>
                                     </div>
                                 </li>
-                                <li role="separator" class="divider"></li>
-
-                                <li><a href="{{ route('persona.edithome',Auth::user()->id_persona) }}"><i class="ti-user"></i> Mi Perfil</a></li>
-                                <li><a href="#"><i class="ti-email"></i> Bandeja de Entrada</a></li>
-                                <li role="separator" class="divider"></li>
-                                <li><a href="#"><i class="ti-settings"></i>Configuración de Cuenta</a></li>
                                 <li role="separator" class="divider"></li>
                                 <li>
                                     <a href="{{ route('logout') }}"
@@ -125,160 +119,8 @@
                         <!-- /.dropdown -->
                     </ul>
                 </div>
-                <!-- /.navbar-header -->
-                <!-- /.navbar-top-links -->
-                <!-- /.navbar-static-side -->
             </nav>
-            <!-- End Top Navigation -->
-            <!-- ============================================================== -->
-            <!-- Left Sidebar - style you can find in sidebar.scss  -->
-            <!-- ============================================================== -->
 
-            <div class="navbar-default sidebar" role="navigation">
-                <div class="sidebar-nav slimscrollsidebar">
-                    <div class="sidebar-head">
-                        <h3><span class="fa-fw open-close"><i class="ti-close ti-menu"></i></span> <span class="hide-menu">Navigation</span></h3> </div>
-                    <ul class="nav" id="side-menu">
-
-                         <li> <a href="#" class="waves-effect"><i class="mdi mdi-account-card-details fa-fw" data-icon="v"></i> <span class="hide-menu"> Mis Datos <span class="fa arrow"></span> <span class="label label-rouded label-primary pull-right">4</span></span></a>
-                            <ul class="nav nav-second-level">
-                                 
-                                <li><a href="{{ route('persona.edithome',Auth::user()->id_persona) }}"><i class="ti-user"></i> <span class="hide-menu">Mi Información</span></a></li>
-                                <li><a href="javascript:void(0)"><i class="ti-email"></i> <span class="hide-menu">Bandeja de Entrada</span></a></li>
-                                <li><a href="javascript:void(0)"><i class="ti-settings"></i> <span class="hide-menu">Configuración de Cuenta</span></a></li>
-                               <li><a href="{{ route('logout') }}"
-                                       onclick="event.preventDefault();
-                                               document.getElementById('logout-form').submit();"><i class="fa fa-power-off"></i> <span class="hide-menu">Cerrar Sesión</span></a><form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                                        {{ csrf_field() }}
-                                    </form></li>
-                            </ul>
-                        </li>
-                        <li> <a href="#" class="waves-effect"><i class="mdi mdi-settings fa-fw" data-icon="v"></i> <span class="hide-menu"> Administrador <span class="fa arrow"></span> <span class="label label-rouded label-primary pull-right">2</span></span></a>
-                            <ul class="nav nav-second-level">
-
-                                @can('users.index')
-                                <li> <a href="{{ route('users.index') }}"><i class=" fa-fw">U</i><span class="hide-menu">Usuarios</span></a> </li>
-                                @endcan
-                                @can('roles.index')
-                                <li> <a href="{{ route('roles.index') }}"><i class=" fa-fw">R</i><span class="hide-menu">Roles</span></a> </li>
-                                @endcan
-                            </ul>
-                        </li>
-                        <li> <a href="#" class="waves-effect"><i class="mdi mdi-clipboard-text fa-fw" data-icon="v"></i> <span class="hide-menu"> Mantenedores <span class="fa arrow"></span> <span class="label label-rouded label-warning pull-right">7</span></span></a>
-                            <ul class="nav nav-second-level">
-                                @can('notarias.index')
-                                <li> <a href="{{ route('notarias.index') }}"><i class=" fa-fw">N</i><span class="hide-menu">Notaria</span></a> </li>
-                                @endcan
-                                @can('condicion.index')
-                                <li> <a href="{{ route('condicion.index') }}"><i class=" fa-fw">C</i><span class="hide-menu">Condición</span></a> </li>
-                                @endcan
-                                @can('inmueble.index')
-                                <li> <a href="{{ route('inmueble.index') }}"><i class=" fa-fw">I</i><span class="hide-menu">Inmueble</span></a> </li>
-                                @endcan
-                                @can('persona.index')
-                                <li> <a href="{{ route('persona.index') }}"><i class=" fa-fw">P</i><span class="hide-menu">Personas</span></a> </li>
-                                @endcan
-                                @can('cargo.index')
-                                <li> <a href="{{ route('cargo.index') }}"><i class=" fa-fw">C</i><span class="hide-menu">Cargos</span></a> </li>
-                                @endcan
-                                @can('servicio.index')
-                                <li> <a href="{{ route('servicio.index') }}"><i class=" fa-fw">S</i><span class="hide-menu">Servicios</span></a> </li>
-                                @endcan
-                                @can('multa.index')
-                                <li> <a href="{{ route('multa.index') }}"><i class=" fa-fw">M</i><span class="hide-menu">Multas</span></a> </li>
-                                @endcan
-                                @can('formasDePago.index')
-                                <li> <a href="{{ route('formasDePago.index') }}"><i class=" fa-fw">F</i><span class="hide-menu">Formas de Pago</span></a> </li>
-                                @endcan
-                                @can('comision.index')
-                                <li> <a href="{{ route('comision.index') }}"><i class=" fa-fw">C</i><span class="hide-menu">Comisión</span></a> </li>
-                                @endcan
-                                @can('flexibilidad.index')
-                                <li> <a href="{{ route('flexibilidad.index') }}"><i class=" fa-fw">F</i><span class="hide-menu">Flexibilidad</span></a> </li>
-                                @endcan
-                                @can('personaInmueble.index')
-                                <li> <a href="{{ route('personaInmueble.index') }}"><i class=" fa-fw">PI</i><span class="hide-menu">Persona Inmueble</span></a> </li>
-                                @endcan
-                                @can('correo.index')
-                                <li> <a href="{{ route('correo.index') }}"><i class=" fa-fw">C</i><span class="hide-menu">Correo Tipo   </span></a> </li>
-                                @endcan
-                                @can('portal.index')
-                                <li> <a href="{{ route('portal.index') }}"><i class=" fa-fw">P</i><span class="hide-menu">Portal   </span></a> </li>
-                                @endcan
-                            </ul>
-                        </li>
-                        <li> <a href="#" class="waves-effect"><i class="mdi mdi-settings fa-fw" data-icon="v"></i> <span class="hide-menu"> Captaciones <span class="fa arrow"></span> <span class="label label-rouded label-primary pull-right">6</span></span></a>
-                            <ul class="nav nav-second-level">
-                                @can('captacion.index')
-                                    <li> 
-                                        <a href="{{ route('captacion.index') }}" >
-                                            <i class=" fa-fw">CP</i>
-                                            <span class="hide-menu">Captación de Propietarios</span>
-                                        </a>
-                                    </li>
-                                @endcan
-
-                                @can('captacionArrendador.index')
-                                <li>
-                                    <a href="{{ route('arrendatario.index') }}" >
-                                        <i class=" fa-fw">CA</i>
-                                        <span class="hide-menu">Captación de Arrendatarios</span>
-                                    </a>
-                                </li>
-                                @endcan
-
-                                @can('captacion.index')
-                                <li> 
-                                    <a href="{{ route('corredor.index') }}" >
-                                        <i class=" fa-fw">CC</i>
-                                        <span class="hide-menu">Captación Externa</span>
-                                    </a> 
-                                </li>
-                                @endcan
-
-                                @can('captacion.index')
-                                <li id="a_pc"> <a href="{{ route('captacion.importExportcap') }}" ><i class=" fa-fw">PC</i><span class="hide-menu">Proceso de Captación</span></a> </li>
-                                @endcan
-
-                                 @can('captacion.index')
-                                <li> <a href="{{ route('captacion.reportes') }}" ><i class=" fa-fw">RS</i><span class="hide-menu">Reporte de seguimiento</span></a> </li>
-                                @endcan
-                                @can('primeraGestion.index')
-                                <li> <a href="{{ route('primeraGestion.index',1) }}" ><i class=" fa-fw">EC</i> <span class="hide-menu">Envío de Correos</span></a> </li>
-                                @endcan
-
-
-                            </ul>
-                        </li>
-                        <li> <a href="#" class="waves-effect"><i class="mdi mdi-settings fa-fw" data-icon="v"></i> <span class="hide-menu"> Administración <span class="fa arrow"></span> <span class="label label-rouded label-primary pull-right">2</span></span></a>
-                            <ul class="nav nav-second-level">
-                                @can('revisioncomercial.index')
-                                <li> <a href="{{ route('revisioninmueble.index') }}"><i class=" fa-fw">CP</i><span class="hide-menu">Revisión Comercial Inmueble</span></a> </li>
-                                @endcan
-                                @can('revisioncomercial.index')
-                                <li> <a href="{{ route('revisionpersona.index') }}"><i class=" fa-fw">CA</i><span class="hide-menu">Revisión Comercial Persona</span></a> </li>
-                                @endcan
-                            </ul>
-                        </li>
-                        <li><a href="{{ route('logout') }}"
-                                       onclick="event.preventDefault();
-                                               document.getElementById('logout-form').submit();" class="waves-effect"><i class="mdi mdi-logout fa-fw"></i>
-                            Cerrar Sesión</a><form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                                        {{ csrf_field() }}
-                                    </form></li>
-                        <li class="devider"></li>
-                        <li><a href="#" class="waves-effect"><i class="fa fa-circle-o text-danger"></i> <span class="hide-menu">Documentación</span></a></li>
-                        <li><a href="#" class="waves-effect"><i class="fa fa-circle-o text-info"></i> <span class="hide-menu">Galería de imágenes</span></a></li>
-                        <li><a href="#" class="waves-effect"><i class="fa fa-circle-o text-success"></i> <span class="hide-menu">Preguntas frecuentes</span></a></li>
-                    </ul>
-                </div>
-            </div>
-            <!-- ============================================================== -->
-            <!-- End Left Sidebar -->
-            <!-- ============================================================== -->
-            <!-- ============================================================== -->
-            <!-- Page Content -->
-            <!-- ============================================================== -->
             <div id="page-wrapper">
                 <div class="container-fluid">
                     <br/>
@@ -366,6 +208,7 @@
                                                    new CBPFWTabs(el);
                                                });
                                            })();
+
         </script>
         <script src="{{ URL::asset('plugins/bower_components/toast-master/js/jquery.toast.js') }}"></script>
         <!--Style Switcher -->

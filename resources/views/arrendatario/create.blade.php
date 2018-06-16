@@ -11,7 +11,7 @@
                 <nav>
                     <ul>
                         <li><a href="#section-iconbox-1" class="sticon ti ti-user"><span>Arrendatario</span></a></li>
-                        <li><a id="4" href="#section-iconbox-4" class="sticon ti-camera"><span>Fotos</span></a></li>
+                        <li><a id="4" href="#section-iconbox-4" class="sticon ti-camera"><span>Documentos</span></a></li>
                         <li><a id="5" href="#section-iconbox-5" class="sticon ti-agenda"><span>Gestiones</span></a></li>
                     </ul>
                 </nav>
@@ -121,9 +121,18 @@
                                 </div>
                             </div>
                             <!--/row-->
-                            <div class="row">
-                                <!--/span-->
-                            </div>
+                                           <div class="row"> 
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label>Estado</label>
+                                                        <select class="form-control" name="id_estado" required="required">
+                                                            <option value="">Seleccione Estado</option>
+                                                            <option value="0">Descartado</option>
+                                                            <option value="1">Sin Gestión (Activo)</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
 
                         </div>
                         <div class="form-actions">

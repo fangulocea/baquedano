@@ -53,12 +53,13 @@ class CaptacionCorredorController extends Controller
     public function index()
     {
          $publica = DB::table('cap_corredores as c')
+         ->leftjoin('personas as p4', 'c.id_corredor', '=', 'p4.id')
          ->leftjoin('personas as p1', 'c.id_propietario', '=', 'p1.id')
          ->leftjoin('inmuebles as i', 'c.id_inmueble', '=', 'i.id')
          ->leftjoin('personas as p2', 'c.id_creador', '=', 'p2.id')
          ->leftjoin('personas as p3', 'c.id_modificador', '=', 'p3.id')
          ->leftjoin('comunas as o', 'i.id_comuna', '=', 'o.comuna_id')
-         ->select(DB::raw('c.id as id_publicacion, DATE_FORMAT(c.created_at, "%d/%m/%Y") as fecha_creacion, c.id_estado as id_estado, CONCAT(p1.nombre," ",p1.apellido_paterno," ",p1.apellido_materno) as Propietario, CONCAT(p2.nombre," ",p2.apellido_paterno," ",p2.apellido_materno) as Creador'),'i.id as id_inmueble','i.direccion','i.numero','i.departamento', 'o.comuna_nombre','p1.nombre as nom_p','p1.apellido_paterno as apep_p','p1.apellido_materno as apem_p','p2.nombre as nom_c','p2.apellido_paterno as apep_c','p2.apellido_materno as apem_c','p3.nombre as nom_m','p3.apellido_paterno as apep_m','p3.apellido_materno as apem_m')
+         ->select(DB::raw('c.id as id_publicacion, DATE_FORMAT(c.created_at, "%d/%m/%Y") as fecha_creacion, c.id_estado as id_estado, CONCAT_WS(" ",p1.nombre,p1.apellido_paterno,p1.apellido_materno) as Propietario, CONCAT_WS(" ",p2.nombre,p2.apellido_paterno,p2.apellido_materno) as Creador, CONCAT_WS(" ",p4.nombre,p4.apellido_paterno,p4.apellido_materno) as Corredor'),'i.id as id_inmueble','i.direccion','i.numero','i.departamento', 'o.comuna_nombre','p1.nombre as nom_p','p1.apellido_paterno as apep_p','p1.apellido_materno as apem_p','p2.nombre as nom_c','p2.apellido_paterno as apep_c','p2.apellido_materno as apem_c','p3.nombre as nom_m','p3.apellido_paterno as apep_m','p3.apellido_materno as apem_m')
          ->get();
          
          return view('captacionesCorredor.index',compact('publica'));

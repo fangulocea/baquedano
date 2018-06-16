@@ -12,6 +12,46 @@ class PermissionsTableSeeder extends Seeder
      */
     public function run()
     {
+        Permission::create([
+            'id'            =>  1,
+            'name'          =>  'contactcenter',
+            'slug'          =>  'contactcenter.index',
+            'description'   =>  'Acceso a captación Contact Center',
+        ]);
+
+    //Captacion
+        Permission::create([
+             'id'            =>  2,
+            'name'          =>  'Listado de captación',
+            'slug'          =>  'captacion.index',
+            'description'   =>  'Despliega captacion',
+        ]);
+        Permission::create([
+             'id'            =>  3,
+            'name'          =>  'Ver detalle de captación',
+            'slug'          =>  'captacion.show',
+            'description'   =>  'Despliega el detalle del captacion ',
+        ]);
+        Permission::create([
+            'name'          =>  'Crea captación',
+             'id'            =>  4,
+            'slug'          =>  'captacion.create',
+            'description'   =>  'Crear captacion del sistema',
+        ]);
+        Permission::create([
+            'name'          =>  'Edición de captación',
+             'id'            =>  5,
+            'slug'          =>  'captacion.edit',
+            'description'   =>  'Editar captacion del sistema',
+        ]);
+        Permission::create([
+            'name'          =>  'Desactiva captación',
+             'id'            =>  6,
+            'slug'          =>  'captacion.destroy',
+            'description'   =>  'Desactiva captacion del sistema',
+        ]);
+
+
     	//usuarios
         Permission::create([
         	'name'			=>	'Listado de Usuarios',
@@ -247,32 +287,7 @@ class PermissionsTableSeeder extends Seeder
             'description'   =>  'Desactiva Servicio del sistema',
         ]);
     
-    //Captacion
-        Permission::create([
-            'name'          =>  'Listado de captación',
-            'slug'          =>  'captacion.index',
-            'description'   =>  'Despliega captacion',
-        ]);
-        Permission::create([
-            'name'          =>  'Ver detalle de captación',
-            'slug'          =>  'captacion.show',
-            'description'   =>  'Despliega el detalle del captacion ',
-        ]);
-        Permission::create([
-            'name'          =>  'Crea captación',
-            'slug'          =>  'captacion.create',
-            'description'   =>  'Crear captacion del sistema',
-        ]);
-        Permission::create([
-            'name'          =>  'Edición de captación',
-            'slug'          =>  'captacion.edit',
-            'description'   =>  'Editar captacion del sistema',
-        ]);
-        Permission::create([
-            'name'          =>  'Desactiva captación',
-            'slug'          =>  'captacion.destroy',
-            'description'   =>  'Desactiva captacion del sistema',
-        ]);
+
 
 
         //Formas de Pago

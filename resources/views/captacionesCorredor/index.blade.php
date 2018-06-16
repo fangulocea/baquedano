@@ -14,7 +14,7 @@
                         <th>ID</th>
                         <th>Dirección</th>
                         <th>Comuna</th>
-                        <th>Corredor</th>
+                        <th>Captador Externo</th>
                         <th>Propietario</th>
                         <th>Fecha</th>
                         <th>Creador</th>
@@ -28,7 +28,7 @@
                         <th>ID</th>
                         <th>Dirección</th>
                         <th>Comuna</th>
-                        <th>Corredor</th>
+                        <th>Captador Externo</th>
                         <th>Propietario</th>
                         <th>Fecha</th>
                         <th>Creador</th>
@@ -45,7 +45,7 @@
                                 <td >{{ $p->direccion }} #{{ $p->numero }} , Dpto {{ $p->departamento }}</td>
                                 
                                 <td>{{ $p->comuna_nombre }}</td>
-                                <td></td>
+                                <td>{{ $p->Corredor }}</td>
                                 <td>{{ $p->nom_p }} {{ $p->apep_p }} {{ $p->apem_p }}</td>
                                 <td>{{ $p->fecha_creacion }}</td>
                                 <td>{{ $p->nom_c }} {{ $p->apep_c }} {{ $p->apem_c }}</td>
@@ -95,6 +95,7 @@ $('.sorting_desc').hide();
 var table = $('#listusers2').DataTable({
 
     dom: 'Bfrtip',
+    "ordering": false,
     buttons: [
         'copy', 'csv', 'excel', 'pdf', 'print',{
             text: 'Nueva Captación Corredor',
@@ -147,7 +148,7 @@ var table = $('#listusers2').DataTable({
     $('#listusers2 thead th').each( function () {
         var title = $(this).text();
         if(title!='ID' && title!= "")
-        $(this).html( '<input type="text" style="width:100px" placeholder="'+title+'" />' );
+        $(this).html( title+'<br/><input type="text" style="width:100px" placeholder="Buscar" />' );
     } );
  
 
@@ -156,7 +157,7 @@ var table = $('#listusers2').DataTable({
     table.columns().every( function () {
         var that = this;
  
-        $( 'input', this.footer() ).on( 'keyup change', function () {
+        $( 'input', this.header() ).on( 'keyup change', function () {
             if ( that.search() !== this.value ) {
                 that
                     .search( this.value )

@@ -106,7 +106,7 @@
                                                         @else
                                                         <?php $idr = $captacion->id_estado; ?>
                                                         @endif
-                                                        {{ Form::select('id_estado',['0'=>'Descartado','1'=>'Sin Gestión','2'=>'Sin Respuesta','3'=>'Reenvio','4'=>'Expirado','5'=>'Segunda Gestión ','6'=>'Contrato Borrador','6'=>'Contrato Cerrado'], $idr,array('class'=>'form-control','style'=>'','id'=>'id_estado','placeholder'=>'Seleccione estado','required'=>'required')) }}
+                                                       {{ Form::select('id_estado',['0'=>'Descartado','1'=>'Sin Gestión','2'=>'Sin Respuesta','3'=>'Reenvio','4'=>'Expirado','5'=>'Segunda Gestión ','6'=>'Contrato Borrador','7'=>'Contrato Cerrado'], $idr,array('class'=>'form-control','style'=>'','id'=>'id_estado','placeholder'=>'Seleccione estado','required'=>'required')) }}
                                                     </div>
                                                 </div>
                                             </div>

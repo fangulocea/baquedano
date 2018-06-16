@@ -219,6 +219,11 @@ class ArrendatarioController extends Controller
         $regiones=Region::pluck('region_nombre','region_id');
         $arrendatario = Arrendatario::find($id);
 
+        $arrendatario1 = Arrendatario::whereId($id)->update([
+                'id_estado' => $request->id_estado
+            ]
+            );
+
         // $imagenes=CaptacionFoto::where('id_captacion','=',$id)->get();
 
         return redirect()->route('arrendatario.edit', $id)->with('status', 'Datos almacenados correctamente');

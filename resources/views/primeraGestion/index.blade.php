@@ -40,7 +40,7 @@
                             <th>Comuna</th>
                             <th>Propietario</th>
                             <th>Fecha Creación</th>
-                            <th>Creador</th>
+                            <th>Email</th>
                             <th>Estado</th>
                             <th></th>
                             <th></th>
@@ -54,7 +54,7 @@
                             <th>Comuna</th>
                             <th>Propietario</th>
                             <th>Fecha Creación</th>
-                            <th>Creador</th>
+                            <th>Email</th>
                             <th>Estado</th>
                             <th></th>
                             <th></th>
@@ -70,7 +70,7 @@
                             <td>{{ $p->comuna_nombre }}</td>
                             <td>{{ $p->nom_p }} {{ $p->apep_p }} {{ $p->apem_p }}</td>
                             <td>{{ $p->fecha_creacion }}</td>
-                            <td>{{ $p->nom_c }} {{ $p->apep_c }} {{ $p->apem_c }}</td>
+                            <td>{{ $p->email }}</td>
                             <td>{{ trans_choice('mensajes.captacion', $p->id_estado) }}</td>
                             <td width="10px">  </td>
                             <td width="10px" style="text-align: center;">
@@ -148,7 +148,7 @@
 <script>
 
 
-    $('#listusers').DataTable({
+   var table =  $('#listusers').DataTable({
         dom: 'Bfrtip',
     // buttons: [
     //     'copy', 'csv', 'excel', 'pdf', 'print',{
@@ -159,6 +159,7 @@
     //     }
 
     // ],
+    "ordering": false,
      columnDefs: [{
              "targets": [8, 9],
              "orderable": false
@@ -196,7 +197,7 @@
     $('#listusers thead th').each( function () {
         var title = $(this).text();
         if(title!='ID' && title!= "" )
-        $(this).html( '<input type="text" style="width:100px" placeholder="'+title+'" />' );
+        $(this).html( title+'<br/><input type="text" style="width:100px" placeholder="Buscar" />' );
     } );
  
 
@@ -205,7 +206,7 @@
     table.columns().every( function () {
         var that = this;
  
-        $( 'input', this.footer() ).on( 'keyup change', function () {
+        $( 'input', this.header() ).on( 'keyup change', function () {
             if ( that.search() !== this.value ) {
                 that
                     .search( this.value )

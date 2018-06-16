@@ -133,10 +133,23 @@
                                                     </div>
                                                 </div>
                                             </div>
-                            <!--/row-->
-                            <div class="row">
-                                <!--/span-->
-                            </div>
+                                            <div class="row"> 
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label>Estado</label>
+                                                        <input type="hidden" name="id_modificador" 
+                                                               value="{{ Auth::user()->id_persona }}">
+
+                                                        @if(!isset($arrendatario->id_estado))
+                                                        <?php $idr = null; ?>
+                                                        @else
+                                                        <?php $idr = $arrendatario->id_estado; ?>
+                                                        @endif
+                                                         {{ Form::select('id_estado',['0'=>'Descartado','1'=>'Sin Gestión','2'=>'Activo','3'=>'En Espera','4'=>'Activo - Problemas de Pago','5'=>'Activo - Daño al inmueble ','6'=>'No Activo - Problema de Pago','7'=>'No Activo - Daño al inmueble'], $idr,array('class'=>'form-control','style'=>'','id'=>'id_estado','placeholder'=>'Seleccione estado','required'=>'required')) }}
+                                                        
+                                                    </div>
+                                                </div>
+                                            </div>
 
                         </div>
                         <div class="form-actions">

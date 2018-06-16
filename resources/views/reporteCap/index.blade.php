@@ -102,6 +102,7 @@
              "targets": [8, 9],
              "orderable": false
          }],
+         "ordering": false,
     language: {
         "sProcessing": "Procesando...",
         "sLengthMenu": "Mostrar _MENU_ registros",
@@ -135,7 +136,7 @@
     $('#listusers thead th').each( function () {
         var title = $(this).text();
         if(title!='ID' && title!= "" )
-        $(this).html( '<input type="text" style="width:100px" placeholder="'+title+'" />' );
+       $(this).html( title+'<br/><input type="text" style="width:100px" placeholder="Buscar" />' );
     } );
  
 
@@ -144,7 +145,7 @@
     table.columns().every( function () {
         var that = this;
  
-        $( 'input', this.footer() ).on( 'keyup change', function () {
+        $( 'input', this.header() ).on( 'keyup change', function () {
             if ( that.search() !== this.value ) {
                 that
                     .search( this.value )

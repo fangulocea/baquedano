@@ -258,7 +258,10 @@ Route::middleware(['auth'])->group(function(){
 
 //Captacion Propietario
 
-	Route::get('importExport', 'CaptacionController@importExport')->name('captacion.importExport')
+	Route::get('importExportcap', 'CaptacionController@importExportcap')->name('captacion.importExportcap')
+		->middleware('permission:captacion.edit');
+
+	Route::get('importExportcontact', 'CaptacionController@importExportcontact')->name('captacion.importExportcontact')
 		->middleware('permission:captacion.edit');
 
 	Route::get('downloadExcel/{type}', 'CaptacionController@downloadExcel')->name('captacion.downloadExcel')

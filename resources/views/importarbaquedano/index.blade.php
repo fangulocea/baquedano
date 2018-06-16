@@ -18,7 +18,7 @@
                                         <h4><span>1</span>Subida de Archivo</h4> </li>
                                     <li role="tab">
                                         <h4><span>2</span>Envío de Correos</h4> </li>
-                                    <li role="tab">
+                                   <li role="tab">
                                         <h4><span>3</span>Gestión de Captaciones</h4> </li>
                                 </ul>
                                 <div class="wizard-content">
@@ -177,7 +177,12 @@
 $('.sorting_desc').hide();
 
 var table = $('#listusers').DataTable({
+  dom: 'Bfrtip',
+    buttons: [
+        'excel', 'pdf'
 
+    ],
+    "ordering": false,
     language: {
         "sProcessing": "Procesando...",
         "sLengthMenu": "Mostrar _MENU_ registros",
@@ -239,11 +244,30 @@ var table2 = $('#listusers2').DataTable({
         }
     }
 });
+  // Setup - add a text input to each footer cell
+    $('#listusers thead  th').each( function () {
+        var title = $(this).text();
+        if(title!='ID' && title!= "")
+        $(this).html( title+'<br/><input type="text" style="width:100px" placeholder="Buscar" />' );
+    } );
+ 
 
+ 
+    // Apply the search
+    table.columns().every( function () {
+        var that = this;
+ 
+        $( 'input', this.header() ).on( 'keyup change', function () {
+            if ( that.search() !== this.value ) {
+                that
+                    .search( this.value )
+                    .draw();
+
+            }
+        } );
+    } );
 </script>
 
- <script src="{{ URL::asset('plugins/bower_components/jquery/dist/jquery.min.js') }}"></script>
-    <script src="{{ URL::asset('bootstrap/dist/js/bootstrap.min.js') }}"></script>
     <script src="{{ URL::asset('plugins/bower_components/jquery-wizard-master/dist/jquery-wizard.min.js') }}"></script>
     <script src="{{ URL::asset('plugins/bower_components/sweetalert/sweetalert.min.js') }}"></script>
     <script src="{{ URL::asset('js/jasny-bootstrap.js') }}"></script>

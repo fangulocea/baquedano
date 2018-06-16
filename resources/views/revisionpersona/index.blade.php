@@ -82,7 +82,7 @@ var table =$('#listusers').DataTable({
 
     ],
 
-
+"ordering": false,
     language: {
         "sProcessing": "Procesando...",
         "sLengthMenu": "Mostrar _MENU_ registros",
@@ -115,7 +115,7 @@ var table =$('#listusers').DataTable({
  $('#listusers thead th').each( function () {
         var title = $(this).text();
         if(title!='ID' && title!= "" && title!= "# Rev"&& title!= "# Doc" )
-        $(this).html( '<input type="text" style="width:100px" placeholder="'+title+'" />' );
+        $(this).html( title+'<br/><input type="text" style="width:100px" placeholder="Buscar" />' );
     } );
  
 

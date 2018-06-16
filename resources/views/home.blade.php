@@ -1,9 +1,18 @@
-@extends('admin.layout')
+
+@if( Auth::user()->roles[0]->slug !='Contact Center'  )
+    @extends('admin.layout')
+@endif
 
 @section('contenido')
 @php 
 use App\Http\Controllers\PrimeraGestionController;
 @endphp
+
+
+
+
+@if( Auth::user()->roles[0]->slug !='Contact Center'  )
+
 <div class="responsive">
     <div class="row">
         <div class="col-sm-12">
@@ -19,7 +28,7 @@ use App\Http\Controllers\PrimeraGestionController;
                                 <h3 class="counter text-right m-t-15">{{ PrimeraGestionController::cantGesDia() }}</h3>
                             </li>
                             <li class="col-middle">
-                                <h4>Gestión Hoy</h4>
+                                <h4>Gestión Hoy<h1></h4>
                                 <div class="progress">
                                     <div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
                                         <span class="sr-only"></span>
@@ -174,25 +183,15 @@ use App\Http\Controllers\PrimeraGestionController;
 
                         </div>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
                     </div>
                 </div>
             </div>
 
         </div>  
 
+@else
+    <script>window.location = "/importExportcontact";</script>
 
+@endif
 
         @endsection

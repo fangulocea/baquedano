@@ -95,10 +95,12 @@
 <!-- end - This is for export functionality only -->
 <script>
 
-$('#listusers').DataTable({
+
+
+var table = $('#listusers').DataTable({
     dom: 'Bfrtip',
     buttons: [
-        'copy', 'csv', 'excel', 'pdf', 'print',{
+        'excel', 'pdf', 'print',{
             text: 'Crear Inmueble',
             action: function ( e, dt, node, config ) {
                  window.location.href = '{{ route("inmueble.create") }}';
@@ -106,12 +108,12 @@ $('#listusers').DataTable({
         }
 
     ],
-
-    columnDefs: [{
-            "targets": [12, 13, 14],
+"ordering": false,
+ 
+   columnDefs: [{
+            "targets": [7, 8, 9],
             "orderable": false
         }],
-
     language: {
         "sProcessing": "Procesando...",
         "sLengthMenu": "Mostrar _MENU_ registros",
@@ -141,7 +143,28 @@ $('#listusers').DataTable({
         }
     }
 });
+ // Setup - add a text input to each footer cell
+    $('#listusers thead th').each( function () {
+        var title = $(this).text();
+        if(title!='ID' && title!= "")
+        $(this).html( title+'<br/><input type="text" style="width:100px" placeholder="Buscar" />' );
+    } );
+ 
 
+ 
+    // Apply the search
+    table.columns().every( function () {
+        var that = this;
+ 
+        $( 'input', this.header() ).on( 'keyup change', function () {
+            if ( that.search() !== this.value ) {
+                that
+                    .search( this.value )
+                    .draw();
+
+            }
+        } );
+    } );
 </script>
 
 
