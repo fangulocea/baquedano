@@ -606,8 +606,13 @@ Route::middleware(['auth'])->group(function(){
 		Route::post('revisionpersona/foto/{captacion}','RevisionPersonaController@savefotos')->name('revisionpersona.savefotos')
 		->middleware('permission:revisioncomercial.edit');
 
+
+	Route::get('revisionpersona/eliminarfoto/{idf}/{idc}','RevisionPersonaController@eliminarfoto')->name('revisionpersona.eliminarfoto')
+		->middleware('permission:captacion.edit');
+
 Route::get('revisionpersona/eliminarfoto/{idf}/{idc}','RevisionPersonaController@eliminarfoto')->name('revisionpersona.eliminarfoto')
 		->middleware('permission:revisioncomercial.edit');
+
 
 	Route::post('revisionpersona/gestion/create','RevisionPersonaController@crearGestion')->name('revisionpersona.crearGestion')
 		->middleware('permission:revisioncomercial.edit');
@@ -638,15 +643,39 @@ Route::get('revisionpersona/eliminarfoto/{idf}/{idc}','RevisionPersonaController
 		Route::post('revisioninmueble/foto/{captacion}','RevisionInmuebleController@savefotos')->name('revisioninmueble.savefotos')
 		->middleware('permission:revisioncomercial.edit');
 
-Route::get('revisioninmueble/eliminarfoto/{idf}/{idc}','RevisionInmuebleController@eliminarfoto')->name('revisioninmueble.eliminarfoto')
+		Route::get('revisioninmueble/eliminarfoto/{idf}/{idc}','RevisionInmuebleController@eliminarfoto')->name('revisioninmueble.eliminarfoto')
 		->middleware('permission:captacion.edit');
 
-	Route::post('revisioninmueble/gestion/create','RevisionInmuebleController@crearGestion')->name('revisioninmueble.crearGestion')
+		Route::post('revisioninmueble/gestion/create','RevisionInmuebleController@crearGestion')->name('revisioninmueble.crearGestion')
 		->middleware('permission:captacion.edit');
 
-	Route::post('revisioninmueble/gestion/update','RevisionInmuebleController@editarGestion')->name('revisioninmueble.editarGestion')
+		Route::post('revisioninmueble/gestion/update','RevisionInmuebleController@editarGestion')->name('revisioninmueble.editarGestion')
 		->middleware('permission:captacion.edit');
 
-	Route::get('revisioninmueble/gestion/{idg}','RevisionInmuebleController@mostrarGestion');
+		Route::get('revisioninmueble/gestion/{idg}','RevisionInmuebleController@mostrarGestion');
 
+
+		// COntratos Borrador
+		Route::post('contratoBorrador/store','ContratoBorradorController@store')->name('contratoBorrador.store')
+		->middleware('permission:contratoBorrador.create');
+
+		Route::get('contratoBorrador','ContratoBorradorController@index')->name('contratoBorrador.index')
+		->middleware('permission:contratoBorrador.index');
+
+		Route::get('contratoBorrador/create','ContratoBorradorController@create')->name('contratoBorrador.create')
+		->middleware('permission:contratoBorrador.create');
+
+		Route::get('contratoBorrador/edit/{id}','ContratoBorradorController@edit')->name('contratoBorrador.edit')
+		->middleware('permission:contratoBorrador.edit');
+
+		Route::get('contratoBorrador/destroy/{id}','ContratoBorradorController@destroy')->name('contratoBorrador.destroy')
+		->middleware('permission:contratoBorrador.destroy');
+
+		Route::post('contratoBorrador/crearBorrador','ContratoBorradorController@crearBorrador')->name('contratoBorrador.crearBorrador')
+		->middleware('permission:contratoBorrador.edit');
+
+		Route::post('contratoBorrador/{captacionArrendador}','ContratoBorradorController@update')->name('contratoBorrador.update')
+		->middleware('permission:contratoBorrador.edit');
+
+		Route::get('contratoBorrador/borradorC/{idg}','ContratoBorradorController@mostrarGestion');
 });

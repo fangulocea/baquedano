@@ -237,6 +237,7 @@ class ArrendatarioController extends Controller
      */
     public function destroy($id)
     {
+        
         $arr = Arrendatario::where('id','=',$id)->update([
             'id_estado' => '0'
         ]);

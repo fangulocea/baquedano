@@ -106,7 +106,12 @@
                                                         @else
                                                         <?php $idr = $captacion->id_estado; ?>
                                                         @endif
+<<<<<<< HEAD
                                                        {{ Form::select('id_estado',['0'=>'Descartado','1'=>'Sin Gestión','2'=>'Sin Respuesta','3'=>'Reenvio','4'=>'Expirado','5'=>'Segunda Gestión ','6'=>'Contrato Borrador','7'=>'Contrato Cerrado'], $idr,array('class'=>'form-control','style'=>'','id'=>'id_estado','placeholder'=>'Seleccione estado','required'=>'required')) }}
+=======
+                                                        {{ Form::select('id_estado',['0'=>'Descartado','1'=>'Sin Gestión','2'=>'Sin Respuesta','3'=>'Reenvio','4'=>'Expirado','5'=>'Segunda Gestión ','6'=>'Contrato Borrador','7'=>'Contrato Cerrado','8'=>'Seguimiento Correo','9'=>'Captación Terreno'], $idr,array('class'=>'form-control','style'=>'','id'=>'id_estado','placeholder'=>'Seleccione estado','required'=>'required')) }}
+                                                    
+>>>>>>> 9b6f4f71096ad74e157ee163e1b73859989c4ebd
                                                     </div>
                                                 </div>
                                             </div>
