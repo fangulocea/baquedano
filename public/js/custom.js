@@ -236,7 +236,7 @@ jQuery('#datepicker-fecha_publicacion').datepicker({
     daysOfWeekHighlighted: "0",
     language: "es",
     locale: "es",
-});
+}).datepicker("setDate", new Date());;
 
 jQuery('#datepicker-fecha_expiracion').datepicker({
     format: 'dd-mm-yyyy',
@@ -246,7 +246,7 @@ jQuery('#datepicker-fecha_expiracion').datepicker({
     daysOfWeekHighlighted: "0",
     language: "es",
     locale: "es",
-});
+}).datepicker("setDate", new Date());;
 
 jQuery('#datepicker-fecha_contacto1').datepicker({
     format: 'dd-mm-yyyy',
@@ -256,7 +256,7 @@ jQuery('#datepicker-fecha_contacto1').datepicker({
     daysOfWeekHighlighted: "0",
     language: "es",
     locale: "es",
-});
+}).datepicker("setDate", new Date());;
 
 jQuery('#datepicker-fecha_contacto_e').datepicker({
     format: 'dd-mm-yyyy',
@@ -266,7 +266,7 @@ jQuery('#datepicker-fecha_contacto_e').datepicker({
     daysOfWeekHighlighted: "0",
     language: "es",
     locale: "es",
-});
+}).datepicker("setDate", new Date());;
 
 
 $("#li_1").click(function (event) {

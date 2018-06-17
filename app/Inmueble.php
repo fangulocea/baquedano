@@ -10,7 +10,7 @@ class Inmueble extends Model
 {
 	use SoftDeletes;
     protected $table='inmuebles';
-    protected $fillable = ['direccion','numero','departamento','dormitorio','bano','estacionamiento','bodega','piscina','precio','gastosComunes','estado','id_comuna','id_region','id_provincia'];
+    protected $fillable = ['direccion','numero','departamento','dormitorio','bano','estacionamiento','bodega','piscina','precio','gastosComunes','estado','id_comuna','id_region','id_provincia','referencia'];
     protected $dates = ['deleted_at'];
 
 public static function inmuebles($text){

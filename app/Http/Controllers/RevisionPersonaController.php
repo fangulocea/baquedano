@@ -74,7 +74,7 @@ class RevisionPersonaController extends Controller
     {
         $persona = DB::table('personas')
         ->where("id","=",$id)
-        ->join('comunas', 'personas.id_comuna', '=', 'comunas.comuna_id')->get()->first();
+        ->leftjoin('comunas', 'personas.id_comuna', '=', 'comunas.comuna_id')->get()->first();
         
         $gestion = DB::table('adm_revisionpersona as g')
          ->leftjoin('personas as p2', 'g.id_creador', '=', 'p2.id')

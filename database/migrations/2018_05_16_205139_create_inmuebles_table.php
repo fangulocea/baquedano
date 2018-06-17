@@ -24,6 +24,7 @@ class CreateInmueblesTable extends Migration
             $table->integer('dormitorio')->nullable();
             $table->integer('bano')->nullable();
             $table->integer('estacionamiento')->nullable();
+            $table->string('referencia')->nullable();
             $table->integer('bodega')->nullable();
             $table->string('piscina')->nullable();
             $table->integer('precio')->nullable();

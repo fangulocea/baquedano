@@ -155,17 +155,27 @@
                                 <div class="col-md-2">
                                     <div class="form-group">
                                       <label>Nro.</label>
-                                      <input name='i_numero' id='i_numero' type="text" class="form-control" required="required" value='{{ $inmueble->numero or ''  }}'>  </div>
+                                      <input name='i_numero' id='i_numero' type="text" class="form-control"  value='{{ $inmueble->numero or ''  }}'>  </div>
                                   </div>
                                  <div class="col-md-2">
                                     <div class="form-group">
                                       <label>Departamento</label>
                                       <input name='i_departamento'  id='i_departamento' value='{{ $inmueble->departamento or ''}}' type="text" class="form-control" > </div>
-                                  </div>
-
-
-                                                        
+                                  </div>       
                                                 </div>
+                                                <div class="row"> 
+                             <div class="col-md-8">
+                                    <div class="form-group">
+
+                                        <label>Referencia</label>
+                                        <div id="direcciones">
+                                            <input name='referencia' id='referencia' class="typeahead form-control" type="text" placeholder="Referencia"  value='{{ $inmueble->referencia or '' }}'> 
+                                        </div>
+                                        
+                                    </div>
+                                </div>
+                                                </div>
+
                                             </div>
                                             @if(!isset($inmueble->id_region))
                                             <?php $idr = null; ?>
@@ -594,7 +604,7 @@
                                                         <div class="input-group">
                                                             <input type="text" autocomplete="off" class="form-control datepicker-fecha_contacto1" placeholder="dd/mm/yyyy" id="datepicker-fecha_contacto1" name="fecha_gestion" required="required"> <span class="input-group-addon"><i class="icon-calender"></i></span> 
                                                                 <div class="input-group clockpicker">
-                                                                    <input type="time" class="form-control" name="hora_gestion" placeholder="HH:MM" required="required" > <span class="input-group-addon"> <span class="glyphicon glyphicon-time"></span> </span>
+                                                                    <input type="time" class="form-control" name="hora_gestion" id="hora_gestion" placeholder="HH:MM" required="required" > <span class="input-group-addon"> <span class="glyphicon glyphicon-time"></span> </span>
                                                                 </div>
                                                         </div>
                                                     </div>
@@ -767,15 +777,54 @@
 
 <script>
 
+
 $(function(){
     
     $('#modal-contacto1').on('hidden.bs.modal', function () {
         $("#form1")[0].reset();
+ var fecha =  new Date();
+ var year = fecha.getFullYear();//el año se puede quitar de este ejemplo
+ var mes = fecha.getMonth();//pero ya que estamos lo ponemos completo
+ var dia = fecha.getDate();
+ var hora = fecha.getHours();
+ var minutos = fecha.getMinutes();
+ var segundos = fecha.getSeconds();
+ //aquí se hace lo 'importante'
+ if(mes<10){mes='0'+mes}
+ if(dia<10){dia='0'+dia}
+ if(hora<10){hora='0'+hora}
+ if(minutos<10){minutos='0'+minutos}
+ if(segundos<10){segundos='0'+segundos}
+
+        $('#datepicker-fecha_contacto1').val(dia+'-'+mes+'-'+year);;
+        $('#hora_gestion').val(hora+':'+minutos);;
+    });
+
+        $('#modal-contacto1').on('shown.bs.modal', function () {
+        $("#form1")[0].reset();
+ var fecha =  new Date();
+ var year = fecha.getFullYear();//el año se puede quitar de este ejemplo
+ var mes = fecha.getMonth();//pero ya que estamos lo ponemos completo
+ var dia = fecha.getDate();
+ var hora = fecha.getHours();
+ var minutos = fecha.getMinutes();
+ var segundos = fecha.getSeconds();
+ //aquí se hace lo 'importante'
+ if(mes<10){mes='0'+mes}
+ if(dia<10){dia='0'+dia}
+ if(hora<10){hora='0'+hora}
+ if(minutos<10){minutos='0'+minutos}
+ if(segundos<10){segundos='0'+segundos}
+
+
+        $('#datepicker-fecha_contacto1').val(dia+'-'+mes+'-'+year);;
+        $('#hora_gestion').val(hora+':'+minutos);;
     });
     
-     $('#modal-contacto1').on('shown.bs.modal', function () {
-        $("#form1")[0].reset();
+    $('#modal-contacto_edit_c').on('hidden.bs.modal', function () {
+        $("#form1_e")[0].reset();
     });
+
 });
 
     lightbox.option({

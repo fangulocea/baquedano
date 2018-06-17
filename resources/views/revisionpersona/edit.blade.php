@@ -44,7 +44,7 @@
                                                 <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                                 {!! csrf_field() !!}
                                                     <input type="hidden" class="form-control" name="id_creador" id="id_creador" value="{{ Auth::user()->id }}">
-                                                    <input type="hidden" class="form-control" name="id_persona" id="id_persona" value="{{ $persona->id }}">
+                                                    <input type="hidden" class="form-control" name="id_persona" id="id_persona"    value="{{ $persona->id }}">
                                                     <input type="hidden" class="form-control" name="tipo_revision" id="tipo_revision">
                                                     <div class="modal-body">
 
@@ -54,7 +54,7 @@
                                                         <div class="input-group">
                                                             <input type="text" autocomplete="off" class="form-control datepicker-fecha_contacto1_c" placeholder="dd/mm/yyyy" id="datepicker-fecha_contacto1_c" name="fecha_gestion" required="required"> <span class="input-group-addon"><i class="icon-calender"></i></span> 
                                                                 <div class="input-group clockpicker">
-                                                                    <input type="time" class="form-control" name="hora_gestion" placeholder="HH:MM" required="required" > <span class="input-group-addon"> <span class="glyphicon glyphicon-time"></span> </span>
+                                                                    <input type="time" class="form-control" name="hora_gestion" id="hora_gestion" placeholder="HH:MM" required="required" > <span class="input-group-addon"> <span class="glyphicon glyphicon-time"></span> </span>
                                                                 </div>
                                                         </div>
                                                     </div>
@@ -274,10 +274,43 @@ $(function(){
     
     $('#modal-contacto1_c').on('hidden.bs.modal', function () {
         $("#form1_c")[0].reset();
+ var fecha =  new Date();
+ var year = fecha.getFullYear();//el año se puede quitar de este ejemplo
+ var mes = fecha.getMonth();//pero ya que estamos lo ponemos completo
+ var dia = fecha.getDate();
+ var hora = fecha.getHours();
+ var minutos = fecha.getMinutes();
+ var segundos = fecha.getSeconds();
+ //aquí se hace lo 'importante'
+ if(mes<10){mes='0'+mes}
+ if(dia<10){dia='0'+dia}
+ if(hora<10){hora='0'+hora}
+ if(minutos<10){minutos='0'+minutos}
+ if(segundos<10){segundos='0'+segundos}
+
+        $('#datepicker-fecha_contacto1_c').val(dia+'-'+mes+'-'+year);;
+        $('#hora_gestion').val(hora+':'+minutos);;
     });
 
         $('#modal-contacto1_c').on('shown.bs.modal', function () {
         $("#form1_c")[0].reset();
+ var fecha =  new Date();
+ var year = fecha.getFullYear();//el año se puede quitar de este ejemplo
+ var mes = fecha.getMonth();//pero ya que estamos lo ponemos completo
+ var dia = fecha.getDate();
+ var hora = fecha.getHours();
+ var minutos = fecha.getMinutes();
+ var segundos = fecha.getSeconds();
+ //aquí se hace lo 'importante'
+ if(mes<10){mes='0'+mes}
+ if(dia<10){dia='0'+dia}
+ if(hora<10){hora='0'+hora}
+ if(minutos<10){minutos='0'+minutos}
+ if(segundos<10){segundos='0'+segundos}
+
+
+        $('#datepicker-fecha_contacto1_c').val(dia+'-'+mes+'-'+year);;
+        $('#hora_gestion').val(hora+':'+minutos);;
     });
     
     $('#modal-contacto_edit_c').on('hidden.bs.modal', function () {
