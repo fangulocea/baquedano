@@ -7,7 +7,13 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use DB;
 use App\Captacion;
+use App\Servicio;
 use DateTime;
+use App\Contratoborradorpdf;
+use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\File;    
+use Illuminate\Support\Facades\Mail;
+use URL;
 
 class ContratoBorradorController extends Controller
 {
@@ -89,8 +95,8 @@ class ContratoBorradorController extends Controller
          ->leftjoin('comisiones as c', 'b.id_comisiones', '=', 'c.id')
          ->leftjoin('flexibilidads as f', 'b.id_flexibilidad', '=', 'f.id')
          ->leftjoin('cap_publicaciones as cp', 'b.id_publicacion', '=', 'cp.id')
-            ->where('b.id','=',$id)
-         ->select(DB::raw(' b.id as id, n.razonsocial as n_n, s.nombre as n_s, c.nombre as n_c, f.nombre as n_f , cp.id as id_publicacion,DATE_FORMAT(b.fecha_gestion, "%d/%m/%Y") as fecha'))
+            ->where('b.id_publicacion','=',$id)
+         ->select(DB::raw(' b.id as id, n.razonsocial as n_n, s.nombre as n_s, c.nombre as n_c, f.nombre as n_f , cp.id as id_publicacion,DATE_FORMAT(b.fecha_gestion, "%d/%m/%Y") as fecha,b.id_servicios as id_servicios,b.id_estado'))
          ->get();
 
 
@@ -149,35 +155,131 @@ class ContratoBorradorController extends Controller
     {
         $fecha_gestion = DateTime::createFromFormat('d-m-Y', $request->fecha_gestion);
         array_set($request, 'fecha_gestion', $fecha_gestion);
-        array_set($request, 'detalle_revision', '');   
+        array_set($request, 'detalle_revision', '   ');
+        array_set($request, 'id_estado', 1);
         $borrador = ContratoBorrador::create($request->all());
+
+        //PARA PDF
+         $borradorPDF = DB::table('borradores as b')
+         ->leftjoin('notarias as n', 'b.id_notaria', '=', 'n.id')
+         ->leftjoin('servicios as s', 'b.id_servicios', '=', 's.id')
+         ->leftjoin('comisiones as c', 'b.id_comisiones', '=', 'c.id')
+         ->leftjoin('flexibilidads as f', 'b.id_flexibilidad', '=', 'f.id')
+         ->leftjoin('cap_publicaciones as cp', 'b.id_publicacion', '=', 'cp.id') 
+         ->leftjoin('personas as p1', 'cp.id_propietario','=','p1.id')
+         ->leftjoin('comunas as c1', 'p1.id_comuna','=','c1.comuna_id')
+         ->leftjoin('inmuebles as i', 'cp.id_inmueble','=','i.id')
+         ->leftjoin('comunas as c2', 'i.id_comuna','=','c2.comuna_id')
+         ->where('b.id','=',$borrador->id)
+         ->select(DB::raw(' b.id as id, n.razonsocial as n_n, s.nombre as n_s, c.nombre as n_c, f.nombre as n_f , cp.id as id_publicacion,DATE_FORMAT(b.fecha_gestion, "%d/%m/%Y") as fecha,CONCAT_WS(" ",p1.nombre,p1.apellido_paterno,p1.apellido_materno) as propietario,p1.rut as rut_p, p1.direccion as direccion_p, p1.numero as numero_p, c1.comuna_nombre as comuna_p,i.direccion as direccion_i, i.numero as numero_i, i.departamento as depto_i, c2.comuna_nombre as comuna_i,i.dormitorio, i.bano, i.bodega, i.piscina, i.precio, i.gastosComunes'))
+         ->first();
+        $pdf = new pdfController();
+        $pdf->index($borradorPDF);
+        // FIN PARA PDF
+
+        $borrpdf=Contratoborradorpdf::create([
+                    "id_borrador" => $borradorPDF->id,
+                    "nombre"      => $borradorPDF->id.$borradorPDF->direccion_i.$borradorPDF->numero_i.".pdf",
+                    "ruta"        => "uploads/pdf/",
+                    "id_creador"  => $request->id_creador
+                ])->toArray();
+
+
+
         return redirect()->route('contratoBorrador.edit', $request->id_publicacion)
-        ->with('status', 'Borrador guardado con éxito');
+         ->with('status', 'Borrador guardado con éxito');
     }
 
   public function editarGestion(Request $request)
     {
-        // $fecha_gestion = DateTime::createFromFormat('d-m-Y', $request->fecha_gestion);
-        // array_set($request, 'fecha_gestion', $fecha_gestion);
-        // $captacion = CaptacionGestion::where('id','=',$request->id_captacion_gestion)
-        // ->update([
-        //     'dir' => $request->dir,
-        //     'detalle_contacto' => $request->detalle_contacto,
-        //     'id_modificador_gestion' => $request->id_modificador_gestion,
-        //     'fecha_gestion' => $request->fecha_gestion,
-        //     'hora_gestion' => $request->hora_gestion
-        // ]);
-        // return redirect()->route('captacion.edit', $request->id_captacion_gestion)
+        $fecha_gestion = DateTime::createFromFormat('d-m-Y', $request->fecha_gestion_m);
+        array_set($request, 'fecha_gestion_m', $fecha_gestion);
 
-        //     ->with('status', 'Gestión guardada con éxito');
+        $captacion = ContratoBorrador::where('id','=',$request->id_borrador)
+        ->update([
+              "id_modificador" => $request->id_modificador,
+              "id_notaria" => $request->id_notaria_m,
+              "id_servicios" => $request->id_servicios_m,
+              "id_comisiones" => $request->id_comision_m,
+              "id_flexibilidad" => $request->id_flexibilidad_m,
+              "fecha_gestion" => $request->fecha_gestion_m,
+              "id_estado" => $request->id_estado_m,
+              "detalle_revision" => $request->detalle_revision_m
+        ]);
+
+        //PARA PDF
+         $borradorPDF = DB::table('borradores as b')
+         ->leftjoin('notarias as n', 'b.id_notaria', '=', 'n.id')
+         ->leftjoin('servicios as s', 'b.id_servicios', '=', 's.id')
+         ->leftjoin('comisiones as c', 'b.id_comisiones', '=', 'c.id')
+         ->leftjoin('flexibilidads as f', 'b.id_flexibilidad', '=', 'f.id')
+         ->leftjoin('cap_publicaciones as cp', 'b.id_publicacion', '=', 'cp.id') 
+         ->leftjoin('personas as p1', 'cp.id_propietario','=','p1.id')
+         ->leftjoin('comunas as c1', 'p1.id_comuna','=','c1.comuna_id')
+         ->leftjoin('inmuebles as i', 'cp.id_inmueble','=','i.id')
+         ->leftjoin('comunas as c2', 'i.id_comuna','=','c2.comuna_id')
+         ->where('b.id','=',$request->id_borrador)
+         ->select(DB::raw(' b.id as id, n.razonsocial as n_n, s.nombre as n_s, c.nombre as n_c, f.nombre as n_f , cp.id as id_publicacion,DATE_FORMAT(b.fecha_gestion, "%d/%m/%Y") as fecha,CONCAT_WS(" ",p1.nombre,p1.apellido_paterno,p1.apellido_materno) as propietario,p1.rut as rut_p, p1.direccion as direccion_p, p1.numero as numero_p, c1.comuna_nombre as comuna_p,i.direccion as direccion_i, i.numero as numero_i, i.departamento as depto_i, c2.comuna_nombre as comuna_i,i.dormitorio, i.bano, i.bodega, i.piscina, i.precio, i.gastosComunes'))
+         ->first();
+        $pdf = new pdfController();
+        $pdf->index($borradorPDF);
+        // FIN PARA PDF
+
+        return redirect()->route('contratoBorrador.edit', $request->id_publicacion)
+            ->with('status', 'Borrador actualizado con éxito');
     }
 
 
-public function mostrarGestion(Request $request, $idg){
-            $gestion=ContratoBorrador::where('id','=',$idg)->get();
-            dd($gestion);
-            return response()->json($gestion);  
-    }
+    public function mostrarGestion(Request $request, $idg){
 
+                $gestion=ContratoBorrador::where('id','=',$idg)->get();
+                return response()->json($gestion);  
+        }
+
+    public function mostrarServicio(){
+                $servicio=Servicio::where('estado','<>',0)->get();
+                return $servicio; 
+        }
+
+    public function enviaMail($id){
+
+        $borradorCorreo = DB::table('borradores as b')
+         ->leftjoin('cap_publicaciones as cp', 'b.id_publicacion', '=', 'cp.id') 
+         ->leftjoin('personas as p1', 'cp.id_propietario','=','p1.id')
+         ->leftjoin('comunas as c1', 'p1.id_comuna','=','c1.comuna_id')
+         ->leftjoin('borradorespdf as pdf','b.id','=','pdf.id_borrador')
+         ->where('b.id','=',$id)
+         ->select(DB::raw(' b.id as id,CONCAT_WS(" ",p1.nombre,p1.apellido_paterno,p1.apellido_materno) as propietario, p1.email as correo,CONCAT(pdf.ruta,pdf.nombre) as archivo,b.id_estado as estado,b.id_publicacion as id_pub'))
+         ->first();
+         
+         if($borradorCorreo->estado <> 0)
+         {
+            $envioCorreo = array('nombre' => $borradorCorreo->propietario ,
+                  'email' => $borradorCorreo->correo );
+
+            Mail::send('emails.contratoborrador', $envioCorreo, function ($message) use($borradorCorreo) {
+                $archivos = 'uploads\pdf\4serafin zamora190.pdf';
+                $message->from('edison.carrizo.j@gmail.com');
+                $message->to($borradorCorreo->correo);
+                $message->subject('Asunto del correo');
+                $message->attach($borradorCorreo->archivo);
+            });
+
+            if($borradorCorreo->estado == 1)
+            { ContratoBorrador::find($id)->update(['id_estado' => 2]); }
+            else
+            { ContratoBorrador::find($id)->update(['id_estado' => 3]); }
+        
+
+            return redirect()->route('contratoBorrador.edit', $borradorCorreo->id_pub)
+                ->with('status', 'Correo enviado con éxito');
+        }
+        else
+        {
+            return redirect()->route('contratoBorrador.edit', $borradorCorreo->id_pub)
+                ->with('error', 'No se puede enviar correo a borrador Rechazado');   
+        }
+
+    }
 
 }

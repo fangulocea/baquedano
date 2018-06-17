@@ -26,7 +26,7 @@
                                 <div class="col-md-12 ">
                                     <div class="form-group">
                                         <label>Detalle del Servicio</label>
-                                        <input name='descripcion' type="text" class="form-control"> </div>
+                                        <input name='descripcion' type="text" required="required" class="form-control"> </div>
                                 </div>
                             </div>
 

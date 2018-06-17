@@ -674,8 +674,18 @@ Route::get('revisionpersona/eliminarfoto/{idf}/{idc}','RevisionPersonaController
 		Route::post('contratoBorrador/crearBorrador','ContratoBorradorController@crearBorrador')->name('contratoBorrador.crearBorrador')
 		->middleware('permission:contratoBorrador.edit');
 
+		Route::get('contratoBorrador/borradorC/{idg}','ContratoBorradorController@mostrarGestion');
+
 		Route::post('contratoBorrador/{captacionArrendador}','ContratoBorradorController@update')->name('contratoBorrador.update')
 		->middleware('permission:contratoBorrador.edit');
 
-		Route::get('contratoBorrador/borradorC/{idg}','ContratoBorradorController@mostrarGestion');
+		Route::post('contratoBorrador/borrador/update','ContratoBorradorController@editarGestion')->name('contratoBorrador.editarGestion')
+		->middleware('permission:contratoBorrador.edit');
+
+		Route::get('contratoBorrador/mail/{id}','ContratoBorradorController@enviaMail')->name('contratoBorrador.mail');		
+
+		Route::get('pdf/{data}', 'PdfController@index');
+
+
+
 });

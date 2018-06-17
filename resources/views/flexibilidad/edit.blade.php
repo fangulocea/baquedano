@@ -26,7 +26,7 @@
                                 <div class="col-md-12 ">
                                     <div class="form-group">
                                         <label>Detalle de la flexibilidad</label>
-                                        <input name='descripcion' value="{{ $flex->descripcion }}" type="text" class="form-control"> </div>
+                                        <input name='descripcion' required="required" value="{{ $flex->descripcion }}" type="text" class="form-control"> </div>
                                 </div>
                             </div>
 

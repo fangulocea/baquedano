@@ -26,7 +26,7 @@
                                 <div class="col-md-12 ">
                                     <div class="form-group">
                                         <label>Detalle del Servicio</label>
-                                        <input name='descripcion' type="text" class="form-control" value="{{ $multa->descripcion }}"> </div>
+                                        <input name='descripcion' required="required" type="text" class="form-control" value="{{ $multa->descripcion }}"> </div>
                                 </div>
                             </div>
 
