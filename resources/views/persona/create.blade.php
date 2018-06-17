@@ -52,6 +52,30 @@
                                         </div>
                                 </div>
                             </div>
+                             <div class="row">
+                                <div class="col-md-4 ">
+                                    <div class="form-group">
+                                        <label>Profesión / Ocupación</label>
+                                        <div id="profesion">
+                                                    <input name='profesion' id='profesion' class="typeahead form-control" type="text" placeholder="Profesión / Ocupación" > 
+                                            </div>
+                                    </div>
+                                </div>
+                                  <div class="col-md-4 ">
+                                    <div class="form-group">
+                                        <label>Estado civíl</label>
+                                           <select class="form-control" name="estado_civil"  >
+                                            <option value="">Selecione Estado Civil</option>
+                                            <option value="Soltero/a">Soltero/a</option>
+                                            <option value="Casado/a">Casado/a</option>
+                                            <option value="Viudo/a">Viudo/a</option>
+                                            <option value="Divorciado/a">Divorciado/a</option>
+                                            <option value="Separado/a">Separado/a</option>
+                                            <option value="Conviviente">Conviviente</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
                             <div class="row">
                                 <div class="col-md-6 ">
                                     <div class="form-group">
@@ -122,7 +146,7 @@
                                             <option value="Propietario">Propietario</option>
                                             <option value="Arrendatario">Arrendatario</option>
                                             <option value="Empleado">Empleado</option>
-                                            <option value="Corredor">Corredor</option>
+                                            <option value="Corredor - Externo">Corredor - Externo</option>
                                         </select>
                                     </div>
                                 </div>                                                                       

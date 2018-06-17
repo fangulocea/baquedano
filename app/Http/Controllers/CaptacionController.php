@@ -374,7 +374,7 @@ class CaptacionController extends Controller
          ->select(DB::raw('g.id, DATE_FORMAT(g.fecha_gestion, "%d/%m/%Y") as fecha_gestion,  CONCAT(p2.nombre," ",p2.apellido_paterno," ",p2.apellido_materno) as Creador'), 'g.dir','g.tipo_contacto','g.hora_gestion')
          ->get();
 
-       return view('importar.gestion',compact('gestion','id','persona','inmueble'));
+       return view('importarbaquedano.gestion',compact('gestion','id','persona','inmueble'));
     }
     /**
      * Display a listing of the resource.
@@ -566,6 +566,7 @@ class CaptacionController extends Controller
     {        
 
         if($request->paso=='1'){
+
         $fecha_publicacion = DateTime::createFromFormat('d/m/Y', $request->fecha_publicacion);
         array_set($request, 'fecha_publicacion', $fecha_publicacion);
         
@@ -597,6 +598,8 @@ class CaptacionController extends Controller
                             'direccion'         => $request->p_direccion,
                             'numero'            => $request->p_numero,
                             'departamento'      => $request->p_departamento,
+                            'estado_civil'      => $request->p_estado_civil,
+                            'profesion'         => $request->p_profesion,
                             'id_estado'         => '1',
                             'telefono'          => $request->p_telefono,
                             'email'             => $request->p_email,
@@ -617,6 +620,8 @@ class CaptacionController extends Controller
                             'direccion'         => $request->p_direccion,
                             'numero'            => $request->p_numero,
                             'departamento'      => $request->p_departamento,
+                            'estado_civil'      => $request->p_estado_civil,
+                            'profesion'         => $request->p_profesion,
                             'telefono'          => $request->p_telefono,
                             'email'             => $request->p_email,
                             'id_comuna'         => $request->p_id_comuna,
@@ -645,10 +650,12 @@ class CaptacionController extends Controller
                             'bano'              => $request->i_bano,
                             'estacionamiento'   => $request->i_estacionamiento,
                             'bodega'            => $request->i_bodega,
+                            'rol'               => $request->i_rol,
+                            'nro_bodega'        => $request->i_nro_bodega,
+                            'referencia'         => $request->i_referencia,
                             'piscina'           => $request->i_piscina,
                             'precio'            => $request->i_precio,
                             'gastosComunes'     => $request->i_gastosComunes,
-                            'referencia'     => $request->referencia,
                             'condicion'     => $request->i_condicion,
                             'estado'            => '1',
                             'id_comuna'         => $request->i_id_comuna,
@@ -664,9 +671,12 @@ class CaptacionController extends Controller
                             'dormitorio'        => $request->i_dormitorio,
                             'bano'              => $request->i_bano,
                             'estacionamiento'   => $request->i_estacionamiento,
+                            'rol'               => $request->i_rol,
+                            'nro_bodega'        => $request->i_nro_bodega,
+                            'referencia'         => $request->i_referencia,
                             'bodega'            => $request->i_bodega,
                             'piscina'           => $request->i_piscina,
-                            'referencia'       => $request->referencia,
+                            'referencia'       => $request->i_referencia,
                             'precio'            => $request->i_precio,
                             'gastosComunes'     => $request->i_gastosComunes,
                             'condicion'         => $request->i_condicion,

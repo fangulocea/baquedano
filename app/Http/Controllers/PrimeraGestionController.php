@@ -77,7 +77,7 @@ class PrimeraGestionController extends Controller
       ->where('estado','=',1)
       ->get();
       $est=2;
-        return view('importar.index',compact('correo','est'));
+        return view('importarbaquedano.index',compact('correo','est'));
     }
     
     /**
@@ -198,7 +198,7 @@ class PrimeraGestionController extends Controller
       ->where('estado','=',1)
       ->get();
       $est=1;
-        return view('importar.index',compact('correo','est'));
+        return view('importarbaquedano.index',compact('correo','est'));
     }
 
     /**

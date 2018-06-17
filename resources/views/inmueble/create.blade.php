@@ -16,7 +16,7 @@
                             <h3 class="box-title">Información del inmueble</h3>
                             <hr>
                             <div class="row"> 
-                                <div class="col-md-8">
+                                <div class="col-md-6">
                                     <div class="form-group">
                                          
                                             <label>Dirección</label>
@@ -31,22 +31,42 @@
                                     <div class="form-group">
                                        
                                         <label>Nro.</label>
-                                        <input name='numero' type="text" class="form-control" required="required"> </div>
+                                        <input name='numero' type="text" class="form-control" > </div>
                                     
                                 </div>
                                  <div class="col-md-2">
                                     <div class="form-group">
                                        
                                         <label>Departamento</label>
-                                        <input name='departamento' type="text" class="form-control" required="required"> </div>
+                                        <input name='departamento' type="text" class="form-control" > </div>
                                     
                                 </div>
+                                 <div class="col-md-2">
+                                    <div class="form-group">
+                                       
+                                        <label>Rol</label>
+                                        <input name='rol' type="text" class="form-control" > </div>
+                                    
+                                </div>
+                            </div>
+                            <div class="row"> 
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                         
+                                            <label>Referencias de la dirección</label>
+                                            <div id="referencia">
+                                                    <input name='referencia' id='referencia' class="typeahead form-control" type="text" placeholder="Referencia" > 
+                                            </div>
+                                        
+                                    </div>
+                                </div>
+                                
                             </div>
                             <div class="row"> 
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label>Región</label>
-                                        {{ Form::select('id_region',$regiones, null,array('class'=>'form-control','style'=>'','id'=>'regiones','placeholder'=>'Selecciona región','required'=>'required')) }}
+                                        {{ Form::select('id_region',$regiones, null,array('class'=>'form-control','style'=>'','id'=>'regiones','placeholder'=>'Selecciona región')) }}
                                     </div>
                                 </div>
 
@@ -54,13 +74,13 @@
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label>Provincia</label>
-                                        {{ Form::select('id_provincia',['placeholder'=>'Seleccione provinvia'], null, array('class'=>'form-control','style'=>'','id'=>'provincias','required'=>'required')) }} </div>
+                                        {{ Form::select('id_provincia',['placeholder'=>'Seleccione provinvia'], null, array('class'=>'form-control','style'=>'','id'=>'provincias')) }} </div>
                                 </div>
                                 <!--/span-->
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label>Comuna</label>
-                                        {{ Form::select('id_comuna',['placeholder'=>'Seleccione comuna'], null, array('class'=>'form-control','style'=>'','id'=>'comunas','required'=>'required')) }}
+                                        {{ Form::select('id_comuna',['placeholder'=>'Seleccione comuna'], null, array('class'=>'form-control','style'=>'','id'=>'comunas')) }}
                                     </div>
                                 </div>
                             </div>
@@ -80,19 +100,29 @@
                                 <div class="col-md-2">
                                     <div class="form-group">
                                         <label>Estacionamiento</label>
-                                        <input name='estacionamiento' type="number" class="form-control" required="required">
+                                        <input name='estacionamiento' type="number" class="form-control" >
                                     </div>
                                 </div>
                                 <div class="col-md-2">
                                     <div class="form-group">
                                         <label>Bodega</label>
-                                        <input name='bodega' type="number" class="form-control" required="required">
+                                        <select class="form-control" name="bodega" >
+                                            <option value="">Sel. Opción</option>
+                                            <option value="1">SI</option>
+                                            <option value="0">NO</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="form-group">
+                                        <label>Número de Bodega</label>
+                                        <input name='nro_bodega' type="number" class="form-control" >
                                     </div>
                                 </div>
                                 <div class="col-md-2">
                                     <div class="form-group">
                                         <label>Piscina</label>
-                                        <select class="form-control" name="piscina" required="required">
+                                        <select class="form-control" name="piscina" >
                                             <option value="">Sel. Opción</option>
                                             <option value="SI">SI</option>
                                             <option value="NO">NO</option>
@@ -106,7 +136,7 @@
                                         <label>Gasto Común</label>
                                         <div class="input-group"> 
                                             <span class="input-group-addon">$</span>
-                                            <input name='gastosComunes' type="number" class="form-control" required="required">
+                                            <input name='gastosComunes' type="number" class="form-control" >
                                         </div>
                                     </div>
                                 </div>
@@ -126,6 +156,16 @@
                                             <option value="">Seleccione Estado</option>
                                             <option value="1">Vigente</option>
                                             <option value="0">No Vigente</option>
+                                        </select>
+                                    </div>
+                                </div>
+                               <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Condición</label>
+                                        <select class="form-control" name="condicion" required="required">
+                                            <option value="">Seleccione Condición</option>
+                                            <option value="Nuevo">Nuevo</option>
+                                            <option value="Usado">Usado</option>
                                         </select>
                                     </div>
                                 </div>

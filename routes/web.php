@@ -285,7 +285,7 @@ Route::middleware(['auth'])->group(function(){
 	Route::get('captacion/create','CaptacionController@create')->name('captacion.create')
 		->middleware('permission:captacion.create');
 
-	Route::post('captacion/{captacion}','CaptacionController@update')->name('captacion.update')
+	Route::post('captacion/update/{id}','CaptacionController@update')->name('captacion.update')
 		->middleware('permission:captacion.edit');
 
 	Route::post('captacion/foto/{captacion}','CaptacionController@savefotos')->name('captacion.savefotos')

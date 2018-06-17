@@ -49,7 +49,22 @@
                                         </div>
                                 </div>
                             </div>
-                            
+                             <div class="row">
+                                <div class="col-md-4 ">
+                                    <div class="form-group">
+                                        <label>Profesión / Ocupación</label>
+                                        <div id="profesion">
+                                                    <input name='profesion' id='profesion' class="typeahead form-control" type="text" placeholder="Profesión / Ocupación" value="{{ $_persona->profesion }}"> 
+                                            </div>
+                                    </div>
+                                </div>
+                                  <div class="col-md-4 ">
+                                    <div class="form-group">
+                                        <label>Estado civil</label>
+                                            {{ Form::select('estado_civil',['Soltero/a'=>'Soltero/a','Casado/a'=>'Casado/a','Viudo/a'=>'Viudo/a','Divorciado/a'=>'Divorciado/a','Separado/a'=>'Separado/a','Conviviente'=>'Conviviente'], $_persona->estado_civil ,array('class'=>'form-control','style'=>'','id'=>'estado_civil')) }}
+                                    </div>
+                                </div>
+                            </div>
                             <div class="row">
                                 <div class="col-md-6 ">
                                     <div class="form-group">
@@ -112,7 +127,7 @@
                                     <div class="form-group">
                                         <label>Tipo Persona</label>
                                        
-                                         {{ Form::select('tipo_cargo',['Propietario'=>'Propietario','Arrendatario'=>'Arrendatario','Empleado'=>'Empleado','Corredor'=>'Corredor'], $_persona->tipo_cargo ,array('class'=>'form-control','style'=>'','id'=>'tipo_cargo','required'=>'required','onChange'=>'mostrar(this.value)')) }}
+                                         {{ Form::select('tipo_cargo',['Propietario'=>'Propietario','Arrendatario'=>'Arrendatario','Empleado'=>'Empleado','Corredor - Externo'=>'Corredor - Externo'], $_persona->tipo_cargo ,array('class'=>'form-control','style'=>'','id'=>'tipo_cargo','required'=>'required','onChange'=>'mostrar(this.value)')) }}
                                     </div>
                                 </div>                                                                       
                                 <div class="col-md-3">

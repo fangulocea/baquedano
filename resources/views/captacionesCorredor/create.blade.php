@@ -32,7 +32,7 @@
                                             <div class="row">
                                                 <div class="col-md-3">
                                                     <div class="form-group">
-                                                        <label>Corredor de Propiedades</label>
+                                                        <label>Corredor  / Externos</label>
                                                         <div class="input-group">
                                                     {{ Form::select('id_corredor',$corredores, null,array('class'=>'form-control','style'=>'','id'=>'id_corredor','placeholder'=>'Seleccione corredor','required'=>'required')) }}
                                                 </div></div></div>
@@ -60,9 +60,8 @@
                                                         <label>Estado</label>
                                                         <select class="form-control" name="id_estado" required="required">
                                                             <option value="">Seleccione Estado</option>
-                                                            <option value="1">Sin Gestión (Activo)</option>
-                                                            <option value="9">Captación Terreno</option>
-                                                            <option value="0">Descartado</option>
+                                                            <option value="1">Activo</option>
+
                                                             
                                                         </select>
                                                     </div>

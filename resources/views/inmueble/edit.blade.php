@@ -17,12 +17,12 @@
                             <hr>
                             <div class="row"> 
 
-                                <div class="col-md-8">
+                                <div class="col-md-6">
                                     <div class="form-group">
 
                                         <label>Dirección</label>
                                         <div id="direcciones">
-                                            <input name='direccion' id='direccion' class="typeahead form-control" type="text" placeholder="Dirección" value='{{ $inmueble->direccion }}' required="required"> 
+                                            <input name='direccion' id='direccion' class="typeahead form-control" type="text" placeholder="Dirección" value='{{ $inmueble->direccion or ''}}' required="required"> 
                                         </div>
                                         
                                     </div>
@@ -34,19 +34,37 @@
                                 <div class="col-md-2">
                                     <div class="form-group">
                                       <label>Nro.</label>
-                                      <input name='numero' value='{{ $inmueble->numero }}' type="text" class="form-control" required="required"> </div>
+                                      <input name='numero' value='{{ $inmueble->numero or ''}}' type="text" class="form-control" required="required"> </div>
                                   </div>
                                  <div class="col-md-2">
                                     <div class="form-group">
                                       <label>Departamento</label>
-                                      <input name='departamento' value='{{ $inmueble->departamento }}' type="text" class="form-control" required="required"> </div>
+                                      <input name='departamento' value='{{ $inmueble->departamento or ''}}' type="text" class="form-control" required="required"> </div>
                                   </div>
+                                  <div class="col-md-2">
+                                    <div class="form-group">
+                                       
+                                        <label>Rol</label>
+                                        <input name='rol' type="text" class="form-control" value='{{ $inmueble->departamento or ''}}'> </div>
+                                    
+                                </div> 
                               </div>
+                            <div class="row"> 
+                             <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label>Referencia</label>
+                                        <div id="direcciones">
+                                            <input name='referencia' id='referencia' class="typeahead form-control" type="text" placeholder="Referencia"  value='{{ $inmueble->referencia or '' }}'> 
+                                        </div>
+                                        
+                                    </div>
+                                </div>
+                                                </div>
                               <div class="row"> 
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label>Región</label>
-                                        {{ Form::select('id_region',$regiones, $inmueble->id_region,array('class'=>'form-control','style'=>'','id'=>'regiones','placeholder'=>'Seleccione región','required'=>'required')) }}
+                                        {{ Form::select('id_region',$regiones, $inmueble->id_region,array('class'=>'form-control','style'=>'','id'=>'regiones','placeholder'=>'Seleccione región')) }}
                                     </div>
                                 </div>
 
@@ -54,13 +72,13 @@
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label>Provincia</label>
-                                        {{ Form::select('id_provincia',['placeholder'=>'Selecciona provincia'], null, array('class'=>'form-control','style'=>'','id'=>'provincias','required'=>'required')) }} </div>
+                                        {{ Form::select('id_provincia',['placeholder'=>'Selecciona provincia'], null, array('class'=>'form-control','style'=>'','id'=>'provincias')) }} </div>
                                     </div>
                                     <!--/span-->
                                     <div class="col-md-4">
                                         <div class="form-group">
                                             <label>Comuna</label>
-                                            {{ Form::select('id_comuna',['placeholder'=>'Selecciona comuna'], null, array('class'=>'form-control','style'=>'','id'=>'comunas','required'=>'required')) }}
+                                            {{ Form::select('id_comuna',['placeholder'=>'Selecciona comuna'], null, array('class'=>'form-control','style'=>'','id'=>'comunas')) }}
                                         </div>
                                     </div>
                                 </div>
@@ -82,42 +100,42 @@
                                             <input name='estacionamiento' type="number" class="form-control" value='{{ $inmueble->estacionamiento }}' required="required">
                                         </div>
                                     </div>
-                                    <div class="col-md-2">
-                                        <div class="form-group">
-                                            <label>Bodega</label>
-                                            <input name='bodega' type="number" class="form-control" value='{{ $inmueble->bodega }}' required="required">
-                                        </div>
+                            <div class="col-md-2">
+                                    <div class="form-group">
+                                        @if(!isset($inmueble->bodega))
+                                                        <?php $idpi = null; ?>
+                                                        @else
+                                                        <?php $idpi = $inmueble->bodega; ?>
+                                                        @endif
+                                        <label>Bodega</label>
+                                            {{ Form::select('bodega',['1'=> 'SI', '0'=>'NO'], $idpi ,array('class'=>'form-control','style'=>'','id'=>'bodega','placeholder'=>'Seleccione','required'=>'required')) }}
                                     </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="form-group">
+                                        <label>Número de Bodega</label>
+                                        <input name='nro_bodega' type="text" class="form-control" value='{{ $inmueble->nro_bodega or '' }}' >
+                                    </div>
+                                </div>
                                     <div class="col-md-2">
                                         <div class="form-group">
                                             <label>Piscina</label>
                                             {{ Form::select('piscina',['SI'=>'SI','NO'=>'NO'], $inmueble->piscina ,array('class'=>'form-control','style'=>'','id'=>'piscina','placeholder'=>'Seleccione piscina','required'=>'required')) }}
                                         </div>
                                     </div>
-                                      <div class="col-md-2">
-                                                    <div class="form-group">
-                                                        @if(!isset($inmueble->condicion))
-                                                        <?php $idpi = null; ?>
-                                                        @else
-                                                        <?php $idpi = $inmueble->condicion; ?>
-                                                        @endif
-                                                        <label>Condición</label>
-                                                        {{ Form::select('i_condicion',['Nuevo'=> 'Nuevo', 'Usado'=>'Usado'], $idpi ,array('class'=>'form-control','style'=>'','id'=>'i_condicion','placeholder'=>'Seleccione','required'=>'required')) }}
 
-                                                    </div>
-                                                </div>
                                 </div>
                                 <div class="row"> 
-                                    <div class="col-md-4">
+                                    <div class="col-md-3">
                                         <div class="form-group">
                                             <label>Gasto Común</label>
                                             <div class="input-group"> 
                                                 <span class="input-group-addon">$</span>
-                                                <input name='gastosComunes' type="number" class="form-control" value='{{ $inmueble->gastosComunes }}' required="required">
+                                                <input name='gastosComunes' type="number" class="form-control" value='{{ $inmueble->gastosComunes }}' >
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-4">
+                                    <div class="col-md-3">
                                         <div class="form-group">
                                             <label>Precio</label>
                                             <div class="input-group"> 
@@ -127,12 +145,24 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-4">
+                                    <div class="col-md-3">
                                         <div class="form-group">
                                             <label>Estado</label>
                                             {{ Form::select('estado',['1'=>'Vigente','0'=>'No Vigente'], $inmueble->estado ,array('class'=>'form-control','style'=>'','id'=>'estado','placeholder'=>'Selecciona estado','required'=>'required')) }}
                                         </div>
                                     </div>
+                                      <div class="col-md-3">
+                                                    <div class="form-group">
+                                                        @if(!isset($inmueble->condicion))
+                                                        <?php $idpi = null; ?>
+                                                        @else
+                                                        <?php $idpi = $inmueble->condicion; ?>
+                                                        @endif
+                                                        <label>Condición</label>
+                                                        {{ Form::select('condicion',['Nuevo'=> 'Nuevo', 'Usado'=>'Usado'], $idpi ,array('class'=>'form-control','style'=>'','id'=>'condicion','placeholder'=>'Seleccione','required'=>'required')) }}
+
+                                                    </div>
+                                                </div>
                                 </div>
 
                             </div>

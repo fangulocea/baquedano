@@ -73,7 +73,7 @@ class CaptacionCorredorController extends Controller
     public function create()
     {
         
-        $corredores=Persona::where('tipo_cargo','=','Corredor')
+        $corredores=Persona::where('tipo_cargo','=','Corredor - Externo')
         ->select(DB::raw('id , CONCAT_WS(" ",nombre,apellido_paterno,apellido_materno) as Corredor'))
         ->pluck('Corredor', 'id');
         return view('captacionesCorredor.create',compact('corredores'));
@@ -121,7 +121,7 @@ class CaptacionCorredorController extends Controller
      */
     public function edit($id)
     {
-        $corredores=Persona::where('tipo_cargo','=','Corredor')
+        $corredores=Persona::where('tipo_cargo','=','Corredor - Externo')
         ->select(DB::raw('id , CONCAT_WS(" ",nombre,apellido_paterno,apellido_materno) as Corredor'))
         ->pluck('Corredor', 'id');
          $regiones=Region::pluck('region_nombre','region_id');
@@ -173,7 +173,8 @@ class CaptacionCorredorController extends Controller
      */
    public function update(Request $request, $id)
     {
-         $corredores=Persona::where('tipo_cargo','=','Corredor')
+
+         $corredores=Persona::where('tipo_cargo','=','Corredor - Externo')
         ->select(DB::raw('id , CONCAT_WS(" ",nombre,apellido_paterno,apellido_materno) as Corredor'))
         ->pluck('Corredor', 'id');
         if($request->paso=='1'){
@@ -208,6 +209,8 @@ class CaptacionCorredorController extends Controller
                             'direccion'         => $request->p_direccion,
                             'numero'            => $request->p_numero,
                             'departamento'      => $request->p_departamento,
+                            'estado_civil'      => $request->p_estado_civil,
+                            'profesion'         => $request->p_profesion,
                             'id_estado'         => '1',
                             'telefono'          => $request->p_telefono,
                             'email'             => $request->p_email,
@@ -227,6 +230,8 @@ class CaptacionCorredorController extends Controller
                             'apellido_materno'  => $request->p_apellido_materno,
                             'direccion'         => $request->p_direccion,
                             'numero'            => $request->p_numero,
+                            'estado_civil'      => $request->p_estado_civil,
+                            'profesion'         => $request->p_profesion,
                             'departamento'      => $request->p_departamento,
                             'telefono'          => $request->p_telefono,
                             'email'             => $request->p_email,
@@ -238,8 +243,10 @@ class CaptacionCorredorController extends Controller
                     ]);
                     $persona = Persona::find($captacion->id_propietario);
             }
+
             //inmueble nuevo
             if($captacion->id_inmueble==null){
+
                     $p = Inmueble::where('direccion', '=', $request->i_direccion )
                     ->where('numero', '=', $request->i_numero)
                     ->where('departamento', '=',$request->i_departamento)
@@ -256,10 +263,14 @@ class CaptacionCorredorController extends Controller
                             'bano'              => $request->i_bano,
                             'estacionamiento'   => $request->i_estacionamiento,
                             'bodega'            => $request->i_bodega,
+                            'rol'               => $request->i_rol,
+                            'nro_bodega'        => $request->i_nro_bodega,
+                            'referencia'         => $request->i_referencia,
                             'piscina'           => $request->i_piscina,
                             'precio'            => $request->i_precio,
                             'gastosComunes'     => $request->i_gastosComunes,
-                            'condicion'     => $request->i_condicion,
+                            'condicion'         => $request->i_condicion,
+
                             'estado'            => '1',
                             'id_comuna'         => $request->i_id_comuna,
                             'id_region'         => $request->i_id_region,
@@ -267,6 +278,7 @@ class CaptacionCorredorController extends Controller
                     ]);
                     //inmueble ya ingresado
             }else{
+
                     $inmueble=Inmueble::whereId($captacion->id_inmueble)->update([
                             'direccion'         => $request->i_direccion,
                             'numero'            => $request->i_numero,
@@ -275,6 +287,9 @@ class CaptacionCorredorController extends Controller
                             'bano'              => $request->i_bano,
                             'estacionamiento'   => $request->i_estacionamiento,
                             'bodega'            => $request->i_bodega,
+                            'nro_bodega'        => $request->i_nro_bodega,
+                            'rol'               => $request->i_rol,
+                            'referencia'         => $request->i_referencia,
                             'piscina'           => $request->i_piscina,
                             'precio'            => $request->i_precio,
                             'gastosComunes'     => $request->i_gastosComunes,

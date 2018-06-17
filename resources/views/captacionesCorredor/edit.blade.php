@@ -49,7 +49,7 @@
                                             <div class="row">
                                             <div class="col-md-3">
                                                     <div class="form-group">
-                                                        <label>Corredor de Propiedades</label>
+                                                        <label>Corredor / Externo</label>
                                                         <div class="input-group">
                                                     {{ Form::select('id_corredor',$corredores, $captacion->id_corredor,array('class'=>'form-control','style'=>'','id'=>'id_corredor','placeholder'=>'Seleccione corredor','required'=>'required')) }}
                                                 </div></div></div>
@@ -120,7 +120,7 @@
                                                         <input type="hidden" name="idcaptacion" id="idcaptacion_c" value='{{ $captacion->id }}'>
                                                         <input type="hidden" name="id_modificador"value="{{ Auth::user()->id_persona }}">
 
-                                <div class="col-md-8">
+                                <div class="col-md-6">
                                     <div class="form-group">
 
                                         <label>Dirección</label>
@@ -134,7 +134,7 @@
                                 <div class="col-md-2">
                                     <div class="form-group">
                                       <label>Nro.</label>
-                                      <input name='i_numero' id='i_numero_c' type="text" class="form-control" required="required" value='{{ $inmueble->numero or ''  }}'>  </div>
+                                      <input name='i_numero' id='i_numero_c' type="text" class="form-control" value='{{ $inmueble->numero or ''  }}'>  </div>
                                   </div>
                                  <div class="col-md-2">
                                     <div class="form-group">
@@ -142,10 +142,28 @@
                                       <input name='i_departamento'  id='i_departamento_c' value='{{ $inmueble->departamento or ''}}' type="text" class="form-control" > </div>
                                   </div>
 
-
+                                <div class="col-md-2">
+                                    <div class="form-group">
+                                       
+                                        <label>Rol</label>
+                                        <input name='i_rol' id='i_rol' type="text" class="form-control" value='{{ $inmueble->rol or '' }}'> </div>
+                                    
+                                </div>  
                                                         
                                                 </div>
                                             </div>
+       <div class="row"> 
+                             <div class="col-md-12">
+                                    <div class="form-group">
+
+                                        <label>Referencia</label>
+                                        <div id="direcciones">
+                                            <input name='i_referencia' id='i_referencia' class="typeahead form-control" type="text" placeholder="Referencia"  value='{{ $inmueble->referencia or '' }}'> 
+                                        </div>
+                                        
+                                    </div>
+                                </div>
+                                                </div>
                                             @if(!isset($inmueble->id_region))
                                             <?php $idr = null; ?>
                                             @else
@@ -155,7 +173,7 @@
                                                 <div class="col-md-4">
                                                     <div class="form-group">
                                                         <label>Región</label>
-                                                        {{ Form::select('i_id_region',$regiones, $idr,array('class'=>'form-control','style'=>'','id'=>'i_id_region_c','placeholder'=>'Selecciona región','required'=>'required')) }}
+                                                        {{ Form::select('i_id_region',$regiones, $idr,array('class'=>'form-control','style'=>'','id'=>'i_id_region_c','placeholder'=>'Selecciona región')) }}
                                                     </div>
                                                 </div>
 
@@ -163,13 +181,13 @@
                                                 <div class="col-md-4">
                                                     <div class="form-group">
                                                         <label>Provincia</label>
-                                                        {{ Form::select('i_id_provincia',[''=>'Seleccione provincia'], null, array('class'=>'form-control','style'=>'','id'=>'i_id_provincia_c','required'=>'required')) }} </div>
+                                                        {{ Form::select('i_id_provincia',[''=>'Seleccione provincia'], null, array('class'=>'form-control','style'=>'','id'=>'i_id_provincia_c')) }} </div>
                                                 </div>
                                                 <!--/span-->
                                                 <div class="col-md-4">
                                                     <div class="form-group">
                                                         <label>Comuna</label>
-                                                        {{ Form::select('i_id_comuna',[''=>'Seleccione comuna'], null, array('class'=>'form-control','style'=>'','id'=>'i_id_comuna_c','required'=>'required')) }}
+                                                        {{ Form::select('i_id_comuna',[''=>'Seleccione comuna'], null, array('class'=>'form-control','style'=>'','id'=>'i_id_comuna_c')) }}
                                                     </div>
                                                 </div>
                                             </div>
@@ -192,12 +210,24 @@
                                                         <input name='i_estacionamiento' id='i_estacionamiento_c' type="number" class="form-control" value='{{ $inmueble->estacionamiento or '' }}'>
                                                     </div>
                                                 </div>
-                                                <div class="col-md-2">
-                                                    <div class="form-group">
-                                                        <label>Bodega</label>
-                                                        <input name='i_bodega' id='i_bodega_c' type="number" class="form-control"  value='{{ $inmueble->bodega or '' }}'>
-                                                    </div>
-                                                </div>
+                                                    @if(!isset($inmueble->bodega))
+                                                        <?php $idpi = null; ?>
+                                                        @else
+                                                        <?php $idpi = $inmueble->bodega; ?>
+                                                        @endif
+
+                                <div class="col-md-2">
+                                    <div class="form-group">
+                                        <label>Bodega</label>
+                                            {{ Form::select('i_bodega',['1'=> 'SI', '0'=>'NO'], $idpi ,array('class'=>'form-control','style'=>'','id'=>'i_bodega','placeholder'=>'Seleccione')) }}
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="form-group">
+                                        <label>Número de Bodega</label>
+                                        <input name='i_nro_bodega' id='i_nro_bodega'  type="text" class="form-control" value='{{ $inmueble->nro_bodega or '' }}' >
+                                    </div>
+                                </div>
                                                 <div class="col-md-2">
                                                     <div class="form-group">
                                                         @if(!isset($inmueble->piscina))
@@ -210,18 +240,7 @@
 
                                                     </div>
                                                 </div>
-                                                 <div class="col-md-2">
-                                                    <div class="form-group">
-                                                        @if(!isset($inmueble->condicion))
-                                                        <?php $idpi = null; ?>
-                                                        @else
-                                                        <?php $idpi = $inmueble->condicion; ?>
-                                                        @endif
-                                                        <label>Condición</label>
-                                                        {{ Form::select('i_condicion',['Nuevo'=> 'Nuevo', 'Usado'=>'Usado'], $idpi ,array('class'=>'form-control','style'=>'','id'=>'i_condicion_c','placeholder'=>'Seleccione','required'=>'required')) }}
 
-                                                    </div>
-                                                </div>
                                             </div>
                                             <div class="row"> 
                                                 <div class="col-md-4">
@@ -240,6 +259,18 @@
                                                             <span class="input-group-addon">$</span>
                                                             <input name='i_precio' id='i_precio_c' type="number" class="form-control" required="required" value='{{ $inmueble->precio or '' }}'>
                                                         </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <div class="form-group">
+                                                        @if(!isset($inmueble->condicion))
+                                                        <?php $idpi = null; ?>
+                                                        @else
+                                                        <?php $idpi = $inmueble->condicion; ?>
+                                                        @endif
+                                                        <label>Condición</label>
+                                                        {{ Form::select('i_condicion',['Nuevo'=> 'Nuevo', 'Usado'=>'Usado'], $idpi ,array('class'=>'form-control','style'=>'','id'=>'i_condicion_c','placeholder'=>'Seleccione','required'=>'required')) }}
+
                                                     </div>
                                                 </div>
                                             </div>
@@ -350,7 +381,27 @@
                                                     </div>
                                                 </div>
                                             </div>
-
+                             <div class="row">
+                                <div class="col-md-4 ">
+                                    <div class="form-group">
+                                        <label>Profesión / Ocupación</label>
+                                        <div id="profesion">
+                                                    <input name='p_profesion' id='p_profesion' class="typeahead form-control" type="text" placeholder="Profesión / Ocupación" value="{{ $persona->profesion or ''}}"> 
+                                            </div>
+                                    </div>
+                                </div>
+                                  <div class="col-md-4 ">
+                                    <div class="form-group">
+                                            @if(!isset($persona->estado_civil))
+                                            <?php $idr = null; ?>
+                                            @else
+                                            <?php $idr = $persona->estado_civil; ?>
+                                            @endif
+                                        <label>Estado civil</label>
+                                            {{ Form::select('p_estado_civil',['Soltero/a'=>'Soltero/a','Casado/a'=>'Casado/a','Viudo/a'=>'Viudo/a','Divorciado/a'=>'Divorciado/a','Separado/a'=>'Separado/a','Conviviente'=>'Conviviente'], $idr ,array('class'=>'form-control','style'=>'','id'=>'p_estado_civil')) }}
+                                    </div>
+                                </div>
+                            </div>
                                             <div class="row">
                                                 <div class="col-md-6 ">
                                                     <div class="form-group">
@@ -747,10 +798,38 @@ $(function(){
     
     $('#modal-contacto1_C').on('hidden.bs.modal', function () {
         $("#form1")[0].reset();
+                 var fecha =  new Date();
+         var year = fecha.getFullYear();
+         var mes = fecha.getMonth()+1;
+         var dia = fecha.getDate();
+         var hora = fecha.getHours();
+         var minutos = fecha.getMinutes();
+         var segundos = fecha.getSeconds();
+         if(mes<10){mes='0'+mes}
+         if(dia<10){dia='0'+dia}
+         if(hora<10){hora='0'+hora}
+         if(minutos<10){minutos='0'+minutos}
+         if(segundos<10){segundos='0'+segundos}
+        $('#datepicker-fecha_contacto1').val(dia+'-'+mes+'-'+year);;
+        $('#hora_gestion').val(hora+':'+minutos);;
     });
     
      $('#modal-contacto1_c').on('shown.bs.modal', function () {
         $("#form1")[0].reset();
+                 var fecha =  new Date();
+         var year = fecha.getFullYear();
+         var mes = fecha.getMonth()+1;
+         var dia = fecha.getDate();
+         var hora = fecha.getHours();
+         var minutos = fecha.getMinutes();
+         var segundos = fecha.getSeconds();
+         if(mes<10){mes='0'+mes}
+         if(dia<10){dia='0'+dia}
+         if(hora<10){hora='0'+hora}
+         if(minutos<10){minutos='0'+minutos}
+         if(segundos<10){segundos='0'+segundos}
+        $('#datepicker-fecha_contacto1').val(dia+'-'+mes+'-'+year);;
+        $('#hora_gestion').val(hora+':'+minutos);;
     });
 });
 

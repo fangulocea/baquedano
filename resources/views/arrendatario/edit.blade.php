@@ -244,10 +244,6 @@
 
                                                 <div class="row">
                                                         <div class="col-sm-4">
-                                                            <label class="control-label">Nombre Contacto</label>
-                                                        <input type="text" name="nombre" id="nombre"  class="form-control" placeholder="" required="required" value='{{ $citas->nombre or '' }}' > 
-                                                        </div>
-                                                        <div class="col-sm-4">
                                                         <label>Fecha Cita</label>
                                                         <div class="input-group">
                                                             <input type="text" autocomplete="off" class="form-control datepicker-fecha_contacto1" placeholder="dd/mm/yyyy" id="datepicker-fecha_contacto1" name="fecha" required="required"> <span class="input-group-addon"><i class="icon-calender"></i></span> 
@@ -267,25 +263,10 @@
                                                 </div>
                                                 </div>
 
-                                            <div class="row"> 
-                                                
-                                                <div class="col-md-4">
-                                                    <div class="form-group">
-                                                        <label>Teléfono Contacto</label>
-                                                        <input name='telefono' id='telefono' type="numero" class="form-control" value="{{ $citas->telefono or '' }}" > </div>
-                                                </div>
-                                                
-                                                <div class="col-md-4">
-                                                    <div class="form-group">
-                                                        <label>Email Contacto</label>
-                                                        <input name='email' id='email' type="email" class="form-control"  value="{{ $citas->email or '' }}" > </div>
-                                                </div>
-                                            </div>
-
                                             <div class="row">
                                                 <div class="col-md-6 ">
                                                     <div class="form-group">
-                                                        <label>Dirección Contacto</label>
+                                                        <label>Dirección del Inmueble a Mostrar</label>
                                                         <input name='direccion' id='direccion' type="text" class="form-control"  value="{{ $citas->direccion or '' }}" > </div>
                                                 </div>
                                                 <div class="col-md-3 ">
@@ -311,17 +292,6 @@
                                                     </div>
                                                 </div>
                                                 
-                                                <div class="col-md-4">
-                                                    <div class="form-group">
-                                                        <label>Teléfono Captador</label>
-                                                        <input name='telefono_c' id='telefono_c' type="numero" class="form-control" value="{{ $citas->telefono_c or '' }}" > </div>
-                                                </div>
-                                                
-                                                <div class="col-md-4">
-                                                    <div class="form-group">
-                                                        <label>Email Captador</label>
-                                                        <input name='email_c' id='email_c' type="email" class="form-control"  value="{{ $citas->email_c or '' }}" > </div>
-                                                </div>
                                             </div>
                                             
                                             <hr>
@@ -393,12 +363,9 @@
                                                     <div class="modal-body">
                                                     <input type="hidden" class="form-control" name="id_creador" id="id_creador" value="{{ Auth::user()->id }}">
                                                     <input type="hidden" class="form-control" name="id_arrendatario" id="id_arrendatario" value="{{ $arrendatario->id }}">
-                                                    <input type="text" class="form-control" name="id_citas" id="id_citas_e">
+                                                    <input type="hidden" class="form-control" name="id_citas" id="id_citas_e">
                                                 <div class="row">
-                                                        <div class="col-sm-4">
-                                                            <label class="control-label">Nombre Contacto</label>
-                                                        <input type="text" name="nombre" id="nombre_e"  class="form-control" placeholder="" required="required" > 
-                                                        </div>
+    
                                                         <div class="col-sm-4">
                                                         <label>Fecha Cita</label>
                                                         <div class="input-group">
@@ -420,25 +387,11 @@
                                                 </div>
                                                 </div>
 
-                                            <div class="row"> 
-                                                
-                                                <div class="col-md-4">
-                                                    <div class="form-group">
-                                                        <label>Teléfono Contacto</label>
-                                                        <input name='telefono' id='telefono_e' type="numero" class="form-control"  > </div>
-                                                </div>
-                                                
-                                                <div class="col-md-4">
-                                                    <div class="form-group">
-                                                        <label>Email Contacto</label>
-                                                        <input name='email' id='email_e' type="email" class="form-control"  > </div>
-                                                </div>
-                                            </div>
 
                                             <div class="row">
                                                 <div class="col-md-6 ">
                                                     <div class="form-group">
-                                                        <label>Dirección Contacto</label>
+                                                        <label>Dirección del inmueble a mostrar</label>
                                                         <input name='direccion' id='direccion_e' type="text" class="form-control" > </div>
                                                 </div>
                                                 <div class="col-md-3 ">
@@ -463,18 +416,7 @@
                                                         <input type="text" name="nombre_c" id="nombre_c_e"  class="form-control" placeholder="" required="required" > 
                                                     </div>
                                                 </div>
-                                                
-                                                <div class="col-md-4">
-                                                    <div class="form-group">
-                                                        <label>Teléfono Captador</label>
-                                                        <input name='telefono_c' id='telefono_c_e' type="numero" class="form-control" > </div>
-                                                </div>
-                                                
-                                                <div class="col-md-4">
-                                                    <div class="form-group">
-                                                        <label>Email Captador</label>
-                                                        <input name='email_c' id='email_c_e' type="email" class="form-control"   > </div>
-                                                </div>
+
                                             </div>
                                             
                                             <hr>
@@ -545,14 +487,74 @@
 
 <script>
 
+$(function() {
+
+        @if(isset($persona->id))
+            @if(isset($persona->id_region) && isset($persona->id_provincia))
+            $("#p_id_provincia").empty();
+            $("#p_id_comuna").empty();
+            $.get("/provincias/"+{{ $persona->id_region}}+"",function(response,state){
+                for(i=0; i< response.length;i++){
+                    sel='';
+                    if(response[i].provincia_id=={{ $persona->id_provincia }}){
+                        sel=' selected="selected"';
+                    }
+                    $("#p_id_provincia").append("<option value='"+response[i].provincia_id+"' "+sel+">"+response[i].provincia_nombre+"</option>");
+                }
+            });
+            @endif
+            @if(isset($persona->id_provincia))
+            $.get("/comunas/"+{{ $persona->id_provincia }}+"",function(response,state){
+                for(i=0; i< response.length;i++){
+                    sel='';
+                    if(response[i].comuna_id=={{ $persona->id_comuna }}){
+                        sel=' selected="selected"';
+                    }
+                    $("#p_id_comuna").append("<option value='"+response[i].comuna_id+"' "+sel+">"+response[i].comuna_nombre+"</option>");
+                }
+            });
+            @endif
+        @endif
+
+        });
+
+
 $(function(){
     
     $('#modal-contacto1').on('hidden.bs.modal', function () {
         $("#form1")[0].reset();
+         var fecha =  new Date();
+         var year = fecha.getFullYear();
+         var mes = fecha.getMonth()+1;
+         var dia = fecha.getDate();
+         var hora = fecha.getHours();
+         var minutos = fecha.getMinutes();
+         var segundos = fecha.getSeconds();
+         if(mes<10){mes='0'+mes}
+         if(dia<10){dia='0'+dia}
+         if(hora<10){hora='0'+hora}
+         if(minutos<10){minutos='0'+minutos}
+         if(segundos<10){segundos='0'+segundos}
+        $('#datepicker-fecha_contacto1').val(dia+'-'+mes+'-'+year);;
+        $('#hora_gestion').val(hora+':'+minutos);;
     });
     
      $('#modal-contacto1').on('shown.bs.modal', function () {
         $("#form1")[0].reset();
+         var fecha =  new Date();
+         var year = fecha.getFullYear();
+         var mes = fecha.getMonth()+1;
+         var dia = fecha.getDate();
+         var hora = fecha.getHours();
+         var minutos = fecha.getMinutes();
+         var segundos = fecha.getSeconds();
+         if(mes<10){mes='0'+mes}
+         if(dia<10){dia='0'+dia}
+         if(hora<10){hora='0'+hora}
+         if(minutos<10){minutos='0'+minutos}
+         if(segundos<10){segundos='0'+segundos}
+        $('#datepicker-fecha_contacto1').val(dia+'-'+mes+'-'+year);;
+        $('#hora_gestion').val(hora+':'+minutos);;
     });
 });
 
@@ -568,21 +570,20 @@ function mostrar_modal(obj){
         url:url,
         data:"",
         success:function(response){
-
             $('#modal-contacto_edit').modal('show');
             $('#id_citas_e').val(response[0].id);
-            $('#nombre_e').val(response[0].nombre);
+           // $('#nombre_e').val(response[0].nombre);
             $('#tipo_contacto_e').val(response[0].tipo_contacto);
             var d = response[0].fecha.split('-');
             $('#datepicker-fecha_cita').val(d[2] + '-' + d[1] + '-' + d[0]);
-            $('#telefono_e').val(response[0].telefono);
-            $('#email_e').val(response[0].email);
+            //$('#telefono_e').val(response[0].telefono);
+            //$('#email_e').val(response[0].email);
             $('#direccion_e').val(response[0].direccion);
             $('#numero_e').val(response[0].numero);
             $('#departamento_e').val(response[0].departamento);
             $('#nombre_c_e').val(response[0].nombre_c);
-            $('#telefono_c_e').val(response[0].telefono_c);
-            $('#email_c_e').val(response[0].email_c);
+            //$('#telefono_c_e').val(response[0].telefono_c);
+            //$('#email_c_e').val(response[0].email_c);
             $('#detalle_e').val(response[0].detalle);
             $('#estado_e').val(response[0].estado);
             
@@ -653,36 +654,7 @@ $('#listusers1').DataTable({
         
       
 
-$(function() {
 
-        @if(isset($persona->id))
-            @if(isset($persona->id_region))
-            $("#p_id_provincia").empty();
-            $("#p_id_comuna").empty();
-            $.get("/provincias/"+{{ $persona->id_region}}+"",function(response,state){
-                for(i=0; i< response.length;i++){
-                    sel='';
-                    if(response[i].provincia_id=={{ $persona->id_provincia }}){
-                        sel=' selected="selected"';
-                    }
-                    $("#p_id_provincia").append("<option value='"+response[i].provincia_id+"' "+sel+">"+response[i].provincia_nombre+"</option>");
-                }
-            });
-            @endif
-            @if(isset($persona->id_provincia))
-            $.get("/comunas/"+{{ $persona->id_provincia }}+"",function(response,state){
-                for(i=0; i< response.length;i++){
-                    sel='';
-                    if(response[i].comuna_id=={{ $persona->id_comuna }}){
-                        sel=' selected="selected"';
-                    }
-                    $("#p_id_comuna").append("<option value='"+response[i].comuna_id+"' "+sel+">"+response[i].comuna_nombre+"</option>");
-                }
-            });
-            @endif
-        @endif
-
-        });
 
 
 jQuery(document).ready(function () {

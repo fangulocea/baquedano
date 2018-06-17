@@ -35,7 +35,6 @@
                     <thead>
                         <tr>
                             <th>ID</th>
-                            <th>Portal</th>
                             <th>Dirección</th>
                             <th>Comuna</th>
                             <th>Propietario</th>
@@ -49,7 +48,6 @@
                     <tfoot>
                         <tr>
                             <th>ID</th>
-                            <th>Portal</th>
                             <th>Dirección</th>
                             <th>Comuna</th>
                             <th>Propietario</th>
@@ -65,7 +63,6 @@
                         @foreach($publica as $p)
                         <tr>
                             <td>{{ $p->id_publicacion }}</td>
-                            <td>{{ substr(substr($p->portal, 4),0,10) }}</td>
                             <td>{{ $p->direccion }} #{{ $p->numero }} , Dpto {{ $p->departamento }}</td>
                             <td>{{ $p->comuna_nombre }}</td>
                             <td>{{ $p->nom_p }} {{ $p->apep_p }} {{ $p->apem_p }}</td>

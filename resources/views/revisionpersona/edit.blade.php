@@ -274,19 +274,18 @@ $(function(){
     
     $('#modal-contacto1_c').on('hidden.bs.modal', function () {
         $("#form1_c")[0].reset();
- var fecha =  new Date();
- var year = fecha.getFullYear();//el año se puede quitar de este ejemplo
- var mes = fecha.getMonth();//pero ya que estamos lo ponemos completo
- var dia = fecha.getDate();
- var hora = fecha.getHours();
- var minutos = fecha.getMinutes();
- var segundos = fecha.getSeconds();
- //aquí se hace lo 'importante'
- if(mes<10){mes='0'+mes}
- if(dia<10){dia='0'+dia}
- if(hora<10){hora='0'+hora}
- if(minutos<10){minutos='0'+minutos}
- if(segundos<10){segundos='0'+segundos}
+         var fecha =  new Date();
+         var year = fecha.getFullYear();
+         var mes = fecha.getMonth()+1;
+         var dia = fecha.getDate();
+         var hora = fecha.getHours();
+         var minutos = fecha.getMinutes();
+         var segundos = fecha.getSeconds();
+         if(mes<10){mes='0'+mes}
+         if(dia<10){dia='0'+dia}
+         if(hora<10){hora='0'+hora}
+         if(minutos<10){minutos='0'+minutos}
+         if(segundos<10){segundos='0'+segundos}
 
         $('#datepicker-fecha_contacto1_c').val(dia+'-'+mes+'-'+year);;
         $('#hora_gestion').val(hora+':'+minutos);;
@@ -294,19 +293,19 @@ $(function(){
 
         $('#modal-contacto1_c').on('shown.bs.modal', function () {
         $("#form1_c")[0].reset();
- var fecha =  new Date();
- var year = fecha.getFullYear();//el año se puede quitar de este ejemplo
- var mes = fecha.getMonth();//pero ya que estamos lo ponemos completo
- var dia = fecha.getDate();
- var hora = fecha.getHours();
- var minutos = fecha.getMinutes();
- var segundos = fecha.getSeconds();
- //aquí se hace lo 'importante'
- if(mes<10){mes='0'+mes}
- if(dia<10){dia='0'+dia}
- if(hora<10){hora='0'+hora}
- if(minutos<10){minutos='0'+minutos}
- if(segundos<10){segundos='0'+segundos}
+         var fecha =  new Date();
+         var year = fecha.getFullYear();
+         var mes = fecha.getMonth()+1;
+         var dia = fecha.getDate();
+         var hora = fecha.getHours();
+         var minutos = fecha.getMinutes();
+         var segundos = fecha.getSeconds();
+         //aquí se hace lo 'importante'
+         if(mes<10){mes='0'+mes}
+         if(dia<10){dia='0'+dia}
+         if(hora<10){hora='0'+hora}
+         if(minutos<10){minutos='0'+minutos}
+         if(segundos<10){segundos='0'+segundos}
 
 
         $('#datepicker-fecha_contacto1_c').val(dia+'-'+mes+'-'+year);;
