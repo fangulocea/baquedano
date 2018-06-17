@@ -26,7 +26,7 @@
                                 <div class="col-md-12 ">
                                     <div class="form-group">
                                         <label>Descripción</label>
-                                        <input name='descripcion' value="{{ $formas->descripcion }}" type="text" class="form-control"> </div>
+                                        <input name='descripcion' required="required" value="{{ $formas->descripcion }}" type="text" class="form-control"> </div>
                                 </div>
                             </div>
 

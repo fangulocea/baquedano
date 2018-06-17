@@ -1,19 +1,14 @@
 @extends('admin.layout')
 
 @section('contenido')
-<link href="{{ URL::asset('/plugins/bower_components/typeahead.js-master/dist/typehead-min.css') }}" rel="stylesheet">
 
+<link href="{{ URL::asset('/plugins/bower_components/typeahead.js-master/dist/typehead-min.css') }}" rel="stylesheet">
 <link href="{{ URL::asset('plugins/bower_components/bootstrap-datepicker/bootstrap-datepicker.min.css') }}" rel="stylesheet" type="text/css" />
 <link href="{{ URL::asset('plugins/bower_components/sweetalert/sweetalert.css')}}" rel="stylesheet" type="text/css">
-
- <link href="{{ URL::asset('plugins/bower_components/lightbox/css/lightbox.css') }}" rel="stylesheet">
-
+<link href="{{ URL::asset('plugins/bower_components/lightbox/css/lightbox.css') }}" rel="stylesheet">
 <link rel="stylesheet" href="{{ URL::asset('plugins/bower_components/dropify/dist/css/dropify.min.css')}}">
-
 <link href="{{ URL::asset('plugins/bower_components/timepicker/bootstrap-timepicker.min.css')}} rel="stylesheet">
-
 <link href="{{ URL::asset('plugins/bower_components/clockpicker/dist/jquery-clockpicker.min.css')}}" rel="stylesheet">
-
 <div class="row">
     <div class="col-md-12">
         <section>
@@ -27,6 +22,7 @@
 
             <form id="form1_a" action="{{ route('contratoBorrador.crearBorrador') }}" method="post">                 
                 <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                <input type="hidden" name="id_creador" value="{{ Auth::user()->id }}"">
                 <input type="hidden" name="id_publicacion" value="{{ $borrador->id_publicacion }}">
                              {!! csrf_field() !!}     
                    <div class="row">
@@ -100,6 +96,8 @@
                         <th>Servicio</th>
                         <th>Comisión</th>
                         <th>Flexibilidad</th>
+                        <th>Estado</th>
+                        <th></th>
                         <th></th>
                     </tr>
                 </thead>
@@ -107,21 +105,24 @@
                             @foreach($borradoresIndex as $p)
                                     <tr>
                                 {{-- <td style="background: #ff7676; color:white">{{ $p->id_publicacion }}</td> --}}
-                                        <td>{{ $p->id }}</td>
-                                
+                                <td>{{ $p->id }}</td>
                                 <td >{{ $p->fecha }}</td>
-                                
                                 <td>{{ $p->n_n }}</td>
                                 <td>{{ $p->n_s }}</td>
                                 <td>{{ $p->n_c }}</td>
                                 <td>{{ $p->n_f }}</td>
+                                <td>{{ trans_choice('mensajes.borrador', $p->id_estado) }}</td>
                                 @can('revisioncomercial.edit')
-                                <td width="10px">
-                                    <div class="col-lg-2 col-sm-3 col-xs-12">
-                                    <button class="btn btn-success btn-circle btn-lg" id='via_edit' onclick="mostrar_modal({{ $p->id }})" ><i class="fa fa-check"></i></span></button>
-                                </div>
-
-                                </td>
+                                    <td>
+                                        
+                                        <button class="btn btn-success btn-circle btn-lg" id='via_edit' onclick="mostrar_modal({{ $p->id }})" ><i class="fa fa-check"></i></span></button>
+                                       
+                                    </td>
+                                @endcan
+                                @can('contratoBorrador.mail')
+                                    <td width="10px">
+                                        <a href="{{ route('contratoBorrador.mail', $p->id) }}"><span class="btn btn-warning btn-circle btn-lg"><i class="ti ti-email"></i></span></a>
+                                    </td>
                                 @endcan
                             </tr>
                             @endforeach
@@ -135,32 +136,94 @@
                                                     <div class="modal-header">
                                                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                                                         <h4 class="modal-title">Actualice sssu información de contacto</h4> </div>
-                                                 <form id="form1_e" action="{{ route('revisioninmueble.editarGestion') }}" method="post">
+
+
+                                                 <form id="form1_e" action="{{ route('contratoBorrador.editarGestion') }}" method="post">
                                                 <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                                 {!! csrf_field() !!}
                                                     <input type="hidden" class="form-control" name="id_modificador" id="id_modificador_e" value="{{ Auth::user()->id }}">
-                                                    <input type="hidden" class="form-control" name="id_inmueble" id="id_inmueble_e" value="{{ $borrador->id_publicacion }}">
-                                                     <input type="hidden" class="form-control" name="id_revisioninmueble" id="id_revisioninmueble_e" >
-                                                    <input type="hidden" class="form-control" name="tipo_revision" id="tipo_revision_e">
+                                                    <input type="hidden" class="form-control" name="id_borrador" id="id_borrador_e">
+                                                    <input type="hidden" class="form-control" name="id_publicacion" id="id_publicacion_e">
                                                     <div class="modal-body">
 
-                                                            <div class="row">
-                                                           <div class="col-sm-7">
-                                                        <label>Fecha/Hora de Revisión</label>
-                                                        <div class="input-group">
-                                                            <input type="text" autocomplete="off" class="form-control datepicker-fecha_contacto1_C" placeholder="dd/mm/yyyy" id="datepicker-fecha_contacto_e_c" name="fecha_gestion" required="required"> <span class="input-group-addon"><i class="icon-calender"></i></span> 
-                                                                
-                                                        </div>
-                                                    </div>
-                                                    
+                                        <div class="row">
+
+                                            <div class="col-sm-3">
+                                                <div class="form-group">
+                                                    <label class="control-label">Notaria</label>
+                                                    <select class="form-control" id="id_notaria_e" name="id_notaria_m" required="required" >
+                                                        <option value="">Selecione Servicio</option>
+                                                        @foreach($notaria as $p)
+                                                             <option value="{{ $p->id }}">{{ $p->nombre }}</option>
+                                                        @endforeach   
+                                                    </select>
                                                 </div>
-                                                        <div class="form-group">
-                                                                <label for="detalle_contacto" class="control-label">Detalle:</label>
-                                                                <textarea class="form-control" name="detalle_revision" id="detalle_revision_e" cols="25" rows="10" class="form-control" required="required"></textarea>
-                                                            </div>
-                                                        
-                                                    </div>
-                                                    <div class="modal-footer">
+                                            </div>
+
+                                            <div class="col-sm-3">
+                                                <div class="form-group">
+                                                    <label class="control-label">Servicio</label>
+                                                    <select class="form-control" id="id_servicio_e" name="id_servicios_m" required="required" >
+                                                        <option value="">Selecione Servicio</option>
+                                                        @foreach($servicio as $p)
+                                                            <option value="{{ $p->id }}" >{{ $p->nombre }}</option>
+                                                        @endforeach   
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-sm-3">
+                                                <div class="form-group">
+                                                    <label class="control-label">Comision</label>
+                                                    <select class="form-control" id="id_comision_e" name="id_comision_m" required="required" >
+                                                        <option value="">Selecione Comision</option>
+                                                        @foreach($comision as $p)
+                                                             <option value="{{ $p->id }}">{{ $p->nombre }}</option>
+                                                        @endforeach   
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-sm-3">
+                                                <div class="form-group">
+                                                    <label class="control-label">Flexibilidad</label>
+                                                    <select class="form-control" id="id_flexibilidad_e" name="id_flexibilidad_m" required="required" >
+                                                        <option value="">Selecione Flexibilidad</option>
+                                                        @foreach($flexibilidad as $p)
+                                                            <option value="{{ $p->id }}" >{{ $p->nombre }}</option>
+                                                        @endforeach   
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+ 
+                                        <div class="row">
+                                            <div class="col-sm-3">
+                                                <label>Fecha</label>
+                                                <div class="input-group">
+                                                    <input type="text" autocomplete="off" class="form-control datepicker-fecha_contacto1" placeholder="dd/mm/yyyy" id="datepicker-fecha_contacto1" name="fecha_gestion_m" required="required"> <span class="input-group-addon"><i class="icon-calender"></i></span> 
+                                                </div>
+                                            </div>
+
+                                            <div class="col-sm-3">
+                                                <label>Estado</label>
+                                                <div class="input-group">
+                                                    <select class="form-control" id="id_estado_e" name="id_estado_m" required="required" >
+                                                        <option value="">Selecione Estado</option>    
+                                                            <option value="1" >Vigente</option>
+                                                            <option value="0" >Rechazdo</option>
+                                                    </select> 
+                                                </div>
+                                            </div>                                            
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="detalle_contacto" class="control-label">Detalle:</label>
+                                                <textarea class="form-control" name="detalle_revision_m" id="detalle_revision_e" cols="25" rows="10" class="form-control" required="required"></textarea>
+                                        </div>
+                                                       
+                                        </div>
+                                            <div class="modal-footer">
                                                         <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">Cerrar</button>
                                                         <button type="submit" class="btn btn-danger waves-effect waves-light">Guardar</button>
                                                     </div>
@@ -208,6 +271,7 @@
 <script>
 
 $(function(){
+
     
         $('#modal-contacto1_c').on('hidden.bs.modal', function () {
         $("#form1_c")[0].reset();
@@ -217,9 +281,9 @@ $(function(){
         $("#form1_c")[0].reset();
     });
     
-        $('#modal-contacto_edit_c').on('hidden.bs.modal', function () {
-        $("#form1_e")[0].reset();
-    });
+    //     $('#modal-contacto_edit_c').on('hidden.bs.modal', function () {
+    //     $("#form1_e")[0].reset();
+    // });
 
 });
 
@@ -228,6 +292,8 @@ $(function(){
       'wrapAround': true
     })
 
+
+
 function mostrar_modal(obj){
     var url= "{{ URL::to('contratoBorrador/borradorC')}}"+"/"+obj;
     $.ajax({
@@ -235,17 +301,20 @@ function mostrar_modal(obj){
         url:url,
         data:"",
         success:function(response){
-
             $('#modal-contacto_edit_c').modal('show');
-            $('#id_revisioninmueble_e').val(response[0].id);
-            $('#detalle_revision_e').val(response[0].detalle_revision);
-            $('#tipo_revision_e').val(response[0].tipo_revision);
             var d = response[0].fecha_gestion.split('-');
-            $('#datepicker-fecha_contacto_e_c').val(d[2] + '-' + d[1] + '-' + d[0]);
-            $('#hora_gestion_e').val(response[0].hora_gestion);
+            $('#datepicker-fecha_contacto1').val(d[2] + '-' + d[1] + '-' + d[0]);
+            $('#id_servicio_e').val(response[0].id_servicios);
+            $('#id_notaria_e').val(response[0].id_notaria);
+            $('#id_comision_e').val(response[0].id_comisiones);
+            $('#id_flexibilidad_e').val(response[0].id_flexibilidad);
+            $('#id_estado_e').val(response[0].id_estado);
+            $('#id_borrador_e').val(response[0].id);
+            $('#id_publicacion_e').val(response[0].id_publicacion);
+            $('#detalle_revision_e').val(response[0].detalle_revision);
             tinyMCE.activeEditor.setContent(response[0].detalle_revision);
         }
-});
+    });
 }
 
 
@@ -285,22 +354,6 @@ $('#listusers1_c').DataTable({
     }
 });
 
-
-$("#via_sii").click(function(){
-    $("#tipo_revision").val("SII");
-});
-$("#via_transunion").click(function(){
-    $("#tipo_revision").val("TransUnion");
-});
-$("#via_tesoreria").click(function(){
-    $("#tipo_revision").val("Tesoreria");
-});
-$("#via_rutificador").click(function(){
-    $("#tipo_revision").val("Rutificador");
-});
-$("#via_otras").click(function(){
-    $("#tipo_revision").val("Otras Revisiones");
-});
 
             tinymce.init({
                 selector: "textarea",

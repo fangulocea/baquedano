@@ -28,6 +28,11 @@ class CreateBorradoresTable extends Migration
             $table->foreign('id_publicacion')->references('id')->on('cap_publicaciones');
             $table->date('fecha_gestion')->nullable();
             $table->text('detalle_revision');
+            $table->integer('id_estado');
+            $table->integer('id_creador')->unsigned();
+            $table->foreign('id_creador')->references('id')->on('personas');
+            $table->integer('id_modificador')->unsigned()->nullable();
+            $table->foreign('id_modificador')->references('id')->on('personas')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
