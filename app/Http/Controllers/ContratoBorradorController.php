@@ -95,8 +95,9 @@ class ContratoBorradorController extends Controller
          ->leftjoin('comisiones as c', 'b.id_comisiones', '=', 'c.id')
          ->leftjoin('flexibilidads as f', 'b.id_flexibilidad', '=', 'f.id')
          ->leftjoin('cap_publicaciones as cp', 'b.id_publicacion', '=', 'cp.id')
+         ->leftjoin('borradorespdf as bp', 'b.id', '=', 'bp.id_borrador')
             ->where('b.id_publicacion','=',$id)
-         ->select(DB::raw(' b.id as id, n.razonsocial as n_n, s.nombre as n_s, c.nombre as n_c, f.nombre as n_f , cp.id as id_publicacion,DATE_FORMAT(b.fecha_gestion, "%d/%m/%Y") as fecha,b.id_servicios as id_servicios,b.id_estado'))
+         ->select(DB::raw(' b.id as id, n.razonsocial as n_n, s.nombre as n_s, c.nombre as n_c, f.nombre as n_f , cp.id as id_publicacion,DATE_FORMAT(b.fecha_gestion, "%d/%m/%Y") as fecha,b.id_servicios as id_servicios,b.id_estado,bp.nombre'))
          ->get();
 
 

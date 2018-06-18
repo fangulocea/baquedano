@@ -16,7 +16,9 @@ class FlexibilidadController extends Controller
      */
     public function index()
     {
-        $flex = Flexibilidad::all();
+        $flex = DB::table('flexibilidads')
+        ->Where('flexibilidads.id','<>',1)
+        ->get();
         return view('flexibilidad.index',compact('flex'));
         
     }

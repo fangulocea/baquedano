@@ -16,10 +16,10 @@ class CreateBorradoresTable extends Migration
         Schema::dropIfExists('borradores');
         Schema::create('borradores', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('id_notaria')->unsigned();
-            $table->foreign('id_notaria')->references('id')->on('notarias');
-            $table->integer('id_servicios')->unsigned();
-            $table->foreign('id_servicios')->references('id')->on('servicios');
+            $table->integer('id_notaria')->unsigned()->nullable();
+            $table->foreign('id_notaria')->references('id')->on('notarias')->nullable();
+            $table->integer('id_servicios')->unsigned()->nullable();
+            $table->foreign('id_servicios')->references('id')->on('servicios')->nullable();
             $table->integer('id_comisiones')->unsigned();
             $table->foreign('id_comisiones')->references('id')->on('comisiones');
             $table->integer('id_flexibilidad')->unsigned();

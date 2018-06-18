@@ -28,28 +28,6 @@
                    <div class="row">
                                 <div class="col-lg-2 col-sm-3 col-xs-12">
                                     <div class="form-group">
-                                        <label class="control-label">Notaria</label>
-                                        <select class="form-control" name="id_notaria" required="required" >
-                                            <option value="">Selecione Notaria</option>
-                                            @foreach($notaria as $p)
-                                                <option value="{{ $p->id }}">{{ $p->nombre }}</option>
-                                            @endforeach   
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-lg-2 col-sm-3 col-xs-12">
-                                    <div class="form-group">
-                                        <label class="control-label">Servicio</label>
-                                        <select class="form-control" name="id_servicios" required="required" >
-                                            <option value="">Selecione Servicio</option>
-                                            @foreach($servicio as $p)
-                                                <option value="{{ $p->id }}">{{ $p->nombre }}</option>
-                                            @endforeach   
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-lg-2 col-sm-3 col-xs-12">
-                                    <div class="form-group">
                                         <label class="control-label">Comisiones</label>
                                         <select class="form-control" name="id_comisiones" required="required" >
                                             <option value="">Selecione comision</option>
@@ -57,6 +35,13 @@
                                                 <option value="{{ $p->id }}">{{ $p->nombre }}</option>
                                             @endforeach   
                                         </select>
+                                        {{-- <label class="control-label">Notaria</label>
+                                        <select class="form-control" name="id_notaria" required="required" >
+                                            <option value="">Selecione Notaria</option>
+                                            @foreach($notaria as $p)
+                                                <option value="{{ $p->id }}">{{ $p->nombre }}</option>
+                                            @endforeach   
+                                        </select> --}}
                                     </div>
                                 </div>
                                 <div class="col-lg-2 col-sm-3 col-xs-12">
@@ -68,6 +53,24 @@
                                                 <option value="{{ $p->id }}">{{ $p->nombre }}</option>
                                             @endforeach   
                                         </select>
+                                        {{-- <label class="control-label">Servicio</label>
+                                        <select class="form-control" name="id_servicios" required="required" >
+                                            <option value="">Selecione Servicio</option>
+                                            @foreach($servicio as $p)
+                                                <option value="{{ $p->id }}">{{ $p->nombre }}</option>
+                                            @endforeach   
+                                        </select> --}}
+                                    </div>
+                                </div>
+                                <div class="col-lg-2 col-sm-3 col-xs-12">
+                                    <div class="form-group">
+                                        
+                                    </div>
+                                </div>
+                                <div class="col-lg-2 col-sm-3 col-xs-12">
+                                    <div class="form-group">
+                                        
+                                        
                                     </div>
                                 </div>
                                 <div class="col-lg-2 col-sm-3 col-xs-12">
@@ -92,13 +95,12 @@
                     <tr>
                         <th>ID</th>
                         <th>Fecha</th>
-                        <th>Notaria</th>
-                        <th>Servicio</th>
                         <th>Comisión</th>
                         <th>Flexibilidad</th>
                         <th>Estado</th>
-                        <th></th>
-                        <th></th>
+                        <th>Editar</th>
+                        <th>Correo</th>
+                        <th>Ver Pdf</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -107,27 +109,24 @@
                                 {{-- <td style="background: #ff7676; color:white">{{ $p->id_publicacion }}</td> --}}
                                 <td>{{ $p->id }}</td>
                                 <td >{{ $p->fecha }}</td>
-                                <td>{{ $p->n_n }}</td>
-                                <td>{{ $p->n_s }}</td>
                                 <td>{{ $p->n_c }}</td>
                                 <td>{{ $p->n_f }}</td>
                                 <td>{{ trans_choice('mensajes.borrador', $p->id_estado) }}</td>
                                 @can('revisioncomercial.edit')
                                     <td>
-                                        
                                         <button class="btn btn-success btn-circle btn-lg" id='via_edit' onclick="mostrar_modal({{ $p->id }})" ><i class="fa fa-check"></i></span></button>
-                                       
                                     </td>
                                 @endcan
                                 @can('contratoBorrador.mail')
-                                    <td width="10px">
+                                    <td>
                                         <a href="{{ route('contratoBorrador.mail', $p->id) }}"><span class="btn btn-warning btn-circle btn-lg"><i class="ti ti-email"></i></span></a>
                                     </td>
                                 @endcan
+                                   <td>
+                                        <a href="{{asset('uploads/pdf/'.$p->nombre)}}"><span class="btn btn-success btn-circle btn-lg"><i class="ti ti-file"></i></span></a>
+                                    </td>
                             </tr>
                             @endforeach
-
-                        
 
                             <!-- MODAL GESTION UPDATE -->
                                     <div id="modal-contacto_edit_c" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
@@ -150,30 +149,6 @@
 
                                             <div class="col-sm-3">
                                                 <div class="form-group">
-                                                    <label class="control-label">Notaria</label>
-                                                    <select class="form-control" id="id_notaria_e" name="id_notaria_m" required="required" >
-                                                        <option value="">Selecione Servicio</option>
-                                                        @foreach($notaria as $p)
-                                                             <option value="{{ $p->id }}">{{ $p->nombre }}</option>
-                                                        @endforeach   
-                                                    </select>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-sm-3">
-                                                <div class="form-group">
-                                                    <label class="control-label">Servicio</label>
-                                                    <select class="form-control" id="id_servicio_e" name="id_servicios_m" required="required" >
-                                                        <option value="">Selecione Servicio</option>
-                                                        @foreach($servicio as $p)
-                                                            <option value="{{ $p->id }}" >{{ $p->nombre }}</option>
-                                                        @endforeach   
-                                                    </select>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-sm-3">
-                                                <div class="form-group">
                                                     <label class="control-label">Comision</label>
                                                     <select class="form-control" id="id_comision_e" name="id_comision_m" required="required" >
                                                         <option value="">Selecione Comision</option>
@@ -181,6 +156,13 @@
                                                              <option value="{{ $p->id }}">{{ $p->nombre }}</option>
                                                         @endforeach   
                                                     </select>
+                                                    {{-- <label class="control-label">Notaria</label>
+                                                    <select class="form-control" id="id_notaria_e" name="id_notaria_m" required="required" >
+                                                        <option value="">Selecione Servicio</option>
+                                                        @foreach($notaria as $p)
+                                                             <option value="{{ $p->id }}">{{ $p->nombre }}</option>
+                                                        @endforeach   
+                                                    </select> --}}
                                                 </div>
                                             </div>
 
@@ -193,6 +175,25 @@
                                                             <option value="{{ $p->id }}" >{{ $p->nombre }}</option>
                                                         @endforeach   
                                                     </select>
+                                                    {{-- <label class="control-label">Servicio</label>
+                                                    <select class="form-control" id="id_servicio_e" name="id_servicios_m" required="required" >
+                                                        <option value="">Selecione Servicio</option>
+                                                        @foreach($servicio as $p)
+                                                            <option value="{{ $p->id }}" >{{ $p->nombre }}</option>
+                                                        @endforeach   
+                                                    </select> --}}
+                                                </div>
+                                            </div>
+
+                                            <div class="col-sm-3">
+                                                <div class="form-group">
+                                                    
+                                                </div>
+                                            </div>
+
+                                            <div class="col-sm-3">
+                                                <div class="form-group">
+                                                    
                                                 </div>
                                             </div>
                                         </div>
@@ -320,10 +321,7 @@ function mostrar_modal(obj){
 
 $('#listusers1_c').DataTable({
     dom: 'Bfrtip',
-    buttons: [
-        'excel', 'pdf', 'print'
-
-    ],
+    buttons: [ ],
     language: {
         "sProcessing": "Procesando...",
         "sLengthMenu": "Mostrar _MENU_ registros",
