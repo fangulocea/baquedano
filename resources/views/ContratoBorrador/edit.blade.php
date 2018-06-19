@@ -136,7 +136,7 @@
                                     </td>
                                 @endcan
                                    <td>
-                                        <a href="{{asset('uploads/pdf/'.$p->nombre)}}"><span class="btn btn-success btn-circle btn-lg"><i class="ti ti-file"></i></span></a>
+                                        <a href="{{asset('uploads/pdf/'.$p->nombre)}}" target="_blank"><span class="btn btn-success btn-circle btn-lg"><i class="ti ti-file"></i></span></a>
                                     </td>
                             </tr>
                             @endforeach
@@ -230,8 +230,10 @@
                                                 <div class="input-group">
                                                     <select class="form-control" id="id_estado_e" name="id_estado_m" required="required" >
                                                         <option value="">Selecione Estado</option>    
-                                                            <option value="1" >Vigente</option>
                                                             <option value="0" >Rechazdo</option>
+                                                            <option value="1" >Vigente</option>
+                                                            <option value="2" >Correo Enviado</option>
+                                                            <option value="3" >Reenvío Correo</option>
                                                     </select> 
                                                 </div>
                                             </div>                                            
