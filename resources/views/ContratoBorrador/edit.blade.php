@@ -136,7 +136,7 @@
                                     </td>
                                 @endcan
                                    <td>
-                                        <a href="{{asset('uploads/pdf/'.$p->nombre)}}"><span class="btn btn-success btn-circle btn-lg"><i class="ti ti-file"></i></span></a>
+                                        <a href="{{asset('uploads/pdf/'.$p->nombre)}}" target="_blank"><span class="btn btn-success btn-circle btn-lg"><i class="ti ti-file"></i></span></a>
                                     </td>
                             </tr>
                             @endforeach
@@ -263,7 +263,7 @@
         </section>
     </div>
 </div>
-  <a href="{{ route('revisioninmueble.index') }}" class="btn btn-info" style="color:white"><i class="fa fa-times-circle"></i>&nbsp;&nbsp;Volver</a>
+  <a href="{{ route('contratoBorrador.index') }}" class="btn btn-info" style="color:white"><i class="fa fa-times-circle"></i>&nbsp;&nbsp;Volver</a>
 <script src="{{ URL::asset('plugins/bower_components/jquery/dist/jquery.min.js') }}"></script>
 <!-- Bootstrap Core JavaScript -->
 <script src="{{ URL::asset('bootstrap/dist/js/bootstrap.min.js') }}"></script>
