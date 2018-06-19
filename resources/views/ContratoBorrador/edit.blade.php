@@ -10,7 +10,14 @@
 <link href="{{ URL::asset('plugins/bower_components/timepicker/bootstrap-timepicker.min.css')}} rel="stylesheet">
 <link href="{{ URL::asset('plugins/bower_components/clockpicker/dist/jquery-clockpicker.min.css')}}" rel="stylesheet">
 <div class="row">
-    <div class="col-md-12">
+    <div class="col-md-12"> 
+        @if(isset($borrador->direccion))
+         <center><h3 class="box-title m-b-0">{{ $borrador->direccion or null }}</h3></center>
+         @endif
+          @if( isset($borrador->propietario) )
+        <center><h3 class="box-title m-b-0">{{ $borrador->propietario or null }} </h3></center>
+        <br><br>
+        @endif
         <section>
             <div class="sttabs tabs-style-iconbox">
                 <nav>
@@ -64,7 +71,13 @@
                                 </div>
                                 <div class="col-lg-2 col-sm-3 col-xs-12">
                                     <div class="form-group">
-                                        
+                                        <label class="control-label">Contrato</label>
+                                        <select class="form-control" name="id_contrato" required="required" >
+                                            <option value="">Selecione Contrato</option>
+                                            @foreach($contrato as $p)
+                                                <option value="{{ $p->id }}">{{ $p->nombre }}</option>
+                                            @endforeach   
+                                        </select>
                                     </div>
                                 </div>
                                 <div class="col-lg-2 col-sm-3 col-xs-12">
@@ -187,7 +200,13 @@
 
                                             <div class="col-sm-3">
                                                 <div class="form-group">
-                                                    
+                                                    <label class="control-label">Contrato</label>
+                                                    <select class="form-control" id="id_contrato_e" name="id_contrato_m" required="required" >
+                                                        <option value="">Selecione Contrato</option>
+                                                        @foreach($contrato as $p)
+                                                            <option value="{{ $p->id }}">{{ $p->nombre }}</option>
+                                                        @endforeach   
+                                                    </select>
                                                 </div>
                                             </div>
 
@@ -312,6 +331,7 @@ function mostrar_modal(obj){
             $('#id_estado_e').val(response[0].id_estado);
             $('#id_borrador_e').val(response[0].id);
             $('#id_publicacion_e').val(response[0].id_publicacion);
+            $('#id_contrato_e').val(response[0].id_contrato);
             $('#detalle_revision_e').val(response[0].detalle_revision);
             tinyMCE.activeEditor.setContent(response[0].detalle_revision);
         }

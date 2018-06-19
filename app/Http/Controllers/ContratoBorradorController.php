@@ -86,7 +86,7 @@ class ContratoBorradorController extends Controller
          ->leftjoin('comunas as o', 'i.id_comuna', '=', 'o.comuna_id')
          ->leftjoin('portales as po', 'c.portal', '=', 'po.id')
          ->where('c.id','=',$id)
-         ->select(DB::raw('c.id as id_publicacion, CONCAT(i.direccion," N°",i.numero,", ",o.comuna_nombre) as Dirección' ))
+         ->select(DB::raw('c.id as id_publicacion, CONCAT(i.direccion,"  # ",i.numero,"  Depto. ",i.departamento,"  ",o.comuna_nombre) as direccion, CONCAT(p1.nombre , " " , p1.apellido_paterno, "  Fono: " ,p1.telefono, "  Email: " ,p1.email ) as propietario '))
          ->first();
 
          $borradoresIndex = DB::table('borradores as b')
@@ -126,7 +126,12 @@ class ContratoBorradorController extends Controller
          ->select(DB::raw('f.id as id,f.nombre as nombre'))
          ->get();
 
-        return view('contratoBorrador.edit',compact('borrador','borradoresIndex','gestBorradores','notaria','servicio','comision','flexibilidad'));
+         $contrato = DB::table('contratos as c')
+         ->where("c.estado","<>",0)
+         ->select(DB::raw('c.id as id,c.nombre as nombre'))
+         ->get();         
+
+        return view('contratoBorrador.edit',compact('borrador','borradoresIndex','gestBorradores','notaria','servicio','comision','flexibilidad','contrato'));
     }
 
     /**
@@ -171,8 +176,9 @@ class ContratoBorradorController extends Controller
          ->leftjoin('comunas as c1', 'p1.id_comuna','=','c1.comuna_id')
          ->leftjoin('inmuebles as i', 'cp.id_inmueble','=','i.id')
          ->leftjoin('comunas as c2', 'i.id_comuna','=','c2.comuna_id')
+         ->leftjoin('contratos as con', 'b.id_contrato','=','con.id')
          ->where('b.id','=',$borrador->id)
-         ->select(DB::raw(' b.id as id, n.razonsocial as n_n, s.nombre as n_s, c.nombre as n_c, f.nombre as n_f , cp.id as id_publicacion,DATE_FORMAT(b.fecha_gestion, "%d/%m/%Y") as fecha,CONCAT_WS(" ",p1.nombre,p1.apellido_paterno,p1.apellido_materno) as propietario,p1.rut as rut_p, p1.direccion as direccion_p, p1.numero as numero_p, c1.comuna_nombre as comuna_p,i.direccion as direccion_i, i.numero as numero_i, i.departamento as depto_i, c2.comuna_nombre as comuna_i,i.dormitorio, i.bano, i.bodega, i.piscina, i.precio, i.gastosComunes'))
+         ->select(DB::raw(' b.id as id, n.razonsocial as n_n, s.nombre as n_s, c.nombre as n_c, f.nombre as n_f , cp.id as id_publicacion,DATE_FORMAT(b.fecha_gestion, "%d/%m/%Y") as fecha,CONCAT_WS(" ",p1.nombre,p1.apellido_paterno,p1.apellido_materno) as propietario,p1.rut as rut_p, p1.direccion as direccion_p, p1.numero as numero_p, c1.comuna_nombre as comuna_p,i.direccion as direccion_i, i.numero as numero_i, i.departamento as depto_i, c2.comuna_nombre as comuna_i,i.dormitorio, i.bano, i.bodega, i.piscina, i.precio, i.gastosComunes,con.nombre as contrato'))
          ->first();
         $pdf = new pdfController();
         $pdf->index($borradorPDF);
@@ -205,7 +211,8 @@ class ContratoBorradorController extends Controller
               "id_flexibilidad" => $request->id_flexibilidad_m,
               "fecha_gestion" => $request->fecha_gestion_m,
               "id_estado" => $request->id_estado_m,
-              "detalle_revision" => $request->detalle_revision_m
+              "detalle_revision" => $request->detalle_revision_m,
+              "id_contrato" => $request->id_contrato_m
         ]);
 
         //PARA PDF
@@ -219,8 +226,9 @@ class ContratoBorradorController extends Controller
          ->leftjoin('comunas as c1', 'p1.id_comuna','=','c1.comuna_id')
          ->leftjoin('inmuebles as i', 'cp.id_inmueble','=','i.id')
          ->leftjoin('comunas as c2', 'i.id_comuna','=','c2.comuna_id')
+         ->leftjoin('contratos as con', 'b.id_contrato','=','con.id')
          ->where('b.id','=',$request->id_borrador)
-         ->select(DB::raw(' b.id as id, n.razonsocial as n_n, s.nombre as n_s, c.nombre as n_c, f.nombre as n_f , cp.id as id_publicacion,DATE_FORMAT(b.fecha_gestion, "%d/%m/%Y") as fecha,CONCAT_WS(" ",p1.nombre,p1.apellido_paterno,p1.apellido_materno) as propietario,p1.rut as rut_p, p1.direccion as direccion_p, p1.numero as numero_p, c1.comuna_nombre as comuna_p,i.direccion as direccion_i, i.numero as numero_i, i.departamento as depto_i, c2.comuna_nombre as comuna_i,i.dormitorio, i.bano, i.bodega, i.piscina, i.precio, i.gastosComunes'))
+         ->select(DB::raw(' b.id as id, n.razonsocial as n_n, s.nombre as n_s, c.nombre as n_c, f.nombre as n_f , cp.id as id_publicacion,DATE_FORMAT(b.fecha_gestion, "%d/%m/%Y") as fecha,CONCAT_WS(" ",p1.nombre,p1.apellido_paterno,p1.apellido_materno) as propietario,p1.rut as rut_p, p1.direccion as direccion_p, p1.numero as numero_p, c1.comuna_nombre as comuna_p,i.direccion as direccion_i, i.numero as numero_i, i.departamento as depto_i, c2.comuna_nombre as comuna_i,i.dormitorio, i.bano, i.bodega, i.piscina, i.precio, i.gastosComunes, con.nombre'))
          ->first();
         $pdf = new pdfController();
         $pdf->index($borradorPDF);
