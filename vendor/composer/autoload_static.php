@@ -513,6 +513,7 @@ class ComposerStaticInit0178ccda3db7603c96af3e22d130f715
         'CreateCargosTable' => __DIR__ . '/../..' . '/database/migrations/2012_05_19_003554_create_cargos_table.php',
         'CreateComisionesTable' => __DIR__ . '/../..' . '/database/migrations/2018_05_26_124820_create_comisiones_table.php',
         'CreateCondicionsTable' => __DIR__ . '/../..' . '/database/migrations/2018_05_16_013516_create_condicions_table.php',
+        'CreateContratosTable' => __DIR__ . '/../..' . '/database/migrations/2018_06_18_210027_create_contratos_table.php',
         'CreateCorreosTable' => __DIR__ . '/../..' . '/database/migrations/2018_05_30_140028_create_correos_table.php',
         'CreateFlexibilidadsTable' => __DIR__ . '/../..' . '/database/migrations/2018_05_26_140017_create_flexibilidads_table.php',
         'CreateFormasDePagosTable' => __DIR__ . '/../..' . '/database/migrations/2018_05_26_114046_create_formasDePagos_table.php',

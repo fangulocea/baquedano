@@ -501,5 +501,64 @@ class PermissionsTableSeeder extends Seeder
             'slug'          =>  'revisioncomercial.destroy',
             'description'   =>  'Desactiva revisión comercial del sistema',
         ]);
+
+//Contrato Mantenedor
+        Permission::create([
+            'name'          =>  'Listado de Contrato',
+            'slug'          =>  'contrato.index',
+            'description'   =>  'Despliega servicios',
+        ]);
+        Permission::create([
+            'name'          =>  'Ver detalle de Contrato',
+            'slug'          =>  'contrato.show',
+            'description'   =>  'Despliega el detalle del Contrato ',
+        ]);
+        Permission::create([
+            'name'          =>  'Crea Contrato',
+            'slug'          =>  'contrato.create',
+            'description'   =>  'Crear Contrato del sistema',
+        ]);
+        Permission::create([
+            'name'          =>  'Edición de Contrato',
+            'slug'          =>  'contrato.edit',
+            'description'   =>  'Editar Contrato del sistema',
+        ]);
+        Permission::create([
+            'name'          =>  'Desactiva Contrato',
+            'slug'          =>  'contrato.destroy',
+            'description'   =>  'Desactiva Contrato del sistema',
+        ]);
+    
+//Contrato Borrador
+        Permission::create([
+            'name'          =>  'Listado de Contrato Borrador',
+            'slug'          =>  'contratoBorrador.index',
+            'description'   =>  'Despliega servicios',
+        ]);
+        Permission::create([
+            'name'          =>  'Ver detalle de Contrato Borrador',
+            'slug'          =>  'contratoBorrador.show',
+            'description'   =>  'Despliega el detalle del Contrato Borrador ',
+        ]);
+        Permission::create([
+            'name'          =>  'Crea Contrato Borrador',
+            'slug'          =>  'contratoBorrador.create',
+            'description'   =>  'Crear Contrato Borrador del sistema',
+        ]);
+        Permission::create([
+            'name'          =>  'Edición de Contrato Borrador',
+            'slug'          =>  'contratoBorrador.edit',
+            'description'   =>  'Editar Contrato Borrador del sistema',
+        ]);
+        Permission::create([
+            'name'          =>  'Desactiva Contrato Borrador',
+            'slug'          =>  'contratoBorrador.destroy',
+            'description'   =>  'Desactiva Contrato Borrador del sistema',
+        ]);
+
+
+
+
+
     }
 }

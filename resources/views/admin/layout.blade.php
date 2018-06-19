@@ -205,6 +205,9 @@
                                 @can('portal.index')
                                 <li> <a href="{{ route('portal.index') }}"><i class=" fa-fw">P</i><span class="hide-menu">Portal   </span></a> </li>
                                 @endcan
+                                @can('contrato.index')
+                                <li> <a href="{{ route('contrato.index') }}"><i class=" fa-fw">C</i><span class="hide-menu">Contrato   </span></a> </li>
+                                @endcan
                             </ul>
                         </li>
                         <li> <a href="#" class="waves-effect"><i class="mdi mdi-settings fa-fw" data-icon="v"></i> <span class="hide-menu"> Captaciones <span class="fa arrow"></span> <span class="label label-rouded label-primary pull-right">6</span></span></a>

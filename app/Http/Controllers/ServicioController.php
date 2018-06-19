@@ -99,9 +99,6 @@ class ServicioController extends Controller
         else
         {   return redirect()->route('servicio.index')
             ->with('error', 'Servicio Ya Existe, no se puede ingresar');  }
-
-
-        
     }
 
     /**

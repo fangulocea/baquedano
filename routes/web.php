@@ -683,8 +683,31 @@ Route::get('revisionpersona/eliminarfoto/{idf}/{idc}','RevisionPersonaController
 		->middleware('permission:contratoBorrador.edit');
 
 		Route::get('contratoBorrador/mail/{id}','ContratoBorradorController@enviaMail')->name('contratoBorrador.mail');		
-
 		Route::get('pdf/{data}', 'PdfController@index');
+
+
+//Contrato
+	Route::post('contrato/store','ContratoMantenedorController@store')->name('contrato.store')
+		->middleware('permission:servicio.create');
+
+	Route::get('contrato','ContratoMantenedorController@index')->name('contrato.index')
+		->middleware('permission:contrato.index');
+
+	Route::get('contrato/create','ContratoMantenedorController@create')->name('contrato.create')
+		->middleware('permission:contrato.create');
+
+	Route::post('contrato/{contrato}','ContratoMantenedorController@update')->name('contrato.update')
+		->middleware('permission:contrato.edit');
+
+	Route::get('contrato/{contrato}','ContratoMantenedorController@show')->name('contrato.show')
+		->middleware('permission:contrato.show');
+
+	Route::delete('contrato/{contrato}','ContratoMantenedorController@destroy')->name('contrato.destroy')
+		->middleware('permission:servicio.destroy');
+
+	Route::get('contrato/{contrato}/edit','ContratoMantenedorController@edit')->name('contrato.edit')
+		->middleware('permission:contrato.edit');
+
 
 
 
