@@ -230,8 +230,10 @@
                                                 <div class="input-group">
                                                     <select class="form-control" id="id_estado_e" name="id_estado_m" required="required" >
                                                         <option value="">Selecione Estado</option>    
-                                                            <option value="1" >Vigente</option>
                                                             <option value="0" >Rechazdo</option>
+                                                            <option value="1" >Vigente</option>
+                                                            <option value="2" >Correo Enviado</option>
+                                                            <option value="3" >Reenvío Correo</option>
                                                     </select> 
                                                 </div>
                                             </div>                                            
@@ -381,15 +383,122 @@ $('#listusers1_c').DataTable({
                 plugins: [
                     "advlist autolink link lists charmap print preview hr anchor pagebreak spellchecker", "searchreplace wordcount visualblocks visualchars code fullscreen insertdatetime nonbreaking", "save table contextmenu directionality template paste textcolor"
                 ],
-                toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | l      ink | print preview fullpage | forecolor backcolor ",
-            setup: function (editor) {
-                editor.on('change', function (e) {
-                    editor.save();
-                });
+                toolbar1: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | l      ink | print preview fullpage | forecolor backcolor  | mybutton",
+                toolbar2: "Propietario | Rut | Profesion | Teléfono | Domicilio | Depto | Comuna | Región",
+                toolbar3: "Propiedad | DireccionProp | DeptoProp | RolProp | ComunaProp | DormitorioProp | BanoProp ",
+            setup: function (editor) 
+            {
+                    editor.addButton('Propietario', 
+                    {   text: '{propietario}',
+                        icon: false,
+                        onclick: function () 
+                        { editor.insertContent('{propietario}'); }
+                    });
+                    editor.addButton('Rut', 
+                    {   text: '{rut}',
+                        icon: false,
+                        onclick: function () 
+                        { editor.insertContent('{rut}'); }
+                    });
+                    editor.addButton('Profesion', 
+                    {   text: '{profesion}',
+                        icon: false,
+                        onclick: function () 
+                        { editor.insertContent('{profesion}'); }
+                    });
+                    editor.addButton('Teléfono', 
+                    {   text: '{telefono}',
+                        icon: false,
+                        onclick: function () 
+                        { editor.insertContent('{telefono}'); }
+                    });
+                    editor.addButton('Domicilio', 
+                    {   text: '{domicilioDueno}',
+                        icon: false,
+                        onclick: function () 
+                        { editor.insertContent('{domicilioDueno}'); }
+                    });
+                    editor.addButton('Depto', 
+                    {   text: '{deptoDueno}',
+                        icon: false,
+                        onclick: function () 
+                        { editor.insertContent('{deptoDueno}'); }
+                    });
+                    editor.addButton('Comuna', 
+                    {   text: '{comunaDueno}',
+                        icon: false,
+                        onclick: function () 
+                        { editor.insertContent('{comunaDueno}'); }
+                    });
+                    editor.addButton('Región', 
+                    {   text: '{regionDueno}',
+                        icon: false,
+                        onclick: function () 
+                        { editor.insertContent('{regionDueno}'); }
+                    });
+                    
+                    //propiedad
+
+                    
+                    editor.addButton('Propiedad', 
+                    {   text: 'Propiedad',
+                        icon: false,
+                        onclick: function () 
+                        { editor.insertContent(''); }
+                    });
+                    editor.addButton('DireccionProp', 
+                    {   text: '{direccionPropiedad}',
+                        icon: false,
+                        onclick: function () 
+                        { editor.insertContent('{direccionPropiedad}'); }
+                    });
+                    editor.addButton('DeptoProp', 
+                    {   text: '{deptoPropiedad}',
+                        icon: false,
+                        onclick: function () 
+                        { editor.insertContent('{deptoPropiedad}'); }
+                    });
+                    editor.addButton('RolProp', 
+                    {   text: '{rol}',
+                        icon: false,
+                        onclick: function () 
+                        { editor.insertContent('{rol}'); }
+                    });
+                    editor.addButton('ComunaProp', 
+                    {   text: '{comunaPropiedad}',
+                        icon: false,
+                        onclick: function () 
+                        { editor.insertContent('{comunaPropiedad}'); }
+                    });
+                    editor.addButton('DormitorioProp', 
+                    {   text: '{dormitorio}',
+                        icon: false,
+                        onclick: function () 
+                        { editor.insertContent('{dormitorio}'); }
+                    });
+                    editor.addButton('BanoProp', 
+                    {   text: '{bano}',
+                        icon: false,
+                        onclick: function () 
+                        { editor.insertContent('{bano}'); }
+                    });
+
             }
+
+
+
+
         });
         
       
+
+
+
+
+
+
+
+
 
 
 
