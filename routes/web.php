@@ -34,7 +34,13 @@ Route::get('personas/email/{text}','PersonaController@getPersonasEmail');
 
 Route::get('personas/fono/{text}','PersonaController@getPersonasFono');
 
+Route::get('persona/contratoborrador/{id}','PersonaController@getPersonaContratoBorrador');
+
+Route::get('inmueble/contratoborrador/{id}','InmuebleController@getInmuebleContratoBorrador');
+
 Route::get('provincias/{id}','RegionController@getProvincias');
+
+Route::get('regiones/todas','RegionController@getTodasRegiones');
 
 Route::get('captaciones/correo/{id}','CaptacionController@getCaptacionesCorreo');
 
@@ -656,33 +662,39 @@ Route::get('revisionpersona/eliminarfoto/{idf}/{idc}','RevisionPersonaController
 
 
 		// COntratos Borrador
-		Route::post('contratoBorrador/store','ContratoBorradorController@store')->name('contratoBorrador.store')
-		->middleware('permission:contratoBorrador.create');
+		Route::post('borradorContrato/updatepersona','PersonaController@updatePersonaContratoBorrador')->name('borradorContrato.updatepersona')
+		->middleware('permission:borradorContrato.edit');
 
-		Route::get('contratoBorrador','ContratoBorradorController@index')->name('contratoBorrador.index')
-		->middleware('permission:contratoBorrador.index');
+		Route::post('borradorContrato/updateinmueble','InmuebleController@updateInmuebleContratoBorrador')->name('borradorContrato.updateinmueble')
+		->middleware('permission:borradorContrato.edit');
 
-		Route::get('contratoBorrador/create','ContratoBorradorController@create')->name('contratoBorrador.create')
-		->middleware('permission:contratoBorrador.create');
+		Route::post('borradorContrato/store','ContratoBorradorController@store')->name('borradorContrato.store')
+		->middleware('permission:borradorContrato.create');
 
-		Route::get('contratoBorrador/edit/{id}','ContratoBorradorController@edit')->name('contratoBorrador.edit')
-		->middleware('permission:contratoBorrador.edit');
+		Route::get('borradorContrato','ContratoBorradorController@index')->name('borradorContrato.index')
+		->middleware('permission:borradorContrato.index');
 
-		Route::get('contratoBorrador/destroy/{id}','ContratoBorradorController@destroy')->name('contratoBorrador.destroy')
-		->middleware('permission:contratoBorrador.destroy');
+		Route::get('borradorContrato/create','ContratoBorradorController@create')->name('borradorContrato.create')
+		->middleware('permission:borradorContrato.create');
 
-		Route::post('contratoBorrador/crearBorrador','ContratoBorradorController@crearBorrador')->name('contratoBorrador.crearBorrador')
-		->middleware('permission:contratoBorrador.edit');
+		Route::get('borradorContrato/edit/{id}','ContratoBorradorController@edit')->name('borradorContrato.edit')
+		->middleware('permission:borradorContrato.edit');
 
-		Route::get('contratoBorrador/borradorC/{idg}','ContratoBorradorController@mostrarGestion');
+		Route::get('borradorContrato/destroy/{id}','ContratoBorradorController@destroy')->name('borradorContrato.destroy')
+		->middleware('permission:borradorContrato.destroy');
 
-		Route::post('contratoBorrador/{captacionArrendador}','ContratoBorradorController@update')->name('contratoBorrador.update')
-		->middleware('permission:contratoBorrador.edit');
+		Route::post('borradorContrato/crearBorrador','ContratoBorradorController@crearBorrador')->name('borradorContrato.crearBorrador')
+		->middleware('permission:borradorContrato.edit');
 
-		Route::post('contratoBorrador/borrador/update','ContratoBorradorController@editarGestion')->name('contratoBorrador.editarGestion')
-		->middleware('permission:contratoBorrador.edit');
+		Route::get('borradorContrato/borradorC/{idg}','ContratoBorradorController@mostrarGestion');
 
-		Route::get('contratoBorrador/mail/{id}','ContratoBorradorController@enviaMail')->name('contratoBorrador.mail');		
+		Route::post('borradorContrato/{captacionArrendador}','ContratoBorradorController@update')->name('borradorContrato.update')
+		->middleware('permission:borradorContrato.edit');
+
+		Route::post('borradorContrato/borrador/update','ContratoBorradorController@editarGestion')->name('borradorContrato.editarGestion')
+		->middleware('permission:borradorContrato.edit');
+
+		Route::get('borradorContrato/mail/{id}','ContratoBorradorController@enviaMail')->name('borradorContrato.mail');		
 		Route::get('pdf/{data}', 'PdfController@index');
 
 

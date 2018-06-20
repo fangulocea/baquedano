@@ -14,6 +14,23 @@ use DB;
 class InmuebleController extends Controller
 {
 
+
+       public function getInmuebleContratoBorrador($id){
+        $inmueble=Inmueble::find($id);
+        return response()->json($inmueble);
+    }
+
+
+        public function updateInmuebleContratoBorrador(Request $request)
+    {
+        $id_inmueble=$request->id_inmueble;
+        $id_publicacion=$request->id_publicacion;
+        $data = request()->except(['_token','id_publicacion','id_inmueble']);
+        $inmueble = Inmueble::whereId($id_inmueble)->update($data);
+        return redirect()->route('borradorContrato.edit', $id_publicacion)
+        ->with('status', 'Inmueble Actualizado con éxito');
+    }
+
     public function getInmuebles($text){
         $inmuebles=Inmueble::inmuebles($text);
         return response()->json($inmuebles);

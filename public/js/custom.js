@@ -227,7 +227,49 @@ $("#p_id_provincia").change(function (event) {
     });
 });
 
+$("#pe_region").change(function (event) {
+    $("#pe_provincia").empty();
+    $("#pe_comunas").empty();
+    $.get("/provincias/" + event.target.value + "", function (response, state) {
+        $("#pe_provincia").append("<option value=''>Seleccione provincia</option>");
+        for (i = 0; i < response.length; i++) {
+            $("#pe_provincia").append("<option value='" + response[i].provincia_id + "'>" + response[i].provincia_nombre + "</option>");
+        }
+    });
+});
 
+$("#pe_provincia").change(function (event) {
+    $("#pe_comuna").empty();
+    $.get("/comunas/" + event.target.value + "", function (response, state) {
+        $("#pe_comuna").append("<option value=''>Seleccione comuna</option>");
+        for (i = 0; i < response.length; i++) {
+            $("#pe_comuna").append("<option value='" + response[i].comuna_id + "'>" + response[i].comuna_nombre + "</option>");
+        }
+    });
+});
+
+
+
+$("#in_region").change(function (event) {
+    $("#in_provincia").empty();
+    $("#in_comunas").empty();
+    $.get("/provincias/" + event.target.value + "", function (response, state) {
+        $("#in_provincia").append("<option value=''>Seleccione provincia</option>");
+        for (i = 0; i < response.length; i++) {
+            $("#in_provincia").append("<option value='" + response[i].provincia_id + "'>" + response[i].provincia_nombre + "</option>");
+        }
+    });
+});
+
+$("#in_provincia").change(function (event) {
+    $("#in_comuna").empty();
+    $.get("/comunas/" + event.target.value + "", function (response, state) {
+        $("#in_comuna").append("<option value=''>Seleccione comuna</option>");
+        for (i = 0; i < response.length; i++) {
+            $("#in_comuna").append("<option value='" + response[i].comuna_id + "'>" + response[i].comuna_nombre + "</option>");
+        }
+    });
+});
 jQuery('#datepicker-fecha_publicacion').datepicker({
     format: 'dd-mm-yyyy',
     todayHighlight: true,

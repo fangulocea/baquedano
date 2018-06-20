@@ -532,27 +532,27 @@ class PermissionsTableSeeder extends Seeder
 //Contrato Borrador
         Permission::create([
             'name'          =>  'Listado de Contrato Borrador',
-            'slug'          =>  'contratoBorrador.index',
+            'slug'          =>  'borradorContrato.index',
             'description'   =>  'Despliega servicios',
         ]);
         Permission::create([
             'name'          =>  'Ver detalle de Contrato Borrador',
-            'slug'          =>  'contratoBorrador.show',
+            'slug'          =>  'borradorContrato.show',
             'description'   =>  'Despliega el detalle del Contrato Borrador ',
         ]);
         Permission::create([
             'name'          =>  'Crea Contrato Borrador',
-            'slug'          =>  'contratoBorrador.create',
+            'slug'          =>  'borradorContrato.create',
             'description'   =>  'Crear Contrato Borrador del sistema',
         ]);
         Permission::create([
             'name'          =>  'Edición de Contrato Borrador',
-            'slug'          =>  'contratoBorrador.edit',
+            'slug'          =>  'borradorContrato.edit',
             'description'   =>  'Editar Contrato Borrador del sistema',
         ]);
         Permission::create([
             'name'          =>  'Desactiva Contrato Borrador',
-            'slug'          =>  'contratoBorrador.destroy',
+            'slug'          =>  'borradorContrato.destroy',
             'description'   =>  'Desactiva Contrato Borrador del sistema',
         ]);
 

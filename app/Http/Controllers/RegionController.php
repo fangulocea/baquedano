@@ -16,6 +16,12 @@ class RegionController extends Controller
         }
     }
 
+
+    public function getTodasRegiones(Request $request){
+            $regiones=Region::all();
+            return response()->json($regiones);
+    }
+
     /**
      * Display a listing of the resource.
      *

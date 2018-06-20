@@ -261,8 +261,8 @@
                                 @can('revisioncomercial.index')
                                 <li> <a href="{{ route('revisionpersona.index') }}"><i class=" fa-fw">CA</i><span class="hide-menu">Revisión Comercial Persona</span></a> </li>
                                 @endcan
-                                @can('contratoBorrador.index')
-                                <li> <a href="{{ route('contratoBorrador.index') }}"><i class=" fa-fw">CB</i><span class="hide-menu">Contrato Borrador</span></a> </li>
+                                @can('borradorContrato.index')
+                                <li> <a href="{{ route('borradorContrato.index') }}"><i class=" fa-fw">CB</i><span class="hide-menu">Contrato Borrador</span></a> </li>
                                 @endcan
                                 
                             </ul>

@@ -32,7 +32,7 @@ class ContratoBorradorController extends Controller
          ->leftjoin('comunas as o', 'i.id_comuna', '=', 'o.comuna_id')
          ->leftjoin('portales as po', 'c.portal', '=', 'po.id')
          ->where('c.id_estado','=',6)
-         ->select(DB::raw('c.id as id_publicacion, DATE_FORMAT(c.created_at, "%d/%m/%Y") as fecha_creacion, c.id_estado as id_estado, CONCAT(p1.nombre," ",p1.apellido_paterno," ",p1.apellido_materno) as Propietario, CONCAT(p2.nombre," ",p2.apellido_paterno," ",p2.apellido_materno) as Creador'),'i.id as id_inmueble','i.direccion','i.numero','i.departamento', 'o.comuna_nombre','po.nombre as portal','p1.nombre as nom_p','p1.apellido_paterno as apep_p','p1.apellido_materno as apem_p','p2.nombre as nom_c','p2.apellido_paterno as apep_c','p2.apellido_materno as apem_c','p3.nombre as nom_m','p3.apellido_paterno as apep_m','p3.apellido_materno as apem_m')
+         ->select(DB::raw('c.id as id_publicacion, DATE_FORMAT(c.created_at, "%d/%m/%Y") as fecha_creacion, c.id_estado as id_estado, CONCAT_WS(" ",p1.nombre,p1.apellido_paterno,p1.apellido_materno) as Propietario, CONCAT(p2.nombre," ",p2.apellido_paterno," ",p2.apellido_materno) as Creador'),'p1.id as id_propietario','i.id as id_inmueble','i.direccion','i.numero','i.departamento', 'o.comuna_nombre','po.nombre as portal','p1.nombre as nom_p','p1.apellido_paterno as apep_p','p1.apellido_materno as apem_p','p2.nombre as nom_c','p2.apellido_paterno as apep_c','p2.apellido_materno as apem_c','p3.nombre as nom_m','p3.apellido_paterno as apep_m','p3.apellido_materno as apem_m')
          ->get();
          
          return view('contratoBorrador.index',compact('publica'));
@@ -108,7 +108,7 @@ class ContratoBorradorController extends Controller
          ->leftjoin('comunas as o', 'i.id_comuna', '=', 'o.comuna_id')
          ->leftjoin('portales as po', 'c.portal', '=', 'po.id')
          ->where('c.id','=',$id)
-         ->select(DB::raw('c.id as id_publicacion, CONCAT(i.direccion,"  # ",i.numero,"  Depto. ",i.departamento,"  ",o.comuna_nombre) as direccion, CONCAT(p1.nombre , " " , p1.apellido_paterno, "  Fono: " ,p1.telefono, "  Email: " ,p1.email ) as propietario '))
+         ->select(DB::raw('c.id as id_publicacion, p1.id as id_propietario, i.id as id_inmueble, CONCAT_WS(" ",i.direccion,"#",i.numero,"Depto.",i.departamento,o.comuna_nombre) as direccion, CONCAT_WS(" ",p1.nombre , p1.apellido_paterno, " Fono: " ,p1.telefono, " Email: " ,p1.email ) as propietario '))
          ->first();
 
          $borradoresIndex = DB::table('borradores as b')
@@ -228,7 +228,7 @@ class ContratoBorradorController extends Controller
 
 
 
-        return redirect()->route('contratoBorrador.edit', $request->id_publicacion)
+        return redirect()->route('borradorContrato.edit', $request->id_publicacion)
          ->with('status', 'Borrador guardado con éxito');
     }
 
@@ -276,7 +276,7 @@ class ContratoBorradorController extends Controller
         $pdf->index($borradorPDF);
         // FIN PARA PDF
 
-        return redirect()->route('contratoBorrador.edit', $request->id_publicacion)
+        return redirect()->route('borradorContrato.edit', $request->id_publicacion)
             ->with('status', 'Borrador actualizado con éxito');
     }
 
@@ -322,12 +322,12 @@ class ContratoBorradorController extends Controller
             { ContratoBorrador::find($id)->update(['id_estado' => 3]); }
         
 
-            return redirect()->route('contratoBorrador.edit', $borradorCorreo->id_pub)
+            return redirect()->route('borradorContrato.edit', $borradorCorreo->id_pub)
                 ->with('status', 'Correo enviado con éxito');
         }
         else
         {
-            return redirect()->route('contratoBorrador.edit', $borradorCorreo->id_pub)
+            return redirect()->route('borradorContrato.edit', $borradorCorreo->id_pub)
                 ->with('error', 'No se puede enviar correo a borrador Rechazado');   
         }
 

@@ -27,7 +27,7 @@
                 </nav>
 
 
-            <form id="form1_a" action="{{ route('contratoBorrador.crearBorrador') }}" method="post">                 
+            <form id="form1_a" action="{{ route('borradorContrato.crearBorrador') }}" method="post">                 
                 <input type="hidden" name="_token" value="{{ csrf_token() }}">
                 <input type="hidden" name="id_creador" value="{{ Auth::user()->id }}"">
                 <input type="hidden" name="id_publicacion" value="{{ $borrador->id_publicacion }}">
@@ -101,7 +101,12 @@
 
                             <div class="content-wrap">
                     <section id="section-iconbox-5_c">
-
+                              <div class="col-lg-4 col-sm-3 col-xs-12">
+                                    <button class="btn btn-block btn-info"  id='updatepersona'data-toggle="modal" onclick="mostrar_modalpersona({{ $borrador->id_propietario }})" >Actualizar Propietario</button>
+                                </div>
+                                <div class="col-lg-4 col-sm-3 col-xs-12">
+                                    <button class="btn btn-block btn-success" id='updateinmueble' onclick="mostrar_modalinmueble({{ $borrador->id_inmueble }})" >Actualizar Inmueble</button>
+                                </div>
                             <br/><br/>
                 <table id="listusers1_c" class="display nowrap" cellspacing="0" width="100%">
                 <thead>
@@ -130,9 +135,9 @@
                                         <button class="btn btn-success btn-circle btn-lg" id='via_edit' onclick="mostrar_modal({{ $p->id }})" ><i class="fa fa-check"></i></span></button>
                                     </td>
                                 @endcan
-                                @can('contratoBorrador.mail')
+                                @can('borradorContrato.mail')
                                     <td>
-                                        <a href="{{ route('contratoBorrador.mail', $p->id) }}"><span class="btn btn-warning btn-circle btn-lg"><i class="ti ti-email"></i></span></a>
+                                        <a href="{{ route('borradorContrato.mail', $p->id) }}"><span class="btn btn-warning btn-circle btn-lg"><i class="ti ti-email"></i></span></a>
                                     </td>
                                 @endcan
                                    <td>
@@ -150,7 +155,7 @@
                                                         <h4 class="modal-title">Actualice sssu información de contacto</h4> </div>
 
 
-                                                 <form id="form1_e" action="{{ route('contratoBorrador.editarGestion') }}" method="post">
+                                                 <form id="form1_e" action="{{ route('borradorContrato.editarGestion') }}" method="post">
                                                 <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                                 {!! csrf_field() !!}
                                                     <input type="hidden" class="form-control" name="id_modificador" id="id_modificador_e" value="{{ Auth::user()->id }}">
@@ -221,7 +226,7 @@
                                             <div class="col-sm-3">
                                                 <label>Fecha</label>
                                                 <div class="input-group">
-                                                    <input type="text" autocomplete="off" class="form-control datepicker-fecha_contacto1" placeholder="dd/mm/yyyy" id="datepicker-fecha_contacto1" name="fecha_gestion_m" required="required"> <span class="input-group-addon"><i class="icon-calender"></i></span> 
+                                                    <input type="text" autocomplete="off" class="form-control datepicker-fecha_contacto1_contrato" placeholder="dd/mm/yyyy" id="datepicker-fecha_contacto1" name="fecha_gestion_m" required="required"> <span class="input-group-addon"><i class="icon-calender"></i></span> 
                                                 </div>
                                             </div>
 
@@ -254,6 +259,357 @@
                                             </div>
                                     </div>
                                     <!-- FIN MODAL GESTION UPDATE -->
+
+                                    <!-- MODAL ACTUALIZAR PERSONA -->
+                                    <div id="modal-updatepersona" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+                                            <div class="modal-dialog modal-lg">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                                        <h4 class="modal-title">Actualice información del propietario</h4> </div>
+
+                                                        <form action="{{ route('borradorContrato.updatepersona') }}" method="post" id="form_persona" >
+                                                             {!! csrf_field() !!}
+                                                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                                            <input type="hidden" name="id_persona" id="id_persona" >
+                                                            <input type="hidden" name="id_publicacion"  id="id_publicacion" value="{{ $borrador->id_publicacion}}">
+                                                           <div class="row">
+                                                                <div class="col-md-12">
+                                                                    <div class="panel panel-info">
+                                                                        <div class="panel-wrapper collapse in" aria-expanded="true">
+                                                                            <div class="panel-body">
+                                                                                    <div class="form-body">
+  
+                                                                                        <div class="row">
+                                                                                         <div class="col-md-2">
+                                                                                                <div class="form-group">
+                                                                                                    <label class="control-label">Rut</label>
+                                                                                                    <input type="text" name="rut" class="form-control" id="pe_rut" > 
+                                                                                                </div>
+                                                                                            </div>
+                                                                                            <div class="col-md-4">
+                                                                                                <div class="form-group">
+                                                                                                    <label class="control-label">Nombre</label>
+                                                                                                    <input type="text" name="nombre" class="form-control" placeholder="" required="required" id="pe_nombre"> 
+                                                                                                 </div>
+                                                                                            </div>
+                                                                                            <!--/span-->
+                                                                                            <div class="col-md-3">
+                                                                                                <div class="form-group">
+                                                                                                    <label>Apellido Paterno</label>
+                                                                                                    <input type="text" name="apellido_paterno" id="pe_apellido_paterno" class="form-control" placeholder=""  > 
+                                                                                                </div>
+                                                                                            </div>
+                                                                                            <!--/span-->
+                                                                                             <div class="col-md-3">
+                                                                                                <div class="form-group">
+                                                                                                    <label>Apellido Materno</label>
+                                                                                                    <input type="text" name="apellido_materno" id="pe_apellido_materno" class="form-control" placeholder=""  >
+                                                                                                    </div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                         <div class="row">
+                                                                                            <div class="col-md-3 ">
+                                                                                                <div class="form-group">
+                                                                                                    <label>Profesión / Ocupación</label>
+                                                                                                    <div id="profesion">
+                                                                                                                <input name='profesion' id='pe_profesion' class="typeahead form-control" type="text" placeholder="Profesión / Ocupación" > 
+                                                                                                        </div>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                              <div class="col-md-3 ">
+                                                                                                <div class="form-group">
+                                                                                                    <label>Estado civíl</label>
+                                                                                                       <select class="form-control" name="estado_civil" id="pe_estado_civil"  >
+                                                                                                        <option value="">Selecione Estado Civil</option>
+                                                                                                        <option value="Soltero/a">Soltero/a</option>
+                                                                                                        <option value="Casado/a">Casado/a</option>
+                                                                                                        <option value="Viudo/a">Viudo/a</option>
+                                                                                                        <option value="Divorciado/a">Divorciado/a</option>
+                                                                                                        <option value="Separado/a">Separado/a</option>
+                                                                                                        <option value="Conviviente">Conviviente</option>
+                                                                                                    </select>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                              <div class="col-md-3 ">
+                                                                                                <div class="form-group">
+                                                                                                    <label>Teléfono</label>
+                                                                                                        <input name='telefono' id='pe_telefono' class="form-control" type="text"  > 
+                                                                                                </div>
+                                                                                            </div>
+                                                                                            <div class="col-md-3 ">
+                                                                                                <div class="form-group">
+                                                                                                    <label>Email</label>
+                                                                                                    <input name="email" id='pe_email'  type="text" class="form-control" > </div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <div class="row">
+                                                                                            <div class="col-md-6 ">
+                                                                                                <div class="form-group">
+                                                                                                    <label>Dirección</label>
+                                                                                                    <div id="direcciones">
+                                                                                                                <input name='direccion' id='pe_direccion' type="text" placeholder="Dirección" class="form-control"  > 
+                                                                                                        </div>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                              <div class="col-md-3 ">
+                                                                                                <div class="form-group">
+                                                                                                    <label>Número</label>
+                                                                                                        <input name='numero' id='pe_numero' class="form-control" type="text"  > 
+                                                                                                </div>
+                                                                                            </div>
+                                                                                              <div class="col-md-3 ">
+                                                                                                <div class="form-group">
+                                                                                                    <label>Departamento</label>
+                                                                                                        <input name='departamento' id='pe_departamento' class=" form-control" type="text"  > 
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
+
+                                                                                        <div class="row"> 
+                                                                                            <div class="col-md-4">
+                                                                                                <div class="form-group">
+                                                                                                    <label>Región</label>
+                                                                                                    <select name="id_region" id="pe_region" class=" form-control" >
+                                                                                                        
+                                                                                                    </select>
+                                                                                                 </div>
+                                                                                            </div>
+
+                                                                                            <!--/span-->
+                                                                                            <div class="col-md-4">
+                                                                                                <div class="form-group">
+                                                                                                    <label>Provincia</label>
+                                                                                                     <select name="id_provincia" id="pe_provincia" class=" form-control"  >
+                                                                                                        
+                                                                                                    </select>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                            <!--/span-->
+                                                                                             <div class="col-md-4">
+                                                                                                <div class="form-group">
+                                                                                                    <label>Comuna</label>
+                                                                                                <select name="id_comuna" id="pe_comuna" class=" form-control"  >
+                                                                                                        
+                                                                                                    </select>
+                                                                                                    </div>
+                                                                                            </div>
+                                                                                        </div>
+                                                             
+
+                                                                                    </div>
+                                                                                    <div class="form-actions">
+                                                                                        <button type="submit" class="btn btn-success"> <i class="fa fa-check"></i> Guardar</button>
+
+                                                                                    </div>
+                                                                               
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+
+                                                  </form>
+                                                </div>
+                                            </div>
+                                    </div>
+                                    <!-- FIN MODAL PERSONA -->
+                                    <!-- MODAL ACTUALIZAR INMUEBLE -->
+                                    <div id="modal-updateinmueble" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+                                            <div class="modal-dialog modal-lg">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                                        <h4 class="modal-title">Actualice información del inmueble</h4> </div>
+                                                    <form action="{{ route('borradorContrato.updateinmueble') }}" method="post" id="form_inmueble" >
+                                                             {!! csrf_field() !!}
+                                                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                                            <input type="hidden" name="id_inmueble" id="id_inmueble" >
+                                                            <input type="hidden" name="id_publicacion"  id="id_publicacion" value="{{ $borrador->id_publicacion}}">
+                                                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                                           <div class="row">
+                                                            <div class="col-md-12">
+                                                                <div class="panel panel-info">
+                                                                    <div class="panel-wrapper collapse in" aria-expanded="true">
+                                                                        <div class="panel-body">
+                                                                            <form action="{{ route('inmueble.store') }}" method="post">
+
+                                                                                <div class="form-body">
+                                                                                    <div class="row"> 
+                                                                                        <div class="col-md-6">
+                                                                                            <div class="form-group">
+                                                                                                 
+                                                                                                    <label>Dirección</label>
+                                                                                                    <div id="direcciones">
+                                                                                                            <input name='direccion' id='in_direccion' class="typeahead form-control" type="text" placeholder="Dirección" required="required"> 
+                                                                                                    </div>
+                                                                                                
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <!--/span-->
+                                                                                        <div class="col-md-2">
+                                                                                            <div class="form-group">
+                                                                                               
+                                                                                                <label>Nro.</label>
+                                                                                                <input name='numero' id='in_numero' type="text" class="form-control" > </div>
+                                                                                            
+                                                                                        </div>
+                                                                                         <div class="col-md-2">
+                                                                                            <div class="form-group">
+                                                                                               
+                                                                                                <label>Departamento</label>
+                                                                                                <input name='departamento' id='in_departamento' type="text" class="form-control" > </div>
+                                                                                            
+                                                                                        </div>
+                                                                                         <div class="col-md-2">
+                                                                                            <div class="form-group">
+                                                                                               
+                                                                                                <label>Rol</label>
+                                                                                                <input name='rol'  id='in_rol'  type="text" class="form-control" > </div>
+                                                                                            
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="row"> 
+                                                                                        <div class="col-md-12">
+                                                                                            <div class="form-group">
+                                                                                                 
+                                                                                                    <label>Referencias de la dirección</label>
+                                                                                                    <div id="referencia">
+                                                                                                            <input name='referencia' id='in_referencia' class="form-control" type="text" placeholder="Referencia" > 
+                                                                                                    </div>
+                                                                                                
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        
+                                                                                    </div>
+                                                                                        <div class="row"> 
+                                                                                            <div class="col-md-4">
+                                                                                                <div class="form-group">
+                                                                                                    <label>Región</label>
+                                                                                                    <select name="id_region" id="in_region" class=" form-control" >
+                                                                                                        
+                                                                                                    </select>
+                                                                                                 </div>
+                                                                                            </div>
+
+                                                                                            <!--/span-->
+                                                                                            <div class="col-md-4">
+                                                                                                <div class="form-group">
+                                                                                                    <label>Provincia</label>
+                                                                                                     <select name="id_provincia" id="in_provincia" class=" form-control"  >
+                                                                                                        
+                                                                                                    </select>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                            <!--/span-->
+                                                                                             <div class="col-md-4">
+                                                                                                <div class="form-group">
+                                                                                                    <label>Comuna</label>
+                                                                                                <select name="id_comuna" id="in_comuna" class=" form-control"  >
+                                                                                                        
+                                                                                                    </select>
+                                                                                                    </div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    <div class="row"> 
+                                                                                        <div class="col-md-2">
+                                                                                            <div class="form-group">
+                                                                                                <label>Dormitorio</label>
+                                                                                                <input name='dormitorio' id='in_dormitorio' type="number" class="form-control" required="required"> </div>
+                                                                                        </div>
+                                                                                        <div class="col-md-2">
+                                                                                            <div class="form-group">
+                                                                                                <label>Baños</label>
+                                                                                                <input name='bano' id='in_bano' type="number" class="form-control" required="required"> 
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <!--/span-->
+                                                                                        <div class="col-md-2">
+                                                                                            <div class="form-group">
+                                                                                                <label>Estacionamiento</label>
+                                                                                                <input name='estacionamiento' id='in_estacionamiento' type="number" class="form-control" >
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <div class="col-md-2">
+                                                                                            <div class="form-group">
+                                                                                                <label>Bodega</label>
+                                                                                                <select class="form-control" name="bodega" id="in_bodega"  >
+                                                                                                    <option value="">Sel. Opción</option>
+                                                                                                    <option value="1">SI</option>
+                                                                                                    <option value="0">NO</option>
+                                                                                                </select>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <div class="col-md-2">
+                                                                                            <div class="form-group">
+                                                                                                <label>Nro.Bodega</label>
+                                                                                                <input name='nro_bodega' id='in_nro_bodega' type="number" class="form-control" >
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <div class="col-md-2">
+                                                                                            <div class="form-group">
+                                                                                                <label>Piscina</label>
+                                                                                                <select class="form-control" name="piscina"  id="in_piscina" >
+                                                                                                    <option value="">Sel. Opción</option>
+                                                                                                    <option value="SI">SI</option>
+                                                                                                    <option value="NO">NO</option>
+                                                                                                </select>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="row"> 
+                                                                                        <div class="col-md-4">
+                                                                                            <div class="form-group">
+                                                                                                <label>Gasto Común</label>
+                                                                                                <div class="input-group"> 
+                                                                                                    <span class="input-group-addon">$</span>
+                                                                                                    <input name='gastosComunes' id='in_gastosComunes' type="number" class="form-control" >
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <div class="col-md-4">
+                                                                                            <div class="form-group">
+                                                                                                <label>Precio</label>
+                                                                                                <div class="input-group"> 
+                                                                                                    <span class="input-group-addon">$</span>
+                                                                                                    <input name='precio' id='in_precio'  type="number" class="form-control" required="required">
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
+
+                                                                                       <div class="col-md-4">
+                                                                                            <div class="form-group">
+                                                                                                <label>Condición</label>
+                                                                                                <select class="form-control" name="condicion" id="in_condicion"  required="required">
+                                                                                                    <option value="">Seleccione Condición</option>
+                                                                                                    <option value="Nuevo">Nuevo</option>
+                                                                                                    <option value="Usado">Usado</option>
+                                                                                                </select>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+
+                                                                                </div>
+                                                                                <div class="form-actions">
+                                                                                    <button type="submit" class="btn btn-success"> <i class="fa fa-check"></i> Guardar</button>
+
+                                                                                </div>
+                                                                            </form>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>                                                        
+                                                    </form>
+
+                                                 
+                                                </div>
+                                            </div>
+                                    </div>
+                                    <!-- FIN MODAL INMUEBLE -->
+
+
                 </tbody>
             </table>
                     </section>
@@ -265,7 +621,7 @@
         </section>
     </div>
 </div>
-  <a href="{{ route('revisioninmueble.index') }}" class="btn btn-info" style="color:white"><i class="fa fa-times-circle"></i>&nbsp;&nbsp;Volver</a>
+  <a href="{{ route('borradorContrato.index') }}" class="btn btn-info" style="color:white"><i class="fa fa-times-circle"></i>&nbsp;&nbsp;Volver</a>
 <script src="{{ URL::asset('plugins/bower_components/jquery/dist/jquery.min.js') }}"></script>
 <!-- Bootstrap Core JavaScript -->
 <script src="{{ URL::asset('bootstrap/dist/js/bootstrap.min.js') }}"></script>
@@ -303,6 +659,18 @@ $(function(){
         $("#form1_c")[0].reset();
     });
     
+
+
+        $('#modal-updatepersona').on('hidden.bs.modal', function () {
+        $("#form_persona")[0].reset();
+    });
+
+
+    $('#modal-updateinmueble').on('hidden.bs.modal', function () {
+        $("#form_inmueble")[0].reset();
+    });
+
+
     //     $('#modal-contacto_edit_c').on('hidden.bs.modal', function () {
     //     $("#form1_e")[0].reset();
     // });
@@ -317,7 +685,7 @@ $(function(){
 
 
 function mostrar_modal(obj){
-    var url= "{{ URL::to('contratoBorrador/borradorC')}}"+"/"+obj;
+    var url= "{{ URL::to('borradorContrato/borradorC')}}"+"/"+obj;
     $.ajax({
         type:"get",
         url:url,
@@ -341,6 +709,118 @@ function mostrar_modal(obj){
 }
 
 
+
+function mostrar_modalpersona(obj){
+    var url= "{{ URL::to('persona/contratoborrador')}}"+"/"+obj;
+    $.ajax({
+        type:"get",
+        url:url,
+        data:"",
+        success:function(response){
+            $('#modal-updatepersona').modal('show');
+            $('#id_persona').val(response.id);
+            $('#pe_rut').val(response.rut);
+            $('#pe_nombre').val(response.nombre);
+            $('#pe_apellido_paterno').val(response.apellido_paterno);
+            $('#pe_apellido_materno').val(response.apellido_materno);
+            $('#pe_direccion').val(response.direccion);
+            $('#pe_numero').val(response.numero);
+            $('#pe_profesion').val(response.profesion);
+            $('#pe_estado_civil').val(response.estado_civil);
+            $('#pe_departamento').val(response.departamento);
+            $('#pe_telefono').val(response.telefono);
+            $('#pe_email').val(response.email);
+            $("#pe_provincia").empty();
+            $("#pe_comuna").empty();
+            $("#pe_region").empty();
+            $.get("/regiones/todas",function(response1,state){
+                for(i=0; i< response1.length;i++){
+                    sel='';
+                    if(response1[i].region_id==response.id_region){
+                        sel=' selected="selected"';
+                    }
+                    $("#pe_region").append("<option value='"+response1[i].region_id+"' "+sel+">"+response1[i].region_nombre+"</option>");
+                }
+            });
+            $.get("/provincias/"+response.id_region+"",function(response1,state){
+                for(i=0; i< response1.length;i++){
+                    sel='';
+                    if(response1[i].provincia_id==response.id_provincia){
+                        sel=' selected="selected"';
+                    }
+                    $("#pe_provincia").append("<option value='"+response1[i].provincia_id+"' "+sel+">"+response1[i].provincia_nombre+"</option>");
+                }
+            });
+            $.get("/comunas/"+response.id_provincia +"",function(response2,state){
+                for(i=0; i< response2.length;i++){
+                    sel='';
+                    if(response2[i].comuna_id==response.id_comuna){
+                        sel=' selected="selected"';
+                    }
+                    $("#pe_comuna").append("<option value='"+response2[i].comuna_id+"' "+sel+">"+response2[i].comuna_nombre+"</option>");
+                }
+            });
+        }
+    });
+}
+
+
+function mostrar_modalinmueble(obj){
+    var url= "{{ URL::to('inmueble/contratoborrador')}}"+"/"+obj;
+    $.ajax({
+        type:"get",
+        url:url,
+        data:"",
+        success:function(response){
+            $('#modal-updateinmueble').modal('show');
+            $('#id_inmueble').val(response.id);
+            $('#in_direccion').val(response.direccion);
+            $('#in_condicion').val(response.condicion);
+            $('#in_numero').val(response.numero);
+            $('#in_departamento').val(response.departamento);
+            $('#in_dormitorio').val(response.dormitorio);
+            $('#in_rol').val(response.rol);
+            $('#in_bano').val(response.bano);
+            $('#in_estacionamiento').val(response.estacionamiento);
+            $('#in_referencia').val(response.referencia);
+            $('#in_bodega').val(response.bodega);
+            $('#in_nro_bodega').val(response.nro_bodega);
+            $('#in_piscina').val(response.piscina);
+            $('#in_precio').val(response.precio);
+            $('#in_gastosComunes').val(response.gastosComunes);
+            $("#in_provincia").empty();
+            $("#in_comuna").empty();
+            $("#in_region").empty();
+            $.get("/regiones/todas",function(response1,state){
+                for(i=0; i< response1.length;i++){
+                    sel='';
+                    if(response1[i].region_id==response.id_region){
+                        sel=' selected="selected"';
+                    }
+                    $("#in_region").append("<option value='"+response1[i].region_id+"' "+sel+">"+response1[i].region_nombre+"</option>");
+                }
+            });
+            $.get("/provincias/"+response.id_region+"",function(response1,state){
+                for(i=0; i< response1.length;i++){
+                    sel='';
+                    if(response1[i].provincia_id==response.id_provincia){
+                        sel=' selected="selected"';
+                    }
+                    $("#in_provincia").append("<option value='"+response1[i].provincia_id+"' "+sel+">"+response1[i].provincia_nombre+"</option>");
+                }
+            });
+            $.get("/comunas/"+response.id_provincia +"",function(response2,state){
+                for(i=0; i< response2.length;i++){
+                    sel='';
+                    if(response2[i].comuna_id==response.id_comuna){
+                        sel=' selected="selected"';
+                    }
+                    $("#in_comuna").append("<option value='"+response2[i].comuna_id+"' "+sel+">"+response2[i].comuna_nombre+"</option>");
+                }
+            });
+        }
+    });
+}
 $('#listusers1_c').DataTable({
     dom: 'Bfrtip',
     buttons: [ ],
@@ -491,14 +971,6 @@ $('#listusers1_c').DataTable({
         });
         
       
-
-
-
-
-
-
-
-
 
 
 

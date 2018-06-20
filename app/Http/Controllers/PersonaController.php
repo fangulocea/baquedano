@@ -14,6 +14,24 @@ use DB;
 class PersonaController extends Controller
 {
 
+
+    public function getPersonaContratoBorrador($id){
+        $persona=Persona::find($id);
+        return response()->json($persona);
+    }
+
+
+
+    public function updatePersonaContratoBorrador(Request $request)
+    {
+        $id_persona=$request->id_persona;
+        $id_publicacion=$request->id_publicacion;
+        $data = request()->except(['_token','id_publicacion','id_persona']);
+        $persona = Persona::whereId($id_persona)->update($data);
+        return redirect()->route('borradorContrato.edit', $id_publicacion)
+        ->with('status', 'Propietario Actualizado con éxito');
+    }
+
     public function getPersonas($text){
         $personas=Persona::personas($text);
         return response()->json($personas);
