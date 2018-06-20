@@ -31,18 +31,60 @@ class PdfController extends Controller
         $bodymail=str_replace("{bano}",$data->bano,$bodymail);
         // $bodymail=str_replace("{correo}",utf8_decode($_POST['correo']),$bodymail);
 
-
         $pdf = App::make('dompdf.wrapper');
         $pdf->loadHTML('
-            <!DOCTYPE html>
-            <html lang="en">
+        <html>
             <head>
-            <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+                <style>
+                    @page {
+                        margin: 0cm 0cm;
+                    }
+                    body {
+                        margin-top:    3.5cm;
+                        margin-bottom: 1cm;
+                        margin-left:   1cm;
+                        margin-right:  1cm;
+                    }
+                    #watermark {
+                        position: fixed;
+                        bottom:   0px;
+                        left:     0px;
+                        width:    21.8cm;
+                        height:   28cm;
+                        z-index:  -1000;
+                    }
+                </style>
             </head>
-            <body>'
-            . $bodymail . 
-            '</body>
-            </html>')->save( 'uploads/pdf/'. $data->id . $data->direccion_i .'.pdf' );
+            <body>
+                <div id="watermark">
+                    <img src="borrador.jpg" height="100%" width="100%" />
+                </div>
+                <main> 
+                    '. $bodymail .'
+                </main>
+            </body>
+        </html>')->save( 'uploads/pdf/'. $data->id . $data->direccion_i .'.pdf' );
+
+
+
+
+
+
+
+
+
+
+
+        // $pdf->loadHTML('
+        //     <!DOCTYPE html>
+        //     <html lang="en">
+        //     <head>
+        //     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+        //     </head>
+        //     <body>'
+        //     . $bodymail . 
+        //     '</body>
+        //     </html>')->save( 'uploads/pdf/'. $data->id . $data->direccion_i .'.pdf' );
         return $pdf->stream();
     }
 
