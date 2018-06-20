@@ -50,12 +50,12 @@
                                 <td>{{ $p->nom_c }} {{ $p->apep_c }} {{ $p->apem_c }}</td>
                                  <td>{{ trans_choice('mensajes.captacion', $p->id_estado) }}</td>
                                  <td>{{ substr(substr($p->portal, 4),0,10) }}</td>
-                                @can('contratoBorrador.edit')
+                                @can('borradorContrato.edit')
                                 <td width="10px">
-                                    <a href="{{ route('contratoBorrador.edit', $p->id_publicacion) }}"><span class="btn btn-warning btn-circle btn-lg"><i class="ti-pencil-alt"></i></span></a>
+                                    <a href="{{ route('borradorContrato.edit', $p->id_publicacion) }}"><span class="btn btn-warning btn-circle btn-lg"><i class="ti-pencil-alt"></i></span></a>
                                 </td>
                                 @endcan
-                                @can('contratoBorrador.destroy')
+                                @can('borradorContrato.destroy')
                                 <td width="10px">
                                 </td>
                                 @endcan
