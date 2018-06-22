@@ -23,6 +23,7 @@ class CreateArrendatario extends Migration
             $table->integer('id_modificador')->unsigned()->nullable();
             $table->foreign('id_modificador')->references('id')->on('personas');        
             $table->integer('id_estado');
+            $table->string('preferencias')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

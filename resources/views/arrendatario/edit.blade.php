@@ -106,6 +106,16 @@
 
                                             </div>
 
+                            <div class="row">
+   
+                                <div class="col-md-12 ">
+                                    <div class="form-group">
+                                        <label>Preferencias para el Inmueble</label>
+                                        <input name='preferencias' type="text" class="form-control" maxlength="190" value="{{ $arrendatario->preferencias or '' }}"> </div>
+                                </div>
+
+                            </div>
+
                                             @if(!isset($persona->id_region))
                                             <?php $idr = null; ?>
                                             @else

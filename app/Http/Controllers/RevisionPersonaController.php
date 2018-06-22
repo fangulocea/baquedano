@@ -23,7 +23,8 @@ class RevisionPersonaController extends Controller
      */
     public function index()
     {
-              $personas = DB::select("SELECT p.*, (select count(*) from adm_revisionpersona as a where a.id_persona= p.id) as cant_revisiones, (select count(*) from adm_fotorevpersona as a where a.id_persona= p.id) as cant_fotos, c.comuna_nombre FROM personas as p left join comunas c on p.id_comuna=c.comuna_id where p.id <> 1");
+
+              $personas = DB::select("SELECT p.*, (select count(*) from adm_revisionpersona as a where a.id_persona= p.id) as cant_revisiones, (select count(*) from adm_fotorevpersona as a where a.id_persona= p.id) as cant_fotos, c.comuna_nombre FROM personas as p left join comunas c on p.id_comuna=c.comuna_id where p.id <> 1 and p.tipo_cargo<>'Empleado'");
 
            // $inm = DB::table('inmuebles')->join('comunas', 'inmuebles.id_comuna', '=', 'comunas.comuna_id')->get();
 

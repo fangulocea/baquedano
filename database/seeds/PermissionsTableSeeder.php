@@ -557,6 +557,34 @@ class PermissionsTableSeeder extends Seeder
         ]);
 
 
+//Contrato final
+        Permission::create([
+            'name'          =>  'Listado de Contrato final',
+            'slug'          =>  'finalContrato.index',
+            'description'   =>  'Despliega servicios',
+        ]);
+        Permission::create([
+            'name'          =>  'Ver detalle de Contrato final',
+            'slug'          =>  'finalContrato.show',
+            'description'   =>  'Despliega el detalle del Contrato final ',
+        ]);
+        Permission::create([
+            'name'          =>  'Crea Contrato final',
+            'slug'          =>  'finalContrato.create',
+            'description'   =>  'Crear Contrato final del sistema',
+        ]);
+        Permission::create([
+            'name'          =>  'Edición de Contrato final',
+            'slug'          =>  'finalContrato.edit',
+            'description'   =>  'Editar Contrato final del sistema',
+        ]);
+        Permission::create([
+            'name'          =>  'Desactiva Contrato final',
+            'slug'          =>  'finalContrato.destroy',
+            'description'   =>  'Desactiva Contrato final del sistema',
+        ]);
+
+
 
 
 

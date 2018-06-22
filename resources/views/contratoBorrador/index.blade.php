@@ -4,8 +4,8 @@
 
 <div id="tabla" >
     <div class="white-box">
-        <h3 class="box-title m-b-0">Gestión de Captaciones</h3>
-        <p class="text-muted m-b-30">Administración de registros para el proceso de captación</p>
+        <h3 class="box-title m-b-0">Gestión de Contratos Borrador</h3>
+        <p class="text-muted m-b-30">Administración de registros para la generación de contratos borrador</p>
         <div class="table-responsive" style="padding-bottom: 50px;">
             <table id="listusers" class="display compact" cellspacing="0" width="200%">
       
@@ -15,14 +15,10 @@
                         <th>Dirección</th>
                         <th>Comuna</th>
                         <th>Propietario</th>
-
-                        <th>Fecha/P</th>
-                        <th>Fecha/M</th>
-                        <th>Modificador</th>
+                        <th>Fecha</th>
+                        <th>Creador</th>
                         <th>Estado</th>
                         <th>Portal</th>
-                        <th>Creador</th>
-
                         <th></th>
                         <th></th>
                     </tr>
@@ -33,14 +29,10 @@
                         <th>Dirección</th>
                         <th>Comuna</th>
                         <th>Propietario</th>
-
-                        <th>Fecha/P</th>
-                        <th>Fecha/M</th>
-                        <th>Modificador</th>
+                        <th>Fecha</th>
+                        <th>Creador</th>
                         <th>Estado</th>
                         <th>Portal</th>
-                        <th>Creador</th>
-
                         <th></th>
                         <th></th>
                     </tr>
@@ -48,35 +40,23 @@
                 <tbody>
                     @foreach($publica as $p)
                             <tr>
-
-
                                 <td>{{ $p->id_publicacion }}</td>
                                 
                                 <td >{{ $p->direccion }} #{{ $p->numero }} , Dpto {{ $p->departamento }}</td>
-                                <td> {{ $p->comuna_nombre }}</td>
                                 
+                                <td>{{ $p->comuna_nombre }}</td>
                                 <td>{{ $p->nom_p }} {{ $p->apep_p }} {{ $p->apem_p }}</td>
-                                <td style="font-size: small;">{{ $p->fecha_creacion }}</td>
-                                
-                                <td style="font-size: small;">{{ $p->fecha_modificacion }}</td>
-                                <td>{{ $p->nom_m }}</td>
+                                <td>{{ $p->fecha_creacion }}</td>
+                                <td>{{ $p->nom_c }} {{ $p->apep_c }} {{ $p->apem_c }}</td>
                                  <td>{{ trans_choice('mensajes.captacion', $p->id_estado) }}</td>
-                                 <td style="font-size: small;">{{ substr(substr($p->portal, 4),0,10) }}</td>
-                                 <td>{{ $p->nom_c  }}</td>
-
-                                @can('captacion.edit')
+                                 <td>{{ substr(substr($p->portal, 4),0,10) }}</td>
+                                @can('borradorContrato.edit')
                                 <td width="10px">
-                                    <a href="{{ route('captacion.edit', $p->id_publicacion) }}"><span class="btn btn-warning btn-circle btn-sm"><i class="ti-pencil-alt"></i></span></a>
+                                    <a href="{{ route('borradorContrato.edit', $p->id_publicacion) }}"><span class="btn btn-warning btn-circle btn-lg"><i class="ti-pencil-alt"></i></span></a>
                                 </td>
                                 @endcan
-                                @can('captacion.destroy')
+                                @can('borradorContrato.destroy')
                                 <td width="10px">
-
-                                    {!! Form::open(['route' => ['captacion.destroy', $p->id_publicacion], 
-                                    'method' => 'DELETE']) !!}
-                                        <button class="btn btn-danger btn-circle btn-sm"><i class="ti-trash"></i>
-                                        </button>
-                                    {!! Form::close() !!}
                                 </td>
                                 @endcan
                             </tr>
@@ -109,17 +89,15 @@ $('.sorting_desc').hide();
 var table = $('#listusers').DataTable({
 
     dom: 'Bfrtip',
-    "ordering": false,
     buttons: [
-         'excel', 'pdf', 'print',{
-            text: 'Ingresar Captación',
-            action: function ( e, dt, node, config ) {
-                 window.location.href = '{{ route("captacion.create") }}';
-            }
-        }
-
+        'copy', 'csv', 'excel', 'pdf', 'print',
     ],
-
+    columnDefs: [
+        {
+            "targets": [8, 9],
+            "orderable": false,
+        },
+        ],
    
     language: {
         "sProcessing": "Procesando...",
@@ -157,7 +135,7 @@ var table = $('#listusers').DataTable({
     $('#listusers thead th').each( function () {
         var title = $(this).text();
         if(title!='ID' && title!= "")
-        $(this).html( title+'<br/><input type="text" style="width:100px" placeholder="Buscar" />' );
+        $(this).html( '<input type="text" style="width:100px" placeholder="'+title+'" />' );
     } );
  
 
@@ -166,7 +144,7 @@ var table = $('#listusers').DataTable({
     table.columns().every( function () {
         var that = this;
  
-        $( 'input', this.header() ).on( 'keyup change', function () {
+        $( 'input', this.footer() ).on( 'keyup change', function () {
             if ( that.search() !== this.value ) {
                 that
                     .search( this.value )

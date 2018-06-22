@@ -108,7 +108,8 @@
                                                         @endif
 
 
-                                                        {{ Form::select('id_estado',['0'=>'Descartado','1'=>'Sin Gestión','2'=>'Sin Respuesta','3'=>'Reenvio','4'=>'Expirado','5'=>'Segunda Gestión ','6'=>'Contrato Borrador','7'=>'Contrato Cerrado','8'=>'Seguimiento Correo','9'=>'Captación Terreno'], $idr,array('class'=>'form-control','style'=>'','id'=>'id_estado','placeholder'=>'Seleccione estado','required'=>'required')) }}
+                                                        {{ Form::select('id_estado',['0'=>'Descartado','1'=>'Sin Gestión','2'=>'Sin Respuesta','3'=>'Reenvio de Correo','8'=>'Seguimiento Correo','9'=>'Captación Terreno','4'=>'Publicación Expirada','5'=>'Negociación','6'=>'Contrato Borrador','7'=>'Contrato Cerrado'], $idr,array('class'=>'form-control','style'=>'','id'=>'id_estado','placeholder'=>'Seleccione estado','required'=>'required')) }}
+
                                                     
                                                     </div>
                                                 </div>
@@ -297,7 +298,9 @@
                                             </div>
                                         </div>
                                     </div>
-                         @if(isset($persona->id))
+
+                         @if(isset($inmueble->id))
+
                                     @if (count($captaciones_inmueble)>1)
                                     <div class="alert alert-danger">
 
@@ -679,6 +682,12 @@
                                 <div class="col-lg-2 col-sm-3 col-xs-12">
                                     <button class="btn btn-block btn-danger" id='via_otras' data-toggle="modal" data-target="#modal-contacto1">Otras Gestiones</button>
                                 </div>
+<<<<<<< HEAD
+                               <div class="col-lg-2 col-sm-3 col-xs-12">
+                                   <a href="{{ route("captacion.crearBorrador",$captacion->id) }}"> <button class="btn btn-block btn-secondary" id='crear_contrato' >Contrato Borrador</button> </a>
+                                </div>
+=======
+>>>>>>> 4679f853b0fcb2262a0e335c0f5b7340c138e65c
                             </div>
                             <br/><br/>
                 <table id="listusers1" class="display nowrap" cellspacing="0" width="100%">

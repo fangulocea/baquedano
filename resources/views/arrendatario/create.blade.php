@@ -98,6 +98,16 @@
 
                             </div>
 
+                            <div class="row">
+   
+                                <div class="col-md-12 ">
+                                    <div class="form-group">
+                                        <label>Preferencias para el Inmueble</label>
+                                        <input name='preferencias' type="text" class="form-control" maxlength="190"> </div>
+                                </div>
+
+                            </div>
+
                             <div class="row"> 
                                 <div class="col-md-4">
                                     <div class="form-group">

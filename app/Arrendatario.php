@@ -9,7 +9,9 @@ class Arrendatario extends Model
 {
     use SoftDeletes;
     protected $table='arrendatarios';
-    protected $fillable = ['id','id_arrendatario','id_creador','id_modificador','id_estado'];
+
+    protected $fillable = ['id','id_arrendatario','id_creador','id_modificador','id_estado', 'preferencias'];
+
     protected $dates = ['deleted_at'];
 }
 	
