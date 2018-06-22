@@ -31,7 +31,7 @@ class PersonasSeeder extends Seeder
          	'cargo_id'			=> '1',
          ]);
 
-<<<<<<< HEAD
+
                 Persona::create([
             'id'                => '2',
             'rut'               => '',
@@ -160,7 +160,6 @@ class PersonasSeeder extends Seeder
             'tipo_cargo'        => 'Empleado',
             'cargo_id'          => '3',
          ]);
-=======
->>>>>>> 4679f853b0fcb2262a0e335c0f5b7340c138e65c
+
     }
 }

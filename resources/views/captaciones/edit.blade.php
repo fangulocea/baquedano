@@ -108,11 +108,8 @@
                                                         @endif
 
 
-<<<<<<< HEAD
                                                         {{ Form::select('id_estado',['0'=>'Descartado','1'=>'Sin Gestión','2'=>'Sin Respuesta','3'=>'Reenvio de Correo','8'=>'Seguimiento Correo','9'=>'Captación Terreno','4'=>'Publicación Expirada','5'=>'Negociación','6'=>'Contrato Borrador','7'=>'Contrato Cerrado'], $idr,array('class'=>'form-control','style'=>'','id'=>'id_estado','placeholder'=>'Seleccione estado','required'=>'required')) }}
-=======
-                                                        {{ Form::select('id_estado',['0'=>'Descartado','1'=>'Sin Gestión','2'=>'Sin Respuesta','3'=>'Reenvio','4'=>'Expirado','5'=>'Segunda Gestión ','6'=>'Contrato Borrador','7'=>'Contrato Cerrado','8'=>'Seguimiento Correo','9'=>'Captación Terreno'], $idr,array('class'=>'form-control','style'=>'','id'=>'id_estado','placeholder'=>'Seleccione estado','required'=>'required')) }}
->>>>>>> 4679f853b0fcb2262a0e335c0f5b7340c138e65c
+
                                                     
                                                     </div>
                                                 </div>
@@ -301,11 +298,9 @@
                                             </div>
                                         </div>
                                     </div>
-<<<<<<< HEAD
+
                          @if(isset($inmueble->id))
-=======
-                         @if(isset($persona->id))
->>>>>>> 4679f853b0fcb2262a0e335c0f5b7340c138e65c
+
                                     @if (count($captaciones_inmueble)>1)
                                     <div class="alert alert-danger">
 

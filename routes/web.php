@@ -297,19 +297,13 @@ Route::middleware(['auth'])->group(function(){
 	Route::post('captacion/foto/{captacion}','CaptacionController@savefotos')->name('captacion.savefotos')
 		->middleware('permission:captacion.edit');
 
-<<<<<<< HEAD
+
 	Route::get('captacion/borrador/create/{id}','CaptacionController@crearBorrador')->name('captacion.crearBorrador')
 		->middleware('permission:captacion.edit');
 
 	Route::post('captacion/gestion/create','CaptacionController@crearGestion')->name('captacion.crearGestion')
 		->middleware('permission:captacion.edit');
 
-
-=======
-	Route::post('captacion/gestion/create','CaptacionController@crearGestion')->name('captacion.crearGestion')
-		->middleware('permission:captacion.edit');
-
->>>>>>> 4679f853b0fcb2262a0e335c0f5b7340c138e65c
 	Route::post('captacion/gestion/update','CaptacionController@editarGestion')->name('captacion.editarGestion')
 		->middleware('permission:captacion.edit');
 
@@ -675,12 +669,11 @@ Route::get('revisionpersona/eliminarfoto/{idf}/{idc}','RevisionPersonaController
 		Route::post('borradorContrato/updatepersona','PersonaController@updatePersonaContratoBorrador')->name('borradorContrato.updatepersona')
 		->middleware('permission:borradorContrato.edit');
 
-<<<<<<< HEAD
+
 		Route::get('borradorContrato/edit/{id}','ContratoBorradorController@edit')->name('borradorContrato.edit')
 		->middleware('permission:borradorContrato.edit');
 
-=======
->>>>>>> 4679f853b0fcb2262a0e335c0f5b7340c138e65c
+
 		Route::post('borradorContrato/updateinmueble','InmuebleController@updateInmuebleContratoBorrador')->name('borradorContrato.updateinmueble')
 		->middleware('permission:borradorContrato.edit');
 
@@ -693,12 +686,6 @@ Route::get('revisionpersona/eliminarfoto/{idf}/{idc}','RevisionPersonaController
 		Route::get('borradorContrato/create','ContratoBorradorController@create')->name('borradorContrato.create')
 		->middleware('permission:borradorContrato.create');
 
-<<<<<<< HEAD
-=======
-		Route::get('borradorContrato/edit/{id}','ContratoBorradorController@edit')->name('borradorContrato.edit')
-		->middleware('permission:borradorContrato.edit');
-
->>>>>>> 4679f853b0fcb2262a0e335c0f5b7340c138e65c
 		Route::get('borradorContrato/destroy/{id}','ContratoBorradorController@destroy')->name('borradorContrato.destroy')
 		->middleware('permission:borradorContrato.destroy');
 
@@ -717,11 +704,7 @@ Route::get('revisionpersona/eliminarfoto/{idf}/{idc}','RevisionPersonaController
 		Route::get('pdf/{data}', 'PdfController@index');
 
 
-<<<<<<< HEAD
-//Contrato 
-=======
-//Contrato
->>>>>>> 4679f853b0fcb2262a0e335c0f5b7340c138e65c
+//contrato
 	Route::post('contrato/store','ContratoMantenedorController@store')->name('contrato.store')
 		->middleware('permission:servicio.create');
 
@@ -743,7 +726,7 @@ Route::get('revisionpersona/eliminarfoto/{idf}/{idc}','RevisionPersonaController
 	Route::get('contrato/{contrato}/edit','ContratoMantenedorController@edit')->name('contrato.edit')
 		->middleware('permission:contrato.edit');
 
-<<<<<<< HEAD
+
 // COntratos final
 		Route::post('finalContrato/updatepersona','PersonaController@updatePersonaContratoBorrador')->name('finalContrato.updatepersona')
 		->middleware('permission:finalContrato.edit');
@@ -779,9 +762,7 @@ Route::get('revisionpersona/eliminarfoto/{idf}/{idc}','RevisionPersonaController
 
 		Route::get('finalContrato/mail/{id}','ContratoFinalController@enviaMail')->name('finalContrato.mail');		
 		Route::get('pdf/{data}', 'PdfController@index');
-=======
 
->>>>>>> 4679f853b0fcb2262a0e335c0f5b7340c138e65c
 
 
 });

@@ -556,7 +556,7 @@ class PermissionsTableSeeder extends Seeder
             'description'   =>  'Desactiva Contrato Borrador del sistema',
         ]);
 
-<<<<<<< HEAD
+
 //Contrato final
         Permission::create([
             'name'          =>  'Listado de Contrato final',
@@ -583,8 +583,7 @@ class PermissionsTableSeeder extends Seeder
             'slug'          =>  'finalContrato.destroy',
             'description'   =>  'Desactiva Contrato final del sistema',
         ]);
-=======
->>>>>>> 4679f853b0fcb2262a0e335c0f5b7340c138e65c
+
 
 
 

@@ -32,10 +32,7 @@ class ContratoBorradorController extends Controller
          ->leftjoin('comunas as o', 'i.id_comuna', '=', 'o.comuna_id')
          ->leftjoin('portales as po', 'c.portal', '=', 'po.id')
          ->where('c.id_estado','=',6)
-<<<<<<< HEAD
          ->whereOr('c.id_estado','=',7)
-=======
->>>>>>> 4679f853b0fcb2262a0e335c0f5b7340c138e65c
          ->select(DB::raw('c.id as id_publicacion, DATE_FORMAT(c.created_at, "%d/%m/%Y") as fecha_creacion, c.id_estado as id_estado, CONCAT_WS(" ",p1.nombre,p1.apellido_paterno,p1.apellido_materno) as Propietario, CONCAT(p2.nombre," ",p2.apellido_paterno," ",p2.apellido_materno) as Creador'),'p1.id as id_propietario','i.id as id_inmueble','i.direccion','i.numero','i.departamento', 'o.comuna_nombre','po.nombre as portal','p1.nombre as nom_p','p1.apellido_paterno as apep_p','p1.apellido_materno as apem_p','p2.nombre as nom_c','p2.apellido_paterno as apep_c','p2.apellido_materno as apem_c','p3.nombre as nom_m','p3.apellido_paterno as apep_m','p3.apellido_materno as apem_m')
          ->get();
          
@@ -92,11 +89,7 @@ class ContratoBorradorController extends Controller
              con.nombre, con.nombre as contrato, con.descripcion as deta_contrato,
              p1.profesion as profesion_p, p1.telefono as telefono_p, p1.departamento as depto_p,
              i.rol as rol, b.detalle_revision as bodyContrato'))->first();
-<<<<<<< HEAD
         $pdf = new PdfController();
-=======
-        $pdf = new pdfController();
->>>>>>> 4679f853b0fcb2262a0e335c0f5b7340c138e65c
         $pdf->show($borradorPDF);
     }
 
@@ -223,11 +216,8 @@ class ContratoBorradorController extends Controller
              con.nombre, con.nombre as contrato, con.descripcion as deta_contrato,
              p1.profesion as profesion_p, p1.telefono as telefono_p, p1.departamento as depto_p,
              i.rol as rol, b.detalle_revision as bodyContrato'))->first();
-<<<<<<< HEAD
         $pdf = new PdfController();
-=======
-        $pdf = new pdfController();
->>>>>>> 4679f853b0fcb2262a0e335c0f5b7340c138e65c
+
         $pdf->index($borradorPDF);
         // FIN PARA PDFsss
 
@@ -284,11 +274,9 @@ class ContratoBorradorController extends Controller
              con.nombre, con.nombre as contrato, con.descripcion as deta_contrato,
              p1.profesion as profesion_p, p1.telefono as telefono_p, p1.departamento as depto_p,
              i.rol as rol, b.detalle_revision as bodyContrato'))->first();
-<<<<<<< HEAD
+
         $pdf = new PdfController();
-=======
-        $pdf = new pdfController();
->>>>>>> 4679f853b0fcb2262a0e335c0f5b7340c138e65c
+
         $pdf->index($borradorPDF);
         // FIN PARA PDF
 

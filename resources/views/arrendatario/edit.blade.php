@@ -105,7 +105,7 @@
                                                 </div>
 
                                             </div>
-<<<<<<< HEAD
+
                             <div class="row">
    
                                 <div class="col-md-12 ">
@@ -115,9 +115,7 @@
                                 </div>
 
                             </div>
-=======
 
->>>>>>> 4679f853b0fcb2262a0e335c0f5b7340c138e65c
                                             @if(!isset($persona->id_region))
                                             <?php $idr = null; ?>
                                             @else

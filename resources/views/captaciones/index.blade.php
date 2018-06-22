@@ -15,57 +15,40 @@
                         <th>Dirección</th>
                         <th>Comuna</th>
                         <th>Propietario</th>
-<<<<<<< HEAD
+
                         <th>Fecha/P</th>
                         <th>Fecha/M</th>
                         <th>Modificador</th>
                         <th>Estado</th>
                         <th>Portal</th>
                         <th>Creador</th>
-=======
-                        <th>Fecha</th>
-                        <th>Creador</th>
-                        <th>Estado</th>
-                        <th>Portal</th>
->>>>>>> 4679f853b0fcb2262a0e335c0f5b7340c138e65c
+
                         <th></th>
                         <th></th>
                     </tr>
                 </thead>
                 <tfoot>
                     <tr>
-<<<<<<< HEAD
-
-=======
->>>>>>> 4679f853b0fcb2262a0e335c0f5b7340c138e65c
                         <th>ID</th>
                         <th>Dirección</th>
                         <th>Comuna</th>
                         <th>Propietario</th>
-<<<<<<< HEAD
+
                         <th>Fecha/P</th>
                         <th>Fecha/M</th>
                         <th>Modificador</th>
                         <th>Estado</th>
                         <th>Portal</th>
                         <th>Creador</th>
-                        <th></th>
-                        <th></th>
 
-=======
-                        <th>Fecha</th>
-                        <th>Creador</th>
-                        <th>Estado</th>
-                        <th>Portal</th>
                         <th></th>
                         <th></th>
->>>>>>> 4679f853b0fcb2262a0e335c0f5b7340c138e65c
                     </tr>
                 </tfoot>
                 <tbody>
                     @foreach($publica as $p)
                             <tr>
-<<<<<<< HEAD
+
 
                                 <td>{{ $p->id_publicacion }}</td>
                                 
@@ -80,18 +63,7 @@
                                  <td>{{ trans_choice('mensajes.captacion', $p->id_estado) }}</td>
                                  <td style="font-size: small;">{{ substr(substr($p->portal, 4),0,10) }}</td>
                                  <td>{{ $p->nom_c  }}</td>
-=======
-                                <td>{{ $p->id_publicacion }}</td>
-                                
-                                <td >{{ $p->direccion }} #{{ $p->numero }} , Dpto {{ $p->departamento }}</td>
-                                
-                                <td>{{ $p->comuna_nombre }}</td>
-                                <td>{{ $p->nom_p }} {{ $p->apep_p }} {{ $p->apem_p }}</td>
-                                <td>{{ $p->fecha_creacion }}</td>
-                                <td>{{ $p->nom_c }} {{ $p->apep_c }} {{ $p->apem_c }}</td>
-                                 <td>{{ trans_choice('mensajes.captacion', $p->id_estado) }}</td>
-                                 <td>{{ substr(substr($p->portal, 4),0,10) }}</td>
->>>>>>> 4679f853b0fcb2262a0e335c0f5b7340c138e65c
+
                                 @can('captacion.edit')
                                 <td width="10px">
                                     <a href="{{ route('captacion.edit', $p->id_publicacion) }}"><span class="btn btn-warning btn-circle btn-sm"><i class="ti-pencil-alt"></i></span></a>
@@ -147,15 +119,7 @@ var table = $('#listusers').DataTable({
         }
 
     ],
-<<<<<<< HEAD
-=======
-    columnDefs: [
-        {
-            "targets": [8, 9],
-            "orderable": false,
-        },
-        ],
->>>>>>> 4679f853b0fcb2262a0e335c0f5b7340c138e65c
+
    
     language: {
         "sProcessing": "Procesando...",
