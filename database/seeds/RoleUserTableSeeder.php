@@ -17,6 +17,7 @@ class RoleUserTableSeeder extends Seeder
             'role_id'    => '1',
             'user_id'    => '1'
         ]);
+<<<<<<< HEAD
         Role_User::create([
             'role_id'    => '1',
             'user_id'    => '2'
@@ -45,5 +46,7 @@ class RoleUserTableSeeder extends Seeder
             'role_id'    => '2',
             'user_id'    => '6'
         ]);
+=======
+>>>>>>> 4679f853b0fcb2262a0e335c0f5b7340c138e65c
     }
 }

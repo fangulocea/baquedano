@@ -65,7 +65,10 @@ class ArrendatarioController extends Controller
                             'id_arrendatario'   => $persona->id,
                             'id_creador'        => $request->id_creador,
                             'id_modificador'    => $request->id_creador,
+<<<<<<< HEAD
                             'preferencias'      => $request->preferencias,
+=======
+>>>>>>> 4679f853b0fcb2262a0e335c0f5b7340c138e65c
                             'id_estado'         => '1',
                     ]);
 
@@ -163,7 +166,10 @@ class ArrendatarioController extends Controller
 
             $arrendatario = Arrendatario::whereId($id)->update([
                 'id_modificador' => $request->id_modificador,
+<<<<<<< HEAD
                 'preferencias' => $request->preferencias,
+=======
+>>>>>>> 4679f853b0fcb2262a0e335c0f5b7340c138e65c
                 'id_arrendatario' => $persona->id,
             ]
             );

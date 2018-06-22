@@ -390,7 +390,11 @@ class CaptacionController extends Controller
          ->leftjoin('personas as p3', 'c.id_modificador', '=', 'p3.id')
          ->leftjoin('comunas as o', 'i.id_comuna', '=', 'o.comuna_id')
          ->leftjoin('portales as po', 'c.portal', '=', 'po.id')
+<<<<<<< HEAD
          ->select(DB::raw('c.id as id_publicacion, DATE_FORMAT(c.created_at, "%d/%m/%Y") as fecha_creacion,DATE_FORMAT(c.updated_at, "%d/%m/%Y") as fecha_modificacion, c.id_estado as id_estado, CONCAT_WS(" ",p1.nombre,p1.apellido_paterno,p1.apellido_materno) as Propietario, CONCAT_WS(" ",p2.nombre,p2.apellido_paterno,p2.apellido_materno) as Creador, CONCAT_WS(" ",p3.nombre,p3.apellido_paterno,p3.apellido_materno) as Modificador'),'i.id as id_inmueble','i.direccion','i.numero','i.departamento', 'o.comuna_nombre','po.nombre as portal','p1.nombre as nom_p','p1.apellido_paterno as apep_p','p1.apellido_materno as apem_p','p2.nombre as nom_c','p2.apellido_paterno as apep_c','p2.apellido_materno as apem_c','p3.nombre as nom_m','p3.apellido_paterno as apep_m','p3.apellido_materno as apem_m')
+=======
+         ->select(DB::raw('c.id as id_publicacion, DATE_FORMAT(c.created_at, "%d/%m/%Y") as fecha_creacion, c.id_estado as id_estado, CONCAT(p1.nombre," ",p1.apellido_paterno," ",p1.apellido_materno) as Propietario, CONCAT(p2.nombre," ",p2.apellido_paterno," ",p2.apellido_materno) as Creador'),'i.id as id_inmueble','i.direccion','i.numero','i.departamento', 'o.comuna_nombre','po.nombre as portal','p1.nombre as nom_p','p1.apellido_paterno as apep_p','p1.apellido_materno as apem_p','p2.nombre as nom_c','p2.apellido_paterno as apep_c','p2.apellido_materno as apem_c','p3.nombre as nom_m','p3.apellido_paterno as apep_m','p3.apellido_materno as apem_m')
+>>>>>>> 4679f853b0fcb2262a0e335c0f5b7340c138e65c
          ->get();
          
          return view('captaciones.index',compact('publica'));
@@ -417,6 +421,7 @@ class CaptacionController extends Controller
             ->with('status', 'Gestión guardada con éxito');
     }
 
+<<<<<<< HEAD
   public function crearBorrador($id)
     {
         $captacion=Captacion::where("id","=",$id)->update([
@@ -425,6 +430,8 @@ class CaptacionController extends Controller
         return redirect()->route('borradorContrato.edit', $id);
     }
 
+=======
+>>>>>>> 4679f853b0fcb2262a0e335c0f5b7340c138e65c
   public function editarGestion(Request $request)
     {
         $fecha_gestion = DateTime::createFromFormat('d-m-Y', $request->fecha_gestion);

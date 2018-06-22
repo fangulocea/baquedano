@@ -21,6 +21,7 @@ class UsersTableSeeder extends Seeder
             'password' => bcrypt('123456'),
             'id_persona' => 1
         ]);
+<<<<<<< HEAD
         User::create([
             'id'    => '2',
             'name'    => 'Pablo Jimenez',
@@ -71,5 +72,9 @@ class UsersTableSeeder extends Seeder
             'password' => bcrypt('123456'),
             'id_persona' => 8
         ]);
+=======
+
+
+>>>>>>> 4679f853b0fcb2262a0e335c0f5b7340c138e65c
     }
 }

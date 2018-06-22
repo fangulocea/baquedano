@@ -118,9 +118,15 @@ class PrimeraGestionController extends Controller
              'correo' => $correo->descripcion);
 
             Mail::send('emails.notificacion', $envioCorreo, function ($message) use($usuario) {
+<<<<<<< HEAD
                 $message->from('javier@ibaquedano.cl');
                 $message->to($usuario->email);
                 $message->subject('Propuesta de arriendo garantizado de Baquedano Rentas');
+=======
+                $message->from('edison.carrizo.j@gmail.com');
+                $message->to($usuario->email);
+                $message->subject('Asunto del correo');
+>>>>>>> 4679f853b0fcb2262a0e335c0f5b7340c138e65c
             });
 
             $date = Carbon::now();
