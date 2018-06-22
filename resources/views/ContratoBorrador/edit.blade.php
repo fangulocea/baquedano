@@ -313,7 +313,7 @@
                                                                                                 <div class="form-group">
                                                                                                     <label>Profesión / Ocupación</label>
                                                                                                     <div id="profesion">
-                                                                                                                <input name='profesion' id='pe_profesion' class="typeahead form-control" type="text" placeholder="Profesión / Ocupación" > 
+                                                                                                                {{-- <input name='profesion' id='pe_profesion' class="typeahead form-control" type="text" placeholder="Profesión / Ocupación" >  --}}
                                                                                                         </div>
                                                                                                 </div>
                                                                                             </div>
@@ -962,17 +962,8 @@ $('#listusers1_c').DataTable({
                         onclick: function () 
                         { editor.insertContent('{bano}'); }
                     });
-
             }
-
-
-
-
         });
-        
-      
-
-
 
 jQuery(document).ready(function () {
 
