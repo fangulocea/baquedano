@@ -172,6 +172,12 @@
                         onclick: function () 
                         { editor.insertContent('{bano}'); }
                     });
+
+                    editor.on('change', function (e) {
+                        editor.save();
+                    });
+
+
             }
         });
         }
