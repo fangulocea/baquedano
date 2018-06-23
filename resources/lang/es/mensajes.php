@@ -11,4 +11,6 @@ return [
 		'arrendatario' => '{0}Descartado|{1}Sin Gestión(Activo)|{2}Activo|{3}En Espera|{4}Activo - Problema Pago|{5}Activo - Daño inmueble|{6}No Activo - Problema Pago|{7}No Activo - Daño inmueble',
 
 		'borrador' => '{0}Rechazado|{1}Vigente|{2}Correo Enviado|{3}Reenvío Correo',
+
+		'contratofinal' => '{1}Proceso de Firma|{2}Contrato Activo|{3}Contrato Vencido|{4}Anexo Contrato{5}Menor 60 días para vencer',
 ];

@@ -119,6 +119,7 @@
                         <th>Editar</th>
                         <th>Correo</th>
                         <th>Ver Pdf</th>
+                        <th>Pasar a Final</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -130,7 +131,7 @@
                                 <td>{{ $p->n_c }}</td>
                                 <td>{{ $p->n_f }}</td>
                                 <td>{{ trans_choice('mensajes.borrador', $p->id_estado) }}</td>
-                                @can('revisioncomercial.edit')
+                                @can('borradorContrato.edit')
                                     <td>
                                         <button class="btn btn-success btn-circle btn-lg" id='via_edit' onclick="mostrar_modal({{ $p->id }})" ><i class="fa fa-check"></i></span></button>
                                     </td>
@@ -143,6 +144,11 @@
                                    <td>
                                         <a href="{{asset('uploads/pdf/'.$p->nombre)}}" target="_blank"><span class="btn btn-success btn-circle btn-lg"><i class="ti ti-file"></i></span></a>
                                     </td>
+                                @can('borradorContrato.edit')
+                                    <td>
+                                        <a href="{{ route('finalContrato.crearContrato', [$p->id ,$p->id_pdfborrador,Auth::user()->id]) }}"><span class="btn btn-danger btn-circle btn-lg"><i class="ti ti-file"></i></span></a>
+                                    </td>
+                                @endcan
                             </tr>
                             @endforeach
 
@@ -313,7 +319,7 @@
                                                                                                 <div class="form-group">
                                                                                                     <label>Profesión / Ocupación</label>
                                                                                                     <div id="profesion">
-                                                                                                                <input name='profesion' id='pe_profesion' class="typeahead form-control" type="text" placeholder="Profesión / Ocupación" > 
+                                                                                                                {{-- <input name='profesion' id='pe_profesion' class="typeahead form-control" type="text" placeholder="Profesión / Ocupación" >  --}}
                                                                                                         </div>
                                                                                                 </div>
                                                                                             </div>
@@ -962,17 +968,8 @@ $('#listusers1_c').DataTable({
                         onclick: function () 
                         { editor.insertContent('{bano}'); }
                     });
-
             }
-
-
-
-
         });
-        
-      
-
-
 
 jQuery(document).ready(function () {
 

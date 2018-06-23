@@ -9,6 +9,7 @@ class ContratoFinal extends Model
 {
     use SoftDeletes;
     protected $table='adm_contratofinal';
-    protected $fillable = ['id','id_notaria','id_publicacion','fecha_firma','observaciones','id_estado','id_creador','id_modificador','id_contrato'];
+    protected $fillable = ['id','id_notaria','id_publicacion','fecha_firma','observaciones','id_estado','id_creador','id_modificador'
+    ,'id_borrador','id_borradorpdf'];
     protected $dates = ['deleted_at'];
 }
