@@ -10,8 +10,6 @@ use DB;
 
 class ContratoFinalController extends Controller
 {
-
-
      public function crearContrato($idcb,$idpdf,$idu)
     {
 
@@ -57,9 +55,6 @@ class ContratoFinalController extends Controller
                     "ruta"        => "uploads/pdf_final/",
                     "id_creador"  => $idu,
                 ])->toArray();
-
-
-
         return redirect()->route('finalContrato.edit', [$ContratoBorrador->id_publicacion,$idcb,$idpdf])
          ->with('status', 'Borrador guardado con éxito');
     }
@@ -131,12 +126,15 @@ class ContratoFinalController extends Controller
          ->leftjoin('adm_contratofinalpdf as bp', 'b.id', '=', 'bp.id_final')
             ->where('b.id_publicacion','=',$idc)
 
-         ->select(DB::raw(' b.id , cp.id as id_publicacion,DATE_FORMAT(b.fecha_firma, "%d/%m/%Y") as fecha,b.id_estado,bp.nombre, bp.id as id_pdf'))
+         ->select(DB::raw(' b.id ,b.id_borrador, cp.id as id_publicacion,b.fecha_firma as fecha,b.id_estado,bp.nombre, bp.id as id_pdf,b.id_notaria'))
          ->get();
 
- 
+              $notaria = DB::table('notarias as n')
+         ->where("n.estado","<>",0)
+         ->select(DB::raw('n.id as id,n.razonsocial as nombre'))
+         ->get();
 
-         return view('contratoFinal.edit',compact('borrador','finalIndex'));
+         return view('contratoFinal.edit',compact('borrador','finalIndex','notaria'));
     }
 
     /**
@@ -151,14 +149,28 @@ class ContratoFinalController extends Controller
         //
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\ContratoFinal  $contratoFinal
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(ContratoFinal $contratoFinal)
+    public function asignarNotaria(Request $request, $id)
     {
-        //
+        $now = new \DateTime();
+        $fecha_creacion= $now->format('Y-m-d H:i:s');
+        $contrato=ContratoFinal::where('id','=',$id)->update([
+            "id_notaria"=>$request->id_notaria,
+            "fecha_firma"=>$request->fecha_firma,
+            "id_modificador"=>$request->id_modificador,
+            "updated_at"=>$fecha_creacion
+       ]);
+         return redirect()->route('finalContrato.edit', [$request->id_publicacion,$request->id_borrador,$request->id_pdf])
+         ->with('status', 'Contrato actualizado con éxito');  
     }
+
+    public function destroy($id,$idpdf)
+    {
+        $pdf=ContratoFinalPdf::find($idpdf);
+        File::delete($pdf->ruta.'/'.$pdf->nombre);
+        $pdf=ContratoFinalPdf::find($idpdf)->delete();
+        $contrato = ContratoFinal::find($id);
+        $borrar = ContratoFinal::find($id)->delete();
+         return redirect()->route('finalContrato.edit', [$contrato->id_publicacion,$contrato->id_borrador,$idpdf])
+         ->with('status', 'Contrato eliminado con éxito'); 
+    }     
 }
