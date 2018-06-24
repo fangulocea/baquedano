@@ -627,25 +627,18 @@
 <script src="{{ URL::asset('plugins/bower_components/jquery/dist/jquery.min.js') }}"></script>
 <!-- Bootstrap Core JavaScript -->
 <script src="{{ URL::asset('bootstrap/dist/js/bootstrap.min.js') }}"></script>
-
 <script src="{{ URL::asset('plugins/bower_components/bootstrap-datepicker/bootstrap-datepicker.min.js') }}"></script>
-
 <script src="{{ URL::asset('plugins/bower_components/dropify/dist/js/dropify.min.js') }}"></script>
-
 <script src="{{ URL::asset('plugins/bower_components/tinymce/tinymce.min.js') }}"></script>
 <link href = "{{ URL::asset('plugins/bower_components/datatables/jquery.dataTables.min.css')   }}" rel="stylesheet" type="text/css"   />
 <link href = "{{ URL::asset('plugins/DataTables/Buttons-1.5.1/css/buttons.dataTables.min.css') }}" rel="stylesheet" type="text/css"   />
-
-
 <script  src="{{ URL::asset('plugins/DataTables/datatables.min.js') }}"></script>
 <script src="{{ URL::asset('plugins/DataTables/DataTables-1.10.16/js/jquery.dataTables.min.js') }}"></script>
-
 
 <script>
 
 $(function(){
 
-    
         $('#modal-contacto1_c').on('hidden.bs.modal', function () {
         $("#form1_c")[0].reset();
     });
@@ -654,8 +647,6 @@ $(function(){
         $("#form1_c")[0].reset();
     });
     
-
-
         $('#modal-updatepersona').on('hidden.bs.modal', function () {
         $("#form_persona")[0].reset();
     });
@@ -664,11 +655,6 @@ $(function(){
     $('#modal-updateinmueble').on('hidden.bs.modal', function () {
         $("#form_inmueble")[0].reset();
     });
-
-
-    //     $('#modal-contacto_edit_c').on('hidden.bs.modal', function () {
-    //     $("#form1_e")[0].reset();
-    // });
 
 });
 
