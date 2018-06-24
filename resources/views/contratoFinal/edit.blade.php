@@ -18,6 +18,7 @@
                 <nav>
                     <ul>
                         <li id="li_5_c"><a id="5" href="#section-iconbox-5_c" class="sticon ti-agenda"><span>Gestión Contrato Final</span></a></li>
+                        <li id="li_6_c"><a id="6" href="#section-iconbox-6_c" class="sticon ti-agenda"><span>Documentos de Respaldos</span></a></li>
                     </ul>
                 </nav>
                  <div class="content-wrap">
@@ -62,7 +63,7 @@
                                         </select> 
                                 </td>
                                 <td>
-                                    <input type="date" name="fecha_firma" id="fecha_firma" value='{{ $p->fecha }}'>
+                                    <input type="date" name="fecha_firma" id="fecha_firma" value='{{ $p->fecha }}' required="required">
                                 </td>
                                 <td>
                                     <button type="submit" class="btn btn-success"> <i class="fa fa-check"></i> Guardar</button>
@@ -76,7 +77,9 @@
                 </tbody>
             </table>
                     </section>
-
+<section id="section-iconbox-6_c">
+    
+</section>
                 </div>
                 <!-- /content -->
             </div>

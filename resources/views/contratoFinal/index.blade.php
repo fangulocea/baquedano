@@ -4,8 +4,8 @@
 
 <div id="tabla" >
     <div class="white-box">
-        <h3 class="box-title m-b-0">Gestión de Contratos Borrador</h3>
-        <p class="text-muted m-b-30">Administración de registros para la generación de contratos borrador</p>
+        <h3 class="box-title m-b-0">Gestión de Contratos Finales</h3>
+        <p class="text-muted m-b-30">Administración de registros para la generación de contratos finales</p>
         <div class="table-responsive" style="padding-bottom: 50px;">
             <table id="listusers" class="display compact" cellspacing="0" width="200%">
       
@@ -20,7 +20,7 @@
                         <th>Estado</th>
                         <th>Portal</th>
                         <th></th>
-                        <th></th>
+
                     </tr>
                 </thead>
                 <tfoot>
@@ -34,7 +34,7 @@
                         <th>Estado</th>
                         <th>Portal</th>
                         <th></th>
-                        <th></th>
+
                     </tr>
                 </tfoot>
                 <tbody>
@@ -50,15 +50,12 @@
                                 <td>{{ $p->nom_c }} {{ $p->apep_c }} {{ $p->apem_c }}</td>
                                  <td>{{ trans_choice('mensajes.captacion', $p->id_estado) }}</td>
                                  <td>{{ substr(substr($p->portal, 4),0,10) }}</td>
-                                @can('borradorContrato.edit')
+                                @can('finalContrato.edit')
                                 <td width="10px">
-                                    <a href="{{ route('borradorContrato.edit', $p->id_publicacion) }}"><span class="btn btn-warning btn-circle btn-lg"><i class="ti-pencil-alt"></i></span></a>
+                                    <a href="{{ route('finalContrato.edit', [$p->id_publicacion,0,0]) }}"><span class="btn btn-warning btn-circle btn-lg"><i class="ti-pencil-alt"></i></span></a>
                                 </td>
                                 @endcan
-                                @can('borradorContrato.destroy')
-                                <td width="10px">
-                                </td>
-                                @endcan
+
                             </tr>
                             @endforeach
 
@@ -94,7 +91,7 @@ var table = $('#listusers').DataTable({
     ],
     columnDefs: [
         {
-            "targets": [8, 9],
+            "targets": 8,
             "orderable": false,
         },
         ],

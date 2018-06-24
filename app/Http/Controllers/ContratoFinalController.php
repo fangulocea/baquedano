@@ -5,15 +5,21 @@ namespace App\Http\Controllers;
 use App\ContratoFinal;
 use App\ContratoBorrador;
 use App\ContratoFinalPdf;
+use App\Captacion;
 use Illuminate\Http\Request;
 use DB;
+use Illuminate\Support\Facades\File;
 
 class ContratoFinalController extends Controller
 {
      public function crearContrato($idcb,$idpdf,$idu)
     {
 
+
         $ContratoBorrador=ContratoBorrador::find($idcb);
+        $captacion=Captacion::find($ContratoBorrador->id_publicacion)->update([
+            "id_estado"=> 10
+        ]);
         $contratoFinal=ContratoFinal::create([
             "id_publicacion" => $ContratoBorrador->id_publicacion,
             "id_estado" => 1,
@@ -45,18 +51,18 @@ class ContratoFinalController extends Controller
              p1.profesion as profesion_p, p1.telefono as telefono_p, p1.departamento as depto_p,
              i.rol as rol, b.detalle_revision as bodyContrato'))->first();
         $pdf = new PdfController();
-
-        $pdf->crontratoFinalPdf($borradorPDF);
+        $numero=rand();
+        $pdf->crontratoFinalPdf($borradorPDF,$numero);
         // FIN PARA PDFsss
 
         $finalpdf=ContratoFinalPdf::create([
                     "id_final" => $contratoFinal->id,
-                    "nombre"      => $borradorPDF->id . $borradorPDF->direccion_i .'-FINAL.pdf',
+                    "nombre"      => $numero . $borradorPDF->id . $borradorPDF->direccion_i .'-FINAL.pdf',
                     "ruta"        => "uploads/pdf_final/",
                     "id_creador"  => $idu,
                 ])->toArray();
         return redirect()->route('finalContrato.edit', [$ContratoBorrador->id_publicacion,$idcb,$idpdf])
-         ->with('status', 'Borrador guardado con éxito');
+         ->with('status', 'Contrato Final guardado con éxito');
     }
 
 
@@ -67,7 +73,19 @@ class ContratoFinalController extends Controller
      */
     public function index()
     {
-        //
+         $publica = DB::table('cap_publicaciones as c')
+         ->leftjoin('personas as p1', 'c.id_propietario', '=', 'p1.id')
+         ->leftjoin('inmuebles as i', 'c.id_inmueble', '=', 'i.id')
+         ->leftjoin('personas as p2', 'c.id_creador', '=', 'p2.id')
+         ->leftjoin('personas as p3', 'c.id_modificador', '=', 'p3.id')
+         ->leftjoin('comunas as o', 'i.id_comuna', '=', 'o.comuna_id')
+         ->leftjoin('portales as po', 'c.portal', '=', 'po.id')
+         ->where('c.id_estado','=',"7")
+         ->Orwhere('c.id_estado','=',"10")
+         ->select(DB::raw('c.id as id_publicacion, DATE_FORMAT(c.created_at, "%d/%m/%Y") as fecha_creacion, c.id_estado as id_estado, CONCAT_WS(" ",p1.nombre,p1.apellido_paterno,p1.apellido_materno) as Propietario, CONCAT(p2.nombre," ",p2.apellido_paterno," ",p2.apellido_materno) as Creador'),'p1.id as id_propietario','i.id as id_inmueble','i.direccion','i.numero','i.departamento', 'o.comuna_nombre','po.nombre as portal','p1.nombre as nom_p','p1.apellido_paterno as apep_p','p1.apellido_materno as apem_p','p2.nombre as nom_c','p2.apellido_paterno as apep_c','p2.apellido_materno as apem_c','p3.nombre as nom_m','p3.apellido_paterno as apep_m','p3.apellido_materno as apem_m')
+         ->get();
+         
+         return view('contratoFinal.index',compact('publica'));
     }
 
     /**
@@ -157,8 +175,12 @@ class ContratoFinalController extends Controller
             "id_notaria"=>$request->id_notaria,
             "fecha_firma"=>$request->fecha_firma,
             "id_modificador"=>$request->id_modificador,
-            "updated_at"=>$fecha_creacion
+            "updated_at"=>$fecha_creacion,
+            "id_estado"=> 7
        ]);
+        $captacion=Captacion::find($request->id_publicacion)->update([
+            "id_estado"=> 7
+        ]);
          return redirect()->route('finalContrato.edit', [$request->id_publicacion,$request->id_borrador,$request->id_pdf])
          ->with('status', 'Contrato actualizado con éxito');  
     }
@@ -170,6 +192,13 @@ class ContratoFinalController extends Controller
         $pdf=ContratoFinalPdf::find($idpdf)->delete();
         $contrato = ContratoFinal::find($id);
         $borrar = ContratoFinal::find($id)->delete();
+
+        $cant = ContratoFinal::where("id_publicacion","=",$contrato->id_publicacion)->get();
+        if(count($cant)==0){
+                $captacion=Captacion::find($contrato->id_publicacion)->update([
+                    "id_estado"=> 6
+                ]);
+        }
          return redirect()->route('finalContrato.edit', [$contrato->id_publicacion,$contrato->id_borrador,$idpdf])
          ->with('status', 'Contrato eliminado con éxito'); 
     }     

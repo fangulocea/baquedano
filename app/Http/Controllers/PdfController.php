@@ -89,7 +89,7 @@ class PdfController extends Controller
     }
 
 
-    public function crontratoFinalPdf($data) 
+    public function crontratoFinalPdf($data,$numero) 
     {
         $body    = $data->bodyContrato;
         $bodymail=str_replace("{fecha}",$data->fecha,$body);
@@ -141,7 +141,7 @@ class PdfController extends Controller
                     '. $bodymail .'
                 </main>
             </body>
-        </html>')->save( 'uploads/pdf_final/'. $data->id . $data->direccion_i .'-FINAL.pdf' );
+        </html>')->save( 'uploads/pdf_final/'. $numero . $data->id . $data->direccion_i .'-FINAL.pdf' );
 
 
 

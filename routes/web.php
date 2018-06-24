@@ -767,6 +767,4 @@ Route::get('revisionpersona/eliminarfoto/{idf}/{idc}','RevisionPersonaController
 		Route::get('finalContrato/mail/{id}','ContratoFinalController@enviaMail')->name('finalContrato.mail');		
 		Route::get('pdf/{data}', 'PdfController@index');
 
-
-
 });
