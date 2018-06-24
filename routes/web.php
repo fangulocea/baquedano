@@ -743,7 +743,7 @@ Route::get('revisionpersona/eliminarfoto/{idf}/{idc}','RevisionPersonaController
 		Route::get('finalContrato/create','ContratoFinalController@create')->name('finalContrato.create')
 		->middleware('permission:finalContrato.create');
 
-		Route::get('finalContrato/edit/{id}','ContratoFinalController@edit')->name('finalContrato.edit')
+		Route::get('finalContrato/edit/{idp}/{idc}/{idpdf}','ContratoFinalController@edit')->name('finalContrato.edit')
 		->middleware('permission:finalContrato.edit');
 
 		Route::get('finalContrato/destroy/{id}','ContratoFinalController@destroy')->name('finalContrato.destroy')

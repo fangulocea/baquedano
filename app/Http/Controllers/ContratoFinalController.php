@@ -53,14 +53,14 @@ class ContratoFinalController extends Controller
 
         $finalpdf=ContratoFinalPdf::create([
                     "id_final" => $contratoFinal->id,
-                    "nombre"      => 'uploads/pdf_final/'. $borradorPDF->id . $borradorPDF->direccion_i .'-FINAL.pdf',
+                    "nombre"      => $borradorPDF->id . $borradorPDF->direccion_i .'-FINAL.pdf',
                     "ruta"        => "uploads/pdf_final/",
                     "id_creador"  => $idu,
                 ])->toArray();
 
 
 
-        return redirect()->route('borradorContrato.edit', $request->id_publicacion)
+        return redirect()->route('finalContrato.edit', [$ContratoBorrador->id_publicacion,$idcb,$idpdf])
          ->with('status', 'Borrador guardado con éxito');
     }
 
@@ -113,9 +113,30 @@ class ContratoFinalController extends Controller
      * @param  \App\ContratoFinal  $contratoFinal
      * @return \Illuminate\Http\Response
      */
-    public function edit(ContratoFinal $contratoFinal)
+    public function edit($idc,$idcb,$idpdf)
     {
-        //
+       $borrador = DB::table('cap_publicaciones as c')
+         ->leftjoin('personas as p1', 'c.id_propietario', '=', 'p1.id')
+         ->leftjoin('inmuebles as i', 'c.id_inmueble', '=', 'i.id')
+         ->leftjoin('personas as p2', 'c.id_creador', '=', 'p2.id')
+         ->leftjoin('personas as p3', 'c.id_modificador', '=', 'p3.id')
+         ->leftjoin('comunas as o', 'i.id_comuna', '=', 'o.comuna_id')
+         ->leftjoin('portales as po', 'c.portal', '=', 'po.id')
+         ->where('c.id','=',$idc)
+         ->select(DB::raw('c.id as id_publicacion, p1.id as id_propietario, i.id as id_inmueble, CONCAT_WS(" ",i.direccion,"#",i.numero,"Depto.",i.departamento,o.comuna_nombre) as direccion, CONCAT_WS(" ",p1.nombre , p1.apellido_paterno, " Fono: " ,p1.telefono, " Email: " ,p1.email ) as propietario '))
+         ->first();
+
+         $finalIndex = DB::table('adm_contratofinal  as b')
+         ->leftjoin('cap_publicaciones as cp', 'b.id_publicacion', '=', 'cp.id')
+         ->leftjoin('adm_contratofinalpdf as bp', 'b.id', '=', 'bp.id_final')
+            ->where('b.id_publicacion','=',$idc)
+
+         ->select(DB::raw(' b.id , cp.id as id_publicacion,DATE_FORMAT(b.fecha_firma, "%d/%m/%Y") as fecha,b.id_estado,bp.nombre, bp.id as id_pdf'))
+         ->get();
+
+ 
+
+         return view('contratoFinal.edit',compact('borrador','finalIndex'));
     }
 
     /**
