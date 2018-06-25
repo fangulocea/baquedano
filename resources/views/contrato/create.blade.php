@@ -11,7 +11,7 @@
                         {!! csrf_field() !!}
                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
                         <div class="form-body">
-                            <h3 class="box-title">Información de Servicios</h3>
+                            <h3 class="box-title">Información del Contrato</h3>
                             <hr>
                             <div class="row">
                                 <div class="col-md-12">
@@ -26,7 +26,7 @@
                                     <div class="col-md-12 ">
                                         <div class="form-group">
                                             <label>Detalle del Contrato</label>
-                                            <textarea name="descripcion"  id="descripcion" cols="25" rows="10" class="form-control" required="required"></textarea>
+                                            <textarea name="descripcion"  id="descripcion" cols="25" rows="10" class="form-control" ></textarea>
                                         </div>
                                     </div>
 
@@ -64,9 +64,9 @@
 
         <script type="text/javascript">
 
-               if ($("#descripcion").length > 0) {
+               
             tinymce.init({
-                selector: "textarea#descripcion",
+                selector: "textarea",
                 theme: "modern",
             height: 250,
             menubar: false,
@@ -78,6 +78,7 @@
                 toolbar3: "Propiedad | DireccionProp | DeptoProp | RolProp | ComunaProp | DormitorioProp | BanoProp ",
             setup: function (editor) 
             {
+
                     editor.addButton('Propietario', 
                     {   text: '{propietario}',
                         icon: false,
@@ -180,7 +181,7 @@
 
             }
         });
-        }
+        
           
     </script>
 

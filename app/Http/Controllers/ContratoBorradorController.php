@@ -32,7 +32,8 @@ class ContratoBorradorController extends Controller
          ->leftjoin('comunas as o', 'i.id_comuna', '=', 'o.comuna_id')
          ->leftjoin('portales as po', 'c.portal', '=', 'po.id')
          ->where('c.id_estado','=',6)
-         ->whereOr('c.id_estado','=',7)
+         ->OrWhere('c.id_estado','=',7)
+        ->OrWhere('c.id_estado','=',10)
          ->select(DB::raw('c.id as id_publicacion, DATE_FORMAT(c.created_at, "%d/%m/%Y") as fecha_creacion, c.id_estado as id_estado, CONCAT_WS(" ",p1.nombre,p1.apellido_paterno,p1.apellido_materno) as Propietario, CONCAT(p2.nombre," ",p2.apellido_paterno," ",p2.apellido_materno) as Creador'),'p1.id as id_propietario','i.id as id_inmueble','i.direccion','i.numero','i.departamento', 'o.comuna_nombre','po.nombre as portal','p1.nombre as nom_p','p1.apellido_paterno as apep_p','p1.apellido_materno as apem_p','p2.nombre as nom_c','p2.apellido_paterno as apep_c','p2.apellido_materno as apem_c','p3.nombre as nom_m','p3.apellido_paterno as apep_m','p3.apellido_materno as apem_m')
          ->get();
          
@@ -120,7 +121,7 @@ class ContratoBorradorController extends Controller
          ->leftjoin('cap_publicaciones as cp', 'b.id_publicacion', '=', 'cp.id')
          ->leftjoin('borradorespdf as bp', 'b.id', '=', 'bp.id_borrador')
             ->where('b.id_publicacion','=',$id)
-         ->select(DB::raw(' b.id as id, n.razonsocial as n_n, s.nombre as n_s, c.nombre as n_c, f.nombre as n_f , cp.id as id_publicacion,DATE_FORMAT(b.fecha_gestion, "%d/%m/%Y") as fecha,b.id_servicios as id_servicios,b.id_estado,bp.nombre'))
+         ->select(DB::raw(' b.id as id, n.razonsocial as n_n, s.nombre as n_s, c.nombre as n_c, f.nombre as n_f , cp.id as id_publicacion,DATE_FORMAT(b.fecha_gestion, "%d/%m/%Y") as fecha,b.id_servicios as id_servicios,b.id_estado,bp.nombre, bp.id as id_pdfborrador'))
          ->get();
 
 

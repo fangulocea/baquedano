@@ -1,7 +1,7 @@
 @extends('admin.layout')
 
 @section('contenido')
-<link href="{{ URL::asset('/plugins/bower_components/typeahead.js-master/dist/typehead-min.css') }}" rel="stylesheet">
+
 
 <link href="{{ URL::asset('plugins/bower_components/bootstrap-datepicker/bootstrap-datepicker.min.css') }}" rel="stylesheet" type="text/css" />
 <link href="{{ URL::asset('plugins/bower_components/sweetalert/sweetalert.css')}}" rel="stylesheet" type="text/css">
@@ -196,7 +196,7 @@
                                                     <thead>
                                                         <tr>
                                                          
-                                                            <th><center>Click Ver Imágen</center></th>
+                                                            <th><center>Click Ver Documento</center></th>
                                                             <th>Borrar</th>
                                                         </tr>
                                                     </thead>
@@ -240,7 +240,7 @@
 <!-- Bootstrap Core JavaScript -->
 <script src="{{ URL::asset('bootstrap/dist/js/bootstrap.min.js') }}"></script>
 
-<script src="{{ URL::asset('plugins/bower_components/typeahead.js-master/dist/typeahead.bundle.min.js') }}"></script>
+
 
 <script src="{{ URL::asset('plugins/bower_components/bootstrap-datepicker/bootstrap-datepicker.min.js') }}"></script>
 
@@ -248,7 +248,43 @@
 
 <script src="{{ URL::asset('plugins/bower_components/dropify/dist/js/dropify.min.js') }}"></script>
 
-<script src="{{ URL::asset('js/custom.js') }}"></script>
+<script src="{{ URL::asset('plugins/bower_components/dropify/dist/js/dropify.min.js') }}"></script>
+
+<<script>
+    
+            // Basic
+        $('.dropify').dropify();
+        // Translated
+        $('.dropify-fr').dropify({
+            messages: {
+                default: 'Glissez-déposez un fichier ici ou cliquez',
+                replace: 'Glissez-déposez un fichier ou cliquez pour remplacer',
+                remove: 'Supprimer',
+                error: 'Désolé, le fichier trop volumineux'
+            }
+        });
+        // Used events
+        var drEvent = $('#input-file-events').dropify();
+        drEvent.on('dropify.beforeClear', function(event, element) {
+            return confirm("Esta seguro de eliminar  \"" + element.file.name + "\" ?");
+        });
+        drEvent.on('dropify.afterClear', function(event, element) {
+            alert('Archivo Borrado');
+        });
+        drEvent.on('dropify.errors', function(event, element) {
+            console.log('Has Errors');
+        });
+        var drDestroy = $('#input-file-to-destroy').dropify();
+        drDestroy = drDestroy.data('dropify')
+        $('#toggleDropify').on('click', function(e) {
+            e.preventDefault();
+            if (drDestroy.isDropified()) {
+                drDestroy.destroy();
+            } else {
+                drDestroy.init();
+            }
+        })
+</script>
 
 <script src="{{ URL::asset('plugins/bower_components/lightbox/js/lightbox.js') }}"></script>
 
@@ -260,13 +296,7 @@
 
 <script  src="{{ URL::asset('plugins/DataTables/datatables.min.js') }}"></script>
 <script src="{{ URL::asset('plugins/DataTables/DataTables-1.10.16/js/jquery.dataTables.min.js') }}"></script>
-<script src="{{ URL::asset('plugins/DataTables/Buttons-1.5.1/js/dataTables.buttons.min.js') }}"></script>
-<script src="{{ URL::asset('plugins/DataTables/Buttons-1.5.1/js/buttons.flash.min.js') }}"></script>
-<script src="{{ URL::asset('plugins/DataTables/JSZip-2.5.0/jszip.min.js') }}"></script>
-<script src="{{ URL::asset('plugins/DataTables/pdfmake-0.1.32/pdfmake.min.js') }}"></script>
-<script src="{{ URL::asset('plugins/DataTables/pdfmake-0.1.32/vfs_fonts.js') }}"></script>
-<script src="{{ URL::asset('plugins/DataTables/Buttons-1.5.1/js/buttons.html5.min.js') }}"></script>
-<script src="{{ URL::asset('plugins/DataTables/Buttons-1.5.1/js/buttons.print.min.js') }}"></script>
+
 
 <script>
 
@@ -318,10 +348,7 @@ $(function(){
 
 });
 
-    lightbox.option({
-      'resizeDuration': 200,
-      'wrapAround': true
-    })
+
 
 function mostrar_modal(obj){
     var url= "{{ URL::to('revisionpersona/gestion')}}"+"/"+obj;
@@ -347,7 +374,7 @@ function mostrar_modal(obj){
 $('#listusers1_c').DataTable({
     dom: 'Bfrtip',
     buttons: [
-        'excel', 'pdf', 'print'
+        'excel'
 
     ],
     language: {
@@ -414,42 +441,6 @@ $("#via_otras").click(function(){
         });
         
       
-
-
-
-jQuery(document).ready(function () {
-
-
-        // delegate calls to data-toggle="lightbox"
-        $(document).delegate('[data-toggle="lightbox"]', 'click', function(event) {
-            event.preventDefault();
-           $(this).ekkoLightbox();
-
-        });
-        //Programatically call
-        $('#open-image').click(function(e) {
-            e.preventDefault();
-            $(this).ekkoLightbox();
-        });
-        $('#open-youtube').click(function(e) {
-            e.preventDefault();
-            $(this).ekkoLightbox();
-        });
-        // navigateTo
-        $(document).delegate('*[data-gallery="navigateTo"]', 'click', function(event) {
-            event.preventDefault();
-            var lb;
-            return $(this).ekkoLightbox({
-                onShown: function() {
-                    lb = this;
-                    $(lb.modal_content).on('click', '.modal-footer a', function(e) {
-                        e.preventDefault();
-                        lb.navigateTo(2);
-                    });
-                }
-            });
-        });
-    });
 
 
 

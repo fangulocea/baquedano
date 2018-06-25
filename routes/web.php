@@ -726,11 +726,6 @@ Route::get('revisionpersona/eliminarfoto/{idf}/{idc}','RevisionPersonaController
 
 
 // COntratos final
-		Route::post('finalContrato/updatepersona','PersonaController@updatePersonaContratoBorrador')->name('finalContrato.updatepersona')
-		->middleware('permission:finalContrato.edit');
-
-		Route::post('finalContrato/updateinmueble','InmuebleController@updateInmuebleContratoBorrador')->name('finalContrato.updateinmueble')
-		->middleware('permission:finalContrato.edit');
 
 		Route::post('finalContrato/store','ContratoFinalController@store')->name('finalContrato.store')
 		->middleware('permission:finalContrato.create');
@@ -741,27 +736,28 @@ Route::get('revisionpersona/eliminarfoto/{idf}/{idc}','RevisionPersonaController
 		Route::get('finalContrato/create','ContratoFinalController@create')->name('finalContrato.create')
 		->middleware('permission:finalContrato.create');
 
-		Route::get('finalContrato/edit/{id}','ContratoFinalController@edit')->name('finalContrato.edit')
+		Route::get('finalContrato/edit/{idp}/{idc}/{idpdf}','ContratoFinalController@edit')->name('finalContrato.edit')
 		->middleware('permission:finalContrato.edit');
 
-		Route::get('finalContrato/destroy/{id}','ContratoFinalController@destroy')->name('finalContrato.destroy')
+		Route::get('finalContrato/destroy/{id}/{idpdf}','ContratoFinalController@destroy')->name('finalContrato.destroy')
 		->middleware('permission:finalContrato.destroy');
 
-		Route::post('finalContrato/crearBorrador','ContratoFinalController@crearBorrador')->name('finalContrato.crearBorrador')
-		->middleware('permission:finalContrato.edit');
+		Route::get('finalContrato/crearContrato/{idcb}/{idpdf}/{idu}','ContratoFinalController@crearContrato')->name('finalContrato.crearContrato')
+		->middleware('permission:finalContrato.create');
 
 		Route::get('finalContrato/borradorC/{idg}','ContratoFinalController@mostrarGestion');
 
 		Route::post('finalContrato/{captacionArrendador}','ContratoFinalController@update')->name('finalContrato.update')
 		->middleware('permission:finalContrato.edit');
 
-		Route::post('finalContrato/borrador/update','ContratoFinalController@editarGestion')->name('finalContrato.editarGestion')
+		Route::post('finalContrato/asignarNotaria/{id}','ContratoFinalController@asignarNotaria')->name('finalContrato.asignarNotaria')
 		->middleware('permission:finalContrato.edit');
 
-		Route::get('finalContrato/mail/{id}','ContratoFinalController@enviaMail')->name('finalContrato.mail');		
-		Route::get('pdf/{data}', 'PdfController@index');
+		Route::post('finalContrato/savedocs/{id}','ContratoFinalController@savedocs')->name('finalContrato.savedocs')
+		->middleware('permission:finalContrato.edit');
 
-
+	Route::get('finalContrato/eliminarfoto/{idf}','ContratoFinalController@eliminarfoto')->name('finalContrato.eliminarfoto')
+		->middleware('permission:finalContrato.edit');
 
 		// COntratos Arrendatario Borrador
 		Route::get('cbararrendatario','ContratoBorradorArrendatarioController@index')->name('cbararrendatario.index')

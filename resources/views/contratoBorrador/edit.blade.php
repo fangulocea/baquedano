@@ -25,8 +25,6 @@
                         <li id="li_5_c"><a id="5" href="#section-iconbox-5_c" class="sticon ti-agenda"><span>Gestión Contrato Borrador</span></a></li>
                     </ul>
                 </nav>
-
-
             <form id="form1_a" action="{{ route('borradorContrato.crearBorrador') }}" method="post">                 
                 <input type="hidden" name="_token" value="{{ csrf_token() }}">
                 <input type="hidden" name="id_creador" value="{{ Auth::user()->id }}"">
@@ -119,6 +117,7 @@
                         <th>Editar</th>
                         <th>Correo</th>
                         <th>Ver Pdf</th>
+                        <th>Pasar a Final</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -130,7 +129,7 @@
                                 <td>{{ $p->n_c }}</td>
                                 <td>{{ $p->n_f }}</td>
                                 <td>{{ trans_choice('mensajes.borrador', $p->id_estado) }}</td>
-                                @can('revisioncomercial.edit')
+                                @can('borradorContrato.edit')
                                     <td>
                                         <button class="btn btn-success btn-circle btn-lg" id='via_edit' onclick="mostrar_modal({{ $p->id }})" ><i class="fa fa-check"></i></span></button>
                                     </td>
@@ -143,6 +142,11 @@
                                    <td>
                                         <a href="{{asset('uploads/pdf/'.$p->nombre)}}" target="_blank"><span class="btn btn-success btn-circle btn-lg"><i class="ti ti-file"></i></span></a>
                                     </td>
+                                @can('borradorContrato.edit')
+                                    <td>
+                                        <a href="{{ route('finalContrato.crearContrato', [$p->id ,$p->id_pdfborrador,Auth::user()->id]) }}"><span class="btn btn-danger btn-circle btn-lg"><i class="ti ti-file"></i></span></a>
+                                    </td>
+                                @endcan
                             </tr>
                             @endforeach
 
@@ -313,7 +317,7 @@
                                                                                                 <div class="form-group">
                                                                                                     <label>Profesión / Ocupación</label>
                                                                                                     <div id="profesion">
-                                                                                                                <input name='profesion' id='pe_profesion' class="typeahead form-control" type="text" placeholder="Profesión / Ocupación" > 
+                                                                                                                {{-- <input name='profesion' id='pe_profesion' class="typeahead form-control" type="text" placeholder="Profesión / Ocupación" >  --}}
                                                                                                         </div>
                                                                                                 </div>
                                                                                             </div>
@@ -608,8 +612,6 @@
                                             </div>
                                     </div>
                                     <!-- FIN MODAL INMUEBLE -->
-
-
                 </tbody>
             </table>
                     </section>
@@ -625,32 +627,31 @@
 <script src="{{ URL::asset('plugins/bower_components/jquery/dist/jquery.min.js') }}"></script>
 <!-- Bootstrap Core JavaScript -->
 <script src="{{ URL::asset('bootstrap/dist/js/bootstrap.min.js') }}"></script>
-<script src="{{ URL::asset('plugins/bower_components/typeahead.js-master/dist/typeahead.bundle.min.js') }}"></script>
 <script src="{{ URL::asset('plugins/bower_components/bootstrap-datepicker/bootstrap-datepicker.min.js') }}"></script>
-<script src="{{ URL::asset('plugins/bower_components/sweetalert/sweetalert.min.js') }}"></script>
+<script>
+    jQuery('#datepicker-fecha_contacto1_c').datepicker({
+    format: 'dd-mm-yyyy',
+    todayHighlight: true,
+    autoclose: true, 
+    daysOfWeekDisabled: "0",
+    daysOfWeekHighlighted: "0",
+    language: "es",
+    locale: "es",
+});
+</script>
 <script src="{{ URL::asset('plugins/bower_components/dropify/dist/js/dropify.min.js') }}"></script>
-<script src="{{ URL::asset('js/custom.js') }}"></script>
-<script src="{{ URL::asset('plugins/bower_components/lightbox/js/lightbox.js') }}"></script>
 <script src="{{ URL::asset('plugins/bower_components/tinymce/tinymce.min.js') }}"></script>
 <link href = "{{ URL::asset('plugins/bower_components/datatables/jquery.dataTables.min.css')   }}" rel="stylesheet" type="text/css"   />
 <link href = "{{ URL::asset('plugins/DataTables/Buttons-1.5.1/css/buttons.dataTables.min.css') }}" rel="stylesheet" type="text/css"   />
-
-
 <script  src="{{ URL::asset('plugins/DataTables/datatables.min.js') }}"></script>
 <script src="{{ URL::asset('plugins/DataTables/DataTables-1.10.16/js/jquery.dataTables.min.js') }}"></script>
-<script src="{{ URL::asset('plugins/DataTables/Buttons-1.5.1/js/dataTables.buttons.min.js') }}"></script>
-<script src="{{ URL::asset('plugins/DataTables/Buttons-1.5.1/js/buttons.flash.min.js') }}"></script>
-<script src="{{ URL::asset('plugins/DataTables/JSZip-2.5.0/jszip.min.js') }}"></script>
-<script src="{{ URL::asset('plugins/DataTables/pdfmake-0.1.32/pdfmake.min.js') }}"></script>
-<script src="{{ URL::asset('plugins/DataTables/pdfmake-0.1.32/vfs_fonts.js') }}"></script>
-<script src="{{ URL::asset('plugins/DataTables/Buttons-1.5.1/js/buttons.html5.min.js') }}"></script>
-<script src="{{ URL::asset('plugins/DataTables/Buttons-1.5.1/js/buttons.print.min.js') }}"></script>
 
 <script>
 
 $(function(){
 
-    
+
+
         $('#modal-contacto1_c').on('hidden.bs.modal', function () {
         $("#form1_c")[0].reset();
     });
@@ -659,8 +660,6 @@ $(function(){
         $("#form1_c")[0].reset();
     });
     
-
-
         $('#modal-updatepersona').on('hidden.bs.modal', function () {
         $("#form_persona")[0].reset();
     });
@@ -670,18 +669,7 @@ $(function(){
         $("#form_inmueble")[0].reset();
     });
 
-
-    //     $('#modal-contacto_edit_c').on('hidden.bs.modal', function () {
-    //     $("#form1_e")[0].reset();
-    // });
-
 });
-
-    lightbox.option({
-      'resizeDuration': 200,
-      'wrapAround': true
-    })
-
 
 
 function mostrar_modal(obj){
@@ -707,8 +695,6 @@ function mostrar_modal(obj){
         }
     });
 }
-
-
 
 function mostrar_modalpersona(obj){
     var url= "{{ URL::to('persona/contratoborrador')}}"+"/"+obj;
@@ -962,53 +948,8 @@ $('#listusers1_c').DataTable({
                         onclick: function () 
                         { editor.insertContent('{bano}'); }
                     });
-
             }
-
-
-
-
         });
-        
-      
-
-
-
-jQuery(document).ready(function () {
-
-
-        // delegate calls to data-toggle="lightbox"
-        $(document).delegate('[data-toggle="lightbox"]', 'click', function(event) {
-            event.preventDefault();
-           $(this).ekkoLightbox();
-
-        });
-        //Programatically call
-        $('#open-image').click(function(e) {
-            e.preventDefault();
-            $(this).ekkoLightbox();
-        });
-        $('#open-youtube').click(function(e) {
-            e.preventDefault();
-            $(this).ekkoLightbox();
-        });
-        // navigateTo
-        $(document).delegate('*[data-gallery="navigateTo"]', 'click', function(event) {
-            event.preventDefault();
-            var lb;
-            return $(this).ekkoLightbox({
-                onShown: function() {
-                    lb = this;
-                    $(lb.modal_content).on('click', '.modal-footer a', function(e) {
-                        e.preventDefault();
-                        lb.navigateTo(2);
-                    });
-                }
-            });
-        });
-    });
-
-
 
 </script>
 @endsection

@@ -4,8 +4,8 @@
 
 <div id="tabla" class="col-sm-12">
     <div class="white-box">
-        <h3 class="box-title m-b-0">Administración de Servicios</h3>
-        <p class="text-muted m-b-30">Gestionar Servicios</p>
+        <h3 class="box-title m-b-0">Administración de Contratos - Plantillas</h3>
+        <p class="text-muted m-b-30">Gestionar Contratos - Plantilla</p>
         <div class="table-responsive">
             <table id="listusers" class="display nowrap" cellspacing="0" width="100%">
                 <thead>
