@@ -22,12 +22,11 @@ return array(
     'App\\Condicion' => $baseDir . '/app/Condicion.php',
     'App\\Console\\Kernel' => $baseDir . '/app/Console/Kernel.php',
     'App\\ContratoBorrador' => $baseDir . '/app/ContratoBorrador.php',
-
+    'App\\ContratoBorradorArrendatario' => $baseDir . '/app/ContratoBorradorArrendatario.php',
     'App\\ContratoFinal' => $baseDir . '/app/ContratoFinal.php',
     'App\\ContratoFinalDocs' => $baseDir . '/app/ContratoFinalDocs.php',
     'App\\ContratoFinalPdf' => $baseDir . '/app/ContratoFinalPdf.php',
     'App\\ContratoMantenedor' => $baseDir . '/app/ContratoMantenedor.php',
-
     'App\\Contratoborradorpdf' => $baseDir . '/app/Contratoborradorpdf.php',
     'App\\Correo' => $baseDir . '/app/Correo.php',
     'App\\Exceptions\\Handler' => $baseDir . '/app/Exceptions/Handler.php',
@@ -50,13 +49,12 @@ return array(
     'App\\Http\\Controllers\\ComisionController' => $baseDir . '/app/Http/Controllers/ComisionController.php',
     'App\\Http\\Controllers\\ComunaController' => $baseDir . '/app/Http/Controllers/ComunaController.php',
     'App\\Http\\Controllers\\CondicionController' => $baseDir . '/app/Http/Controllers/CondicionController.php',
+    'App\\Http\\Controllers\\ContratoBorradorArrendatarioController' => $baseDir . '/app/Http/Controllers/ContratoBorradorArrendatarioController.php',
     'App\\Http\\Controllers\\ContratoBorradorController' => $baseDir . '/app/Http/Controllers/ContratoBorradorController.php',
-
     'App\\Http\\Controllers\\ContratoFinalController' => $baseDir . '/app/Http/Controllers/ContratoFinalController.php',
     'App\\Http\\Controllers\\ContratoFinalDocsController' => $baseDir . '/app/Http/Controllers/ContratoFinalDocsController.php',
     'App\\Http\\Controllers\\ContratoFinalPdfController' => $baseDir . '/app/Http/Controllers/ContratoFinalPdfController.php',
     'App\\Http\\Controllers\\ContratoMantenedorController' => $baseDir . '/app/Http/Controllers/ContratoMantenedorController.php',
-
     'App\\Http\\Controllers\\Controller' => $baseDir . '/app/Http/Controllers/Controller.php',
     'App\\Http\\Controllers\\CorreoController' => $baseDir . '/app/Http/Controllers/CorreoController.php',
     'App\\Http\\Controllers\\FlexibilidadController' => $baseDir . '/app/Http/Controllers/FlexibilidadController.php',
@@ -145,11 +143,9 @@ return array(
     'Collective\\Html\\HtmlServiceProvider' => $vendorDir . '/laravelcollective/html/src/HtmlServiceProvider.php',
     'Comunas' => $baseDir . '/database/migrations/2018_05_21_212619_comunas.php',
     'ComunasTableSeeder' => $baseDir . '/database/seeds/ComunasTableSeeder.php',
-
     'ContratoFinal' => $baseDir . '/database/migrations/2018_06_21_213605_ContratoFinal.php',
-    'ContratoFinalDocs' => $baseDir . '/database/migrations/2018_06_21_214732_ContratoFinalDocs.php',
+    'ContratoFinalDocs' => $baseDir . '/database/migrations/2018_06_21_224732_ContratoFinalDocs.php',
     'ContratoFinalPdf' => $baseDir . '/database/migrations/2018_06_21_223030_ContratoFinalPdf.php',
-
     'Cpdf' => $vendorDir . '/dompdf/dompdf/lib/Cpdf.php',
     'CreateArrendatario' => $baseDir . '/database/migrations/2018_06_10_2100308_create_Arrendatario.php',
     'CreateArrendatarioCita' => $baseDir . '/database/migrations/2018_06_10_210342_create_ArrendatarioCita.php',
@@ -159,9 +155,9 @@ return array(
     'CreateCargosTable' => $baseDir . '/database/migrations/2012_05_19_003554_create_cargos_table.php',
     'CreateComisionesTable' => $baseDir . '/database/migrations/2018_05_26_124820_create_comisiones_table.php',
     'CreateCondicionsTable' => $baseDir . '/database/migrations/2018_05_16_013516_create_condicions_table.php',
-
+    'CreateContratoborradorarrendatarioTable' => $baseDir . '/database/migrations/2018_06_23_121319_create_contratoborradorarrendatario_table.php',
+    'CreateContratoborradorarrendatariopdfTable' => $baseDir . '/database/migrations/2018_06_23_233403_create_contratoborradorarrendatariopdf_table.php',
     'CreateContratosTable' => $baseDir . '/database/migrations/2018_06_13_225341_create_contratos_table.php',
-
     'CreateCorreosTable' => $baseDir . '/database/migrations/2018_05_30_140028_create_correos_table.php',
     'CreateFlexibilidadsTable' => $baseDir . '/database/migrations/2018_05_26_140017_create_flexibilidads_table.php',
     'CreateFormasDePagosTable' => $baseDir . '/database/migrations/2018_05_26_114046_create_formasDePagos_table.php',

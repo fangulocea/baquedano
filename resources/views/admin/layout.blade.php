@@ -206,7 +206,7 @@
                                 <li> <a href="{{ route('portal.index') }}"><i class=" fa-fw">P</i><span class="hide-menu">Portal   </span></a> </li>
                                 @endcan
                                 @can('contrato.index')
-                                <li> <a href="{{ route('contrato.index') }}"><i class=" fa-fw">C</i><span class="hide-menu">Contrato   </span></a> </li>
+                                <li> <a href="{{ route('contrato.index') }}"><i class=" fa-fw">C</i><span class="hide-menu">Mantenedor Contrato   </span></a> </li>
                                 @endcan
                             </ul>
                         </li>
@@ -261,10 +261,27 @@
                                 @can('revisioncomercial.index')
                                 <li> <a href="{{ route('revisionpersona.index') }}"><i class=" fa-fw">CA</i><span class="hide-menu">Revisión Comercial Persona</span></a> </li>
                                 @endcan
-                                @can('borradorContrato.index')
-                                <li> <a href="{{ route('borradorContrato.index') }}"><i class=" fa-fw">CB</i><span class="hide-menu">Contrato Borrador</span></a> </li>
-                                @endcan
-                                
+
+                            <li>
+                                <a href="javascript:void(0)" class="waves-effect"><i data-icon="&#xe008;" class="linea-icon linea-basic fa-fw">P</i><span class="hide-menu">ropietario </span><span class="fa arrow"></span></a>
+                                <ul class="nav nav-third-level">
+                                    @can('borradorContrato.index')
+                                    <li> <a href="{{ route('borradorContrato.index') }}"><i class=" fa-fw">CB</i><span class="hide-menu">Contrato Borrador</span></a> </li>
+                                    @endcan
+                                </ul>
+                            </li>
+
+
+                            <li>
+                                <a href="javascript:void(0)" class="waves-effect"><i data-icon="&#xe008;" class="linea-icon linea-basic fa-fw">A</i><span class="hide-menu">rrendatario </span><span class="fa arrow"></span></a>
+                                <ul class="nav nav-third-level">
+                                    @can('contratoborradorarrendatario.index')
+                                    <li> <a href="{{ route('cbararrendatario.index') }}"><i class=" fa-fw">CB</i><span class="hide-menu">Contrato Borrador</span></a> </li>
+                                    @endcan
+                                </ul>
+                            </li>
+
+
                             </ul>
                         </li>
                         <li><a href="{{ route('logout') }}"

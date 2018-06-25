@@ -32,6 +32,16 @@ class PersonaController extends Controller
         ->with('status', 'Propietario Actualizado con éxito');
     }
 
+    public function updatePersonaArrendatarioBorrador(Request $request)
+    {
+        $id_persona=$request->id_persona;
+        $id_publicacion=$request->id_publicacion;
+        $data = request()->except(['_token','id_publicacion','id_persona']);
+        $persona = Persona::whereId($id_persona)->update($data);
+        return redirect()->route('cbararrendatario.edit', $request->id_persona)
+        ->with('status', 'Arrendatario Actualizado con éxito');
+    }
+
     public function getPersonas($text){
         $personas=Persona::personas($text);
         return response()->json($personas);

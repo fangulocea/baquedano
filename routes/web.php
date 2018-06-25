@@ -669,10 +669,8 @@ Route::get('revisionpersona/eliminarfoto/{idf}/{idc}','RevisionPersonaController
 		Route::post('borradorContrato/updatepersona','PersonaController@updatePersonaContratoBorrador')->name('borradorContrato.updatepersona')
 		->middleware('permission:borradorContrato.edit');
 
-
 		Route::get('borradorContrato/edit/{id}','ContratoBorradorController@edit')->name('borradorContrato.edit')
 		->middleware('permission:borradorContrato.edit');
-
 
 		Route::post('borradorContrato/updateinmueble','InmuebleController@updateInmuebleContratoBorrador')->name('borradorContrato.updateinmueble')
 		->middleware('permission:borradorContrato.edit');
@@ -763,6 +761,45 @@ Route::get('revisionpersona/eliminarfoto/{idf}/{idc}','RevisionPersonaController
 		Route::get('finalContrato/mail/{id}','ContratoFinalController@enviaMail')->name('finalContrato.mail');		
 		Route::get('pdf/{data}', 'PdfController@index');
 
+
+
+		// COntratos Arrendatario Borrador
+		Route::get('cbararrendatario','ContratoBorradorArrendatarioController@index')->name('cbararrendatario.index')
+		->middleware('permission:cbararrendatario.index');
+
+		Route::get('cbararrendatario/edit/{id}','ContratoBorradorArrendatarioController@edit')->name('cbararrendatario.edit')
+		->middleware('permission:cbararrendatario.edit');
+
+		Route::post('cbararrendatario/updatepersona','PersonaController@updatePersonaArrendatarioBorrador')->name('cbararrendatario.updatepersona')
+		->middleware('permission:cbararrendatario.edit');
+
+		Route::post('cbararrendatario/updateinmueble','InmuebleController@updateInmuebleArrendatarioBorrador')->name('cbararrendatario.updateinmueble')
+		->middleware('permission:cbararrendatario.edit');		
+
+
+		Route::post('cbararrendatario/crearBorrador','ContratoBorradorArrendatarioController@crearBorrador')->name('cbararrendatario.crearBorrador')
+		->middleware('permission:cbararrendatario.edit');
+
+
+		Route::post('cbararrendatario/store','ContratoBorradorArrendatarioController@store')->name('cbararrendatario.store')
+		->middleware('permission:cbararrendatario.create');
+
+		Route::get('cbararrendatario/create','ContratoBorradorArrendatarioController@create')->name('cbararrendatario.create')
+		->middleware('permission:contratoborradorarrendatario.create');
+
+		Route::get('cbararrendatario/destroy/{id}','ContratoBorradorArrendatarioController@destroy')->name('cbararrendatario.destroy')
+		->middleware('permission:contratoborradorarrendatario.destroy');
+
+		Route::get('cbararrendatario/borradorC/{idg}','ContratoBorradorArrendatarioController@mostrarGestion');
+
+		Route::post('cbararrendatario/{captacionArrendador}','ContratoBorradorArrendatarioController@update')->name('cbararrendatario.update')
+		->middleware('permission:cbararrendatario.edit');
+
+		Route::post('cbararrendatario/borrador/update','ContratoBorradorArrendatarioController@editarGestion')->name('cbararrendatario.editarGestion')
+		->middleware('permission:cbararrendatario.edit');
+
+		Route::get('cbararrendatario/mail/{id}','ContratoBorradorArrendatarioController@enviaMail')->name('cbararrendatario.mail');		
+		Route::get('pdf/{data}', 'PdfController@index');
 
 
 });

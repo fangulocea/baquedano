@@ -31,6 +31,16 @@ class InmuebleController extends Controller
         ->with('status', 'Inmueble Actualizado con éxito');
     }
 
+        public function updateInmuebleArrendatarioBorrador(Request $request)
+    {
+        $id_inmueble=$request->id_inmueble;
+        $id_persona=$request->id_persona;
+        $data = request()->except(['_token','id_inmueble','id_persona']);
+        $inmueble = Inmueble::whereId($id_inmueble)->update($data);
+        return redirect()->route('cbararrendatario.edit', $request->id_persona)
+        ->with('status', 'Inmueble Actualizado con éxito');
+    }    
+
     public function getInmuebles($text){
         $inmuebles=Inmueble::inmuebles($text);
         return response()->json($inmuebles);
