@@ -628,6 +628,17 @@
 <!-- Bootstrap Core JavaScript -->
 <script src="{{ URL::asset('bootstrap/dist/js/bootstrap.min.js') }}"></script>
 <script src="{{ URL::asset('plugins/bower_components/bootstrap-datepicker/bootstrap-datepicker.min.js') }}"></script>
+<script>
+    jQuery('#datepicker-fecha_contacto1_c').datepicker({
+    format: 'dd-mm-yyyy',
+    todayHighlight: true,
+    autoclose: true, 
+    daysOfWeekDisabled: "0",
+    daysOfWeekHighlighted: "0",
+    language: "es",
+    locale: "es",
+});
+</script>
 <script src="{{ URL::asset('plugins/bower_components/dropify/dist/js/dropify.min.js') }}"></script>
 <script src="{{ URL::asset('plugins/bower_components/tinymce/tinymce.min.js') }}"></script>
 <link href = "{{ URL::asset('plugins/bower_components/datatables/jquery.dataTables.min.css')   }}" rel="stylesheet" type="text/css"   />
@@ -638,6 +649,8 @@
 <script>
 
 $(function(){
+
+
 
         $('#modal-contacto1_c').on('hidden.bs.modal', function () {
         $("#form1_c")[0].reset();

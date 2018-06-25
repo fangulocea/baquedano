@@ -11,7 +11,7 @@
                         {!! csrf_field() !!}
                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
                         <div class="form-body">
-                            <h3 class="box-title">Información de Servicios</h3>
+                            <h3 class="box-title">Información del Contrato</h3>
                             <hr>
                             <div class="row">
                                 <div class="col-md-12">

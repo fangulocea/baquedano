@@ -4,6 +4,8 @@
 
 <link href="{{ URL::asset('plugins/bower_components/sweetalert/sweetalert.css')}}" rel="stylesheet" type="text/css">
 
+<link rel="stylesheet" href="{{ URL::asset('plugins/bower_components/dropify/dist/css/dropify.min.css')}}">
+
 <div class="row">
     <div class="col-md-12"> 
         @if(isset($borrador->direccion))
@@ -78,7 +80,76 @@
             </table>
                     </section>
 <section id="section-iconbox-6_c">
-    
+     <div class="row">
+                    <div class="col-sm-6">
+                        <div class="white-box"> 
+                           <form action="{{ route('finalContrato.savedocs',$borrador->id_publicacion) }}" method="post" enctype='multipart/form-data'>
+                                        {!! csrf_field() !!}
+                                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
+
+                                <h3 class="box-title">Subir Archivo</h3>
+                                <label for="input-file-now-custom-1">ID Contrato</label>
+                                        <select class="form-control" name="id_final" required="required" >
+                                            <option value="">Selecione ID Contrato</option>
+                                            @foreach($finalIndex as $n)
+                                                    <option value="{{ $n->id }}">{{ $n->id }} </option>
+                                            @endforeach  
+                                        </select>
+                                <label for="input-file-now-custom-1">Tipo Documento</label>
+                                        <select class="form-control" name="tipo" required="required" >
+                                                    <option value="">Selecione Tipo de Documento</option>
+                                                    <option value="Contrato Digitalizado">Contrato Digitalizado </option>
+                                                    <option value="Gastos Notario">Gastos Notario </option>
+                                                    <option value="Documentos Garantías">Documentos Garantías </option>
+                                                    <option value="Comprobantes de Pagos">Comprobantes de Pagos </option>
+                                                    <option value="Otros Documentos">Otros Documentos </option>
+                                        </select>
+                                <label for="input-file-now-custom-1">Archivo del contrato</label>
+                                <input type="file" id="foto" name="foto"  class="dropify"  /> 
+                                <input type="hidden" id="id_publicacion" name="id_publicacion" value="{{ $borrador->id_publicacion }}"  /> 
+                                <input type="hidden" id="id_creador" name="id_creador" value="{{ Auth::user()->id_persona }}"  /> 
+                                <button type="submit" class="btn btn-success"> <i class="fa fa-check"></i> Subir Archivo</button>
+
+                            </form>
+                        </div>
+                    </div>
+                     <div class="col-sm-6">
+                        <div class="white-box"> 
+                             <table id="ssss"  cellspacing="0" width="100%">
+                                                    <thead>
+                                                        <tr>
+                                                         
+                                                            <th><center>Click Ver Documento</center></th>
+                                                            <th>Borrar</th>
+                                                        </tr>
+                                                    </thead>
+                                                   
+                                                    <tbody>
+                                                        @foreach($documentos as $pi)
+                                                        <tr>
+                                                            <td  width="10px" height="10px">
+                                                               
+                                                            <center><a href="{{ URL::asset($pi->ruta.'/'.$pi->nombre) }}" target="_blank">BAJAR ARCHIVO<br> {{ $pi->nombre }} </a></center>
+
+                                                           
+                                                            @can('revisioncomercial.edit')
+                                                            <td width="10px">
+
+                                                                <a href="{{ route('finalContrato.eliminarfoto', $pi->id) }}" 
+                                                                   class="btn btn-danger btn-circle btn-lg">
+                                                                    <i class="fa fa-check"></i>
+                                                                </a>
+                                                            </td>
+                                                            @endcan
+                                                        </tr>
+                                                        @endforeach
+
+                                                    </tbody>
+                                                </table>
+                        </div>
+                    </div>
+
+                </div>
 </section>
                 </div>
                 <!-- /content -->
@@ -91,14 +162,58 @@
 <script src="{{ URL::asset('plugins/bower_components/jquery/dist/jquery.min.js') }}"></script>
 <!-- Bootstrap Core JavaScript -->
 <script src="{{ URL::asset('bootstrap/dist/js/bootstrap.min.js') }}"></script>
-<script src="{{ URL::asset('plugins/bower_components/bootstrap-datepicker/bootstrap-datepicker.min.js') }}"></script>
+
 <script src="{{ URL::asset('plugins/bower_components/sweetalert/sweetalert.min.js') }}"></script>
+
 <script src="{{ URL::asset('plugins/bower_components/dropify/dist/js/dropify.min.js') }}"></script>
+
+<script>
+    
+            // Basic
+        $('.dropify').dropify();
+        // Translated
+        $('.dropify-fr').dropify({
+            messages: {
+                default: 'Glissez-déposez un fichier ici ou cliquez',
+                replace: 'Glissez-déposez un fichier ou cliquez pour remplacer',
+                remove: 'Supprimer',
+                error: 'Désolé, le fichier trop volumineux'
+            }
+        });
+        // Used events
+        var drEvent = $('#input-file-events').dropify();
+        drEvent.on('dropify.beforeClear', function(event, element) {
+            return confirm("Esta seguro de eliminar  \"" + element.file.name + "\" ?");
+        });
+        drEvent.on('dropify.afterClear', function(event, element) {
+            alert('Archivo Borrado');
+        });
+        drEvent.on('dropify.errors', function(event, element) {
+            console.log('Has Errors');
+        });
+        var drDestroy = $('#input-file-to-destroy').dropify();
+        drDestroy = drDestroy.data('dropify')
+        $('#toggleDropify').on('click', function(e) {
+            e.preventDefault();
+            if (drDestroy.isDropified()) {
+                drDestroy.destroy();
+            } else {
+                drDestroy.init();
+            }
+        })
+</script>
+
+
+<script src="{{ URL::asset('plugins/bower_components/tinymce/tinymce.min.js') }}"></script>
 
 <link href = "{{ URL::asset('plugins/bower_components/datatables/jquery.dataTables.min.css')   }}" rel="stylesheet" type="text/css"   />
 <link href = "{{ URL::asset('plugins/DataTables/Buttons-1.5.1/css/buttons.dataTables.min.css') }}" rel="stylesheet" type="text/css"   />
+
+
 <script  src="{{ URL::asset('plugins/DataTables/datatables.min.js') }}"></script>
 <script src="{{ URL::asset('plugins/DataTables/DataTables-1.10.16/js/jquery.dataTables.min.js') }}"></script>
+
+
 
 <script>
 

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\ContratoFinal;
 use App\ContratoBorrador;
 use App\ContratoFinalPdf;
+use App\ContratoFinalDocs;
 use App\Captacion;
 use Illuminate\Http\Request;
 use DB;
@@ -152,7 +153,12 @@ class ContratoFinalController extends Controller
          ->select(DB::raw('n.id as id,n.razonsocial as nombre'))
          ->get();
 
-         return view('contratoFinal.edit',compact('borrador','finalIndex','notaria'));
+   $documentos = DB::table('adm_contratofinaldocs as n')
+         ->where("n.id_publicacion","=",$idc)
+         ->get();
+
+
+         return view('contratoFinal.edit',compact('borrador','finalIndex','notaria','documentos'));
     }
 
     /**
@@ -202,4 +208,39 @@ class ContratoFinalController extends Controller
          return redirect()->route('finalContrato.edit', [$contrato->id_publicacion,$contrato->id_borrador,$idpdf])
          ->with('status', 'Contrato eliminado con éxito'); 
     }     
+
+    public function savedocs(Request $request, $id){
+
+         if(!isset($request->foto)){
+            return redirect()->route('finalContrato.edit', $id)->with('error', 'Debe seleccionar archivo');
+         }
+
+        $destinationPath='uploads/contratofinaldocs';
+        $archivo=rand().$request->foto->getClientOriginalName();
+        $file = $request->file('foto');
+        $file->move($destinationPath,$archivo);
+
+                $imagen=ContratoFinalDocs::create([
+                            'id_final'             => $request->id_final,
+                            'id_publicacion'       => $request->id_publicacion,
+                            'tipo'                 => $request->tipo,
+                            'nombre'               => $archivo,
+                            'ruta'                 => $destinationPath,
+                            'id_creador'           => $request->id_creador
+                        ]);
+
+
+        return redirect()->route('finalContrato.edit', [$request->id_publicacion,0,0])->with('status', 'Documento guardada con éxito');
+    }
+
+    public function eliminarfoto($idf){
+
+        $imagen=ContratoFinalDocs::find($idf);
+
+        File::delete($imagen->ruta.'/'.$imagen->nombre);
+        $foto = ContratoFinalDocs::find($idf)->delete();
+
+        return redirect()->route('finalContrato.edit', [$imagen->id_publicacion,0,0])->with('status', 'Documento eliminado con éxito');
+    }
+
 }
