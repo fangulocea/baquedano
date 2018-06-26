@@ -103,6 +103,7 @@ class PdfController extends Controller
         $bodymail=str_replace("{Servicio}",$data->Servicio,$bodymail);
         $bodymail=str_replace("{FormasDePago}",$data->FormasDePago,$bodymail);
         $bodymail=str_replace("{Multas}",$data->Multas,$bodymail);
+        $bodymail=str_replace("{ValorArriendo}",$data->valorarriendo,$bodymail);
 
 
 
