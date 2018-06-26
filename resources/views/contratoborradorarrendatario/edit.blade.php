@@ -74,6 +74,8 @@
                                     </div>
                                 </div>
                                 <div class="col-lg-2 col-sm-3 col-xs-12">
+                                    <label>Valor Arriendo</label>
+                                    <input name='valorarriendo' type="number" class="form-control" required="required">
                                     
                                 </div>
                                 <div class="col-lg-2 col-sm-3 col-xs-12">
@@ -134,12 +136,13 @@
                                         </select>
                                     </div>
                                 </div>
+                                
                                 <div class="col-lg-2 col-sm-3 col-xs-12">
-                                    
+                                    <label>Crar Borrador Arrendatario</label>
+                                    <button type="submit" class="btn btn-success"> <i class="fa fa-check"></i> Guardar</button>
                                 </div>
                                 <div class="col-lg-2 col-sm-3 col-xs-12">
-                                    <label>Crar Borrador</label>
-                                    <button type="submit" class="btn btn-success"> <i class="fa fa-check"></i> Guardar</button>
+                                    
                                 </div>
                     </div>
 
@@ -931,15 +934,15 @@ $('#listusers1_c').DataTable({
                     "advlist autolink link lists charmap print preview hr anchor pagebreak spellchecker", "searchreplace wordcount visualblocks visualchars code fullscreen insertdatetime nonbreaking", "save table contextmenu directionality template paste textcolor"
                 ],
                 toolbar1: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | l      ink | print preview fullpage | forecolor backcolor  | mybutton",
-                toolbar2: "Propietario | Rut | Profesion | Teléfono | Domicilio | Depto | Comuna | Región",
+                toolbar2: "Persona | Rut | Profesion | Teléfono | Domicilio | Depto | Comuna | Región",
                 toolbar3: "Propiedad | DireccionProp | DeptoProp | RolProp | ComunaProp | DormitorioProp | BanoProp ",
             setup: function (editor) 
             {
-                    editor.addButton('Propietario', 
-                    {   text: '{propietario}',
+                    editor.addButton('Persona', 
+                    {   text: '{persona}',
                         icon: false,
                         onclick: function () 
-                        { editor.insertContent('{propietario}'); }
+                        { editor.insertContent('{persona}'); }
                     });
                     editor.addButton('Rut', 
                     {   text: '{rut}',
@@ -960,28 +963,28 @@ $('#listusers1_c').DataTable({
                         { editor.insertContent('{telefono}'); }
                     });
                     editor.addButton('Domicilio', 
-                    {   text: '{domicilioDueno}',
+                    {   text: '{domicilioPersona}',
                         icon: false,
                         onclick: function () 
-                        { editor.insertContent('{domicilioDueno}'); }
+                        { editor.insertContent('{domicilioPersona}'); }
                     });
                     editor.addButton('Depto', 
-                    {   text: '{deptoDueno}',
+                    {   text: '{deptoPersona}',
                         icon: false,
                         onclick: function () 
-                        { editor.insertContent('{deptoDueno}'); }
+                        { editor.insertContent('{deptoPersona}'); }
                     });
                     editor.addButton('Comuna', 
-                    {   text: '{comunaDueno}',
+                    {   text: '{comunaPersona}',
                         icon: false,
                         onclick: function () 
-                        { editor.insertContent('{comunaDueno}'); }
+                        { editor.insertContent('{comunaPersona}'); }
                     });
                     editor.addButton('Región', 
-                    {   text: '{regionDueno}',
+                    {   text: '{regionPersona}',
                         icon: false,
                         onclick: function () 
-                        { editor.insertContent('{regionDueno}'); }
+                        { editor.insertContent('{regionPersona}'); }
                     });
                     
                     //propiedad

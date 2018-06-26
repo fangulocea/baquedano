@@ -261,13 +261,14 @@
                                 @can('revisioncomercial.index')
                                 <li> <a href="{{ route('revisionpersona.index') }}"><i class=" fa-fw">CA</i><span class="hide-menu">Revisión Comercial Persona</span></a> </li>
                                 @endcan
-<<<<<<< HEAD
-
                             <li>
                                 <a href="javascript:void(0)" class="waves-effect"><i data-icon="&#xe008;" class="linea-icon linea-basic fa-fw">P</i><span class="hide-menu">ropietario </span><span class="fa arrow"></span></a>
                                 <ul class="nav nav-third-level">
                                     @can('borradorContrato.index')
                                     <li> <a href="{{ route('borradorContrato.index') }}"><i class=" fa-fw">CB</i><span class="hide-menu">Contrato Borrador</span></a> </li>
+                                    @endcan
+                                    @can('finalContrato.index')
+                                    <li> <a href="{{ route('finalContrato.index') }}"><i class=" fa-fw">CB</i><span class="hide-menu">Contrato Final</span></a> </li>
                                     @endcan
                                 </ul>
                             </li>
@@ -283,15 +284,7 @@
                             </li>
 
 
-=======
-                                @can('borradorContrato.index')
-                                <li> <a href="{{ route('borradorContrato.index') }}"><i class=" fa-fw">CB</i><span class="hide-menu">Contrato Borrador</span></a> </li>
-                                @endcan
-                                @can('finalContrato.index')
-                                <li> <a href="{{ route('finalContrato.index') }}"><i class=" fa-fw">CB</i><span class="hide-menu">Contrato Final</span></a> </li>
-                                @endcan
->>>>>>> 71b0bb0911dc7eeed0d9fbc8ea098cad2a2b74a8
-                            </ul>
+                          </ul>
                         </li>
                         <li><a href="{{ route('logout') }}"
                                        onclick="event.preventDefault();

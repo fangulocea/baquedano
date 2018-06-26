@@ -15,14 +15,14 @@ class PdfController extends Controller
     {
         $body    = $data->bodyContrato;
         $bodymail=str_replace("{fecha}",$data->fecha,$body);
+        $bodymail=str_replace("{persona}",$data->propietario,$bodymail);
         $bodymail=str_replace("{profesion}",$data->profesion_p,$bodymail);
         $bodymail=str_replace("{rut}",$data->rut_p,$bodymail);
-        $bodymail=str_replace("{domicilioDueno}",$data->direccion_p,$bodymail);
+        $bodymail=str_replace("{domicilioPersona}",$data->direccion_p,$bodymail);
         $bodymail=str_replace("{telefono}",$data->telefono_p,$bodymail);
-        $bodymail=str_replace("{deptoDueno}",$data->depto_p,$bodymail);
-        $bodymail=str_replace("{comunaDueno}",$data->comuna_p,$bodymail);
-        $bodymail=str_replace("{regionDueno}",$data->region_p,$bodymail);
-        $bodymail=str_replace("{propietario}",$data->propietario,$bodymail);
+        $bodymail=str_replace("{deptoPersona}",$data->depto_p,$bodymail);
+        $bodymail=str_replace("{comunaPersona}",$data->comuna_p,$bodymail);
+        $bodymail=str_replace("{regionPersona}",$data->region_p,$bodymail);
         $bodymail=str_replace("{rol}",$data->rol,$bodymail);
         $bodymail=str_replace("{direccionPropiedad}",$data->direccion_i,$bodymail);
         $bodymail=str_replace("{deptoPropiedad}",$data->depto_i,$bodymail);
@@ -84,14 +84,14 @@ class PdfController extends Controller
     {
         $body    = $data->bodyContrato;
         $bodymail=str_replace("{fecha}",$data->fecha,$body);
-        $bodymail=str_replace("{propietario}",$data->arrendatario,$bodymail);
+        $bodymail=str_replace("{persona}",$data->arrendatario,$bodymail);
         $bodymail=str_replace("{profesion}",$data->profesion_p,$bodymail);
         $bodymail=str_replace("{rut}",$data->rut_p,$bodymail);
-        $bodymail=str_replace("{domicilioDueno}",$data->direccion_p,$bodymail);
+        $bodymail=str_replace("{domicilioPersona}",$data->direccion_p,$bodymail);
         $bodymail=str_replace("{telefono}",$data->telefono_p,$bodymail);
-        $bodymail=str_replace("{deptoDueno}",$data->depto_p,$bodymail);
-        $bodymail=str_replace("{comunaDueno}",$data->comuna_p,$bodymail);
-        $bodymail=str_replace("{regionDueno}",$data->region_p,$bodymail);
+        $bodymail=str_replace("{deptoPersona}",$data->depto_p,$bodymail);
+        $bodymail=str_replace("{comunaPersona}",$data->comuna_p,$bodymail);
+        $bodymail=str_replace("{regionPersona}",$data->region_p,$bodymail);
         $bodymail=str_replace("{rol}",$data->rol,$bodymail);
         $bodymail=str_replace("{direccionPropiedad}",$data->direccion_i,$bodymail);
         $bodymail=str_replace("{deptoPropiedad}",$data->depto_i,$bodymail);
@@ -148,20 +148,18 @@ class PdfController extends Controller
     }
 
 
-<<<<<<< HEAD
-=======
     public function crontratoFinalPdf($data,$numero) 
     {
         $body    = $data->bodyContrato;
         $bodymail=str_replace("{fecha}",$data->fecha,$body);
         $bodymail=str_replace("{profesion}",$data->profesion_p,$bodymail);
         $bodymail=str_replace("{rut}",$data->rut_p,$bodymail);
-        $bodymail=str_replace("{domicilioDueno}",$data->direccion_p,$bodymail);
+        $bodymail=str_replace("{domicilioPersona}",$data->direccion_p,$bodymail);
         $bodymail=str_replace("{telefono}",$data->telefono_p,$bodymail);
-        $bodymail=str_replace("{deptoDueno}",$data->depto_p,$bodymail);
-        $bodymail=str_replace("{comunaDueno}",$data->comuna_p,$bodymail);
-        $bodymail=str_replace("{regionDueno}",$data->region_p,$bodymail);
-        $bodymail=str_replace("{propietario}",$data->propietario,$bodymail);
+        $bodymail=str_replace("{deptoPersona}",$data->depto_p,$bodymail);
+        $bodymail=str_replace("{comunaPersona}",$data->comuna_p,$bodymail);
+        $bodymail=str_replace("{regionPersona}",$data->region_p,$bodymail);
+        $bodymail=str_replace("{persona}",$data->propietario,$bodymail);
         $bodymail=str_replace("{rol}",$data->rol,$bodymail);
         $bodymail=str_replace("{direccionPropiedad}",$data->direccion_i,$bodymail);
         $bodymail=str_replace("{deptoPropiedad}",$data->depto_i,$bodymail);
@@ -203,30 +201,9 @@ class PdfController extends Controller
                 </main>
             </body>
         </html>')->save( 'uploads/pdf_final/'. $numero . $data->id . $data->direccion_i .'-FINAL.pdf' );
-
-
-
-
-
-
-
-
-
-
-
-        // $pdf->loadHTML('
-        //     <!DOCTYPE html>
-        //     <html lang="en">
-        //     <head>
-        //     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-        //     </head>
-        //     <body>'
-        //     . $bodymail . 
-        //     '</body>
-        //     </html>')->save( 'uploads/pdf/'. $data->id . $data->direccion_i .'.pdf' );
         return $pdf->stream();
     }
->>>>>>> 71b0bb0911dc7eeed0d9fbc8ea098cad2a2b74a8
+
 
     public function show($data) 
     {
