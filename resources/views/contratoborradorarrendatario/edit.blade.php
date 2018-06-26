@@ -936,8 +936,48 @@ $('#listusers1_c').DataTable({
                 toolbar1: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | l      ink | print preview fullpage | forecolor backcolor  | mybutton",
                 toolbar2: "Persona | Rut | Profesion | Teléfono | Domicilio | Depto | Comuna | Región",
                 toolbar3: "Propiedad | DireccionProp | DeptoProp | RolProp | ComunaProp | DormitorioProp | BanoProp ",
+                toolbar4: "Comisiones | Flexibilidad | Servicio | FormasDePago | Multas",
             setup: function (editor) 
             {
+
+
+                editor.addButton('Comisiones', 
+                    {   text: '{Comisiones}',
+                        icon: false,
+                        onclick: function () 
+                        { editor.insertContent('{Comisiones}'); }
+                    });
+
+                editor.addButton('Flexibilidad', 
+                    {   text: '{Flexibilidad}',
+                        icon: false,
+                        onclick: function () 
+                        { editor.insertContent('{Flexibilidad}'); }
+                    });
+
+                editor.addButton('Servicio', 
+                    {   text: '{Servicio}',
+                        icon: false,
+                        onclick: function () 
+                        { editor.insertContent('{Servicio}'); }
+                    });
+
+                editor.addButton('FormasDePago', 
+                    {   text: '{FormasDePago}',
+                        icon: false,
+                        onclick: function () 
+                        { editor.insertContent('{FormasDePago}'); }
+                    });
+
+                editor.addButton('Multas', 
+                    {   text: '{Multas}',
+                        icon: false,
+                        onclick: function () 
+                        { editor.insertContent('{Multas}'); }
+                    });
+
+                //Personas
+
                     editor.addButton('Persona', 
                     {   text: '{persona}',
                         icon: false,

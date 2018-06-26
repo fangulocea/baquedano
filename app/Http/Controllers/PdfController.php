@@ -98,6 +98,13 @@ class PdfController extends Controller
         $bodymail=str_replace("{comunaPropiedad}",$data->comuna_i,$bodymail);
         $bodymail=str_replace("{dormitorio}",$data->dormitorio,$bodymail);
         $bodymail=str_replace("{bano}",$data->bano,$bodymail);
+        $bodymail=str_replace("{Comisiones}",$data->comision,$bodymail);
+        $bodymail=str_replace("{Flexibilidad}",$data->Flexibilidad,$bodymail);
+        $bodymail=str_replace("{Servicio}",$data->Servicio,$bodymail);
+        $bodymail=str_replace("{FormasDePago}",$data->FormasDePago,$bodymail);
+        $bodymail=str_replace("{Multas}",$data->Multas,$bodymail);
+
+
 
         $pdf = App::make('dompdf.wrapper');
         $pdf->loadHTML('
