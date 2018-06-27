@@ -42,6 +42,8 @@ Route::get('provincias/{id}','RegionController@getProvincias');
 
 Route::get('contratofinal/consulta/{id}','ContratoFinalController@getContrato');
 
+Route::get('contratofinal/consultapagos/{id}','ContratoFinalController@getpagos');
+
 Route::get('regiones/todas','RegionController@getTodasRegiones');
 
 Route::get('captaciones/correo/{id}','CaptacionController@getCaptacionesCorreo');

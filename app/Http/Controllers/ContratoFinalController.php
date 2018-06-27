@@ -7,6 +7,7 @@ use App\ContratoBorrador;
 use App\ContratoFinalPdf;
 use App\ContratoFinalDocs;
 use App\Captacion;
+use App\PagosPropietarios;
 use Illuminate\Http\Request;
 use DB;
 use Illuminate\Support\Facades\File;
@@ -24,6 +25,13 @@ class ContratoFinalController extends Controller
          ->where('b.id','=',$id)
         ->select(DB::raw(' co.comision,b.fecha_firma'))
          ->get()->first();
+            return response()->json($contrato); 
+    }
+
+    public function getPagos($id){
+         $contrato = DB::table('adm_pagospropietarios')
+         ->where('id_contratofinal','=',$id)
+         ->get();
             return response()->json($contrato); 
     }
 
@@ -269,6 +277,8 @@ class ContratoFinalController extends Controller
         $tipomoneda=$request->moneda;
         $valormoneda=$request->valormoneda;
 
+
+
         //pagos
         $gastocomun=$request->gastocomun;
         $arriendo=$request->precio;
@@ -281,16 +291,87 @@ class ContratoFinalController extends Controller
         $nombre_otropago=$request->nombre_otropago;
         $pagootro=$request->pagootro;
         $mes_otro=$request->mes_otro;
+        $id_creador=$request->id_creador;
+        $now = new \DateTime();
+        $fecha_creacion= $now->format('Y-m-d H:i:s');
 
         //gasto comun
         if(isset($gastocomun)){
+                    if($tipomoneda=='UF'){
+                      $precio_en_pesos=  $gastocomun * $valormoneda;
+                    }else{
+                        $precio_en_pesos=$gastocomun;
+                    }
+                    $fecha_ini=$fechafirma;
                 for ($i=0; $i < $cant_meses; $i++) { 
+
+                        $dia=date("d", strtotime($fecha_ini));
+                        $mes=date("m", strtotime($fecha_ini));
+                        $anio=date("Y", strtotime($fecha_ini));
+                        $fecha_ini=date("d-m-Y", strtotime("+1 month", strtotime($fecha_ini)));
+
+                       $pago=PagosPropietarios::create([
+                        'id_contratofinal'=>$idcontrato,
+                        'id_publicacion'=> $idp,
+                        'tipopago' => "Gasto Común",
+                        'fecha_iniciocontrato' => $fechafirma,
+                        'dia' =>$dia ,
+                        'mes' => $mes,
+                        'anio'=> $anio,
+                        'cant_diasmes'=> cal_days_in_month(CAL_GREGORIAN, date("m", strtotime($fechafirma)), date("Y", strtotime($fechafirma))),
+                        'cant_diasproporcional'=> cal_days_in_month(CAL_GREGORIAN, date("m", strtotime($fechafirma)), date("Y", strtotime($fechafirma)))-date("d", strtotime($fechafirma)),
+                        'moneda'=>$tipomoneda,
+                        'valormoneda'=>$valormoneda,
+                        'precio_en_moneda'=>$gastocomun,
+                        'precio_en_pesos' => $gastocomun * $valormoneda,
+                        'id_creador'=>$id_creador,
+                        'id_modificador'=>$id_creador,
+ //                       'created_at'  => $fecha_creacion,
+                        'id_estado'=>1,
+                        'gastocomun'=>$gastocomun,
+                        'canondearriendo'=>$arriendo
+                       ]);
+
                        
                 }
         }
          //arriendo
-        if(isset($arriendo)){
+                if(isset($arriendo)){
+                    if($tipomoneda=='UF'){
+                      $precio_en_pesos=  $arriendo * $valormoneda;
+                    }else{
+                        $precio_en_pesos=$arriendo;
+                    }
+                    $fecha_ini=$fechafirma;
                 for ($i=0; $i < $cant_meses; $i++) { 
+
+                        $dia=date("d", strtotime($fecha_ini));
+                        $mes=date("m", strtotime($fecha_ini));
+                        $anio=date("Y", strtotime($fecha_ini));
+                        $fecha_ini=date("d-m-Y", strtotime("+1 month", strtotime($fecha_ini)));
+
+                       $pago=PagosPropietarios::create([
+                        'id_contratofinal'=>$idcontrato,
+                        'id_publicacion'=> $idp,
+                        'tipopago' => "Canon de Arriendo",
+                        'fecha_iniciocontrato' => $fechafirma,
+                        'dia' =>$dia ,
+                        'mes' => $mes,
+                        'anio'=> $anio,
+                        'cant_diasmes'=> cal_days_in_month(CAL_GREGORIAN, date("m", strtotime($fechafirma)), date("Y", strtotime($fechafirma))),
+                        'cant_diasproporcional'=> cal_days_in_month(CAL_GREGORIAN, date("m", strtotime($fechafirma)), date("Y", strtotime($fechafirma)))-date("d", strtotime($fechafirma)),
+                        'moneda'=>$tipomoneda,
+                        'valormoneda'=>$valormoneda,
+                        'precio_en_moneda'=>$arriendo,
+                        'precio_en_pesos' => $arriendo * $valormoneda,
+                        'id_creador'=>$id_creador,
+                        'id_modificador'=>$id_creador,
+ //                       'created_at'  => $fecha_creacion,
+                        'id_estado'=>1,
+                        'gastocomun'=>$gastocomun,
+                        'canondearriendo'=>$arriendo
+                       ]);
+
                        
                 }
         }

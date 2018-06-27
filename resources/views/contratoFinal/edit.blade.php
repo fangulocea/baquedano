@@ -176,7 +176,8 @@
                                 <div class="panel-body">
                                     <form action="{{ route('finalContrato.generarpagos',[$borrador->id_publicacion]) }}" method="post" enctype='multipart/form-data'>
                                         {!! csrf_field() !!}
-                                <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                        <input type="hidden" name="id_creador" value="{{ Auth::user()->id }}">
                                         <div class="form-body">
                                             <div class="row">
                                                 <div class="col-md-6">
@@ -327,6 +328,49 @@
         </section>
         <section id="section-iconbox-8_c">
 
+<div id="tabla" >
+    <div class="white-box">
+        <h3 class="box-title m-b-0">Gestión de Contratos Finales</h3>
+        <p class="text-muted m-b-30">Administración de registros para la generación de contratos finales</p>
+                  <label for="input-file-now-custom-1">Contrato</label>
+                                                        <input type="hidden" name="tab" value="3">
+                                                        <select class="form-control" name="id_final_detalle" id="id_final_detalle"  required="required" >
+                                                            <option value="">Selecione Contrato</option>
+                                                            @foreach($finalIndex as $n)
+                                                                    @if($n->id_estado>1)
+                                                                    <option value="{{ $n->id }}">{{ $n->alias }} </option>
+                                                                    @endif
+                                                            @endforeach  
+                                                        </select>
+        <div class="table-responsive" style="padding-bottom: 50px;">
+   
+                                          <table id="listpagos" class="display compact" cellspacing="0" width="100%">
+                <thead>
+                    <tr>
+                        <th>Tipo Pago</th>
+                        <th>Mes1</th>
+                        <th>Mes2</th>
+                        <th>Mes3</th>
+                        <th>Mes4</th>
+                        <th>Mes5</th>
+                        <th>Mes6</th>
+                        <th>Mes7</th>
+                        <th>Mes8</th>
+                        <th>Mes9</th>
+                        <th>Mes10</th>
+                        <th>Mes11</th>
+                        <th>Mes12</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
         </section>
         <section id="section-iconbox-9_c">
         </section>
@@ -400,7 +444,7 @@
 
 
 
-$('#listusers1_c').DataTable({
+var table1 =$('#listusers1_c').DataTable({
     dom: 'Bfrtip',
     buttons: [ ],
     language: {
@@ -433,11 +477,102 @@ $('#listusers1_c').DataTable({
     }
 });
 
+var table =$('#listpagos').DataTable();
+
  $("#id_final_pagos").change(function (event) {
 
         $.get("/contratofinal/consulta/"+this.value+"",function(response,state){
                     $("#porcentaje").val(response.comision);
                     $("#fecha_firmapago").val(response.fecha_firma);
+                
+            });
+
+    });
+
+ $("#id_final_detalle").change(function (event) {
+
+        $.get("/contratofinal/consultapagos/"+this.value+"",function(response,state){
+                        var meses = ["Ene","Feb","Mar","Abr","May","Jun","Jul","Ago","Sep","Oct","Nov","Dic"];
+
+                        table.clear().draw();
+                        if(response.length>0){
+
+                            var fecha_iniciocontrato=new Date(response[0].fecha_iniciocontrato);
+
+                            
+                        }
+                         $('#listpagos thead th').each( function () {
+
+                                var title = $(this).text();
+                                switch (title) {
+                                        case "Mes1" :
+                                            $(this).html( meses[fecha_iniciocontrato.getMonth()]+"/"+fecha_iniciocontrato.getFullYear() );
+                                            break;
+                                        case "Mes2" :
+                                            fecha_iniciocontrato.setMonth(fecha_iniciocontrato.getMonth()+1);
+                                            $(this).html( meses[fecha_iniciocontrato.getMonth()]+"/"+fecha_iniciocontrato.getFullYear() );
+                                            break;
+                                        case "Mes3" :
+                                        fecha_iniciocontrato.setMonth(fecha_iniciocontrato.getMonth()+1);
+                                            $(this).html( meses[fecha_iniciocontrato.getMonth()]+"/"+fecha_iniciocontrato.getFullYear() );
+                                            break;
+                                        case "Mes4" :
+                                        fecha_iniciocontrato.setMonth(fecha_iniciocontrato.getMonth()+1);
+                                            $(this).html( meses[fecha_iniciocontrato.getMonth()]+"/"+fecha_iniciocontrato.getFullYear() );
+                                            break;
+                                        case "Mes5" :
+                                        fecha_iniciocontrato.setMonth(fecha_iniciocontrato.getMonth()+1);
+                                            $(this).html( meses[fecha_iniciocontrato.getMonth()]+"/"+fecha_iniciocontrato.getFullYear() );
+                                            break;
+                                        case "Mes6" :
+                                        fecha_iniciocontrato.setMonth(fecha_iniciocontrato.getMonth()+1);
+                                            $(this).html( meses[fecha_iniciocontrato.getMonth()]+"/"+fecha_iniciocontrato.getFullYear() );
+                                            break;
+                                        case "Mes7" :
+                                        fecha_iniciocontrato.setMonth(fecha_iniciocontrato.getMonth()+1);
+                                            $(this).html( meses[fecha_iniciocontrato.getMonth()]+"/"+fecha_iniciocontrato.getFullYear() );
+                                            break;
+                                        case "Mes8" :
+                                        fecha_iniciocontrato.setMonth(fecha_iniciocontrato.getMonth()+1);
+                                            $(this).html( meses[fecha_iniciocontrato.getMonth()]+"/"+fecha_iniciocontrato.getFullYear() );
+                                            break;
+                                        case "Mes9" :
+                                        fecha_iniciocontrato.setMonth(fecha_iniciocontrato.getMonth()+1);
+                                            $(this).html( meses[fecha_iniciocontrato.getMonth()]+"/"+fecha_iniciocontrato.getFullYear() );
+                                            break;
+                                        case "Mes10" :
+                                        fecha_iniciocontrato.setMonth(fecha_iniciocontrato.getMonth()+1);
+                                            $(this).html( meses[fecha_iniciocontrato.getMonth()]+"/"+fecha_iniciocontrato.getFullYear() );
+                                            break;
+                                        case "Mes11" :
+                                        fecha_iniciocontrato.setMonth(fecha_iniciocontrato.getMonth()+1);
+                                            $(this).html( meses[fecha_iniciocontrato.getMonth()]+"/"+fecha_iniciocontrato.getFullYear() );
+                                            break;
+                                        case "Mes12" :
+                                        fecha_iniciocontrato.setMonth(fecha_iniciocontrato.getMonth()+1);
+                                            $(this).html( meses[fecha_iniciocontrato.getMonth()]+"/"+fecha_iniciocontrato.getFullYear() );
+                                            break;
+                                        default:
+                                            $(this).html( title );
+                                            break;
+                                 }
+                                
+                            } );
+                       for (i = 0; i < response.length; i++) {
+
+
+       /*                 table.rows.add([ 
+                            {
+                                0 : response[i].id_publicacion,
+                                1 : response[i].direccion+", "+ num+", Dtpo: "+dpto,
+                                2 : response[i].comuna_nombre,
+                                3 : response[i].nom_p+" "+apepp +" "+apemp,
+                                4 : response[i].fecha_creacion,
+                                5 : response[i].nom_c+" "+apepc +" "+apemc,
+                                6 : response[i].portal,
+                                7 : "<input value='"+response[i].id_publicacion+"' name='check[]'' type='checkbox'  >"
+                            }]).draw();;*/
+                        } 
                 
             });
 
@@ -490,30 +625,94 @@ if($tab==3){
 }
 ?>
 
+<?php
+if($tab==4){
+    ?>
+    $(function() {
+
+            $("#li_5_c").removeClass("tab-current");
+            $("#li_8_c").addClass("tab-current");
+            $("#section-iconbox-5_c").removeClass("content-current");
+            $("#section-iconbox-8_c").addClass("content-current");
+           }); 
+<?php
+}
+?>
+<?php
+if($tab==5){
+    ?>
+    $(function() {
+
+            $("#li_5_c").removeClass("tab-current");
+            $("#li_9_c").addClass("tab-current");
+            $("#section-iconbox-5_c").removeClass("content-current");
+            $("#section-iconbox-9_c").addClass("content-current");
+           }); 
+<?php
+}
+?>
 $("#li_5_c").click(function (event) {
              $("#li_5_c").addClass("tab-current");
             $("#li_6_c").removeClass("tab-current");
             $("#li_7_c").removeClass("tab-current");
+            $("#li_8_c").removeClass("tab-current");
+            $("#li_9_c").removeClass("tab-current");
             $("#section-iconbox-5_c").addClass("content-current");
             $("#section-iconbox-6_c").removeClass("content-current");
             $("#section-iconbox-7_c").removeClass("content-current");
+            $("#section-iconbox-8_c").removeClass("content-current"); 
+            $("#section-iconbox-9_c").removeClass("content-current");
             
 });
 $("#li_6_c").click(function (event) {
-             $("#li_6_c").addClass("tab-current");
+            $("#li_6_c").addClass("tab-current");
             $("#li_5_c").removeClass("tab-current");
             $("#li_7_c").removeClass("tab-current");
+             $("#li_8_c").removeClass("tab-current");
+             $("#li_9_c").removeClass("tab-current");
              $("#section-iconbox-6_c").addClass("content-current");
             $("#section-iconbox-5_c").removeClass("content-current");    
-            $("#section-iconbox-7_c").removeClass("content-current");         
+            $("#section-iconbox-7_c").removeClass("content-current"); 
+            $("#section-iconbox-8_c").removeClass("content-current");  
+            $("#section-iconbox-9_c").removeClass("content-current");         
 });
 $("#li_7_c").click(function (event) {
-             $("#li_7_c").addClass("tab-current");
+            $("#li_6_c").removeClass("tab-current");
+            $("#li_5_c").removeClass("tab-current");
+            $("#li_8_c").removeClass("tab-current");
+            $("#li_9_c").removeClass("tab-current");
+            $("#li_7_c").addClass("tab-current");
+            $("#section-iconbox-5_c").removeClass("content-current");
+            $("#section-iconbox-6_c").removeClass("content-current");
+            $("#section-iconbox-8_c").removeClass("content-current");
+            $("#section-iconbox-9_c").removeClass("content-current");
+            $("#section-iconbox-7_c").addClass("content-current");       
+            
+});
+$("#li_8_c").click(function (event) {
+             $("#li_8_c").addClass("tab-current");
             $("#li_5_c").removeClass("tab-current");
             $("#li_6_c").removeClass("tab-current");
-            $("#section-iconbox-7").addClass("content-current");
-            $("#section-iconbox-5").removeClass("content-current");
-            $("#section-iconbox-6").removeClass("content-current");
+            $("#li_7_c").removeClass("tab-current");
+            $("#li_9_c").removeClass("tab-current");
+            $("#section-iconbox-8_c").addClass("content-current");
+            $("#section-iconbox-5_c").removeClass("content-current");
+            $("#section-iconbox-6_c").removeClass("content-current");
+            $("#section-iconbox-7_c").removeClass("content-current");
+            $("#section-iconbox-9_c").removeClass("content-current");
+            
+});
+$("#li_9_c").click(function (event) {
+             $("#li_9_c").addClass("tab-current");
+            $("#li_5_c").removeClass("tab-current");
+            $("#li_6_c").removeClass("tab-current");
+            $("#li_7_c").removeClass("tab-current");
+            $("#li_8_c").removeClass("tab-current");
+            $("#section-iconbox-9_c").addClass("content-current");
+            $("#section-iconbox-5_c").removeClass("content-current");
+            $("#section-iconbox-6_c").removeClass("content-current");
+            $("#section-iconbox-7_c").removeClass("content-current");
+            $("#section-iconbox-8_c").removeClass("content-current");
             
 });
 </script>
