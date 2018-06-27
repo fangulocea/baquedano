@@ -33,6 +33,7 @@ class CreateContratoborradorarrendatarioTable extends Migration
             $table->integer('dia_pago')->nullable();
             $table->date('fecha_contrato')->nullable();
             $table->text('detalle');
+            $table->integer('valorarriendo');
             $table->integer('id_estado');
             $table->integer('id_creador')->unsigned();
             $table->foreign('id_creador')->references('id')->on('personas');

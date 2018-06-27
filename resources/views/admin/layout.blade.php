@@ -262,7 +262,6 @@
                                 <li> <a href="{{ route('revisionpersona.index') }}"><i class=" fa-fw">CA</i><span class="hide-menu">Revisión Comercial Persona</span></a> </li>
                                 @endcan
 
-
                             <li>
                                 <a href="javascript:void(0)" class="waves-effect"><i data-icon="&#xe008;" class="linea-icon linea-basic fa-fw">P</i><span class="hide-menu">ropietario </span><span class="fa arrow"></span></a>
                                 <ul class="nav nav-third-level">
@@ -287,7 +286,9 @@
 
 
 
+
                             </ul>
+
                         </li>
                         <li><a href="{{ route('logout') }}"
                                        onclick="event.preventDefault();

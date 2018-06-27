@@ -74,6 +74,8 @@
                                     </div>
                                 </div>
                                 <div class="col-lg-2 col-sm-3 col-xs-12">
+                                    <label>Valor Arriendo</label>
+                                    <input name='valorarriendo' type="number" class="form-control" required="required">
                                     
                                 </div>
                                 <div class="col-lg-2 col-sm-3 col-xs-12">
@@ -134,12 +136,13 @@
                                         </select>
                                     </div>
                                 </div>
+                                
                                 <div class="col-lg-2 col-sm-3 col-xs-12">
-                                    
+                                    <label>Crar Borrador Arrendatario</label>
+                                    <button type="submit" class="btn btn-success"> <i class="fa fa-check"></i> Guardar</button>
                                 </div>
                                 <div class="col-lg-2 col-sm-3 col-xs-12">
-                                    <label>Crar Borrador</label>
-                                    <button type="submit" class="btn btn-success"> <i class="fa fa-check"></i> Guardar</button>
+                                    
                                 </div>
                     </div>
 
@@ -245,10 +248,9 @@
                                     </div>
                                 </div>
                                 <div class="col-lg-3 col-sm-3 col-xs-12">
-
                                     <label>Fecha Contrato</label>
                                     <div class="input-group">
-                                        <input type="text" autocomplete="off" class="form-control datepicker-fecha_contacto1_c" placeholder="dd/mm/yyyy" id="datepicker-fecha_contacto1_c1" name="fecha_contrato1" required="required"> <span class="input-group-addon"><i class="icon-calender"></i></span> 
+                                        <input type="text" autocomplete="off" class="datepicker-fecha_contacto_e" placeholder="dd/mm/yyyy" id="datepicker-fecha_contacto1_c1" name="fecha_contrato" required="required"> <span class="input-group-addon"><i class="icon-calender"></i></span> 
                                     </div>
 
                                 </div>
@@ -308,6 +310,36 @@
                                     </div>
                                 </div>
                     </div>
+
+                    <div class="row">
+                                <div class="col-lg-3 col-sm-3 col-xs-12">
+                                    <label>Valor Arriendo</label>
+                                    <input name='valorarriendo' id="valorarriendo_e" type="number" class="form-control" required="required">
+                                </div>
+
+                                <div class="col-lg-3 col-sm-3 col-xs-12">
+                                    <label>Estado</label>
+                                    <div class="input-group">
+                                        <select class="form-control" id="id_estado_e" name="id_estado" required="required" >
+                                            <option value="">Selecione Estado</option>    
+                                                <option value="0" >Rechazdo</option>
+                                                <option value="1" >Vigente</option>
+                                                <option value="2" >Correo Enviado</option>
+                                                <option value="3" >Reenvío Correo</option>
+                                        </select> 
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-3 col-sm-3 col-xs-12">
+                                </div>
+
+                                <div class="col-lg-3 col-sm-3 col-xs-12">
+                                </div>
+                    </div>
+
+
+
+
                                         <div class="form-group">
                                             <label for="detalle_contacto" class="control-label">Detalle:</label>
                                                 <textarea class="form-control" name="detalle" id="detalle_e" cols="25" rows="10" class="form-control" required="required"></textarea>
@@ -769,6 +801,7 @@ function mostrar_modal(obj){
             $('#id_formadepago_e').val(response[0].id_formadepago);
             $('#id_multa_e').val(response[0].id_multa);
             $('#dia_pago_e').val(response[0].dia_pago);
+            $('#valorarriendo_e').val(response[0].valorarriendo);
             $('#detalle_e').val(response[0].detalle);
             tinyMCE.activeEditor.setContent(response[0].detalle);
         }
@@ -931,15 +964,55 @@ $('#listusers1_c').DataTable({
                     "advlist autolink link lists charmap print preview hr anchor pagebreak spellchecker", "searchreplace wordcount visualblocks visualchars code fullscreen insertdatetime nonbreaking", "save table contextmenu directionality template paste textcolor"
                 ],
                 toolbar1: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | l      ink | print preview fullpage | forecolor backcolor  | mybutton",
-                toolbar2: "Propietario | Rut | Profesion | Teléfono | Domicilio | Depto | Comuna | Región",
-                toolbar3: "Propiedad | DireccionProp | DeptoProp | RolProp | ComunaProp | DormitorioProp | BanoProp ",
+                toolbar2: "Persona | Rut | Profesion | Teléfono | Domicilio | Depto | Comuna | Región",
+                toolbar3: "Propiedad | DireccionProp | DeptoProp | RolProp | ComunaProp | DormitorioProp | BanoProp | ValorArriendo ",
+                toolbar4: "Comisiones | Flexibilidad | Servicio | FormasDePago | Multas",
             setup: function (editor) 
             {
-                    editor.addButton('Propietario', 
-                    {   text: '{propietario}',
+
+
+                editor.addButton('Comisiones', 
+                    {   text: '{Comisiones}',
                         icon: false,
                         onclick: function () 
-                        { editor.insertContent('{propietario}'); }
+                        { editor.insertContent('{Comisiones}'); }
+                    });
+
+                editor.addButton('Flexibilidad', 
+                    {   text: '{Flexibilidad}',
+                        icon: false,
+                        onclick: function () 
+                        { editor.insertContent('{Flexibilidad}'); }
+                    });
+
+                editor.addButton('Servicio', 
+                    {   text: '{Servicio}',
+                        icon: false,
+                        onclick: function () 
+                        { editor.insertContent('{Servicio}'); }
+                    });
+
+                editor.addButton('FormasDePago', 
+                    {   text: '{FormasDePago}',
+                        icon: false,
+                        onclick: function () 
+                        { editor.insertContent('{FormasDePago}'); }
+                    });
+
+                editor.addButton('Multas', 
+                    {   text: '{Multas}',
+                        icon: false,
+                        onclick: function () 
+                        { editor.insertContent('{Multas}'); }
+                    });
+
+                //Personas
+
+                    editor.addButton('Persona', 
+                    {   text: '{persona}',
+                        icon: false,
+                        onclick: function () 
+                        { editor.insertContent('{persona}'); }
                     });
                     editor.addButton('Rut', 
                     {   text: '{rut}',
@@ -960,28 +1033,28 @@ $('#listusers1_c').DataTable({
                         { editor.insertContent('{telefono}'); }
                     });
                     editor.addButton('Domicilio', 
-                    {   text: '{domicilioDueno}',
+                    {   text: '{domicilioPersona}',
                         icon: false,
                         onclick: function () 
-                        { editor.insertContent('{domicilioDueno}'); }
+                        { editor.insertContent('{domicilioPersona}'); }
                     });
                     editor.addButton('Depto', 
-                    {   text: '{deptoDueno}',
+                    {   text: '{deptoPersona}',
                         icon: false,
                         onclick: function () 
-                        { editor.insertContent('{deptoDueno}'); }
+                        { editor.insertContent('{deptoPersona}'); }
                     });
                     editor.addButton('Comuna', 
-                    {   text: '{comunaDueno}',
+                    {   text: '{comunaPersona}',
                         icon: false,
                         onclick: function () 
-                        { editor.insertContent('{comunaDueno}'); }
+                        { editor.insertContent('{comunaPersona}'); }
                     });
                     editor.addButton('Región', 
-                    {   text: '{regionDueno}',
+                    {   text: '{regionPersona}',
                         icon: false,
                         onclick: function () 
-                        { editor.insertContent('{regionDueno}'); }
+                        { editor.insertContent('{regionPersona}'); }
                     });
                     
                     //propiedad
@@ -1029,6 +1102,16 @@ $('#listusers1_c').DataTable({
                         onclick: function () 
                         { editor.insertContent('{bano}'); }
                     });
+                    editor.addButton('ValorArriendo', 
+                    {   text: '{ValorArriendo}',
+                        icon: false,
+                        onclick: function () 
+                        { editor.insertContent('{ValorArriendo}'); }
+                    });
+
+
+
+                    
 
             }
 

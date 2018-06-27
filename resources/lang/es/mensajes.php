@@ -12,7 +12,6 @@ return [
 
 		'borrador' => '{0}Rechazado|{1}Vigente|{2}Correo Enviado|{3}Reenvío Correo',
 
-
 		'borradorArrendatatio' => '{0}Rechazado|{1}Vigente|{2}Correo Enviado|{3}Reenvío Correo',
 
 		'contratofinal' => '{1}Proceso de Firma|{2}Contrato Activo|{3}Contrato Vencido|{4}Anexo Contrato{5}Menor 60 días para vencer',

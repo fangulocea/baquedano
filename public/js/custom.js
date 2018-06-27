@@ -638,6 +638,16 @@ jQuery('#datepicker-fecha_contacto_e_c').datepicker({
     locale: "es",
 });
 
+jQuery('#datepicker-fecha_contrato_a_b').datepicker({
+    format: 'dd-mm-yyyy',
+    todayHighlight: true,
+    autoclose: true, 
+    daysOfWeekDisabled: "0",
+    daysOfWeekHighlighted: "0",
+    language: "es",
+    locale: "es",
+});
+
 
 $("#li_1_c").click(function (event) {
              $("#li_1_c").addClass("tab-current");
