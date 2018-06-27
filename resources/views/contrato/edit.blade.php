@@ -71,6 +71,7 @@
                 toolbar1: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | l      ink | print preview fullpage | forecolor backcolor  | mybutton",
                 toolbar2: "Propietario | Rut | Profesion | Teléfono | Domicilio | Depto | Comuna | Región",
                 toolbar3: "Propiedad | DireccionProp | DeptoProp | RolProp | ComunaProp | DormitorioProp | BanoProp ",
+                toolbar4: "diaFirma | mesFirma | anioFirma ",
             setup: function (editor) 
             {
                     editor.addButton('Propietario', 
@@ -167,7 +168,24 @@
                         onclick: function () 
                         { editor.insertContent('{bano}'); }
                     });
-
+                    editor.addButton('diaFirma', 
+                    {   text: '{diaFirma}',
+                        icon: false,
+                        onclick: function () 
+                        { editor.insertContent('{diaFirma}'); }
+                    });
+                    editor.addButton('mesFirma', 
+                    {   text: '{mesFirma}',
+                        icon: false,
+                        onclick: function () 
+                        { editor.insertContent('{mesFirma}'); }
+                    });
+                    editor.addButton('anioFirma', 
+                    {   text: '{anioFirma}',
+                        icon: false,
+                        onclick: function () 
+                        { editor.insertContent('{anioFirma}'); }
+                    });
                     editor.on('change', function (e) {
                         editor.save();
                     });

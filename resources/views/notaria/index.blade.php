@@ -90,7 +90,7 @@
 $('#listusers').DataTable({
     dom: 'Bfrtip',
     buttons: [
-        'copy', 'csv', 'excel', 'pdf', 'print',{
+        'copy', 'excel', 'pdf',{
             text: 'Crear Notaria',
             action: function ( e, dt, node, config ) {
                  window.location.href = '{{ route("notarias.create") }}';

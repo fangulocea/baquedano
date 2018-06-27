@@ -22,6 +22,7 @@ class ContratoFinal extends Migration
             $table->foreign('id_publicacion')->references('id')->on('cap_publicaciones');
             $table->date('fecha_firma')->nullable();
             $table->text('observaciones')->nullable();
+             $table->string('alias')->nullable();
             $table->integer('id_estado');
             $table->integer('id_creador')->unsigned();
             $table->foreign('id_creador')->references('id')->on('personas');
