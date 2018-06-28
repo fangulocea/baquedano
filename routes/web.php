@@ -40,6 +40,10 @@ Route::get('inmueble/contratoborrador/{id}','InmuebleController@getInmuebleContr
 
 Route::get('provincias/{id}','RegionController@getProvincias');
 
+Route::get('contratofinal/consulta/{id}','ContratoFinalController@getContrato');
+
+Route::get('contratofinal/consultapagos/{id}','ContratoFinalController@getpagos');
+
 Route::get('regiones/todas','RegionController@getTodasRegiones');
 
 Route::get('captaciones/correo/{id}','CaptacionController@getCaptacionesCorreo');
@@ -736,7 +740,7 @@ Route::get('revisionpersona/eliminarfoto/{idf}/{idc}','RevisionPersonaController
 		Route::get('finalContrato/create','ContratoFinalController@create')->name('finalContrato.create')
 		->middleware('permission:finalContrato.create');
 
-		Route::get('finalContrato/edit/{idp}/{idc}/{idpdf}','ContratoFinalController@edit')->name('finalContrato.edit')
+		Route::get('finalContrato/edit/{idp}/{idc}/{idpdf}/{tab}','ContratoFinalController@edit')->name('finalContrato.edit')
 		->middleware('permission:finalContrato.edit');
 
 		Route::get('finalContrato/destroy/{id}/{idpdf}','ContratoFinalController@destroy')->name('finalContrato.destroy')
@@ -758,6 +762,9 @@ Route::get('revisionpersona/eliminarfoto/{idf}/{idc}','RevisionPersonaController
 
 	Route::get('finalContrato/eliminarfoto/{idf}','ContratoFinalController@eliminarfoto')->name('finalContrato.eliminarfoto')
 		->middleware('permission:finalContrato.edit');
+
+	Route::post('finalContrato/generarpagos/{idp}','ContratoFinalController@generarpagos')->name('finalContrato.generarpagos')
+		->middleware('permission:finalContrato.edit');		
 
 		// COntratos Arrendatario Borrador
 		Route::get('cbararrendatario','ContratoBorradorArrendatarioController@index')->name('cbararrendatario.index')

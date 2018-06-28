@@ -7,12 +7,34 @@ use App\ContratoBorrador;
 use App\ContratoFinalPdf;
 use App\ContratoFinalDocs;
 use App\Captacion;
+use App\PagosPropietarios;
 use Illuminate\Http\Request;
 use DB;
 use Illuminate\Support\Facades\File;
 
 class ContratoFinalController extends Controller
 {
+
+    public function getContrato($id){
+         $contrato = DB::table('adm_contratofinal  as b')
+         ->leftjoin('cap_publicaciones as cp', 'b.id_publicacion', '=', 'cp.id')
+         ->leftjoin('adm_contratofinalpdf as bp', 'b.id', '=', 'bp.id_final')
+         ->leftjoin('borradores as br','b.id_borrador','=','br.id')
+         ->leftjoin('comisiones as co','br.id_comisiones','=','co.id')
+         ->leftjoin('flexibilidads as f','br.id_flexibilidad','=','f.id')
+         ->where('b.id','=',$id)
+        ->select(DB::raw(' co.comision,b.fecha_firma'))
+         ->get()->first();
+            return response()->json($contrato); 
+    }
+
+    public function getPagos($id){
+         $contrato = DB::table('adm_pagospropietarios')
+         ->where('id_contratofinal','=',$id)
+         ->get();
+            return response()->json($contrato); 
+    }
+
      public function crearContrato($idcb,$idpdf,$idu)
     {
 
@@ -62,7 +84,7 @@ class ContratoFinalController extends Controller
                     "ruta"        => "uploads/pdf_final/",
                     "id_creador"  => $idu,
                 ])->toArray();
-        return redirect()->route('finalContrato.edit', [$ContratoBorrador->id_publicacion,$idcb,$idpdf])
+        return redirect()->route('finalContrato.edit', [$ContratoBorrador->id_publicacion,$idcb,$idpdf,1])
          ->with('status', 'Contrato Final guardado con éxito');
     }
 
@@ -127,7 +149,7 @@ class ContratoFinalController extends Controller
      * @param  \App\ContratoFinal  $contratoFinal
      * @return \Illuminate\Http\Response
      */
-    public function edit($idc,$idcb,$idpdf)
+    public function edit($idc,$idcb,$idpdf,$tab)
     {
        $borrador = DB::table('cap_publicaciones as c')
          ->leftjoin('personas as p1', 'c.id_propietario', '=', 'p1.id')
@@ -137,7 +159,7 @@ class ContratoFinalController extends Controller
          ->leftjoin('comunas as o', 'i.id_comuna', '=', 'o.comuna_id')
          ->leftjoin('portales as po', 'c.portal', '=', 'po.id')
          ->where('c.id','=',$idc)
-         ->select(DB::raw('c.id as id_publicacion, p1.id as id_propietario, i.id as id_inmueble, CONCAT_WS(" ",i.direccion,"#",i.numero,"Depto.",i.departamento,o.comuna_nombre) as direccion, CONCAT_WS(" ",p1.nombre , p1.apellido_paterno, " Fono: " ,p1.telefono, " Email: " ,p1.email ) as propietario '))
+         ->select(DB::raw('c.id as id_publicacion, p1.id as id_propietario, i.id as id_inmueble, CONCAT_WS(" ",i.direccion,"#",i.numero,"Depto.",i.departamento,o.comuna_nombre) as direccion, CONCAT_WS(" ",p1.nombre , p1.apellido_paterno, " Fono: " ,p1.telefono, " Email: " ,p1.email ) as propietario, i.precio, i.gastosComunes'))
          ->first();
 
          $finalIndex = DB::table('adm_contratofinal  as b')
@@ -145,7 +167,7 @@ class ContratoFinalController extends Controller
          ->leftjoin('adm_contratofinalpdf as bp', 'b.id', '=', 'bp.id_final')
             ->where('b.id_publicacion','=',$idc)
 
-         ->select(DB::raw(' b.id ,b.id_borrador, cp.id as id_publicacion,b.fecha_firma as fecha,b.id_estado,bp.nombre, bp.id as id_pdf,b.id_notaria'))
+         ->select(DB::raw(' b.id ,b.id_borrador, cp.id as id_publicacion,b.fecha_firma as fecha,b.id_estado,bp.nombre, bp.id as id_pdf,b.id_notaria,b.alias'))
          ->get();
 
               $notaria = DB::table('notarias as n')
@@ -156,9 +178,9 @@ class ContratoFinalController extends Controller
    $documentos = DB::table('adm_contratofinaldocs as n')
          ->where("n.id_publicacion","=",$idc)
          ->get();
+ $flag=0;
 
-
-         return view('contratoFinal.edit',compact('borrador','finalIndex','notaria','documentos'));
+         return view('contratoFinal.edit',compact('borrador','finalIndex','notaria','documentos','flag','tab'));
     }
 
     /**
@@ -182,12 +204,13 @@ class ContratoFinalController extends Controller
             "fecha_firma"=>$request->fecha_firma,
             "id_modificador"=>$request->id_modificador,
             "updated_at"=>$fecha_creacion,
+            "alias"=>$request->alias,
             "id_estado"=> 7
        ]);
         $captacion=Captacion::find($request->id_publicacion)->update([
             "id_estado"=> 7
         ]);
-         return redirect()->route('finalContrato.edit', [$request->id_publicacion,$request->id_borrador,$request->id_pdf])
+         return redirect()->route('finalContrato.edit', [$request->id_publicacion,$request->id_borrador,$request->id_pdf,1])
          ->with('status', 'Contrato actualizado con éxito');  
     }
 
@@ -205,12 +228,11 @@ class ContratoFinalController extends Controller
                     "id_estado"=> 6
                 ]);
         }
-         return redirect()->route('finalContrato.edit', [$contrato->id_publicacion,$contrato->id_borrador,$idpdf])
+         return redirect()->route('finalContrato.edit', [$contrato->id_publicacion,$contrato->id_borrador,$idpdf,1])
          ->with('status', 'Contrato eliminado con éxito'); 
     }     
 
     public function savedocs(Request $request, $id){
-
          if(!isset($request->foto)){
             return redirect()->route('finalContrato.edit', $id)->with('error', 'Debe seleccionar archivo');
          }
@@ -230,7 +252,7 @@ class ContratoFinalController extends Controller
                         ]);
 
 
-        return redirect()->route('finalContrato.edit', [$request->id_publicacion,0,0])->with('status', 'Documento guardada con éxito');
+        return redirect()->route('finalContrato.edit', [$request->id_publicacion,0,0,2])->with('status', 'Documento guardada con éxito');
     }
 
     public function eliminarfoto($idf){
@@ -240,7 +262,121 @@ class ContratoFinalController extends Controller
         File::delete($imagen->ruta.'/'.$imagen->nombre);
         $foto = ContratoFinalDocs::find($idf)->delete();
 
-        return redirect()->route('finalContrato.edit', [$imagen->id_publicacion,0,0])->with('status', 'Documento eliminado con éxito');
+        return redirect()->route('finalContrato.edit', [$imagen->id_publicacion,0,0,2])->with('status', 'Documento eliminado con éxito');
+    }
+
+
+
+    public function generarpagos(Request $request, $idp)
+    {
+
+        //general
+        $idcontrato=$request->id_final_pagos;
+        $cant_meses=$request->cant_meses;
+        $fechafirma=$request->fecha_firmapago;
+        $tipomoneda=$request->moneda;
+        $valormoneda=$request->valormoneda;
+
+
+
+        //pagos
+        $gastocomun=$request->gastocomun;
+        $arriendo=$request->precio;
+        $comision=$request->comision;
+        $mes_comision=$request->mes_comision;
+        $porcentaje=$request->porcentaje;
+        $mes_porcentaje=$request->mes_porcentaje;
+        $pagonotaria=$request->pagonotaria;
+        $mes_notaria=$request->mes_notaria;
+        $nombre_otropago=$request->nombre_otropago;
+        $pagootro=$request->pagootro;
+        $mes_otro=$request->mes_otro;
+        $id_creador=$request->id_creador;
+        $now = new \DateTime();
+        $fecha_creacion= $now->format('Y-m-d H:i:s');
+
+        //gasto comun
+        if(isset($gastocomun)){
+                    if($tipomoneda=='UF'){
+                      $precio_en_pesos=  $gastocomun * $valormoneda;
+                    }else{
+                        $precio_en_pesos=$gastocomun;
+                    }
+                    $fecha_ini=$fechafirma;
+                for ($i=0; $i < $cant_meses; $i++) { 
+
+                        $dia=date("d", strtotime($fecha_ini));
+                        $mes=date("m", strtotime($fecha_ini));
+                        $anio=date("Y", strtotime($fecha_ini));
+                        $fecha_ini=date("d-m-Y", strtotime("+1 month", strtotime($fecha_ini)));
+
+                       $pago=PagosPropietarios::create([
+                        'id_contratofinal'=>$idcontrato,
+                        'id_publicacion'=> $idp,
+                        'tipopago' => "Gasto Común",
+                        'fecha_iniciocontrato' => $fechafirma,
+                        'dia' =>$dia ,
+                        'mes' => $mes,
+                        'anio'=> $anio,
+                        'cant_diasmes'=> cal_days_in_month(CAL_GREGORIAN, date("m", strtotime($fechafirma)), date("Y", strtotime($fechafirma))),
+                        'cant_diasproporcional'=> cal_days_in_month(CAL_GREGORIAN, date("m", strtotime($fechafirma)), date("Y", strtotime($fechafirma)))-date("d", strtotime($fechafirma)),
+                        'moneda'=>$tipomoneda,
+                        'valormoneda'=>$valormoneda,
+                        'precio_en_moneda'=>$gastocomun,
+                        'precio_en_pesos' => $gastocomun * $valormoneda,
+                        'id_creador'=>$id_creador,
+                        'id_modificador'=>$id_creador,
+ //                       'created_at'  => $fecha_creacion,
+                        'id_estado'=>1,
+                        'gastocomun'=>$gastocomun,
+                        'canondearriendo'=>$arriendo
+                       ]);
+
+                       
+                }
+        }
+         //arriendo
+                if(isset($arriendo)){
+                    if($tipomoneda=='UF'){
+                      $precio_en_pesos=  $arriendo * $valormoneda;
+                    }else{
+                        $precio_en_pesos=$arriendo;
+                    }
+                    $fecha_ini=$fechafirma;
+                for ($i=0; $i < $cant_meses; $i++) { 
+
+                        $dia=date("d", strtotime($fecha_ini));
+                        $mes=date("m", strtotime($fecha_ini));
+                        $anio=date("Y", strtotime($fecha_ini));
+                        $fecha_ini=date("d-m-Y", strtotime("+1 month", strtotime($fecha_ini)));
+
+                       $pago=PagosPropietarios::create([
+                        'id_contratofinal'=>$idcontrato,
+                        'id_publicacion'=> $idp,
+                        'tipopago' => "Canon de Arriendo",
+                        'fecha_iniciocontrato' => $fechafirma,
+                        'dia' =>$dia ,
+                        'mes' => $mes,
+                        'anio'=> $anio,
+                        'cant_diasmes'=> cal_days_in_month(CAL_GREGORIAN, date("m", strtotime($fechafirma)), date("Y", strtotime($fechafirma))),
+                        'cant_diasproporcional'=> cal_days_in_month(CAL_GREGORIAN, date("m", strtotime($fechafirma)), date("Y", strtotime($fechafirma)))-date("d", strtotime($fechafirma)),
+                        'moneda'=>$tipomoneda,
+                        'valormoneda'=>$valormoneda,
+                        'precio_en_moneda'=>$arriendo,
+                        'precio_en_pesos' => $arriendo * $valormoneda,
+                        'id_creador'=>$id_creador,
+                        'id_modificador'=>$id_creador,
+ //                       'created_at'  => $fecha_creacion,
+                        'id_estado'=>1,
+                        'gastocomun'=>$gastocomun,
+                        'canondearriendo'=>$arriendo
+                       ]);
+
+                       
+                }
+        }
+         return redirect()->route('finalContrato.edit', [$idp,0,0,3])
+         ->with('status', 'Pagos Generados con éxito');  
     }
 
 }

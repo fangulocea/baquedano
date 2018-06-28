@@ -85,7 +85,7 @@
                                     </div>
                                 </div>
                                 <div class="col-lg-2 col-sm-3 col-xs-12">
-                                    <label>Fecha</label>
+                                    <label>Fecha de Firma</label>
                                     <div class="input-group">
                                         <input type="text" autocomplete="off" class="form-control datepicker-fecha_contacto1_c" placeholder="dd/mm/yyyy" id="datepicker-fecha_contacto1_c" name="fecha_gestion" required="required"> <span class="input-group-addon"><i class="icon-calender"></i></span> 
                                     </div>
@@ -228,7 +228,7 @@
  
                                         <div class="row">
                                             <div class="col-sm-3">
-                                                <label>Fecha</label>
+                                                <label>Fecha para Firmar</label>
                                                 <div class="input-group">
                                                     <input type="text" autocomplete="off" class="form-control datepicker-fecha_contacto1_contrato" placeholder="dd/mm/yyyy" id="datepicker-fecha_contacto1" name="fecha_gestion_m" required="required"> <span class="input-group-addon"><i class="icon-calender"></i></span> 
                                                 </div>
@@ -850,9 +850,15 @@ $('#listusers1_c').DataTable({
                     "advlist autolink link lists charmap print preview hr anchor pagebreak spellchecker", "searchreplace wordcount visualblocks visualchars code fullscreen insertdatetime nonbreaking", "save table contextmenu directionality template paste textcolor"
                 ],
                 toolbar1: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | l      ink | print preview fullpage | forecolor backcolor  | mybutton",
+<<<<<<< HEAD
                 toolbar2: "Persona | Rut | Profesion | Teléfono | Domicilio | Depto | Comuna | Región",
                 toolbar3: "Propiedad | DireccionProp | DeptoProp | RolProp | ComunaProp | DormitorioProp | BanoProp | ValorArriendo ",
                 toolbar4: "Comisiones | Flexibilidad | Servicio | FormasDePago | Multas",
+=======
+                toolbar2: "Propietario | Rut | Profesion | Teléfono | Domicilio | Depto | Comuna | Región",
+                toolbar3: "Propiedad | DireccionProp | DeptoProp | RolProp | ComunaProp | DormitorioProp | BanoProp ",
+                toolbar4: "diaFirma | mesFirma | anioFirma ",
+>>>>>>> e8dfdd8fa449cae9e3e388c4638a10c897603e22
             setup: function (editor) 
             {
 
@@ -946,12 +952,6 @@ $('#listusers1_c').DataTable({
                     //propiedad
 
                     
-                    editor.addButton('Propiedad', 
-                    {   text: 'Propiedad',
-                        icon: false,
-                        onclick: function () 
-                        { editor.insertContent(''); }
-                    });
                     editor.addButton('DireccionProp', 
                     {   text: '{direccionPropiedad}',
                         icon: false,
@@ -987,6 +987,24 @@ $('#listusers1_c').DataTable({
                         icon: false,
                         onclick: function () 
                         { editor.insertContent('{bano}'); }
+                    });
+                   editor.addButton('diaFirma', 
+                    {   text: '{diaFirma}',
+                        icon: false,
+                        onclick: function () 
+                        { editor.insertContent('{diaFirma}'); }
+                    });
+                    editor.addButton('mesFirma', 
+                    {   text: '{mesFirma}',
+                        icon: false,
+                        onclick: function () 
+                        { editor.insertContent('{mesFirma}'); }
+                    });
+                    editor.addButton('anioFirma', 
+                    {   text: '{anioFirma}',
+                        icon: false,
+                        onclick: function () 
+                        { editor.insertContent('{anioFirma}'); }
                     });
             }
         });

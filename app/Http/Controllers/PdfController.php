@@ -13,8 +13,14 @@ class PdfController extends Controller
 {
     public function Index($data) 
     {
+        $meses = array("Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre");
         $body    = $data->bodyContrato;
+
         $bodymail=str_replace("{fecha}",$data->fecha,$body);
+
+        $bodymail=str_replace("{diaFirma}",date("d", strtotime($data->fecha)),$bodymail);
+        $bodymail=str_replace("{mesFirma}",$meses[date("m", strtotime($data->fecha))-1],$bodymail);
+        $bodymail=str_replace("{anioFirma}",date("Y", strtotime($data->fecha)),$bodymail);
         $bodymail=str_replace("{persona}",$data->propietario,$bodymail);
         $bodymail=str_replace("{profesion}",$data->profesion_p,$bodymail);
         $bodymail=str_replace("{rut}",$data->rut_p,$bodymail);
@@ -154,6 +160,7 @@ class PdfController extends Controller
         //     </html>')->save( 'uploads/pdf/'. $data->id . $data->direccion_i .'.pdf' );
         return $pdf->stream();
     }
+
 
 
     public function crontratoFinalPdf($data,$numero) 
