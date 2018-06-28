@@ -250,7 +250,7 @@
                                 <div class="col-lg-3 col-sm-3 col-xs-12">
                                     <label>Fecha Contrato</label>
                                     <div class="input-group">
-                                        <input type="text" autocomplete="off" class="datepicker-fecha_contacto_e" placeholder="dd/mm/yyyy" id="datepicker-fecha_contacto1_c1" name="fecha_contrato" required="required"> <span class="input-group-addon"><i class="icon-calender"></i></span> 
+                                        <input type="text" autocomplete="off" class="form-control datepicker-fecha_contacto1_c" placeholder="dd/mm/yyyy" id="datepicker-fecha_contacto1_c11" name="fecha_contrato" required="required"> <span class="input-group-addon"><i class="icon-calender"></i></span> 
                                     </div>
 
                                 </div>
@@ -789,7 +789,7 @@ function mostrar_modal(obj){
         success:function(response){
             $('#modal-contacto_edit_c').modal('show');
             var d = response[0].fecha_contrato.split('-');
-            $('#datepicker-fecha_contacto1_c1').val(d[2] + '-' + d[1] + '-' + d[0]);
+            $('#datepicker-fecha_contacto1_c11').val(d[2] + '-' + d[1] + '-' + d[0]);
             $('#id_servicios_e').val(response[0].id_servicios);
             $('#id_notaria_e').val(response[0].id_notaria);
             $('#id_comisiones_e').val(response[0].id_comisiones);
