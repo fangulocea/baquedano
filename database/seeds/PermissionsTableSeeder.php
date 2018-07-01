@@ -586,6 +586,63 @@ class PermissionsTableSeeder extends Seeder
 
 
 
+//Contrato Borrador Arrendatario
+        Permission::create([
+            'name'          =>  'Listado de Contrato borrador arrendatario',
+            'slug'          =>  'contratoborradorarrendatario.index',
+            'description'   =>  'Despliega borrador arrendatario',
+        ]);
+        Permission::create([
+            'name'          =>  'Ver detalle de Contrato borrador arrendatario',
+            'slug'          =>  'contratoborradorarrendatario.show',
+            'description'   =>  'Despliega el detalle del Contrato borrador arrendatario ',
+        ]);
+        Permission::create([
+            'name'          =>  'Crea Contrato borrador arrendatario',
+            'slug'          =>  'contratoborradorarrendatario.create',
+            'description'   =>  'Crear Contrato borrador arrendatario del sistema',
+        ]);
+        Permission::create([
+            'name'          =>  'Edición de Contrato borrador arrendatario',
+            'slug'          =>  'contratoborradorarrendatario.edit',
+            'description'   =>  'Editar Contrato borrador arrendatario del sistema',
+        ]);
+        Permission::create([
+            'name'          =>  'Desactiva Contrato borrador arrendatario',
+            'slug'          =>  'contratoborradorarrendatario.destroy',
+            'description'   =>  'Desactiva Contrato borrador arrendatario del sistema',
+        ]);
+
+
+//Contrato Final Arrendatario
+        Permission::create([
+            'name'          =>  'Listado de Contrato final arrendatario',
+            'slug'          =>  'finalContratoArr.index',
+            'description'   =>  'Despliega final arrendatario',
+        ]);
+        Permission::create([
+            'name'          =>  'Ver detalle de Contrato final arrendatario',
+            'slug'          =>  'finalContratoArr.show',
+            'description'   =>  'Despliega el detalle del Contrato final arrendatario ',
+        ]);
+        Permission::create([
+            'name'          =>  'Crea Contrato final arrendatario',
+            'slug'          =>  'finalContratoArr.create',
+            'description'   =>  'Crear Contrato final arrendatario del sistema',
+        ]);
+        Permission::create([
+            'name'          =>  'Edición de Contrato final arrendatario',
+            'slug'          =>  'finalContratoArr.edit',
+            'description'   =>  'Editar Contrato final arrendatario del sistema',
+        ]);
+        Permission::create([
+            'name'          =>  'Desactiva Contrato final arrendatario',
+            'slug'          =>  'finalContratoArr.destroy',
+            'description'   =>  'Desactiva Contrato final arrendatario del sistema',
+        ]);
+
+
+
 
 
     }

@@ -850,15 +850,9 @@ $('#listusers1_c').DataTable({
                     "advlist autolink link lists charmap print preview hr anchor pagebreak spellchecker", "searchreplace wordcount visualblocks visualchars code fullscreen insertdatetime nonbreaking", "save table contextmenu directionality template paste textcolor"
                 ],
                 toolbar1: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | l      ink | print preview fullpage | forecolor backcolor  | mybutton",
-<<<<<<< HEAD
                 toolbar2: "Persona | Rut | Profesion | Teléfono | Domicilio | Depto | Comuna | Región",
                 toolbar3: "Propiedad | DireccionProp | DeptoProp | RolProp | ComunaProp | DormitorioProp | BanoProp | ValorArriendo ",
                 toolbar4: "Comisiones | Flexibilidad | Servicio | FormasDePago | Multas",
-=======
-                toolbar2: "Propietario | Rut | Profesion | Teléfono | Domicilio | Depto | Comuna | Región",
-                toolbar3: "Propiedad | DireccionProp | DeptoProp | RolProp | ComunaProp | DormitorioProp | BanoProp ",
-                toolbar4: "diaFirma | mesFirma | anioFirma ",
->>>>>>> e8dfdd8fa449cae9e3e388c4638a10c897603e22
             setup: function (editor) 
             {
 

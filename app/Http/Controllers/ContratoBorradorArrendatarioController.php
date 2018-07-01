@@ -31,9 +31,10 @@ class ContratoBorradorArrendatarioController extends Controller
          ->leftjoin('inmuebles as i','a.id_inmueble','i.id')
          ->leftjoin('comunas as c', 'i.id_comuna', '=', 'c.comuna_id')
          ->where('a.id_estado','=',2)
-         ->select(DB::raw('a.id as id, CONCAT_WS(" ",pa .nombre,pa.apellido_paterno,pa.apellido_materno) as arrendatario,i.direccion,i.numero,c.comuna_nombre as comuna,a.id_estado, a.id_arrendatario as id_arrendatario'))
+         ->OrWhere('a.id_estado','=',10)
+         ->select(DB::raw('a.id as id_cap_arr, CONCAT_WS(" ",pa .nombre,pa.apellido_paterno,pa.apellido_materno) as arrendatario,i.direccion,i.numero,c.comuna_nombre as comuna,a.id_estado, a.id_arrendatario as id_arrendatario'))
          ->get();
-         
+
         return view('contratoborradorarrendatario.index',compact('publica'));
     }
 
@@ -83,24 +84,46 @@ class ContratoBorradorArrendatarioController extends Controller
          ->leftjoin('personas as pa', 'a.id_arrendatario','pa.id')
          ->leftjoin('inmuebles as i','a.id_inmueble','i.id')
          ->leftjoin('comunas as c', 'i.id_comuna', '=', 'c.comuna_id')
-         ->where('a.id_arrendatario','=',$id)
-         ->select(DB::raw('a.id , CONCAT_WS(" ",pa.nombre,pa.apellido_paterno,pa.apellido_materno) as arrendatario,i.direccion,i.numero,c.comuna_nombre as comuna,a.id_estado, a.id_arrendatario as id_arrendatario,i.id as id_inmueble'))
+         ->where('a.id','=',$id)
+         ->select(DB::raw('a.id id_cap_arr, CONCAT_WS(" ",pa.nombre,pa.apellido_paterno,pa.apellido_materno) as arrendatario,i.direccion,i.numero,c.comuna_nombre as comuna,a.id_estado, a.id_arrendatario as id_arrendatario,i.id as id_inmueble'))
          ->first();
 
-         $borradoresIndex = DB::table('contratoborradorarrendatarios as b')
-         ->leftjoin('personas as p1','b.id_arrendatario','=','p1.id')
-         ->leftjoin('contratos as con','b.id_contrato','=','con.id')
-         ->leftjoin('inmuebles as i','b.id_inmueble','=','i.id')
-         ->leftjoin('servicios as s', 'b.id_servicios','=', 's.id')
-         ->leftjoin('formasdepagos as fp','b.id_formadepago','=','fp.id')
-         ->leftjoin('comisiones as c', 'b.id_comisiones', '=', 'c.id')
-         ->leftjoin('flexibilidads as f', 'b.id_flexibilidad', '=', 'f.id')
-         ->leftjoin('multas as m','b.id_multa','=','m.id')
-         ->leftjoin('personas as p2','b.id_creador','=','p2.id')
-         ->leftjoin('contratoborradorarrendatariospdf as bp', 'b.id', '=', 'bp.id_b_arrendatario')
-            ->where('b.id_arrendatario','=',$id)
-         ->select(DB::raw('b.id, CONCAT_WS(" ",p1.nombre,p1.apellido_paterno,p1.apellido_materno) as arrendatario, s.nombre as servicio, fp.nombre as forma, c.nombre as comision, f.nombre as flexibilidad, m.nombre as multa, DATE_FORMAT(b.fecha_contrato, "%d/%m/%Y") as fecha, b.id_estado, CONCAT_WS(" ", p2.nombre,p2.apellido_paterno,p2.apellido_materno) as creador, b.id_arrendatario,i.id as id_inmueble, b.id_contrato, bp.nombre, con.nombre as contrato' ))
-         ->get();
+         // $borradoresIndex = DB::table('contratoborradorarrendatarios as b')
+         // ->leftjoin('personas as p1','b.id_arrendatario','=','p1.id')
+         // ->leftjoin('contratos as con','b.id_contrato','=','con.id')
+         // ->leftjoin('inmuebles as i','b.id_inmueble','=','i.id')
+         // ->leftjoin('servicios as s', 'b.id_servicios','=', 's.id')
+         // ->leftjoin('formasdepagos as fp','b.id_formadepago','=','fp.id')
+         // ->leftjoin('comisiones as c', 'b.id_comisiones', '=', 'c.id')
+         // ->leftjoin('flexibilidads as f', 'b.id_flexibilidad', '=', 'f.id')
+         // ->leftjoin('multas as m','b.id_multa','=','m.id')
+         // ->leftjoin('personas as p2','b.id_creador','=','p2.id')
+         // ->leftjoin('contratoborradorarrendatariospdf as bp', 'b.id', '=', 'bp.id_b_arrendatario')
+         //    ->where('b.id_cap_arr','=',$id)
+         // ->select(DB::raw('b.id as id, b.id_cap_arr as id_cap_arr, CONCAT_WS(" ",p1.nombre,p1.apellido_paterno,p1.apellido_materno) as arrendatario, s.nombre as servicio, fp.nombre as forma, c.nombre as comision, f.nombre as flexibilidad, m.nombre as multa, DATE_FORMAT(b.fecha_contrato, "%d/%m/%Y") as fecha, b.id_estado, CONCAT_WS(" ", p2.nombre,p2.apellido_paterno,p2.apellido_materno) as creador, b.id_arrendatario,i.id as id_inmueble, b.id_contrato, bp.nombre, con.nombre as contrato, bp.id_b_arrendatario as id_pdfborrador' ))
+         // ->get();
+
+        $borradoresIndex = DB::select("select 
+        b.id as id, b.id_cap_arr as id_cap_arr, CONCAT_WS(' ',p1.nombre,p1.apellido_paterno,p1.apellido_materno) as arrendatario, 
+        s.nombre as servicio, fp.nombre as forma, c.nombre as comision, f.nombre as flexibilidad, m.nombre as multa, 
+        DATE_FORMAT(b.fecha_contrato, '%d/%m/%Y') as fecha, b.id_estado, 
+        CONCAT_WS(' ', p2.nombre,p2.apellido_paterno,p2.apellido_materno) as creador, b.id_arrendatario,i.id as id_inmueble, 
+        b.id_contrato, bp.nombre, con.nombre as contrato, bp.id_b_arrendatario as id_pdfborrador
+        from contratoborradorarrendatarios b
+        left join personas p1 on b.id_arrendatario = p1.id
+        left join inmuebles i on b.id_inmueble = i.id
+        left join comunas cc on p1.id_comuna = cc.comuna_id
+        left join servicios s on b.id_servicios = s.id
+        left join regions rr on p1.id_region = rr.region_id
+        left join formasdepagos fp on b.id_formadepago = fp.id
+        left join comisiones c on b.id_comisiones = c.id 
+        left join flexibilidads f on b.id_flexibilidad = f.id
+        left join multas m on b.id_multa = m.id
+        left join comunas cci on i.id_comuna = cci.comuna_id
+        left join personas p2 on b.id_creador = p2.id
+        left join contratos con on b.id_contrato = con.id
+        left join contratoborradorarrendatariospdf bp on b.id = bp.id_b_arrendatario
+        where b.id_cap_arr =".$id);
 
          $servicio = DB::table('servicios as s')
          ->where("s.estado","<>",0)
@@ -176,6 +199,7 @@ class ContratoBorradorArrendatarioController extends Controller
 
         //PARA PDF
         $borradorPDF = DB::table('contratoborradorarrendatarios as b')
+         ->where('b.id','=',$borrador->id)
          ->leftjoin('personas as p1','b.id_arrendatario','=','p1.id')
          ->leftjoin('inmuebles as i','b.id_inmueble','=','i.id')
          ->leftjoin('comunas as cc','p1.id_comuna','=','cc.comuna_id')
@@ -188,7 +212,6 @@ class ContratoBorradorArrendatarioController extends Controller
          ->leftjoin('personas as p2','b.id_creador','=','p2.id')
          ->leftjoin('comunas as cci','i.id_comuna','=','cci.comuna_id')
          ->leftjoin('contratoborradorarrendatariospdf as bp', 'b.id_arrendatario', '=', 'bp.id_b_arrendatario')
-            ->where('b.id_arrendatario','=',$borrador->id_arrendatario)
          ->select(DB::raw('b.id, CONCAT_WS(" ",p1.nombre,p1.apellido_paterno,p1.apellido_materno) as arrendatario, 
             CONCAT(s.descripcion, "  $",s.valor) as Servicio, 
             CONCAT(fp.descripcion, " Pie $", fp.pie, "  ", fp.cuotas, " Cuotas") as FormasDePago, 
@@ -200,7 +223,7 @@ class ContratoBorradorArrendatarioController extends Controller
              CONCAT_WS(" ",p1.nombre,p1.apellido_paterno,p1.apellido_materno) as arrendatario ' ))
          ->first();
 
-
+        $nombre_pdf = $borradorPDF->id.$borradorPDF->direccion_i.".pdf";
 
         $pdf = new PdfController();
         $pdf->pdfArrendatario($borradorPDF);
@@ -208,12 +231,12 @@ class ContratoBorradorArrendatarioController extends Controller
 
         $borrpdf=ContratoBorradorArrendatarioPdf::create([
                     "id_b_arrendatario" => $borradorPDF->id,
-                    "nombre"      => $borradorPDF->id.$borradorPDF->direccion_i.".pdf",
+                    "nombre"      => $nombre_pdf,
                     "ruta"        => "uploads/pdf/",
                     "id_creador"  => $request->id_creador
                 ])->toArray();
 
-        return redirect()->route('cbararrendatario.edit', $request->id_arrendatario)
+        return redirect()->route('cbararrendatario.edit', $request->id_cap_arr)
         ->with('status', 'Contrato Borrador guardado con éxito');
     }
 
@@ -221,7 +244,7 @@ class ContratoBorradorArrendatarioController extends Controller
 
     public function mostrarGestion(Request $request, $idg){
 
-                $gestion=ContratoBorradorArrendatario::where('id','=',$idg)->get();
+                $gestion=ContratoBorradorArrendatario::where('id_cap_arr','=',$idg)->get();
                 return response()->json($gestion);  
         }
 
@@ -232,36 +255,40 @@ class ContratoBorradorArrendatarioController extends Controller
         $borradorCorreo = DB::table('contratoborradorarrendatarios as b')
          ->leftjoin('personas as p1','b.id_arrendatario','=','p1.id')
          ->leftjoin('contratoborradorarrendatariospdf as pdf','b.id','=','pdf.id_b_arrendatario')
-         ->where('b.id','=',$id)
-         ->select(DB::raw('b.id as id , CONCAT_WS(" ",p1.nombre,p1.apellido_paterno,p1.apellido_materno) as arrendatario, p1.email as correo, CONCAT(pdf.ruta,pdf.nombre) as archivo,b.id_estado as estado,b.id_arrendatario as id_arrendatario'))
+         ->where('b.id_cap_arr','=',$id)
+         ->select(DB::raw('b.id as id, b.id_cap_arr as id_cap_arr , CONCAT_WS(" ",p1.nombre,p1.apellido_paterno,p1.apellido_materno) as arrendatario, p1.email as correo, CONCAT(pdf.ruta,pdf.nombre) as archivo,b.id_estado as estado,b.id_arrendatario as id_arrendatario'))
          ->first();
 
          
          if($borradorCorreo->estado <> 0)
          {
-            $envioCorreo = array('nombre' => $borradorCorreo->arrendatario ,
-                  'email' => $borradorCorreo->correo );
+            $envioCorreo = array('nombre'    => $borradorCorreo->arrendatario ,
+                                 'email'     => $borradorCorreo->correo, 
+                                 'nombrePdf' => $borradorCorreo->archivo );
 
             Mail::send('emails.contratoborrador', $envioCorreo, function ($message) use($borradorCorreo) {
-                $archivos = 'uploads\pdf\4serafin zamora190.pdf';
+                $archivos = $borradorCorreo->archivo;
                 $message->from('edison.carrizo.j@gmail.com');
                 $message->to($borradorCorreo->correo);
                 $message->subject('Asunto del correo');
                 $message->attach($borradorCorreo->archivo);
             });
 
-            if($borradorCorreo->estado == 1)
-            { ContratoBorradorArrendatario::find($id)->update(['id_estado' => 2]); }
-            else
-            { ContratoBorradorArrendatario::find($id)->update(['id_estado' => 3]); }
+            if($borradorCorreo->estado <> 10)
+            {
+                if($borradorCorreo->estado == 1)
+                { ContratoBorradorArrendatario::find($borradorCorreo->id)->update(['id_estado' => 2]); }
+                else
+                { ContratoBorradorArrendatario::find($borradorCorreo->id)->update(['id_estado' => 3]); }                
+            }
         
 
-            return redirect()->route('cbararrendatario.edit', $borradorCorreo->id_arrendatario)
+            return redirect()->route('cbararrendatario.edit', $borradorCorreo->id_cap_arr)
                 ->with('status', 'Correo enviado con éxito');
         }
         else
         {
-            return redirect()->route('cbararrendatario.edit', $borradorCorreo->id_arrendatario)
+            return redirect()->route('cbararrendatario.edit', $borradorCorreo->id_cap_arr)
                 ->with('error', 'No se puede enviar correo a borrador Rechazado');   
         }
 
@@ -273,7 +300,7 @@ class ContratoBorradorArrendatarioController extends Controller
         $fecha_contrato = DateTime::createFromFormat('d-m-Y', $request->fecha_contrato);
         array_set($request, 'fecha_contrato', $fecha_contrato);
 
-        $captacion = ContratoBorradorArrendatario::where('id','=',$request->id_borrador)
+        $captacion = ContratoBorradorArrendatario::where('id_cap_arr','=',$request->id_cap_arr)
         ->update([
               "id_modificador"  => $request->id_modificador,
               "id_servicios"    => $request->id_servicios,
@@ -306,7 +333,7 @@ class ContratoBorradorArrendatarioController extends Controller
          ->leftjoin('personas as p2','b.id_creador','=','p2.id')
          ->leftjoin('comunas as cci','i.id_comuna','=','cci.comuna_id')
          ->leftjoin('contratoborradorarrendatariospdf as bp', 'b.id_arrendatario', '=', 'bp.id_b_arrendatario')
-            ->where('b.id_arrendatario','=',$request->id_arrendtario)
+            ->where('b.id_cap_arr','=',$request->id_cap_arr)
          ->select(DB::raw('b.id, CONCAT_WS(" ",p1.nombre,p1.apellido_paterno,p1.apellido_materno) as arrendatario, 
             CONCAT(s.descripcion, "  $",s.valor) as Servicio, 
             CONCAT(fp.descripcion, " Pie $", fp.pie, "  ", fp.cuotas, " Cuotas") as FormasDePago, 
@@ -323,7 +350,7 @@ class ContratoBorradorArrendatarioController extends Controller
         $pdf->pdfArrendatario($borradorPDF);
         // FIN PARA PDF
 
-        return redirect()->route('cbararrendatario.edit', $request->id_arrendtario)
+        return redirect()->route('cbararrendatario.edit', $request->id_cap_arr)
             ->with('status', 'Borrador actualizado con éxito');
     }
 
