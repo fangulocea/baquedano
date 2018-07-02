@@ -541,6 +541,11 @@ Route::middleware(['auth'])->group(function(){
 	Route::post('arrendatario/{captacionArrendador}','ArrendatarioController@update')->name('arrendatario.update')
 		->middleware('permission:arrendatario.edit');
 
+
+	Route::post('arrendatario/updateinmueble/{id}','ArrendatarioController@updateinmueble')->name('arrendatario.updateinmueble')
+		->middleware('permission:arrendatario.edit');
+
+
 	Route::post('arrendatario/foto/{captacion}','ArrendatarioController@savefotos')->name('arrendatario.savefotos')
 		->middleware('permission:arrendatario.edit');
 
@@ -554,6 +559,9 @@ Route::middleware(['auth'])->group(function(){
 		->middleware('permission:arrendatario.edit');
 
 	Route::get('arrendatario/gestion/{idg}','ArrendatarioController@mostrarGestion');
+
+	Route::get('arrendatario/agregarinmueble/{idc}/{idi}','ArrendatarioController@agregarInmueble')->name('arrendatario.agregarinmueble')
+		->middleware('permission:arrendatario.edit');
 
 	
 
@@ -733,6 +741,15 @@ Route::get('revisionpersona/eliminarfoto/{idf}/{idc}','RevisionPersonaController
 
 		Route::post('finalContrato/store','ContratoFinalController@store')->name('finalContrato.store')
 		->middleware('permission:finalContrato.create');
+
+		Route::post('pagospropietario/updatepago','ContratoFinalController@updatepago')->name('finalContrato.updatepago')
+		->middleware('permission:finalContrato.update');
+
+		Route::get('pagospropietario/mostrarpago/{id}','ContratoFinalController@mostrar_un_pago')->name('finalContrato.mostrarpago')
+		->middleware('permission:finalContrato.update');
+
+		Route::get('pagospropietario/eliminar/{idp}/{idt}','ContratoFinalController@eliminartipopago')->name('finalContrato.eliminartipopago')
+		->middleware('permission:finalContrato.update');
 
 		Route::get('finalContrato','ContratoFinalController@index')->name('finalContrato.index')
 		->middleware('permission:finalContrato.index');

@@ -4,6 +4,8 @@
 
 <link href="{{ URL::asset('plugins/bower_components/sweetalert/sweetalert.css')}}" rel="stylesheet" type="text/css">
 
+<link href="{{ URL::asset('/plugins/bower_components/typeahead.js-master/dist/typehead-min.css') }}" rel="stylesheet">
+
 <link rel="stylesheet" href="{{ URL::asset('plugins/bower_components/dropify/dist/css/dropify.min.css')}}">
 
 <div class="row">
@@ -19,11 +21,12 @@
             <div class="sttabs tabs-style-iconbox">
                 <nav>
                     <ul>
-                        <li id="li_5_c"><a id="5" href="#section-iconbox-5_c" class="sticon ti-agenda"><span>Gestión Contrato Final</span></a></li>
-                        <li id="li_6_c"><a id="6" href="#section-iconbox-6_c" class="sticon ti-agenda"><span>Documentos de Contrato Inicial</span></a></li>
+                        <li id="li_5_c"><a id="5" href="#section-iconbox-5_c" class="sticon ti-agenda"><span>Gestión</span></a></li>
+                        <li id="li_4_c"><a id="5" href="#section-iconbox-4_c" class="sticon ti-home"><span>Inmuebles</span></a></li>
+                        <li id="li_6_c"><a id="6" href="#section-iconbox-6_c" class="sticon ti-agenda"><span>Documentos Iniciales</span></a></li>
                         <li id="li_7_c"><a id="7" href="#section-iconbox-7_c" class="sticon ti-agenda"><span>Generación de Pagos</span></a></li>
-                        <li id="li_8_c"><a id="8" href="#section-iconbox-8_c" class="sticon ti-money"><span>Pagos Mensuales</span></a></li>
-                        <li id="li_9_c"><a id="8" href="#section-iconbox-9_c" class="sticon ti-money"><span>Gestionar Pago</span></a></li>
+                        <li id="li_8_c"><a id="8" href="#section-iconbox-8_c" class="sticon ti-money"><span>Items de Pagos Mensuales</span></a></li>
+                        <li id="li_9_c"><a id="8" href="#section-iconbox-9_c" class="sticon ti-money"><span>Gestionar Pago Mensual</span></a></li>
 
                     </ul>
                 </nav>
@@ -94,6 +97,60 @@
             </table>
             <input type="hidden" name="verifica_estado" id="verifica_estado" value="{{ $flag }}">
                     </section>
+
+<section id="section-iconbox-4_c">
+                                    <div class="form-body">
+                                            <div class="row"> 
+                                                   <div class="col-md-3">
+                                                    <div class="form-group">
+                                                        <label for="input-file-now-custom-1">Contrato</label>
+                                                        <input type="hidden" name="tab" value="3">
+                                                        <select class="form-control" name="id_final_pagos" id="id_final_pagos"  required="required" >
+                                                            <option value="">Selecione Contrato</option>
+                                                            @foreach($finalIndex as $n)
+                                                                    @if($n->id_estado>1)
+                                                                    <option value="{{ $n->id }}">{{ $n->alias }} </option>
+                                                                    @endif
+                                                            @endforeach  
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                        <div class="col-md-6">
+                                                            <div class="form-group">
+                                                                <label>Dirección</label>
+                                                                <div id="direcciones">
+                                                                    <input name='i_direccion' id='i_direccion' class="typeahead form-control" type="text" placeholder="Dirección" required="required" > 
+                                                                </div>
+                                                                
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                            <div class="form-group">
+                                                    <table id="listusers" class="display nowrap" cellspacing="0" width="100%">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>ID</th>
+                                                            <th>Dirección/ #Nro</th>
+                                                            <th>Propietario</th>
+                                                            <th>Fecha Creación</th>
+                                                            <th>Creador</th>
+                                                            <th>Portal</th>
+                                                            <th>Ver</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                   
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                                </div>
+                                                </div>
+                                           
+</section>
 <section id="section-iconbox-6_c">
      <div class="row">
                     <div class="col-sm-6">
@@ -231,47 +288,126 @@
                                         <div class="col-md-6">
                                             <h3 class="box-title m-b-0">Generar pagos por Item</h3><br/>
                                              <div class="row">
-                                                <div class="col-md-3"><label for="input-file-now-custom-1">Gasto Comun</label> </div>
+                                                <div class="col-md-3"><label for="input-file-now-custom-1">Gasto Común</label> </div>
                                                 <div class="col-md-7">
                                                      
                                                   <div class="input-group"> 
                                                             <span class="input-group-addon">$</span>
-                                                            <input name='gastocomun' id='gastocomun' type="number" class="form-control"   value='{{ $borrador->gastosComunes or '' }}'>
+                                                            <input name='gastocomun' id='gastocomun' type="number" class="form-control"   step="any" value='{{ $borrador->gastosComunes or '' }}'>
                                                         </div>
+                    
                                                 </div>
 
+                                            <div class="col-md-1">
+                                                     <div class="radio radio-success">
+                                                        <input type="radio" name="gc_radio" id="gc_radio" value="e" checked="">
+                                                        <label for="radio14"> E </label>
+                                                    </div>
+                                            </div>
+                                            <div class="col-md-1">
+                                                    <div class="radio radio-danger">
+                                                         <input type="radio" name="gc_radio" id="gc_radio" value="s" checked="">
+                                                         <label for="radio14"> S </label>
+                                                    </div>
+                                                </div>
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-3"><label for="input-file-now-custom-1">Canon de Arriendo</label> </div>
                                                 <div class="col-md-7">
                                                         <div class="input-group"> 
                                                             <span class="input-group-addon">$</span>
-                                                            <input name='precio' id='precio' type="number" class="form-control"   value='{{ $borrador->precio or '' }}'>
+                                                            <input name='precio' id='precio' step="any" type="number" class="form-control"   value='{{ $borrador->precio or '' }}'>
                                                         </div>
                                                 </div>
+                                            <div class="col-md-1">
+                                                     <div class="radio radio-success">
+                                                        <input type="radio" name="ca_radio" id="ca_radio" value="e" checked="">
+                                                        <label for="radio14"> E </label>
+                                                    </div>
+                                            </div>
+                                            <div class="col-md-1">
+                                                    <div class="radio radio-danger">
+                                                         <input type="radio" name="ca_radio" id="ca_radio" value="s" checked="">
+                                                         <label for="radio14"> S </label>
+                                                    </div>
+                                            </div>
 
                                             </div>
                                             <div class="row">
-                                                <div class="col-md-3"><label for="input-file-now-custom-1">Comisión Rentas</label> </div>
+                                                <div class="col-md-3"><label for="input-file-now-custom-1">Garantía</label> </div>
+                                                <div class="col-md-7">
+                                                        <div class="input-group"> 
+                                                            <span class="input-group-addon">$</span>
+                                                            <input name='garantia' id='garantia' type="number" class="form-control"  >
+                                                        </div>
+                                                </div>
+                                            <div class="col-md-1">
+                                                     <div class="radio radio-success">
+                                                        <input type="radio" name="ga_radio" id="ga_radio" value="e" checked="">
+                                                        <label for="radio14"> E </label>
+                                                    </div>
+                                            </div>
+                                            <div class="col-md-1">
+                                                    <div class="radio radio-danger">
+                                                         <input type="radio" name="ga_radio" id="ga_radio" value="s" checked="">
+                                                         <label for="radio14"> S </label>
+                                                    </div>
+                                            </div>
+
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-3"><label for="input-file-now-custom-1">IVA</label> </div>
                                                 <div class="col-md-4">
                                                         <div class="input-group"> 
                                                             <span class="input-group-addon">$</span>
-                                                            <input name='comision' id='comision' type="number" class="form-control"   value=''>
+                                                            <input name='iva' id='iva' type="number" step="any" class="form-control"   value=''>
                                                         </div>
                                                 </div>
                                                 <div class="col-md-3">
                                                         <div class="input-group"> 
-                                                            <input name='mes_comision' id='mes_comision' type="number" class="form-control"   placeholder="C/Mes">
+                                                            <input name='mes_iva' id='mes_iva' type="number" class="form-control"   placeholder="C/Mes">
                                                         </div>
                                                 </div>
-
+                                            <div class="col-md-1">
+                                                     <div class="radio radio-success">
+                                                        <input type="radio" name="iva_radio" id="iva_radio" value="e" checked="">
+                                                        <label for="radio14"> E </label>
+                                                    </div>
+                                            </div>
+                                            <div class="col-md-1">
+                                                    <div class="radio radio-danger">
+                                                         <input type="radio" name="iva_radio" id="iva_radio" value="s">
+                                                         <label for="radio14"> S </label>
+                                                    </div>
+                                            </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-3"><label for="input-file-now-custom-1">Pie Comisión</label> </div>
+                                                <div class="col-md-7">
+                                                        <div class="input-group"> 
+                                                            <span class="input-group-addon">$</span>
+                                                            <input name='pie' id='pie' type="number" step="any" class="form-control"  >
+                                                        </div>
+                                                </div>
+                                            <div class="col-md-1">
+                                                     <div class="radio radio-success">
+                                                        <input type="radio" name="pie_radio" id="pie_radio" value="e" checked="">
+                                                        <label for="radio14"> E </label>
+                                                    </div>
+                                            </div>
+                                            <div class="col-md-1">
+                                                    <div class="radio radio-danger">
+                                                         <input type="radio" name="pie_radio" id="pie_radio" value="s" >
+                                                         <label for="radio14"> S </label>
+                                                    </div>
+                                            </div>
                                             </div>
                                         <div class="row">
-                                                <div class="col-md-3"><label for="input-file-now-custom-1">Comisión % Mensual</label> </div>
+                                                <div class="col-md-3"><label for="input-file-now-custom-1">Comisión Mensual</label> </div>
                                                 <div class="col-md-4">
                                                         <div class="input-group"> 
-                                                            <span class="input-group-addon">%</span>
-                                                            <input name='porcentaje' id='porcentaje' type="number" class="form-control"   placeholder="%">
+                                                            <span class="input-group-addon">$</span>
+                                                            <input name='porcentaje' step="any" id='porcentaje' type="number" class="form-control"   placeholder="$">
                                                         </div>
                                                 </div>
                                                 <div class="col-md-3">
@@ -279,37 +415,140 @@
                                                             <input name='mes_porcentaje' id='mes_porcentaje' type="number" class="form-control"   placeholder="C/Mes">
                                                         </div>
                                                 </div>
-
+                                            <div class="col-md-1">
+                                                     <div class="radio radio-success">
+                                                        <input type="radio" name="pj_radio" id="pj_radio" value="e" checked="">
+                                                        <label for="radio14"> E </label>
+                                                    </div>
                                             </div>
+                                            <div class="col-md-1">
+                                                    <div class="radio radio-danger">
+                                                         <input type="radio" name="pj_radio" id="pj_radio" value="s" >
+                                                         <label for="radio14"> S </label>
+                                                    </div>
+                                            </div>
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="col-md-3"><label for="input-file-now-custom-1">Comisión Rentas</label> </div>
+                                                <div class="col-md-7">
+                                                        <div class="input-group"> 
+                                                            <span class="input-group-addon">$</span>
+                                                            <input name='comision' id='comision' step="any" type="number" class="form-control"   value=''>
+                                                        </div>
+                                                </div>
+                                            <div class="col-md-1">
+                                                     <div class="radio radio-success">
+                                                        <input type="radio" name="co_radio" id="co_radio" value="e" checked="">
+                                                        <label for="radio14"> E </label>
+                                                    </div>
+                                            </div>
+                                            <div class="col-md-1">
+                                                    <div class="radio radio-danger">
+                                                         <input type="radio" name="co_radio" id="co_radio" value="s" >
+                                                         <label for="radio14"> S </label>
+                                                    </div>
+                                            </div>
+                                            </div>
+
                                         <div class="row">
                                                 <div class="col-md-3"><label for="input-file-now-custom-1">Pago por Notaría</label> </div>
-                                                <div class="col-md-4">
+                                                <div class="col-md-7">
                                                         <div class="input-group"> 
                                                             <span class="input-group-addon">$</span>
                                                             <input name='pagonotaria' id='pagonotaria' type="number" class="form-control"  placeholder="$">
                                                         </div>
                                                 </div>
-                                                <div class="col-md-3">
-                                                        <div class="input-group"> 
-                                                            <input name='mes_notaria' id='mes_notaria' type="number" class="form-control"   placeholder="C/Mes">
-                                                        </div>
-                                                </div>
-  
+                                              <div class="col-md-1">
+                                                     <div class="radio radio-success">
+                                                        <input type="radio" name="no_radio" id="no_radio" value="e" checked="">
+                                                        <label for="radio14"> E </label>
+                                                    </div>
+                                            </div>
+                                            <div class="col-md-1">
+                                                    <div class="radio radio-danger">
+                                                         <input type="radio" name="no_radio" id="no_radio" value="s" >
+                                                         <label for="radio14"> S </label>
+                                                    </div>
+                                            </div>
                                             </div>
                                    <div class="row">
-                                                <div class="col-md-3"><input name='nombre_otropago' id='nombre_otropago' type="text" class="form-control"   placeholder="Otro Pago"> </div>
+                                                <div class="col-md-3"><input name='nombre_otropago1' id='nombre_otropago1' type="text" class="form-control"   placeholder="Otro Pago"> </div>
                                                 <div class="col-md-4">
                                                         <div class="input-group"> 
                                                             <span class="input-group-addon">$</span>
-                                                            <input name='pagootro' id='pagootro' type="number" class="form-control"   placeholder="$">
+                                                            <input name='pagootro1' step="any" id='pagootro1' type="number" class="form-control"   placeholder="$">
                                                         </div>
                                                 </div>
                                                 <div class="col-md-3">
                                                         <div class="input-group"> 
-                                                            <input name='mes_otro' id='mes_otro' type="number" class="form-control"   placeholder="C/Mes">
+                                                            <input name='mes_otro1' id='mes_otro1' type="number" class="form-control"   placeholder="C/Mes">
                                                         </div>
                                                 </div>
- 
+                                               <div class="col-md-1">
+                                                     <div class="radio radio-success">
+                                                        <input type="radio" name="o1_radio" id="o1_radio" value="e" checked="">
+                                                        <label for="radio14"> E </label>
+                                                    </div>
+                                            </div>
+                                            <div class="col-md-1">
+                                                    <div class="radio radio-danger">
+                                                         <input type="radio" name="o1_radio" id="o1_radio" value="s" checked="">
+                                                         <label for="radio14"> S </label>
+                                                    </div>
+                                            </div>
+                                            </div>
+                                   <div class="row">
+                                                <div class="col-md-3"><input name='nombre_otropago2' id='nombre_otropago2' type="text" class="form-control"   placeholder="Otro Pago"> </div>
+                                                <div class="col-md-4">
+                                                        <div class="input-group"> 
+                                                            <span class="input-group-addon">$</span>
+                                                            <input name='pagootro2' step="any" id='pagootro2' type="number" class="form-control"   placeholder="$">
+                                                        </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                        <div class="input-group"> 
+                                                            <input name='mes_otro2' id='mes_otro2' type="number" class="form-control"   placeholder="C/Mes">
+                                                        </div>
+                                                </div>
+                                                <div class="col-md-1">
+                                                     <div class="radio radio-success">
+                                                        <input type="radio" name="o2_radio" id="o2_radio" value="e" checked="">
+                                                        <label for="radio14"> E </label>
+                                                    </div>
+                                            </div>
+                                            <div class="col-md-1">
+                                                    <div class="radio radio-danger">
+                                                         <input type="radio" name="o2_radio" id="o2_radio" value="s" checked="">
+                                                         <label for="radio14"> S </label>
+                                                    </div>
+                                            </div>
+                                            </div>
+                                   <div class="row">
+                                                <div class="col-md-3"><input name='nombre_otropago3' id='nombre_otropago3' type="text" class="form-control"   placeholder="Otro Pago"> </div>
+                                                <div class="col-md-4">
+                                                        <div class="input-group"> 
+                                                            <span class="input-group-addon">$</span>
+                                                            <input name='pagootro3' step="any" id='pagootro3' type="number" class="form-control"   placeholder="$">
+                                                        </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                        <div class="input-group"> 
+                                                            <input name='mes_otro3' id='mes_otro3' type="number" class="form-control"   placeholder="C/Mes">
+                                                        </div>
+                                                </div>
+                                                <div class="col-md-1">
+                                                     <div class="radio radio-success">
+                                                        <input type="radio" name="o3_radio" id="o3_radio" value="e" checked="">
+                                                        <label for="radio14"> E </label>
+                                                    </div>
+                                            </div>
+                                            <div class="col-md-1">
+                                                    <div class="radio radio-danger">
+                                                         <input type="radio" name="o3_radio" id="o3_radio" value="s" checked="">
+                                                         <label for="radio14"> S </label>
+                                                    </div>
+                                            </div>
                                             </div>
                                    <div class="row">
                                                 <br>
@@ -330,49 +569,56 @@
 
 <div id="tabla" >
     <div class="white-box">
-        <h3 class="box-title m-b-0">Gestión de Contratos Finales</h3>
-        <p class="text-muted m-b-30">Administración de registros para la generación de contratos finales</p>
+ <div class="form-body">
+                                            <div class="row">
+                                                <div class="col-md-6">
                   <label for="input-file-now-custom-1">Contrato</label>
                                                         <input type="hidden" name="tab" value="3">
                                                         <select class="form-control" name="id_final_detalle" id="id_final_detalle"  required="required" >
-                                                            <option value="">Selecione Contrato</option>
+                                                            <option value="0">Selecione Contrato</option>
                                                             @foreach($finalIndex as $n)
                                                                     @if($n->id_estado>1)
                                                                     <option value="{{ $n->id }}">{{ $n->alias }} </option>
                                                                     @endif
                                                             @endforeach  
                                                         </select>
-        <div class="table-responsive" style="padding-bottom: 50px;">
+                                                    </div>
+                                                </div>
+        <div class="table-responsive" id="tablearea">
    
-                                          <table id="listpagos" class="display compact" cellspacing="0" width="100%">
-                <thead>
-                    <tr>
-                        <th>Tipo Pago</th>
-                        <th>Mes1</th>
-                        <th>Mes2</th>
-                        <th>Mes3</th>
-                        <th>Mes4</th>
-                        <th>Mes5</th>
-                        <th>Mes6</th>
-                        <th>Mes7</th>
-                        <th>Mes8</th>
-                        <th>Mes9</th>
-                        <th>Mes10</th>
-                        <th>Mes11</th>
-                        <th>Mes12</th>
-                    </tr>
-                </thead>
-
-                <tbody>
-                    
-
-                </tbody>
-            </table>
+                            
         </div>
+    </div>
     </div>
 </div>
         </section>
         <section id="section-iconbox-9_c">
+
+<div id="tabla" >
+    <div class="white-box">
+ <div class="form-body">
+    <h3>GESTIÓN DE PAGOS </h3>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                  <label for="input-file-now-custom-1">Contrato</label>
+                                                        <input type="hidden" name="tab" value="3">
+                                                        <select class="form-control" name="id_final_pago" id="id_final_pago"  required="required" >
+                                                            <option value="0">Selecione Contrato</option>
+                                                            @foreach($finalIndex as $n)
+                                                                    @if($n->id_estado>1)
+                                                                    <option value="{{ $n->id }}">{{ $n->alias }} </option>
+                                                                    @endif
+                                                            @endforeach  
+                                                        </select>
+                                                    </div>
+                                                </div>
+        <div class="table-responsive" id="tablearea">
+   
+                            
+        </div>
+    </div>
+    </div>
+</div>
         </section>
 
                 </div>
@@ -384,9 +630,117 @@
     </div>
 </div>
   <a href="{{ route('finalContrato.index') }}" class="btn btn-info" style="color:white"><i class="fa fa-times-circle"></i>&nbsp;&nbsp;Volver</a>
+
+
+<div id="modal-contacto1" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+                                            <div class="modal-dialog modal-sm">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+
+                                                    <div class="modal-body">
+
+                                                          <div class="row">
+                                                            <div class="col-md-12">
+                                                                            <form action="{{ route('finalContrato.updatepago') }}" method="post">
+                                                                                {!! csrf_field() !!}
+                                                                                <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                                                                <div class="form-body">
+                                                                                    <div class="row">
+                                                                                        <div class="col-md-12">
+                                                                                            <div class="form-group">
+                                                                                              <label id="nom_pago"></label>
+                                                                                              <input type="text" name="pago_update" id="pago_update"class="form-control" placeholder="" required="required" > 
+                                                                                          <input type="hidden" name="id_pago_update" id="id_pago_update"  class="form-control" placeholder="" required="required" >
+                                                                                          <input type="hidden" name="id_publicacion_update" id="id_publicacion_update"  class="form-control" placeholder="" required="required" >
+                                                                                           <input type="hidden" name="id_contrato_update" id="id_contrato_update"  class="form-control" placeholder="" required="required" >
+                                                                                         </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                        </div>
+                                                        
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">Cerrar</button>
+                                                        <button type="submit" class="btn btn-success waves-effect waves-light">Guardar</button>
+                                                    </div>
+                                                </form>
+                                                </div>
+                                            </div>
+                                    </div> 
 <script src="{{ URL::asset('plugins/bower_components/jquery/dist/jquery.min.js') }}"></script>
 <!-- Bootstrap Core JavaScript -->
 <script src="{{ URL::asset('bootstrap/dist/js/bootstrap.min.js') }}"></script>
+
+
+<script src="{{ URL::asset('plugins/bower_components/typeahead.js-master/dist/typeahead.bundle.min.js') }}"></script>
+
+<script>
+
+var direcciones = new Bloodhound({
+    datumTokenizer: function (datum) {
+        return Bloodhound.tokenizers.whitespace(datum.value);
+    },
+    queryTokenizer: Bloodhound.tokenizers.whitespace,
+    prefetch: {
+        url: "/",
+        transform: function (response) {
+            return $.map(response, function (dir) {
+                return {value: 'Id: ' + dir.id + ', Dir: ' + dir.direccion + ', Nro: ' + dir.numero + ', Comuna: ' + dir.comuna_nombre};
+            });
+        }
+    },
+    remote: {
+        wildcard: '%QUERY',
+        url: "/inmuebles/%QUERY",
+        transform: function (response) {
+            return $.map(response, function (dir) {
+                var num=dir.numero==null?'':dir.numero;
+                var dpto=dir.departamento==null?'':dir.departamento;
+                return {value: dir.direccion + ' #' + num  + ' Dpto '+ dpto +',  ' + dir.comuna_nombre,
+                    option: dir.id};
+            });
+        }
+    }
+});
+
+$('#i_direccion').typeahead({
+
+    hint: false,
+    highlight: true,
+    minLength: 1,
+    val:'',
+    limit: 10
+},
+        {
+            name: 'direcciones',
+            display: 'value',
+            source: direcciones,
+
+                templates: {
+                header: '<h4 class="dropdown">Direcciones</h4>'
+            }
+        });
+
+jQuery('#i_direccion').on('typeahead:selected', function (e, datum) {
+ 
+        swal({   
+            title: "Esta seguro que desea utilizar la siguiente dirección?",   
+            text: datum.value,   
+            type: "warning",   
+            showCancelButton: true,   
+            confirmButtonColor: "#DD6B55",   
+            confirmButtonText: "SI",   
+            closeOnConfirm: false 
+        }, function(){   
+             window.location.href = '/arrendatario/agregarinmueble/'+$('#idcaptacion').val()+'/'+datum.option; 
+        });
+
+   
+});
+
+</script>
 
 <script src="{{ URL::asset('plugins/bower_components/sweetalert/sweetalert.min.js') }}"></script>
 
@@ -477,12 +831,12 @@ var table1 =$('#listusers1_c').DataTable({
     }
 });
 
-var table =$('#listpagos').DataTable();
+
 
  $("#id_final_pagos").change(function (event) {
 
         $.get("/contratofinal/consulta/"+this.value+"",function(response,state){
-                    $("#porcentaje").val(response.comision);
+                    //$("#porcentaje").val(response.comision);
                     $("#fecha_firmapago").val(response.fecha_firma);
                 
             });
@@ -494,91 +848,123 @@ var table =$('#listpagos').DataTable();
         $.get("/contratofinal/consultapagos/"+this.value+"",function(response,state){
                         var meses = ["Ene","Feb","Mar","Abr","May","Jun","Jul","Ago","Sep","Oct","Nov","Dic"];
 
-                        table.clear().draw();
+                        document.getElementById("tablearea").innerHTML="";
                         if(response.length>0){
+                            var tablearea = document.getElementById('tablearea'),
+                                tbl = document.createElement('table');
 
+                            tbl.className='table';
+                            tbl.style.border="1px solid black";
+                            tbl.style.padding="10px";
+                            tbl.style.marginTop="50px";
+
+                            var header = tbl.createTHead();
+           
+
+                            var rowheader = header.insertRow(0);
                             var fecha_iniciocontrato=new Date(response[0].fecha_iniciocontrato);
+                            var meses_contrato=new Date(response[0].meses_contrato);
+                           
+                                    //HEAD
+                                    var head_fecha=fecha_iniciocontrato;
+                                        head_fecha.setDate(1);
+                                        var cell = document.createElement("th");
+                                        cell.style.border="1px solid black";
+                                        cell.style.padding="8px";
+                                        cell.innerHTML = 'Tipo de Pago';
+                                        rowheader.appendChild(cell);
 
-                            
-                        }
-                         $('#listpagos thead th').each( function () {
+                                     for (var r = 0; r < meses_contrato; r++) {
 
-                                var title = $(this).text();
-                                switch (title) {
-                                        case "Mes1" :
-                                            $(this).html( meses[fecha_iniciocontrato.getMonth()]+"/"+fecha_iniciocontrato.getFullYear() );
-                                            break;
-                                        case "Mes2" :
-                                            fecha_iniciocontrato.setMonth(fecha_iniciocontrato.getMonth()+1);
-                                            $(this).html( meses[fecha_iniciocontrato.getMonth()]+"/"+fecha_iniciocontrato.getFullYear() );
-                                            break;
-                                        case "Mes3" :
-                                        fecha_iniciocontrato.setMonth(fecha_iniciocontrato.getMonth()+1);
-                                            $(this).html( meses[fecha_iniciocontrato.getMonth()]+"/"+fecha_iniciocontrato.getFullYear() );
-                                            break;
-                                        case "Mes4" :
-                                        fecha_iniciocontrato.setMonth(fecha_iniciocontrato.getMonth()+1);
-                                            $(this).html( meses[fecha_iniciocontrato.getMonth()]+"/"+fecha_iniciocontrato.getFullYear() );
-                                            break;
-                                        case "Mes5" :
-                                        fecha_iniciocontrato.setMonth(fecha_iniciocontrato.getMonth()+1);
-                                            $(this).html( meses[fecha_iniciocontrato.getMonth()]+"/"+fecha_iniciocontrato.getFullYear() );
-                                            break;
-                                        case "Mes6" :
-                                        fecha_iniciocontrato.setMonth(fecha_iniciocontrato.getMonth()+1);
-                                            $(this).html( meses[fecha_iniciocontrato.getMonth()]+"/"+fecha_iniciocontrato.getFullYear() );
-                                            break;
-                                        case "Mes7" :
-                                        fecha_iniciocontrato.setMonth(fecha_iniciocontrato.getMonth()+1);
-                                            $(this).html( meses[fecha_iniciocontrato.getMonth()]+"/"+fecha_iniciocontrato.getFullYear() );
-                                            break;
-                                        case "Mes8" :
-                                        fecha_iniciocontrato.setMonth(fecha_iniciocontrato.getMonth()+1);
-                                            $(this).html( meses[fecha_iniciocontrato.getMonth()]+"/"+fecha_iniciocontrato.getFullYear() );
-                                            break;
-                                        case "Mes9" :
-                                        fecha_iniciocontrato.setMonth(fecha_iniciocontrato.getMonth()+1);
-                                            $(this).html( meses[fecha_iniciocontrato.getMonth()]+"/"+fecha_iniciocontrato.getFullYear() );
-                                            break;
-                                        case "Mes10" :
-                                        fecha_iniciocontrato.setMonth(fecha_iniciocontrato.getMonth()+1);
-                                            $(this).html( meses[fecha_iniciocontrato.getMonth()]+"/"+fecha_iniciocontrato.getFullYear() );
-                                            break;
-                                        case "Mes11" :
-                                        fecha_iniciocontrato.setMonth(fecha_iniciocontrato.getMonth()+1);
-                                            $(this).html( meses[fecha_iniciocontrato.getMonth()]+"/"+fecha_iniciocontrato.getFullYear() );
-                                            break;
-                                        case "Mes12" :
-                                        fecha_iniciocontrato.setMonth(fecha_iniciocontrato.getMonth()+1);
-                                            $(this).html( meses[fecha_iniciocontrato.getMonth()]+"/"+fecha_iniciocontrato.getFullYear() );
-                                            break;
-                                        default:
-                                            $(this).html( title );
-                                            break;
-                                 }
+                                        var cell = document.createElement("th");
+                                        cell.style.border="1px solid black";
+                                        cell.style.padding="8px";
+
+                                        cell.innerHTML = '<b>'+meses[head_fecha.getMonth()]+"/"+head_fecha.getFullYear()+'</b>';
+                                        head_fecha.setMonth(head_fecha.getMonth()+1);
+                                        rowheader.appendChild(cell);
+
+                                     }
+                                     tbl.appendChild(rowheader);
+
+                                    // LINEAS
+                                    for (var r = 0; r < meses_contrato; r++) {
+                                        var row = document.createElement("tr");
+                                        var newArray = response.filter(function (el) {
+                                              return el.idtipopago==r;
+                                            });
+                                     // CONTENIDO
+                                         if(newArray.length>0)
+                                         {
+                                               var cell = document.createElement("td");
+                                                    var cellText = document.createTextNode(newArray[0].tipopago);
+                                                    cell.appendChild(cellText);
+                                                    cell.style.border="1px solid black";
+                                                    cell.style.padding="8px"
+                                                    row.appendChild(cell);
+                                                 if(newArray[0].idtipopago==6){
+                                                            var cell = document.createElement("td");
+                                                            cell.style.border="1px solid black";
+                                                            cell.style.padding="8px"
+                                                            cell.style.textAlign="center"
+                                                            row.appendChild(cell);
+                                                 }
+
+                                                 for (var c = 0; c < meses_contrato; c++) {
+                                                    if (!$.isEmptyObject(newArray[c])) {
+
+                                                            var a = document.createElement("button");
+                                                            var linkText = document.createTextNode(newArray[c].precio_en_pesos);
+                                                            a.appendChild(linkText);
+                                                            if(newArray[c].E_S=='e'){
+                                                                a.className="btn btn-block btn-outline btn-success";
+                                                            }else{
+                                                                a.className="btn btn-block btn-outline btn-danger";
+                                                            }
+                                                            var id=newArray[c].id;
+                                                            a.id=id;
+                                                            a.addEventListener('click', function(){
+                                                                    mostrar_modal(this);
+                                                                });
+                                                            var cell = document.createElement("td");
+                                                            //var cellText = document.createTextNode();
+                                                            //cell.appendChild(cellText);
+                                                            cell.appendChild(a);
+                                                            cell.style.border="1px solid black";
+                                                            cell.style.padding="8px"
+                                                            cell.style.textAlign="center"
+                                                            row.appendChild(cell);
+                                                    }
+                                              
+                                                }           
+                                                            var a = document.createElement("button");
+                                                            var linkText = document.createTextNode("Borrar "+newArray[0].tipopago);
+                                                            a.className="btn btn-block btn-danger btn-rounded";
+                                                            a.id=newArray[0].idtipopago;
+                                                            a.name=newArray[0].id_contratofinal;
+                                                            a.addEventListener('click', function(){
+                                                                    eliminar_pago(this);
+                                                                });
+                                                            a.appendChild(linkText);
+                                                            var cell = document.createElement("td");
+                                                            cell.appendChild(a);
+                                                            cell.style.border="1px solid black";
+                                                            cell.style.padding="8px"
+                                                            cell.style.textAlign="center"
+                                                            row.appendChild(cell);
+                                                tbl.appendChild(row); // AGREGA EL PAGO
+                                        }
+                                    }
                                 
-                            } );
-                       for (i = 0; i < response.length; i++) {
-
-
-       /*                 table.rows.add([ 
-                            {
-                                0 : response[i].id_publicacion,
-                                1 : response[i].direccion+", "+ num+", Dtpo: "+dpto,
-                                2 : response[i].comuna_nombre,
-                                3 : response[i].nom_p+" "+apepp +" "+apemp,
-                                4 : response[i].fecha_creacion,
-                                5 : response[i].nom_c+" "+apepc +" "+apemc,
-                                6 : response[i].portal,
-                                7 : "<input value='"+response[i].id_publicacion+"' name='check[]'' type='checkbox'  >"
-                            }]).draw();;*/
-                        } 
+                                 tablearea.appendChild(tbl);
+                        }
                 
             });
 
+
     });
 
-
+ 
 var SweetAlert = function () {};
 
 //examples 
@@ -715,5 +1101,23 @@ $("#li_9_c").click(function (event) {
             $("#section-iconbox-8_c").removeClass("content-current");
             
 });
+
+
+
+function mostrar_modal(obj){
+     $.get("/pagospropietario/mostrarpago/"+obj.id+"",function(response,state){
+         document.getElementById('nom_pago').innerHTML = response.tipopago;
+                    $("#pago_update").val(response.precio_en_pesos);
+                    $("#id_pago_update").val(response.id);
+                    $("#id_contrato_update").val(response.id_contratofinal);
+                    
+                
+            });
+     $('#modal-contacto1').modal('show');
+}
+
+function eliminar_pago(obj){
+    window.location.href = '/pagospropietario/eliminar/'+obj.name+'/'+obj.id;
+}
 </script>
 @endsection

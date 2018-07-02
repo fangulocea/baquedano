@@ -97,7 +97,91 @@ class ArrendatarioController extends Controller
         $persona = Persona::find(isset($arrendatario->id_arrendatario)?$arrendatario->id_arrendatario:0);
         $imagenes=ArrendatarioFoto::where('id_arrendatario','=',$id)->get();
         $citas=ArrendatarioCitas::where('id_arrendatario','=',$id)->get();
-        return view('arrendatario.edit',compact('arrendatario','regiones','persona','imagenes','citas'));
+        $inmueble = Inmueble::find($arrendatario->id_inmueble);
+        return view('arrendatario.edit',compact('arrendatario','regiones','persona','imagenes','citas','inmueble'));
+    }
+
+    public function agregarInmueble($idc,$idi)
+    {        
+             $captacion = Arrendatario::whereId($idc)->update([
+                'id_inmueble'=> $idi
+            ]
+            );
+        $inmueble = Inmueble::whereId($idi)->update([
+                'estado'=> 1
+            ]
+            );
+        return redirect()->route('arrendatario.edit', $idc)->with('status', 'Inmueble agregado con éxito');
+    }
+
+
+
+    public function updateinmueble(Request $request, $id)
+    {
+
+         $captacion = Arrendatario::find($id);
+         //inmueble nuevo
+            if($captacion->id_inmueble==null){
+
+                    $p = Inmueble::where('direccion', '=', $request->i_direccion )
+                    ->where('numero', '=', $request->i_numero)
+                    ->where('departamento', '=',$request->i_departamento)
+                    ->where('id_comuna', '=', $request->i_id_comuna)
+                    ->first();
+                    if ($p != null) {
+                       return back()->with('error', 'Dirección existente en el sistema');
+                    }
+                    $inmueble=Inmueble::create([
+                            'direccion'         => $request->i_direccion,
+                            'numero'            => $request->i_numero,
+                            'departamento'      => $request->i_departamento,
+                            'dormitorio'        => $request->i_dormitorio,
+                            'bano'              => $request->i_bano,
+                            'estacionamiento'   => $request->i_estacionamiento,
+                            'bodega'            => $request->i_bodega,
+                            'rol'               => $request->i_rol,
+                            'nro_bodega'        => $request->i_nro_bodega,
+                            'referencia'         => $request->i_referencia,
+                            'piscina'           => $request->i_piscina,
+                            'precio'            => $request->i_precio,
+                            'gastosComunes'     => $request->i_gastosComunes,
+                            'condicion'         => $request->i_condicion,
+
+                            'estado'            => '1',
+                            'id_comuna'         => $request->i_id_comuna,
+                            'id_region'         => $request->i_id_region,
+                            'id_provincia'      => $request->i_id_provincia,   
+                    ]);
+                    //inmueble ya ingresado
+            }else{
+
+                    $inmueble=Inmueble::whereId($captacion->id_inmueble)->update([
+                            'direccion'         => $request->i_direccion,
+                            'numero'            => $request->i_numero,
+                            'departamento'      => $request->i_departamento,
+                            'dormitorio'        => $request->i_dormitorio,
+                            'bano'              => $request->i_bano,
+                            'estacionamiento'   => $request->i_estacionamiento,
+                            'bodega'            => $request->i_bodega,
+                            'nro_bodega'        => $request->i_nro_bodega,
+                            'rol'               => $request->i_rol,
+                            'referencia'         => $request->i_referencia,
+                            'piscina'           => $request->i_piscina,
+                            'precio'            => $request->i_precio,
+                            'gastosComunes'     => $request->i_gastosComunes,
+                            'condicion'         => $request->i_condicion,
+                            'id_comuna'         => $request->i_id_comuna,
+                            'id_region'         => $request->i_id_region,
+                            'id_provincia'      => $request->i_id_provincia,  
+                    ]);
+                     $inmueble = Inmueble::find($captacion->id_inmueble);
+            }
+
+                $captacion = Arrendatario::find($id)->update([
+                    "id_inmueble"  => $inmueble->id
+                ]);
+
+        return redirect()->route('arrendatario.edit', $id)->with('status', 'Datos almacenados correctamente');
     }
 
     /**

@@ -21,6 +21,7 @@
                 <nav>
                     <ul>
                         <li><a href="#section-iconbox-1" class="sticon ti ti-user"><span>Arrendatario</span></a></li>
+                        <li><a href="#section-iconbox-2" class="sticon ti ti-user"><span>Asignar Inmueble</span></a></li>
                         <li><a id="4" href="#section-iconbox-4" class="sticon ti-camera"><span>Fotos</span></a></li>
                         <li><a id="5" href="#section-iconbox-5" class="sticon ti-agenda"><span>Gestiones</span></a></li>
                     </ul>
@@ -178,7 +179,190 @@
                             </div>
                         </div>
                     </section>
+<section id="section-iconbox-2">
+    <form action="{{ route('arrendatario.updateinmueble',$arrendatario->id) }}" method="post">
+                            {!! csrf_field() !!}
+                            <div class="row"> 
+                                <div class="panel panel-info">
+                                    <div class="panel-heading"> Información del Inmueble</div>
+                                    <div class="panel-body">
 
+                                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                        <div class="form-body">
+                                            <div class="row"> 
+                                                        <input type="hidden" name="idinmueble" id="idinmueble" value='{{ $inmueble->id or null}}'>
+                                                        <input type="hidden" name="paso" value="2">
+                                                        <input type="hidden" name="idcaptacion" id="idcaptacion" value='{{ $arrendatario->id }}'>
+                                                        <input type="hidden" name="id_modificador"value="{{ Auth::user()->id_persona }}">
+
+                                                        <div class="col-md-6">
+                                                            <div class="form-group">
+
+                                                                <label>Dirección</label>
+                                                                <div id="direcciones">
+                                                                    <input name='i_direccion' id='i_direccion' class="typeahead form-control" type="text" placeholder="Dirección" required="required" value='{{ $inmueble->direccion or '' }}'> 
+                                                                </div>
+                                                                
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-md-2">
+                                                            <div class="form-group">
+                                                              <label>Nro.</label>
+                                                              <input name='i_numero' id='i_numero' type="text" class="form-control"  value='{{ $inmueble->numero or ''  }}'>  </div>
+                                                          </div>
+                                                         <div class="col-md-2">
+                                                            <div class="form-group">
+                                                              <label>Departamento</label>
+                                                              <input name='i_departamento'  id='i_departamento' value='{{ $inmueble->departamento or ''}}' type="text" class="form-control" > </div>
+                                                          </div>     
+                                                             <div class="col-md-2">
+                                                            <div class="form-group">
+                                                               
+                                                                <label>Rol</label>
+                                                                <input name='i_rol' id='i_rol' type="text" class="form-control" value='{{ $inmueble->rol or '' }}'> </div>
+                                                            
+                                                        </div>  
+                                                </div>
+                                                <div class="row"> 
+                                                 <div class="col-md-12">
+                                                        <div class="form-group">
+
+                                                            <label>Referencia</label>
+                                                            <div id="direcciones">
+                                                                <input name='i_referencia' id='i_referencia' class="typeahead form-control" type="text" placeholder="Referencia"  value='{{ $inmueble->referencia or '' }}'> 
+                                                            </div>
+                                                            
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                           
+                                            @if(!isset($inmueble->id_region))
+                                            <?php $idr = null; ?>
+                                            @else
+                                            <?php $idr = $inmueble->id_region; ?>
+                                            @endif
+                                            <div class="row"> 
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label>Región</label>
+                                                        {{ Form::select('i_id_region',$regiones, $idr,array('class'=>'form-control','style'=>'','id'=>'i_id_region','placeholder'=>'Selecciona región','required'=>'required')) }}
+                                                    </div>
+                                                </div>
+
+                                                <!--/span-->
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label>Provincia</label>
+                                                        {{ Form::select('i_id_provincia',[''=>'Seleccione provincia'], null, array('class'=>'form-control','style'=>'','id'=>'i_id_provincia','required'=>'required')) }} </div>
+                                                </div>
+                                                <!--/span-->
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label>Comuna</label>
+                                                        {{ Form::select('i_id_comuna',[''=>'Seleccione comuna'], null, array('class'=>'form-control','style'=>'','id'=>'i_id_comuna','required'=>'required')) }}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row"> 
+                                                <div class="col-md-2">
+                                                    <div class="form-group">
+                                                        <label>Dormitorio</label>
+                                                        <input name='i_dormitorio' id='i_dormitorio' type="number" class="form-control" value='{{ $inmueble->dormitorio or '' }}'> </div>
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <div class="form-group">
+                                                        <label>Baños</label>
+                                                        <input name='i_bano' id='i_bano' type="number" class="form-control"  value='{{ $inmueble->bano or '' }}'> 
+                                                    </div>
+                                                </div>
+                                                <!--/span-->
+                                                <div class="col-md-2">
+                                                    <div class="form-group">
+                                                        <label>Estacionamiento</label>
+                                                        <input name='i_estacionamiento' id='i_estacionamiento' type="number" class="form-control" value='{{ $inmueble->estacionamiento or '' }}'>
+                                                    </div>
+                                                </div>
+                                                        @if(!isset($inmueble->bodega))
+                                                        <?php $idpi = null; ?>
+                                                        @else
+                                                        <?php $idpi = $inmueble->bodega; ?>
+                                                        @endif
+
+                                <div class="col-md-2">
+                                    <div class="form-group">
+                                        <label>Bodega</label>
+                                            {{ Form::select('i_bodega',['1'=> 'SI', '0'=>'NO'], $idpi ,array('class'=>'form-control','style'=>'','id'=>'i_bodega','placeholder'=>'Seleccione')) }}
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="form-group">
+                                        <label>Número de Bodega</label>
+                                        <input name='i_nro_bodega' id='i_nro_bodega'  type="text" class="form-control" value='{{ $inmueble->nro_bodega or '' }}' >
+                                    </div>
+                                </div>
+
+                                                <div class="col-md-2">
+                                                    <div class="form-group">
+                                                        @if(!isset($inmueble->piscina))
+                                                        <?php $idpi = null; ?>
+                                                        @else
+                                                        <?php $idpi = $inmueble->piscina; ?>
+                                                        @endif
+                                                        <label>Piscina</label>
+                                                        {{ Form::select('i_piscina',['SI'=> 'SI', 'NO'=>'NO'], $idpi ,array('class'=>'form-control','style'=>'','id'=>'i_piscina','placeholder'=>'Seleccione')) }}
+
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                            <div class="row"> 
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label>Gasto Común</label>
+                                                        <div class="input-group"> 
+                                                            <span class="input-group-addon">$</span>
+                                                            <input name='i_gastosComunes' id='i_gastosComunes' type="number" class="form-control"  value='{{ $inmueble->gastosComunes or '' }}'>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label>Precio</label>
+                                                        <div class="input-group"> 
+                                                            <span class="input-group-addon">$</span>
+                                                            <input name='i_precio' id='i_precio' type="number" class="form-control" required="required" value='{{ $inmueble->precio or '' }}'>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                 <div class="col-md-2">
+                                                    <div class="form-group">
+                                                        @if(!isset($inmueble->condicion))
+                                                        <?php $idpi = null; ?>
+                                                        @else
+                                                        <?php $idpi = $inmueble->condicion; ?>
+                                                        @endif
+                                                        <label>Condición</label>
+                                                        {{ Form::select('i_condicion',['Nuevo'=> 'Nuevo', 'Usado'=>'Usado'], $idpi ,array('class'=>'form-control','style'=>'','id'=>'i_condicion','placeholder'=>'Seleccione','required'=>'required')) }}
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                        
+                                </div>
+
+                                
+                            </div>
+                                <div class="form-actions">
+                                    <button type="submit" class="btn btn-success"> <i class="fa fa-check"></i> Guardar</button>
+                                    <a href="{{ route('arrendatario.index') }}" class="btn btn-info" style="color:white"><i class="fa fa-times-circle"></i>&nbsp;&nbsp;Calcelar</a>
+                                </div>
+                        </form>
+</section>
                     <section id="section-iconbox-4">
                     <div class="row">
                     <div class="col-sm-6">
@@ -469,13 +653,113 @@
 
 <script src="{{ URL::asset('plugins/bower_components/typeahead.js-master/dist/typeahead.bundle.min.js') }}"></script>
 
+<script>
+
+var direcciones = new Bloodhound({
+    datumTokenizer: function (datum) {
+        return Bloodhound.tokenizers.whitespace(datum.value);
+    },
+    queryTokenizer: Bloodhound.tokenizers.whitespace,
+    prefetch: {
+        url: "/",
+        transform: function (response) {
+            return $.map(response, function (dir) {
+                return {value: 'Id: ' + dir.id + ', Dir: ' + dir.direccion + ', Nro: ' + dir.numero + ', Comuna: ' + dir.comuna_nombre};
+            });
+        }
+    },
+    remote: {
+        wildcard: '%QUERY',
+        url: "/inmuebles/%QUERY",
+        transform: function (response) {
+            return $.map(response, function (dir) {
+                var num=dir.numero==null?'':dir.numero;
+                var dpto=dir.departamento==null?'':dir.departamento;
+                return {value: dir.direccion + ' #' + num  + ' Dpto '+ dpto +',  ' + dir.comuna_nombre,
+                    option: dir.id};
+            });
+        }
+    }
+});
+
+$('#i_direccion').typeahead({
+
+    hint: false,
+    highlight: true,
+    minLength: 1,
+    val:'',
+    limit: 10
+},
+        {
+            name: 'direcciones',
+            display: 'value',
+            source: direcciones,
+
+                templates: {
+                header: '<h4 class="dropdown">Direcciones</h4>'
+            }
+        });
+
+jQuery('#i_direccion').on('typeahead:selected', function (e, datum) {
+ 
+        swal({   
+            title: "Esta seguro que desea utilizar la siguiente dirección?",   
+            text: datum.value,   
+            type: "warning",   
+            showCancelButton: true,   
+            confirmButtonColor: "#DD6B55",   
+            confirmButtonText: "SI",   
+            closeOnConfirm: false 
+        }, function(){   
+             window.location.href = '/arrendatario/agregarinmueble/'+$('#idcaptacion').val()+'/'+datum.option; 
+        });
+
+   
+});
+
+</script>
 <script src="{{ URL::asset('plugins/bower_components/bootstrap-datepicker/bootstrap-datepicker.min.js') }}"></script>
 
 <script src="{{ URL::asset('plugins/bower_components/sweetalert/sweetalert.min.js') }}"></script>
 
 <script src="{{ URL::asset('plugins/bower_components/dropify/dist/js/dropify.min.js') }}"></script>
 
-<script src="{{ URL::asset('js/custom.js') }}"></script>
+<script>
+
+// Basic
+        $('.dropify').dropify();
+        // Translated
+        $('.dropify-fr').dropify({
+            messages: {
+                default: 'Glissez-déposez un fichier ici ou cliquez',
+                replace: 'Glissez-déposez un fichier ou cliquez pour remplacer',
+                remove: 'Supprimer',
+                error: 'Désolé, le fichier trop volumineux'
+            }
+        });
+        // Used events
+        var drEvent = $('#input-file-events').dropify();
+        drEvent.on('dropify.beforeClear', function(event, element) {
+            return confirm("Esta seguro de eliminar  \"" + element.file.name + "\" ?");
+        });
+        drEvent.on('dropify.afterClear', function(event, element) {
+            alert('Archivo Borrado');
+        });
+        drEvent.on('dropify.errors', function(event, element) {
+            console.log('Has Errors');
+        });
+        var drDestroy = $('#input-file-to-destroy').dropify();
+        drDestroy = drDestroy.data('dropify')
+        $('#toggleDropify').on('click', function(e) {
+            e.preventDefault();
+            if (drDestroy.isDropified()) {
+                drDestroy.destroy();
+            } else {
+                drDestroy.init();
+            }
+        })
+
+</script>
 
 <script src="{{ URL::asset('plugins/bower_components/lightbox/js/lightbox.js') }}"></script>
 
@@ -525,7 +809,32 @@ $(function() {
             });
             @endif
         @endif
-
+       @if(isset($inmueble->id))
+            @if(isset($inmueble->id_region) && isset($inmueble->id_provincia))
+            $("#i_id_provincia").empty();
+            $("#i_id_comuna").empty();
+            $.get("/provincias/"+{{ $inmueble->id_region}}+"",function(response,state){
+                for(i=0; i< response.length;i++){
+                    sel='';
+                    if(response[i].provincia_id=={{ $inmueble->id_provincia }}){
+                        sel=' selected="selected"';
+                    }
+                    $("#i_id_provincia").append("<option value='"+response[i].provincia_id+"' "+sel+">"+response[i].provincia_nombre+"</option>");
+                }
+            });
+            @endif
+            @if(isset($persona->id_provincia))
+            $.get("/comunas/"+{{ $inmueble->id_provincia }}+"",function(response,state){
+                for(i=0; i< response.length;i++){
+                    sel='';
+                    if(response[i].comuna_id=={{ $inmueble->id_comuna }}){
+                        sel=' selected="selected"';
+                    }
+                    $("#i_id_comuna").append("<option value='"+response[i].comuna_id+"' "+sel+">"+response[i].comuna_nombre+"</option>");
+                }
+            });
+            @endif
+        @endif
         });
 
 
@@ -582,18 +891,13 @@ function mostrar_modal(obj){
         success:function(response){
             $('#modal-contacto_edit').modal('show');
             $('#id_citas_e').val(response[0].id);
-           // $('#nombre_e').val(response[0].nombre);
             $('#tipo_contacto_e').val(response[0].tipo_contacto);
             var d = response[0].fecha.split('-');
             $('#datepicker-fecha_cita').val(d[2] + '-' + d[1] + '-' + d[0]);
-            //$('#telefono_e').val(response[0].telefono);
-            //$('#email_e').val(response[0].email);
             $('#direccion_e').val(response[0].direccion);
             $('#numero_e').val(response[0].numero);
             $('#departamento_e').val(response[0].departamento);
             $('#nombre_c_e').val(response[0].nombre_c);
-            //$('#telefono_c_e').val(response[0].telefono_c);
-            //$('#email_c_e').val(response[0].email_c);
             $('#detalle_e').val(response[0].detalle);
             $('#estado_e').val(response[0].estado);
             
@@ -703,5 +1007,31 @@ jQuery(document).ready(function () {
 
 
 
+$("#i_id_region").change(function (event) {
+    $("#i_id_provincia").empty();
+    $("#i_id_comuna").empty();
+    $.get("/provincias/" + event.target.value + "", function (response, state) {
+        $("#i_id_provincia").append("<option value=''>Seleccione provincia</option>");
+        for (i = 0; i < response.length; i++) {
+            $("#i_id_provincia").append("<option value='" + response[i].provincia_id + "'>" + response[i].provincia_nombre + "</option>");
+        }
+    });
+});
+
+$("#i_id_provincia").change(function (event) {
+    $("#i_id_comuna").empty();
+    $.get("/comunas/" + event.target.value + "", function (response, state) {
+        $("#i_id_comuna").append("<option value=''>Seleccione comuna</option>");
+        for (i = 0; i < response.length; i++) {
+            $("#i_id_comuna").append("<option value='" + response[i].comuna_id + "'>" + response[i].comuna_nombre + "</option>");
+        }
+    });
+});
+
+
+
+
+        
+    
 </script>
 @endsection
