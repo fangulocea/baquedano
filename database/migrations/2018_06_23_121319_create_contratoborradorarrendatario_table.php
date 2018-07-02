@@ -16,6 +16,7 @@ class CreateContratoborradorarrendatarioTable extends Migration
         Schema::dropIfExists('contratoborradorarrendatarios');
         Schema::create('contratoborradorarrendatarios', function (Blueprint $table) {
             $table->increments('id');
+            $table->integer('id_cap_arr');
             $table->integer('id_inmueble')->unsigned()->nullable();
             $table->foreign('id_inmueble')->references('id')->on('inmuebles')->nullable();
             $table->integer('id_arrendatario')->unsigned()->nullable();

@@ -281,6 +281,9 @@
                                     @can('contratoborradorarrendatario.index')
                                     <li> <a href="{{ route('cbararrendatario.index') }}"><i class=" fa-fw">CB</i><span class="hide-menu">Contrato Borrador</span></a> </li>
                                     @endcan
+                                    @can('finalContratoArr.index')
+                                    <li> <a href="{{ route('finalContratoArr.index') }}"><i class=" fa-fw">CB</i><span class="hide-menu">Contrato Final</span></a> </li>
+                                    @endcan
                                 </ul>
                             </li>
 

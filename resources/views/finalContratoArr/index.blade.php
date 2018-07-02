@@ -4,8 +4,8 @@
 
 <div id="tabla" >
     <div class="white-box">
-        <h3 class="box-title m-b-0">Gestión de Contratos Borrador Arrendatario</h3>
-        <p class="text-muted m-b-30">Administración de registros para la generación de contratos borrador</p>
+        <h3 class="box-title m-b-0">Gestión de Contrato Final Arrendatario</h3>
+        <p class="text-muted m-b-30">Administración de registros para la generación de contratos Finales</p>
         <div class="table-responsive" style="padding-bottom: 50px;">
             <table id="listusers" class="display compact" cellspacing="0" width="200%">
       
@@ -41,7 +41,7 @@
                                 <td>{{ trans_choice('mensajes.arrendatario', $p->id_estado) }}</td>
                                 @can('cbararrendatario.edit')
                                 <td width="10px">
-                                    <a href="{{ route('cbararrendatario.edit', $p->id_cap_arr) }}"><span class="btn btn-warning btn-circle btn-lg"><i class="ti-pencil-alt"></i></span></a>
+                                    <a href="{{ route('finalContratoArr.edit', [$p->id_cap_arr,0,0,1]) }}"><span class="btn btn-warning btn-circle btn-lg"><i class="ti-pencil-alt"></i></span></a>
                                 </td>
                                 @endcan
                                 @can('cbararrendatario.destroy')

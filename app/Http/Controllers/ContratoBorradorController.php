@@ -216,6 +216,9 @@ class ContratoBorradorController extends Controller
              i.dormitorio as dormitorio, i.bano as bano, i.bodega, i.piscina, i.precio, i.gastosComunes, 
              con.nombre, con.nombre as contrato, con.descripcion as deta_contrato,
              p1.profesion as profesion_p, p1.telefono as telefono_p, p1.departamento as depto_p,
+             CONCAT(s.descripcion, "  $",s.valor) as Servicio, 
+             CONCAT(c.descripcion, " ", c.comision, " %") as comision, 
+             f.descripcion as Flexibilidad ,
              i.rol as rol, b.detalle_revision as bodyContrato'))->first();
         $pdf = new PdfController();
 
@@ -274,6 +277,9 @@ class ContratoBorradorController extends Controller
              i.dormitorio as dormitorio, i.bano as bano, i.bodega, i.piscina, i.precio, i.gastosComunes, 
              con.nombre, con.nombre as contrato, con.descripcion as deta_contrato,
              p1.profesion as profesion_p, p1.telefono as telefono_p, p1.departamento as depto_p,
+             CONCAT(s.descripcion, "  $",s.valor) as Servicio, 
+             CONCAT(c.descripcion, " ", c.comision, " %") as comision, 
+             f.descripcion as Flexibilidad ,
              i.rol as rol, b.detalle_revision as bodyContrato'))->first();
 
         $pdf = new PdfController();

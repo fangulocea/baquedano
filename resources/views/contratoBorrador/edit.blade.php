@@ -850,16 +850,55 @@ $('#listusers1_c').DataTable({
                     "advlist autolink link lists charmap print preview hr anchor pagebreak spellchecker", "searchreplace wordcount visualblocks visualchars code fullscreen insertdatetime nonbreaking", "save table contextmenu directionality template paste textcolor"
                 ],
                 toolbar1: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | l      ink | print preview fullpage | forecolor backcolor  | mybutton",
-                toolbar2: "Propietario | Rut | Profesion | Teléfono | Domicilio | Depto | Comuna | Región",
-                toolbar3: "Propiedad | DireccionProp | DeptoProp | RolProp | ComunaProp | DormitorioProp | BanoProp ",
-                toolbar4: "diaFirma | mesFirma | anioFirma ",
+                toolbar2: "Persona | Rut | Profesion | Teléfono | Domicilio | Depto | Comuna | Región",
+                toolbar3: "Propiedad | DireccionProp | DeptoProp | RolProp | ComunaProp | DormitorioProp | BanoProp | ValorArriendo ",
+                toolbar4: "Comisiones | Flexibilidad | Servicio | FormasDePago | Multas",
             setup: function (editor) 
             {
-                    editor.addButton('Propietario', 
-                    {   text: '{propietario}',
+
+
+                editor.addButton('Comisiones', 
+                    {   text: '{Comisiones}',
                         icon: false,
                         onclick: function () 
-                        { editor.insertContent('{propietario}'); }
+                        { editor.insertContent('{Comisiones}'); }
+                    });
+
+                editor.addButton('Flexibilidad', 
+                    {   text: '{Flexibilidad}',
+                        icon: false,
+                        onclick: function () 
+                        { editor.insertContent('{Flexibilidad}'); }
+                    });
+
+                editor.addButton('Servicio', 
+                    {   text: '{Servicio}',
+                        icon: false,
+                        onclick: function () 
+                        { editor.insertContent('{Servicio}'); }
+                    });
+
+                editor.addButton('FormasDePago', 
+                    {   text: '{FormasDePago}',
+                        icon: false,
+                        onclick: function () 
+                        { editor.insertContent('{FormasDePago}'); }
+                    });
+
+                editor.addButton('Multas', 
+                    {   text: '{Multas}',
+                        icon: false,
+                        onclick: function () 
+                        { editor.insertContent('{Multas}'); }
+                    });
+
+                //Personas
+
+                    editor.addButton('Persona', 
+                    {   text: '{persona}',
+                        icon: false,
+                        onclick: function () 
+                        { editor.insertContent('{persona}'); }
                     });
                     editor.addButton('Rut', 
                     {   text: '{rut}',
@@ -880,28 +919,28 @@ $('#listusers1_c').DataTable({
                         { editor.insertContent('{telefono}'); }
                     });
                     editor.addButton('Domicilio', 
-                    {   text: '{domicilioDueno}',
+                    {   text: '{domicilioPersona}',
                         icon: false,
                         onclick: function () 
-                        { editor.insertContent('{domicilioDueno}'); }
+                        { editor.insertContent('{domicilioPersona}'); }
                     });
                     editor.addButton('Depto', 
-                    {   text: '{deptoDueno}',
+                    {   text: '{deptoPersona}',
                         icon: false,
                         onclick: function () 
-                        { editor.insertContent('{deptoDueno}'); }
+                        { editor.insertContent('{deptoPersona}'); }
                     });
                     editor.addButton('Comuna', 
-                    {   text: '{comunaDueno}',
+                    {   text: '{comunaPersona}',
                         icon: false,
                         onclick: function () 
-                        { editor.insertContent('{comunaDueno}'); }
+                        { editor.insertContent('{comunaPersona}'); }
                     });
                     editor.addButton('Región', 
-                    {   text: '{regionDueno}',
+                    {   text: '{regionPersona}',
                         icon: false,
                         onclick: function () 
-                        { editor.insertContent('{regionDueno}'); }
+                        { editor.insertContent('{regionPersona}'); }
                     });
                     
                     //propiedad

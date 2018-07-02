@@ -22,7 +22,7 @@
             <div class="sttabs tabs-style-iconbox">
                 <nav>
                     <ul>
-                        <li id="li_5_c"><a id="5" href="#section-iconbox-5_c" class="sticon ti-agenda"><span>Gestión Contrato Borrador</span></a></li>
+                        <li id="li_5_c"><a id="5" href="#section-iconbox-5_c" class="sticon ti-agenda"><span>Gestión Contrato Borrador Arrendatario</span></a></li>
                     </ul>
                 </nav>
 
@@ -32,6 +32,7 @@
                 <input type="hidden" name="id_creador" value="{{ Auth::user()->id }}"">
                 <input type="hidden" name="id_arrendatario" value="{{ $publica->id_arrendatario }}">
                 <input type="hidden" name="id_inmueble" value="{{ $publica->id_inmueble }}">
+                <input type="hidden" name="id_cap_arr" value="{{ $publica->id_cap_arr }}">
                              {!! csrf_field() !!}     
                    <div class="row">
                                 <div class="col-lg-2 col-sm-3 col-xs-12">
@@ -169,6 +170,7 @@
                         <th>Editar</th>
                         <th>Correo</th>
                         <th>Ver Pdf</th>
+                        <th>Pasar a Final</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -182,17 +184,22 @@
                                 <td>{{ trans_choice('mensajes.borradorArrendatatio', $p->id_estado) }}</td>
                                 @can('revisioncomercial.edit')
                                     <td>
-                                        <button class="btn btn-success btn-circle btn-lg" id='via_edit' onclick="mostrar_modal({{ $p->id }})" ><i class="fa fa-check"></i></span></button>
+                                        <button class="btn btn-success btn-circle btn-lg" id='via_edit' onclick="mostrar_modal({{ $p->id_cap_arr }})" ><i class="fa fa-check"></i></span></button>
                                     </td>
                                 @endcan
                                 @can('cbararrendatario.mail')
                                     <td>
-                                        <a href="{{ route('cbararrendatario.mail', $p->id) }}"><span class="btn btn-warning btn-circle btn-lg"><i class="ti ti-email"></i></span></a>
+                                        <a href="{{ route('cbararrendatario.mail', $p->id_cap_arr) }}"><span class="btn btn-warning btn-circle btn-lg"><i class="ti ti-email"></i></span></a>
                                     </td>
                                 @endcan
                                    <td>
                                         <a href="{{asset('uploads/pdf/'.$p->nombre)}}" target="_blank"><span class="btn btn-success btn-circle btn-lg"><i class="ti ti-file"></i></span></a>
                                     </td>
+                                @can('borradorContrato.edit')
+                                    <td>
+                                        <a href="{{ route('finalContratoArr.crearContrato', [$p->id_cap_arr ,$p->id_pdfborrador,Auth::user()->id]) }}"><span class="btn btn-danger btn-circle btn-lg"><i class="ti ti-file"></i></span></a>
+                                    </td>
+                                @endcan
                             </tr>
                             @endforeach
 
@@ -211,6 +218,7 @@
                                                     <input type="hidden" class="form-control" name="id_modificador" id="id_modificador_e" value="{{ Auth::user()->id }}">
                                                     <input type="hidden" class="form-control" name="id_borrador" id="id_borrador_e">
                                                     <input type="hidden" class="form-control" name="id_arrendtario" id="id_arrendtario_e">
+                                                    <input type="hidden" name="id_cap_arr" id="id_cap_arr_e">
                                                     <div class="modal-body">
 
                     <div class="row">
@@ -250,7 +258,7 @@
                                 <div class="col-lg-3 col-sm-3 col-xs-12">
                                     <label>Fecha Contrato</label>
                                     <div class="input-group">
-                                        <input type="text" autocomplete="off" class="datepicker-fecha_contacto_e" placeholder="dd/mm/yyyy" id="datepicker-fecha_contacto1_c1" name="fecha_contrato" required="required"> <span class="input-group-addon"><i class="icon-calender"></i></span> 
+                                        <input type="text" autocomplete="off" class="form-control datepicker-fecha_contacto1_c" placeholder="dd/mm/yyyy" id="datepicker-fecha_contacto1_c11" name="fecha_contrato" required="required"> <span class="input-group-addon"><i class="icon-calender"></i></span> 
                                     </div>
 
                                 </div>
@@ -326,6 +334,7 @@
                                                 <option value="1" >Vigente</option>
                                                 <option value="2" >Correo Enviado</option>
                                                 <option value="3" >Reenvío Correo</option>
+                                                <option value="3" >Contrato Proceso Firma</option>
                                         </select> 
                                     </div>
                                 </div>
@@ -789,7 +798,7 @@ function mostrar_modal(obj){
         success:function(response){
             $('#modal-contacto_edit_c').modal('show');
             var d = response[0].fecha_contrato.split('-');
-            $('#datepicker-fecha_contacto1_c1').val(d[2] + '-' + d[1] + '-' + d[0]);
+            $('#datepicker-fecha_contacto1_c11').val(d[2] + '-' + d[1] + '-' + d[0]);
             $('#id_servicios_e').val(response[0].id_servicios);
             $('#id_notaria_e').val(response[0].id_notaria);
             $('#id_comisiones_e').val(response[0].id_comisiones);
@@ -802,6 +811,7 @@ function mostrar_modal(obj){
             $('#id_multa_e').val(response[0].id_multa);
             $('#dia_pago_e').val(response[0].dia_pago);
             $('#valorarriendo_e').val(response[0].valorarriendo);
+            $('#id_cap_arr_e').val(response[0].id_cap_arr);
             $('#detalle_e').val(response[0].detalle);
             tinyMCE.activeEditor.setContent(response[0].detalle);
         }
