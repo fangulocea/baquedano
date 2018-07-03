@@ -20,6 +20,8 @@ class PagosPropietarios extends Migration
             $table->foreign('id_contratofinal')->references('id')->on('adm_contratofinal');
             $table->integer('id_publicacion')->unsigned();
             $table->foreign('id_publicacion')->references('id')->on('cap_publicaciones');
+            $table->integer('id_inmueble')->unsigned();
+            $table->foreign('id_inmueble')->references('id')->on('inmuebles');
             $table->string('tipopago');
             $table->string('E_S');
             $table->string('idtipopago');

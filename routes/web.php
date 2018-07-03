@@ -42,7 +42,9 @@ Route::get('provincias/{id}','RegionController@getProvincias');
 
 Route::get('contratofinal/consulta/{id}','ContratoFinalController@getContrato');
 
-Route::get('contratofinal/consultapagos/{id}','ContratoFinalController@getpagos');
+Route::get('contratofinal/consultapagos/{id}/{id2}','ContratoFinalController@getpagos');
+
+Route::get('contratofinal/consultapagosmensuales/{id}/{id2}','ContratoFinalController@getpagosmensuales');
 
 Route::get('regiones/todas','RegionController@getTodasRegiones');
 
@@ -747,6 +749,9 @@ Route::get('revisionpersona/eliminarfoto/{idf}/{idc}','RevisionPersonaController
 		Route::get('pagospropietario/mostrarpago/{id}','ContratoFinalController@mostrar_un_pago')->name('finalContrato.mostrarpago')
 		->middleware('permission:finalContrato.update');
 
+		Route::get('pagospropietario/mostrardirecciones/{id}','ContratoFinalController@mostrardirecciones')->name('finalContrato.mostrardirecciones')
+		->middleware('permission:finalContrato.update');
+
 		Route::get('pagospropietario/eliminar/{idp}/{idt}','ContratoFinalController@eliminartipopago')->name('finalContrato.eliminartipopago')
 		->middleware('permission:finalContrato.update');
 
@@ -781,6 +786,9 @@ Route::get('revisionpersona/eliminarfoto/{idf}/{idc}','RevisionPersonaController
 
 		Route::post('finalContrato/generarpagos/{idp}','ContratoFinalController@generarpagos')->name('finalContrato.generarpagos')
 		->middleware('permission:finalContrato.edit');		
+
+		Route::get('finalContrato/asignarinmueble/{idc}/{idi}/{idp}','ContratoFinalController@asignarinmueble')->name('finalContrato.asignarinmueble')
+		->middleware('permission:finalContrato.edit');
 
 
 		// COntratos Arrendatario Borrador

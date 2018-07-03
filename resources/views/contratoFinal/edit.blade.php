@@ -22,7 +22,7 @@
                 <nav>
                     <ul>
                         <li id="li_5_c"><a id="5" href="#section-iconbox-5_c" class="sticon ti-agenda"><span>Gestión</span></a></li>
-                        <li id="li_4_c"><a id="5" href="#section-iconbox-4_c" class="sticon ti-home"><span>Inmuebles</span></a></li>
+                        <li id="li_4_c"><a id="4" href="#section-iconbox-4_c" class="sticon ti-home"><span>Inmuebles</span></a></li>
                         <li id="li_6_c"><a id="6" href="#section-iconbox-6_c" class="sticon ti-agenda"><span>Documentos Iniciales</span></a></li>
                         <li id="li_7_c"><a id="7" href="#section-iconbox-7_c" class="sticon ti-agenda"><span>Generación de Pagos</span></a></li>
                         <li id="li_8_c"><a id="8" href="#section-iconbox-8_c" class="sticon ti-money"><span>Items de Pagos Mensuales</span></a></li>
@@ -105,7 +105,7 @@
                                                     <div class="form-group">
                                                         <label for="input-file-now-custom-1">Contrato</label>
                                                         <input type="hidden" name="tab" value="3">
-                                                        <select class="form-control" name="id_final_pagos" id="id_final_pagos"  required="required" >
+                                                        <select class="form-control" name="id_final_inmueble" id="id_final_inmueble"  required="required" >
                                                             <option value="">Selecione Contrato</option>
                                                             @foreach($finalIndex as $n)
                                                                     @if($n->id_estado>1)
@@ -130,20 +130,31 @@
                                                 <div class="row">
                                                     <div class="col-md-12">
                                                             <div class="form-group">
-                                                    <table id="listusers" class="display nowrap" cellspacing="0" width="100%">
+                                                    <table id="listusers2" class="display nowrap" cellspacing="0" width="100%">
                                                     <thead>
                                                         <tr>
                                                             <th>ID</th>
+                                                            <th>Contrato</th>
                                                             <th>Dirección/ #Nro</th>
-                                                            <th>Propietario</th>
-                                                            <th>Fecha Creación</th>
-                                                            <th>Creador</th>
-                                                            <th>Portal</th>
-                                                            <th>Ver</th>
+                                                            <th>Eliminar</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
-                                                   
+                                                        @php ($f = 0)
+                                                        @foreach($direcciones as $d)
+
+                                                        <tr>
+                                                            <td>{{ $d->id }}</td>
+                                                            <td>{{ $d->alias }}</td>
+                                                            <td>{{ $d->direccion }}</td>
+                                                            @if($f>0)
+                                                            <td>boton</td>
+                                                            @else
+                                                            <td></td>
+                                                            @endif
+                                                        </tr>
+                                                        {{ $f++ }}
+                                                        @endforeach
                                                     </tbody>
                                                 </table>
                                             </div>
@@ -161,14 +172,19 @@
                                 <input type="hidden" name="tab" value="2">
                                 <h3 class="box-title">Subir Archivo</h3>
                                 <label for="input-file-now-custom-1">Contratos</label>
-                                        <select class="form-control" name="id_final" required="required" >
-                                            <option value="">Selecione ID Contrato</option>
+                                        <select class="form-control" name="id_final" id="id_final" required="required" >
+                                            <option value="">Selecione Contrato</option>
                                             @foreach($finalIndex as $n)
                                                     @if($n->id_estado>1)
                                                     <option value="{{ $n->id }}">{{ $n->alias }} </option>
                                                     @endif
                                             @endforeach  
                                         </select>
+
+                                    <div class="form-group">
+                                            <label>Dirección</label>
+                                        {{ Form::select('id_inmueble_pdf',[''=>'Seleccione dirección'], null, array('class'=>'form-control','style'=>'','id'=>'id_inmueble_pdf','required'=>'required')) }} 
+                                    </div>
                                 <label for="input-file-now-custom-1">Tipo Documento</label>
                                         <select class="form-control" name="tipo" required="required" >
                                                     <option value="">Selecione Tipo de Documento</option>
@@ -253,6 +269,10 @@
                                                             @endforeach  
                                                         </select>
                                                     </div>
+                                            <div class="form-group">
+                                                <label>Dirección</label>
+                                                {{ Form::select('id_inmueble_pago',[''=>'Seleccione dirección'], null, array('class'=>'form-control','style'=>'','id'=>'id_inmueble_pago','required'=>'required')) }} 
+                                                 </div>
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="form-group">
@@ -583,6 +603,10 @@
                                                             @endforeach  
                                                         </select>
                                                     </div>
+                                            <div class="col-md-6">
+                                            <label>Dirección</label>
+                                        {{ Form::select('id_inmueble_mensual',[''=>'Seleccione dirección'], null, array('class'=>'form-control','style'=>'','id'=>'id_inmueble_mensual','required'=>'required')) }} 
+                                                </div>
                                                 </div>
         <div class="table-responsive" id="tablearea">
    
@@ -593,16 +617,14 @@
 </div>
         </section>
         <section id="section-iconbox-9_c">
-
 <div id="tabla" >
     <div class="white-box">
  <div class="form-body">
-    <h3>GESTIÓN DE PAGOS </h3>
                                             <div class="row">
                                                 <div class="col-md-6">
                   <label for="input-file-now-custom-1">Contrato</label>
                                                         <input type="hidden" name="tab" value="3">
-                                                        <select class="form-control" name="id_final_pago" id="id_final_pago"  required="required" >
+                                                        <select class="form-control" name="id_final_pagar" id="id_final_pagar"  required="required" >
                                                             <option value="0">Selecione Contrato</option>
                                                             @foreach($finalIndex as $n)
                                                                     @if($n->id_estado>1)
@@ -611,11 +633,40 @@
                                                             @endforeach  
                                                         </select>
                                                     </div>
+                                            <div class="col-md-6">
+                                            <label>Dirección</label>
+                                        {{ Form::select('id_inmueble_pagar',[''=>'Seleccione dirección'], null, array('class'=>'form-control','style'=>'','id'=>'id_inmueble_pagar','required'=>'required')) }} 
                                                 </div>
-        <div class="table-responsive" id="tablearea">
-   
-                            
+                                                </div>
+<div class="row">
+         <div class="col-md-7">
+            <div class="table-responsive" id="pagoarea">
+       
+                                
+            </div>
         </div>
+        <div class="col-md-5">
+            <div class="row">
+                <div class="col-md-6">
+                        <div class="table-responsive" id="detallearea">
+       
+                                
+                        </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                        <div class="table-responsive" id="docarea">
+       
+                                
+                        </div>
+                </div>
+            </div>
+
+        </div>
+</div>
+
+
     </div>
     </div>
 </div>
@@ -724,7 +775,7 @@ $('#i_direccion').typeahead({
         });
 
 jQuery('#i_direccion').on('typeahead:selected', function (e, datum) {
- 
+ if($("#id_final_inmueble").val()!=""){
         swal({   
             title: "Esta seguro que desea utilizar la siguiente dirección?",   
             text: datum.value,   
@@ -734,9 +785,15 @@ jQuery('#i_direccion').on('typeahead:selected', function (e, datum) {
             confirmButtonText: "SI",   
             closeOnConfirm: false 
         }, function(){   
-             window.location.href = '/arrendatario/agregarinmueble/'+$('#idcaptacion').val()+'/'+datum.option; 
+             window.location.href = '/finalContrato/asignarinmueble/'+$("#id_final_inmueble").val()+'/'+datum.option+'/'+{{ $p->id_publicacion }}; 
         });
+}else{
+    swal({   
+            title: "Debe seleccionar contrato",   
+            type: "error"
 
+        });
+}
    
 });
 
@@ -796,6 +853,37 @@ jQuery('#i_direccion').on('typeahead:selected', function (e, datum) {
 
 <script>
 
+var table2 =$('#listusers2').DataTable({
+    language: {
+        "sProcessing": "Procesando...",
+        "sLengthMenu": "Mostrar _MENU_ registros",
+        "sZeroRecords": "No se encontraron resultados",
+        "sEmptyTable": "Ningún dato disponible en esta tabla",
+        "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+        "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+        "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+        "sInfoPostFix": "",
+        "sSearch": "Buscar:",
+        "sUrl": "",
+        "sInfoThousands": ",",
+        "sLoadingRecords": "Cargando...",
+        "oPaginate": {
+            "sFirst": "Primero",
+            "sLast": "Último",
+            "sNext": "Siguiente",
+            "sPrevious": "Anterior"
+        },
+        "buttons": {
+            "copy": 'Copiar',
+            "csv": 'Exportar a CSV',
+            "print": 'Imprimir'},
+        "oAria": {
+            "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+            "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+        }
+    }
+});
+
 
 
 var table1 =$('#listusers1_c').DataTable({
@@ -840,13 +928,44 @@ var table1 =$('#listusers1_c').DataTable({
                     $("#fecha_firmapago").val(response.fecha_firma);
                 
             });
+            if(event.target.value!=""){
+                $("#id_inmueble_pago").empty();
+                $.get("/pagospropietario/mostrardirecciones/" + event.target.value + "", function (response, state) {
+                    $("#id_inmueble_pago").append("<option value=''>Seleccione dirección</option>");
+                    for (i = 0; i < response.length; i++) {
+                        $("#id_inmueble_pago").append("<option value='" + response[i].id_inmueble + "'>" + response[i].direccion + "</option>");
+                    }
+                });
+            }else{
+                $("#id_inmueble_pago").empty();
+            }
 
     });
 
  $("#id_final_detalle").change(function (event) {
 
-        $.get("/contratofinal/consultapagos/"+this.value+"",function(response,state){
-                        var meses = ["Ene","Feb","Mar","Abr","May","Jun","Jul","Ago","Sep","Oct","Nov","Dic"];
+    if(event.target.value!=""){
+        $("#id_inmueble_mensual").empty();
+            $.get("/pagospropietario/mostrardirecciones/" + event.target.value + "", function (response, state) {
+                $("#id_inmueble_mensual").append("<option value=''>Seleccione dirección</option>");
+                for (i = 0; i < response.length; i++) {
+                    $("#id_inmueble_mensual").append("<option value='" + response[i].id_inmueble + "'>" + response[i].direccion + "</option>");
+                }
+            });
+        }else{
+            $("#id_inmueble_mensual").empty();
+        }
+});
+
+
+  $("#id_inmueble_mensual").change(function (event) {
+
+        if($("#id_final_detalle").val()==''){
+            return false;
+        }
+
+        $.get("/contratofinal/consultapagos/"+$("#id_final_detalle").val()+"/"+ event.target.value +"",function(response,state){
+                        var meses = ["","Ene","Feb","Mar","Abr","May","Jun","Jul","Ago","Sep","Oct","Nov","Dic"];
 
                         document.getElementById("tablearea").innerHTML="";
                         if(response.length>0){
@@ -938,14 +1057,18 @@ var table1 =$('#listusers1_c').DataTable({
                                               
                                                 }           
                                                             var a = document.createElement("button");
-                                                            var linkText = document.createTextNode("Borrar "+newArray[0].tipopago);
+                                                            var linkText1 = document.createTextNode("Borrar ");
+                                                            var linkText2 = document.createTextNode(newArray[0].tipopago);
                                                             a.className="btn btn-block btn-danger btn-rounded";
                                                             a.id=newArray[0].idtipopago;
                                                             a.name=newArray[0].id_contratofinal;
                                                             a.addEventListener('click', function(){
                                                                     eliminar_pago(this);
                                                                 });
-                                                            a.appendChild(linkText);
+                                                            a.appendChild(linkText1);
+                                                            a.appendChild(document.createElement("br"));
+                                                            a.appendChild(linkText2);
+                                                            a.style="font-size:small"
                                                             var cell = document.createElement("td");
                                                             cell.appendChild(a);
                                                             cell.style.border="1px solid black";
@@ -1037,17 +1160,33 @@ if($tab==5){
 <?php
 }
 ?>
+
+<?php
+if($tab==6){
+    ?>
+    $(function() {
+
+            $("#li_5_c").removeClass("tab-current");
+            $("#li_4_c").addClass("tab-current");
+            $("#section-iconbox-5_c").removeClass("content-current");
+            $("#section-iconbox-4_c").addClass("content-current");
+           }); 
+<?php
+}
+?>
 $("#li_5_c").click(function (event) {
              $("#li_5_c").addClass("tab-current");
             $("#li_6_c").removeClass("tab-current");
             $("#li_7_c").removeClass("tab-current");
             $("#li_8_c").removeClass("tab-current");
             $("#li_9_c").removeClass("tab-current");
+            $("#li_4_c").removeClass("tab-current");
             $("#section-iconbox-5_c").addClass("content-current");
             $("#section-iconbox-6_c").removeClass("content-current");
             $("#section-iconbox-7_c").removeClass("content-current");
             $("#section-iconbox-8_c").removeClass("content-current"); 
             $("#section-iconbox-9_c").removeClass("content-current");
+             $("#section-iconbox-4_c").removeClass("content-current");
             
 });
 $("#li_6_c").click(function (event) {
@@ -1056,22 +1195,26 @@ $("#li_6_c").click(function (event) {
             $("#li_7_c").removeClass("tab-current");
              $("#li_8_c").removeClass("tab-current");
              $("#li_9_c").removeClass("tab-current");
+             $("#li_4_c").removeClass("tab-current");
              $("#section-iconbox-6_c").addClass("content-current");
             $("#section-iconbox-5_c").removeClass("content-current");    
             $("#section-iconbox-7_c").removeClass("content-current"); 
             $("#section-iconbox-8_c").removeClass("content-current");  
-            $("#section-iconbox-9_c").removeClass("content-current");         
+            $("#section-iconbox-9_c").removeClass("content-current"); 
+             $("#section-iconbox-4_c").removeClass("content-current");        
 });
 $("#li_7_c").click(function (event) {
             $("#li_6_c").removeClass("tab-current");
             $("#li_5_c").removeClass("tab-current");
             $("#li_8_c").removeClass("tab-current");
             $("#li_9_c").removeClass("tab-current");
+            $("#li_4_c").removeClass("tab-current");
             $("#li_7_c").addClass("tab-current");
             $("#section-iconbox-5_c").removeClass("content-current");
             $("#section-iconbox-6_c").removeClass("content-current");
             $("#section-iconbox-8_c").removeClass("content-current");
             $("#section-iconbox-9_c").removeClass("content-current");
+             $("#section-iconbox-4_c").removeClass("content-current");
             $("#section-iconbox-7_c").addClass("content-current");       
             
 });
@@ -1081,11 +1224,13 @@ $("#li_8_c").click(function (event) {
             $("#li_6_c").removeClass("tab-current");
             $("#li_7_c").removeClass("tab-current");
             $("#li_9_c").removeClass("tab-current");
+            $("#li_4_c").removeClass("tab-current");
             $("#section-iconbox-8_c").addClass("content-current");
             $("#section-iconbox-5_c").removeClass("content-current");
             $("#section-iconbox-6_c").removeClass("content-current");
             $("#section-iconbox-7_c").removeClass("content-current");
             $("#section-iconbox-9_c").removeClass("content-current");
+             $("#section-iconbox-4_c").removeClass("content-current");
             
 });
 $("#li_9_c").click(function (event) {
@@ -1094,14 +1239,32 @@ $("#li_9_c").click(function (event) {
             $("#li_6_c").removeClass("tab-current");
             $("#li_7_c").removeClass("tab-current");
             $("#li_8_c").removeClass("tab-current");
+            $("#li_4_c").removeClass("tab-current");
             $("#section-iconbox-9_c").addClass("content-current");
             $("#section-iconbox-5_c").removeClass("content-current");
             $("#section-iconbox-6_c").removeClass("content-current");
             $("#section-iconbox-7_c").removeClass("content-current");
             $("#section-iconbox-8_c").removeClass("content-current");
+            $("#section-iconbox-4_c").removeClass("content-current");
             
 });
 
+
+$("#li_4_c").click(function (event) {
+             $("#li_4_c").addClass("tab-current");
+            $("#li_5_c").removeClass("tab-current");
+            $("#li_6_c").removeClass("tab-current");
+            $("#li_7_c").removeClass("tab-current");
+            $("#li_8_c").removeClass("tab-current");
+            $("#li_9_c").removeClass("tab-current");
+            $("#section-iconbox-4_c").addClass("content-current");
+            $("#section-iconbox-5_c").removeClass("content-current");
+            $("#section-iconbox-6_c").removeClass("content-current");
+            $("#section-iconbox-7_c").removeClass("content-current");
+            $("#section-iconbox-8_c").removeClass("content-current");
+            $("#section-iconbox-9_c").removeClass("content-current");
+            
+});
 
 
 function mostrar_modal(obj){
@@ -1119,5 +1282,211 @@ function mostrar_modal(obj){
 function eliminar_pago(obj){
     window.location.href = '/pagospropietario/eliminar/'+obj.name+'/'+obj.id;
 }
+
+$("#id_final").change(function (event) {
+    if(event.target.value!=""){
+    $("#id_inmueble_pdf").empty();
+    $.get("/pagospropietario/mostrardirecciones/" + event.target.value + "", function (response, state) {
+        $("#id_inmueble_pdf").append("<option value=''>Seleccione dirección</option>");
+        for (i = 0; i < response.length; i++) {
+            $("#id_inmueble_pdf").append("<option value='" + response[i].id_inmueble + "'>" + response[i].direccion + "</option>");
+        }
+    });
+}else{
+    $("#id_inmueble_pdf").empty();
+}
+});
+
+
+ $("#id_final_pagar").change(function (event) {
+
+    if(event.target.value!=""){
+        $("#id_inmueble_pagar").empty();
+            $.get("/pagospropietario/mostrardirecciones/" + event.target.value + "", function (response, state) {
+                $("#id_inmueble_pagar").append("<option value=''>Seleccione dirección</option>");
+                for (i = 0; i < response.length; i++) {
+                    $("#id_inmueble_pagar").append("<option value='" + response[i].id_inmueble + "'>" + response[i].direccion + "</option>");
+                }
+            });
+        }else{
+            $("#id_inmueble_pagar").empty();
+        }
+});
+
+  $("#id_inmueble_pagar").change(function (event) {
+
+        if($("#id_final_pagar").val()==''){
+            return false;
+        }
+
+                $.get("/contratofinal/consultapagosmensuales/"+$("#id_final_pagar").val()+"/" + event.target.value + "",function(response,state){
+                        var meses = ["", "Ene","Feb","Mar","Abr","May","Jun","Jul","Ago","Sep","Oct","Nov","Dic"];
+
+                        document.getElementById("pagoarea").innerHTML="";
+                        if(response.length>0){
+                            var tablearea = document.getElementById('pagoarea'),
+                                tbl = document.createElement('table');
+
+                            tbl.className='table';
+                            tbl.style.border="1px solid black";
+                            tbl.style.padding="10px";
+                            tbl.style.marginTop="50px";
+
+                            var header = tbl.createTHead();
+                            var rowheader = header.insertRow(0);
+                            var fecha_iniciocontrato=new Date(response[0].fecha_iniciocontrato);
+                            var meses_contrato=response[0].meses_contrato;
+                            var mes_inicio=response[0].mes;
+
+                                    //HEAD
+                                    var head_fecha=fecha_iniciocontrato;
+                                        head_fecha.setDate(1);
+                                    
+                                    var cell = document.createElement("th");
+                                        cell.style.border="1px solid black";
+                                        cell.style.padding="8px";
+                                        cell.innerHTML = 'Mes/Año';
+                                        rowheader.appendChild(cell);
+
+                                    var cell = document.createElement("th");
+                                        cell.style.border="1px solid black";
+                                        cell.style.padding="8px";
+                                        cell.innerHTML = 'Total Entrada';
+                                        rowheader.appendChild(cell);
+
+                                    var cell = document.createElement("th");
+                                        cell.style.border="1px solid black";
+                                        cell.style.padding="8px";
+                                        cell.innerHTML = 'Total Salida';
+                                        rowheader.appendChild(cell);
+
+                                    var cell = document.createElement("th");
+                                        cell.style.border="1px solid black";
+                                        cell.style.padding="8px";
+                                        cell.innerHTML = 'Pagar Propietario';
+                                        rowheader.appendChild(cell);
+
+                                    var cell = document.createElement("th");
+                                        cell.style.border="1px solid black";
+                                        cell.style.padding="8px";
+                                        cell.innerHTML = 'Pago a Rentas';
+                                        rowheader.appendChild(cell);
+
+                                     tbl.appendChild(rowheader);
+
+                                    // LINEAS
+
+                                    for (var r = 0; r < response.length; r++) {
+                                        var row = document.createElement("tr");
+                                     // CONTENIDO
+
+                                         if(response.length>0)
+                                         {
+                                                                              
+                                                    if (!$.isEmptyObject(response[r])) {
+                                                            var cell = document.createElement("td");
+                                                            var cellText = document.createTextNode(meses[response[r].mes]+'/'+response[r].anio);
+                                                            cell.appendChild(cellText);
+                                                            cell.style.border="1px solid black";
+                                                            cell.style.padding="8px"
+                                                            cell.style.textAlign="center"
+                                                            row.appendChild(cell);
+                                                            var a = document.createElement("button");
+                                                            var linkText = document.createTextNode("$ "+response[r].valor_a_pagar);
+                                                            a.appendChild(linkText);
+                                                            if(response[r].E_S=='e'){
+                                                                a.className="btn btn-block btn-outline btn-success";
+                                                                a.style="width:100px";
+                                                            }else{
+                                                                a.className="btn btn-block btn-outline btn-danger";
+                                                                a.style="width:100px";
+                                                            }
+                                                            var id=response[r].id;
+                                                            a.id=id;
+                                                            a.addEventListener('click', function(){
+                                                                    mostrar_modal(this);
+                                                                });
+                                                            var cell = document.createElement("td");
+                                                            cell.appendChild(a);
+                                                            cell.style.border="1px solid black";
+                                                            cell.style.padding="8px"
+                                                            cell.style.textAlign="center"
+                                                            row.appendChild(cell);
+                                                            var a = document.createElement("button");
+                                                            var linkText = document.createTextNode("$ "+response[r+1].valor_a_pagar);
+                                                            a.appendChild(linkText);
+                                                            if(response[r+1].E_S=='e'){
+                                                                a.className="btn btn-block btn-outline btn-success";
+                                                            }else{
+                                                                a.className="btn btn-block btn-outline btn-danger";
+                                                            }
+                                                            var id=response[r+1].id;
+                                                            a.id=id;
+                                                            a.addEventListener('click', function(){
+                                                                    mostrar_modal(this);
+                                                                });
+                                                            var cell = document.createElement("td");
+                                                            cell.appendChild(a);
+                                                            cell.style.border="1px solid black";
+                                                            cell.style.padding="8px"
+                                                            cell.style.textAlign="center"
+                                                            row.appendChild(cell);
+
+                                                            var pagar_a_propietario=response[r+1].valor_a_pagar-response[r].valor_a_pagar;
+                                                            var pagar_a_baquedano=response[r].valor_a_pagar-response[r+1].valor_a_pagar;
+
+                                                            if(pagar_a_propietario<0)
+                                                                pagar_a_propietario=0;
+
+                                                            if(pagar_a_baquedano<0)
+                                                                pagar_a_baquedano=0;
+
+                                                            var a = document.createElement("button");
+                                                            var linkText = document.createTextNode("$ "+pagar_a_propietario);
+                                                            a.appendChild(linkText);
+                                                            a.className="btn btn-block btn-outline btn-danger";
+                                                            var id=response[r+1].id;
+                                                            a.id=id;
+                                                            a.addEventListener('click', function(){
+                                                                    mostrar_modal(this);
+                                                                });
+                                                            var cell = document.createElement("td");
+                                                            cell.appendChild(a);
+                                                            cell.style.border="1px solid black";
+                                                            cell.style.padding="8px"
+                                                            cell.style.textAlign="center"
+                                                            row.appendChild(cell);
+
+
+                                                            var a = document.createElement("button");
+                                                            var linkText = document.createTextNode("$ "+pagar_a_baquedano);
+                                                            a.appendChild(linkText);
+                                                            a.className="btn btn-block btn-outline btn-success";
+                                                            var id=response[r+1].id;
+                                                            a.id=id;
+                                                            a.addEventListener('click', function(){
+                                                                    mostrar_modal(this);
+                                                                });
+                                                            var cell = document.createElement("td");
+                                                            cell.appendChild(a);
+                                                            cell.style.border="1px solid black";
+                                                            cell.style.padding="8px"
+                                                            cell.style.textAlign="center"
+                                                            row.appendChild(cell);
+
+  
+                                                    }
+                                                 r++
+                                                tbl.appendChild(row); // AGREGA EL PAGO
+                                        }
+                                    }
+                                
+                                 tablearea.appendChild(tbl);
+                        }
+                
+            });
+
+});
+
 </script>
 @endsection

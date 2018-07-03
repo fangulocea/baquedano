@@ -20,6 +20,8 @@ class DetallePagosPropietarios extends Migration
             $table->foreign('id_pagomensual')->references('id')->on('adm_pagosmensualespropietarios');
             $table->integer('id_publicacion')->unsigned()->nullable();
             $table->foreign('id_publicacion')->references('id')->on('cap_publicaciones');
+            $table->integer('id_inmueble')->unsigned()->nullable();
+            $table->foreign('id_inmueble')->references('id')->on('inmuebles');
             $table->string('E_S');
             $table->integer('valor_original');
             $table->integer('valor_pagado');

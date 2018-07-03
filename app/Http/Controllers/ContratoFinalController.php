@@ -9,6 +9,7 @@ use App\ContratoFinalDocs;
 use App\Captacion;
 use App\PagosPropietarios;
 use App\PagosMensualesPropietarios;
+use App\ContratoInmueblesPropietarios;
 use Illuminate\Http\Request;
 use DB;
 use Illuminate\Support\Facades\File;
@@ -29,9 +30,22 @@ class ContratoFinalController extends Controller {
         return response()->json($contrato);
     }
 
-    public function getPagos($id) {
+    public function getPagos($id,$idi) {
         $contrato = DB::table('adm_pagospropietarios')
                 ->where('id_contratofinal', '=', $id)
+                ->where('id_inmueble', '=', $idi)
+                 ->orderBy('id', 'asc')
+                ->get();
+        return response()->json($contrato);
+    }
+
+    public function getpagosmensuales($id,$idi) {
+        $contrato = DB::table('adm_pagosmensualespropietarios as c')
+                ->leftjoin('adm_contratofinal as cp', 'c.id_contratofinal', '=', 'cp.id')
+                ->where('c.id_contratofinal', '=', $id)
+                ->where('c.id_inmueble', '=', $idi)
+                ->select(DB::raw(' c.E_S, c.fecha_iniciocontrato, c.mes, c.anio, c.valor_a_pagar, cp.meses_contrato'))
+                ->orderBy('c.id', 'asc')
                 ->get();
         return response()->json($contrato);
     }
@@ -171,9 +185,19 @@ class ContratoFinalController extends Controller {
         $documentos = DB::table('adm_contratofinaldocs as n')
                 ->where("n.id_publicacion", "=", $idc)
                 ->get();
+
+        $direcciones = DB::table('adm_contratodirpropietarios as c')
+                ->leftjoin('inmuebles as i', 'c.id_inmueble', '=', 'i.id')
+                ->leftjoin('comunas as o', 'i.id_comuna', '=', 'o.comuna_id')
+                ->leftjoin('adm_contratofinal as cf', 'c.id_contratofinal', '=', 'cf.id')
+                ->where("c.id_publicacion", "=", $idc)
+              ->select(DB::raw('c.id, i.id as id_inmueble, CONCAT_WS(" ",i.direccion,"#",i.numero,"Depto.",i.departamento,o.comuna_nombre) as direccion, cf.alias'))
+                ->get();
+
+
         $flag = 0;
 
-        return view('contratoFinal.edit', compact('borrador', 'finalIndex', 'notaria', 'documentos', 'flag', 'tab'));
+        return view('contratoFinal.edit', compact('borrador', 'finalIndex', 'notaria', 'documentos', 'flag', 'tab','direcciones'));
     }
 
     /**
@@ -201,10 +225,41 @@ class ContratoFinalController extends Controller {
         $captacion = Captacion::find($request->id_publicacion)->update([
             "id_estado" => 7
         ]);
+
+        $captacion = Captacion::find($request->id_publicacion);
+        $cont_inmueble = ContratoInmueblesPropietarios::create([
+            "id_publicacion" => $request->id_publicacion,
+            "id_contratofinal" => $id,
+            "id_inmueble"=> $captacion->id_inmueble,
+            "id_creador"=> Auth::user()->id
+        ]);
+
         return redirect()->route('finalContrato.edit', [$request->id_publicacion, $request->id_borrador, $request->id_pdf, 1])
                         ->with('status', 'Contrato actualizado con éxito');
     }
 
+
+    public function asignarinmueble($idc,$idi,$idp) {
+
+ $cont_inmueble = ContratoInmueblesPropietarios::where("id_inmueble","=",$idi)
+ ->where("id_contratofinal","=",$idc)
+ ->where("id_publicacion","=",$idp)
+ ->get();
+ if(count($cont_inmueble)>0){
+    return redirect()->route('finalContrato.edit', [$idp, 0, 0, 6])
+                        ->with('error', 'Inmueble ya se encuentra asignado a contrato');
+ }
+
+        $cont_inmueble = ContratoInmueblesPropietarios::create([
+            "id_publicacion" => $idp,
+            "id_contratofinal" => $idc,
+            "id_inmueble"=> $idi,
+            "id_creador"=> Auth::user()->id
+        ]);
+
+        return redirect()->route('finalContrato.edit', [$idp, 0, 0, 6])
+                        ->with('status', 'Contrato actualizado con éxito');
+    }
     public function destroy($id, $idpdf) {
         $pdf = ContratoFinalPdf::find($idpdf);
         File::delete($pdf->ruta . '/' . $pdf->nombre);
@@ -235,6 +290,7 @@ class ContratoFinalController extends Controller {
         $imagen = ContratoFinalDocs::create([
                     'id_final' => $request->id_final,
                     'id_publicacion' => $request->id_publicacion,
+                    'id_inmueble' => $request->id_inmueble_pdf,
                     'tipo' => $request->tipo,
                     'nombre' => $archivo,
                     'ruta' => $destinationPath,
@@ -358,10 +414,27 @@ class ContratoFinalController extends Controller {
         return response()->json($pago);
     }
 
+    public function mostrardirecciones($id) {
+        $direcciones = DB::table('adm_contratodirpropietarios as c')
+                ->leftjoin('inmuebles as i', 'c.id_inmueble', '=', 'i.id')
+                ->leftjoin('comunas as o', 'i.id_comuna', '=', 'o.comuna_id')
+                ->leftjoin('adm_contratofinal as cf', 'c.id_contratofinal', '=', 'cf.id')
+                ->where("cf.id", "=", $id)
+              ->select(DB::raw('c.id, i.id as id_inmueble, CONCAT_WS(" ",i.direccion,"#",i.numero,"Depto.",i.departamento,o.comuna_nombre) as direccion, cf.alias'))
+                ->get();
+        return response()->json($direcciones);
+    }
+
     public function generarpagos(Request $request, $idp) {
 
         //general
         $idcontrato = $request->id_final_pagos;
+
+        $contrato = ContratoFinal::where('id', '=', $idcontrato)->update([
+            "meses_contrato" => $request->cant_meses
+        ]);
+
+        $idinmueble = $request->id_inmueble_pago;
         $cant_meses = $request->cant_meses;
         $meses_contrato = $request->cant_meses;
         $fechafirma = $request->fecha_firmapago;
@@ -451,6 +524,7 @@ class ContratoFinalController extends Controller {
                             'id_contratofinal' => $idcontrato,
                             'meses_contrato' => $meses_contrato,
                             'id_publicacion' => $idp,
+                            'id_inmueble' => $idinmueble,
                             'tipopago' => "Gasto Común",
                             'idtipopago' => $idtipopago,
                             'fecha_iniciocontrato' => $fechafirma,
@@ -485,6 +559,7 @@ class ContratoFinalController extends Controller {
                             'id_publicacion' => $idp,
                             'tipopago' => "Gasto Común",
                             'idtipopago' => $idtipopago,
+                            'id_inmueble' => $idinmueble,
                             'E_S' => $request->gc_radio,
                             'fecha_iniciocontrato' => $fechafirma,
                             'dia' => $dia,
@@ -528,6 +603,7 @@ class ContratoFinalController extends Controller {
                             'id_contratofinal' => $idcontrato,
                             'meses_contrato' => $meses_contrato,
                             'id_publicacion' => $idp,
+                            'id_inmueble' => $idinmueble,
                             'tipopago' => "Canon de Arriendo",
                             'idtipopago' => $idtipopago,
                             'E_S' => $request->ca_radio,
@@ -563,6 +639,7 @@ class ContratoFinalController extends Controller {
                             'id_contratofinal' => $idcontrato,
                             'meses_contrato' => $meses_contrato,
                             'id_publicacion' => $idp,
+                            'id_inmueble' => $idinmueble,
                             'tipopago' => "Canon de Arriendo",
                             'E_S' => $request->ca_radio,
                             'idtipopago' => $idtipopago,
@@ -604,6 +681,7 @@ class ContratoFinalController extends Controller {
                         'id_contratofinal' => $idcontrato,
                         'meses_contrato' => $meses_contrato,
                         'id_publicacion' => $idp,
+                        'id_inmueble' => $idinmueble,
                         'tipopago' => "Garantía",
                         'idtipopago' => $idtipopago,
                         'E_S' => $request->ga_radio,
@@ -649,6 +727,7 @@ class ContratoFinalController extends Controller {
                             'id_contratofinal' => $idcontrato,
                             'meses_contrato' => $meses_contrato,
                             'id_publicacion' => $idp,
+                            'id_inmueble' => $idinmueble,
                             'tipopago' => "IVA",
                             'idtipopago' => $idtipopago,
                             'fecha_iniciocontrato' => $fechafirma,
@@ -682,6 +761,7 @@ class ContratoFinalController extends Controller {
                             'id_contratofinal' => $idcontrato,
                             'meses_contrato' => $meses_contrato,
                             'id_publicacion' => $idp,
+                            'id_inmueble' => $idinmueble,
                             'tipopago' => "IVA",
                             'E_S' => $request->iva_radio,
                             'idtipopago' => $idtipopago,
@@ -723,6 +803,7 @@ class ContratoFinalController extends Controller {
                         'id_contratofinal' => $idcontrato,
                         'meses_contrato' => $meses_contrato,
                         'id_publicacion' => $idp,
+                        'id_inmueble' => $idinmueble,
                         'tipopago' => "Pie Comisión",
                         'E_S' => $request->pie_radio,
                         'idtipopago' => $idtipopago,
@@ -768,6 +849,7 @@ class ContratoFinalController extends Controller {
                             'id_contratofinal' => $idcontrato,
                             'meses_contrato' => $meses_contrato,
                             'id_publicacion' => $idp,
+                            'id_inmueble' => $idinmueble,
                             'tipopago' => "Comisión Mensual",
                             'E_S' => $request->pj_radio,
                             'idtipopago' => $idtipopago,
@@ -801,6 +883,7 @@ class ContratoFinalController extends Controller {
                             'id_contratofinal' => $idcontrato,
                             'meses_contrato' => $meses_contrato,
                             'id_publicacion' => $idp,
+                            'id_inmueble' => $idinmueble,
                             'tipopago' => "Comisión Mensual",
                             'idtipopago' => $idtipopago,
                             'fecha_iniciocontrato' => $fechafirma,
@@ -843,6 +926,7 @@ class ContratoFinalController extends Controller {
                         'id_contratofinal' => $idcontrato,
                         'meses_contrato' => $meses_contrato,
                         'id_publicacion' => $idp,
+                        'id_inmueble' => $idinmueble,
                         'tipopago' => "Comisión Total",
                         'idtipopago' => $idtipopago,
                         'E_S' => $request->co_radio,
@@ -883,6 +967,7 @@ class ContratoFinalController extends Controller {
                         'id_contratofinal' => $idcontrato,
                         'meses_contrato' => $meses_contrato,
                         'id_publicacion' => $idp,
+                        'id_inmueble' => $idinmueble,
                         'tipopago' => "Notaría",
                         'idtipopago' => $idtipopago,
                         'E_S' => $request->no_radio,
@@ -929,6 +1014,7 @@ class ContratoFinalController extends Controller {
                             'id_contratofinal' => $idcontrato,
                             'meses_contrato' => $meses_contrato,
                             'id_publicacion' => $idp,
+                            'id_inmueble' => $idinmueble,
                             'tipopago' => $nombre_otropago1,
                             'E_S' => $request->o1_radio,
                             'idtipopago' => $idtipopago,
@@ -962,6 +1048,7 @@ class ContratoFinalController extends Controller {
                             'id_contratofinal' => $idcontrato,
                             'meses_contrato' => $meses_contrato,
                             'id_publicacion' => $idp,
+                            'id_inmueble' => $idinmueble,
                             'tipopago' => $nombre_otropago1,
                             'idtipopago' => $idtipopago,
                             'fecha_iniciocontrato' => $fechafirma,
@@ -1008,6 +1095,7 @@ class ContratoFinalController extends Controller {
                             'id_contratofinal' => $idcontrato,
                             'meses_contrato' => $meses_contrato,
                             'id_publicacion' => $idp,
+                            'id_inmueble' => $idinmueble,
                             'tipopago' => $nombre_otropago2,
                             'E_S' => $request->o2_radio,
                             'idtipopago' => $idtipopago,
@@ -1041,6 +1129,7 @@ class ContratoFinalController extends Controller {
                             'id_contratofinal' => $idcontrato,
                             'meses_contrato' => $meses_contrato,
                             'id_publicacion' => $idp,
+                            'id_inmueble' => $idinmueble,
                             'tipopago' => $nombre_otropago2,
                             'idtipopago' => $idtipopago,
                             'fecha_iniciocontrato' => $fechafirma,
@@ -1088,6 +1177,7 @@ class ContratoFinalController extends Controller {
                             'id_contratofinal' => $idcontrato,
                             'meses_contrato' => $meses_contrato,
                             'id_publicacion' => $idp,
+                            'id_inmueble' => $idinmueble,
                             'tipopago' => $nombre_otropago3,
                             'E_S' => $request->o3_radio,
                             'idtipopago' => $idtipopago,
@@ -1121,6 +1211,7 @@ class ContratoFinalController extends Controller {
                             'id_contratofinal' => $idcontrato,
                             'meses_contrato' => $meses_contrato,
                             'id_publicacion' => $idp,
+                            'id_inmueble' => $idinmueble,
                             'tipopago' => $nombre_otropago3,
                             'idtipopago' => $idtipopago,
                             'fecha_iniciocontrato' => $fechafirma,
@@ -1165,6 +1256,7 @@ class ContratoFinalController extends Controller {
             $pago_mensual = PagosMensualesPropietarios::create([
                         'id_contratofinal' => $idcontrato,
                         'id_publicacion' => $idp,
+                        'id_inmueble' => $idinmueble,
                         'E_S' => 'e',
                         'fecha_iniciocontrato' => $fechafirma,
                         'mes' => $mes,
@@ -1178,6 +1270,7 @@ class ContratoFinalController extends Controller {
             $pago_mensual = PagosMensualesPropietarios::create([
                         'id_contratofinal' => $idcontrato,
                         'id_publicacion' => $idp,
+                        'id_inmueble' => $idinmueble,
                         'E_S' => 's',
                         'fecha_iniciocontrato' => $fechafirma,
                         'mes' => $mes,

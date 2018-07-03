@@ -20,6 +20,8 @@ class DetallePagosDocPropietarios extends Migration
             $table->foreign('id_detallepago')->references('id')->on('adm_detallepagospropietarios');
             $table->integer('id_publicacion')->unsigned()->nullable();
             $table->foreign('id_publicacion')->references('id')->on('cap_publicaciones');
+            $table->integer('id_inmueble')->unsigned();
+            $table->foreign('id_inmueble')->references('id')->on('inmuebles');
             $table->string('tipo');
             $table->string('nombre');
             $table->string('ruta');

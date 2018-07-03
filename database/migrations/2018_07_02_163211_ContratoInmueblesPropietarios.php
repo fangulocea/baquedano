@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class ContratoFinalDocs extends Migration
+class ContratoInmueblesPropietarios extends Migration
 {
     /**
      * Run the migrations.
@@ -13,22 +13,19 @@ class ContratoFinalDocs extends Migration
      */
     public function up()
     {
-            Schema::dropIfExists('adm_contratofinaldocs');
-            Schema::create('adm_contratofinaldocs', function (Blueprint $table) {
+       Schema::dropIfExists('adm_contratodirpropietarios');
+            Schema::create('adm_contratodirpropietarios', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('id_final')->unsigned()->nullable();
-            $table->foreign('id_final')->references('id')->on('adm_contratofinal');
+            $table->integer('id_contratofinal')->unsigned()->nullable();
+            $table->foreign('id_contratofinal')->references('id')->on('adm_contratofinal');
             $table->integer('id_publicacion')->unsigned()->nullable();
             $table->foreign('id_publicacion')->references('id')->on('cap_publicaciones');
-            $table->integer('id_inmueble')->unsigned();
+            $table->integer('id_inmueble')->unsigned()->nullable();
             $table->foreign('id_inmueble')->references('id')->on('inmuebles');
-            $table->string('tipo');
-            $table->string('nombre');
-            $table->string('ruta');
             $table->string('id_creador')->nullable();
             $table->timestamps();
             $table->softDeletes();
-        });
+            });
     }
 
     /**
@@ -38,6 +35,6 @@ class ContratoFinalDocs extends Migration
      */
     public function down()
     {
-       Schema::dropIfExists('adm_contratofinaldocs');
+        Schema::dropIfExists('adm_contratodirpropietarios');
     }
 }
