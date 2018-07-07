@@ -138,6 +138,7 @@ return array(
     'Caffeinated\\Shinobi\\ShinobiServiceProvider' => $vendorDir . '/caffeinated/shinobi/src/ShinobiServiceProvider.php',
     'Caffeinated\\Shinobi\\Traits\\PermissionTrait' => $vendorDir . '/caffeinated/shinobi/src/Traits/PermissionTrait.php',
     'Caffeinated\\Shinobi\\Traits\\ShinobiTrait' => $vendorDir . '/caffeinated/shinobi/src/Traits/ShinobiTrait.php',
+    'CapImportRespaldo' => $baseDir . '/database/migrations/2018_07_04_165624_cap_import_respaldo.php',
     'CapPublicacion' => $baseDir . '/database/migrations/2018_05_24_164206_cap_publicacion.php',
     'CaptacionCorredor' => $baseDir . '/database/migrations/2018_06_10_221625_CaptacionCorredor.php',
     'CaptacionGestion' => $baseDir . '/database/migrations/2018_05_31_103305_CaptacionGestion.php',

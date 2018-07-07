@@ -922,7 +922,7 @@ var table1 =$('#listusers1_c').DataTable({
 
 
  $("#id_final_pagos").change(function (event) {
-
+document.getElementById("tablearea").innerHTML="";
         $.get("/contratofinal/consulta/"+this.value+"",function(response,state){
                     //$("#porcentaje").val(response.comision);
                     $("#fecha_firmapago").val(response.fecha_firma);
@@ -944,6 +944,7 @@ var table1 =$('#listusers1_c').DataTable({
 
  $("#id_final_detalle").change(function (event) {
 
+document.getElementById("tablearea").innerHTML="";
     if(event.target.value!=""){
         $("#id_inmueble_mensual").empty();
             $.get("/pagospropietario/mostrardirecciones/" + event.target.value + "", function (response, state) {
@@ -959,9 +960,11 @@ var table1 =$('#listusers1_c').DataTable({
 
 
   $("#id_inmueble_mensual").change(function (event) {
-
+document.getElementById("tablearea").innerHTML="";
         if($("#id_final_detalle").val()==''){
+
             return false;
+
         }
 
         $.get("/contratofinal/consultapagos/"+$("#id_final_detalle").val()+"/"+ event.target.value +"",function(response,state){
@@ -1299,7 +1302,7 @@ $("#id_final").change(function (event) {
 
 
  $("#id_final_pagar").change(function (event) {
-
+document.getElementById("pagoarea").innerHTML="";
     if(event.target.value!=""){
         $("#id_inmueble_pagar").empty();
             $.get("/pagospropietario/mostrardirecciones/" + event.target.value + "", function (response, state) {
@@ -1314,8 +1317,8 @@ $("#id_final").change(function (event) {
 });
 
   $("#id_inmueble_pagar").change(function (event) {
-
-        if($("#id_final_pagar").val()==''){
+document.getElementById("pagoarea").innerHTML="";
+        if($("#id_final_pagar").val()=='' || $(this).val()==''){
             return false;
         }
 

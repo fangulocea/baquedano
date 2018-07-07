@@ -19,6 +19,7 @@ use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\File;
 use Excel;
 
+
 class CaptacionController extends Controller
 {
 
@@ -27,12 +28,11 @@ class CaptacionController extends Controller
          $publica = DB::table('cap_publicaciones as c')
          ->leftjoin('personas as p1', 'c.id_propietario', '=', 'p1.id')
          ->leftjoin('inmuebles as i', 'c.id_inmueble', '=', 'i.id')
-         ->leftjoin('personas as p2', 'c.id_creador', '=', 'p2.id')
+         ->leftjoin('users as p2', 'c.id_creador', '=', 'p2.id')
          ->leftjoin('personas as p3', 'c.id_modificador', '=', 'p3.id')
          ->leftjoin('comunas as o', 'i.id_comuna', '=', 'o.comuna_id')
          ->leftjoin('portales as po', 'c.portal', '=', 'po.id')
-         ->select(DB::raw('c.id as id_publicacion,(select count(*) from cap_gestion where id_captacion_gestion=c.id) as cantGes ,DATE_FORMAT(c.created_at, "%d/%m/%Y") as fecha_creacion, c.id_estado as id_estado, CONCAT(p1.nombre," ",p1.apellido_paterno," ",p1.apellido_materno) as Propietario, CONCAT(p2.nombre," ",p2.apellido_paterno," ",p2.apellido_materno) as Creador, (select count(*) from cap_gestion where id_captacion_gestion=c.id and (tipo_contacto="Sin Respuesta" or tipo_contacto="Reenvío" or tipo_contacto="Correo Eléctronico" or tipo_contacto="Vigente") and (dir = "Información Enviada" or dir = "Ambas")) as cantCorreos'),'i.id as id_inmueble','i.direccion','i.numero','i.departamento', 'o.comuna_nombre','po.nombre as portal','p1.nombre as nom_p','p1.apellido_paterno as apep_p','p1.apellido_materno as apem_p','p2.nombre as nom_c','p2.apellido_paterno as apep_c','p2.apellido_materno as apem_c','p3.nombre as nom_m','p3.apellido_paterno as apep_m','p3.apellido_materno as apem_m')
-         ->select(DB::raw('c.id as id_publicacion,(select count(*) from cap_gestion where id_captacion_gestion=c.id) as cantGes ,DATE_FORMAT(c.created_at, "%d/%m/%Y") as fecha_creacion, c.id_estado as id_estado, CONCAT(p1.nombre," ",p1.apellido_paterno," ",p1.apellido_materno) as Propietario, CONCAT(p2.nombre," ",p2.apellido_paterno," ",p2.apellido_materno) as Creador, (select count(*) from cap_gestion where id_captacion_gestion=c.id and (tipo_contacto="Sin Respuesta" or tipo_contacto="Reenvío" or tipo_contacto="Correo Eléctronico" or tipo_contacto="Seguimiento Correo") and (dir = "Información Enviada" or dir = "Ambas")) as cantCorreos'),'i.id as id_inmueble','i.direccion','i.numero','i.departamento', 'o.comuna_nombre','po.nombre as portal','p1.nombre as nom_p','p1.apellido_paterno as apep_p','p1.apellido_materno as apem_p','p2.nombre as nom_c','p2.apellido_paterno as apep_c','p2.apellido_materno as apem_c','p3.nombre as nom_m','p3.apellido_paterno as apep_m','p3.apellido_materno as apem_m')
+         ->select(DB::raw('c.id as id_publicacion,(select count(*) from cap_gestion where id_captacion_gestion=c.id) as cantGes ,DATE_FORMAT(c.created_at, "%d/%m/%Y") as fecha_creacion, c.id_estado as id_estado, CONCAT(p1.nombre," ",p1.apellido_paterno," ",p1.apellido_materno) as Propietario, p2.name as creador, (select count(*) from cap_gestion where id_captacion_gestion=c.id and (tipo_contacto="Sin Respuesta" or tipo_contacto="Reenvío" or tipo_contacto="Correo Eléctronico" or tipo_contacto="Vigente") and (dir = "Información Enviada" or dir = "Ambas")) as cantCorreos'),'i.id as id_inmueble','i.direccion','i.numero','i.departamento', 'o.comuna_nombre','po.nombre as portal','p1.nombre as nom_p','p1.apellido_paterno as apep_p','p1.apellido_materno as apem_p','p3.nombre as nom_m','p3.apellido_paterno as apep_m','p3.apellido_materno as apem_m')
          ->get();
          
          return view('reporteCap.index',compact('publica'));
@@ -62,7 +62,7 @@ class CaptacionController extends Controller
       $publica = DB::table('cap_publicaciones as c')
            ->leftjoin('personas as p1', 'c.id_propietario', '=', 'p1.id')
            ->leftjoin('inmuebles as i', 'c.id_inmueble', '=', 'i.id')
-           ->leftjoin('personas as p2', 'c.id_creador', '=', 'p2.id')
+           ->leftjoin('users as p2', 'c.id_creador', '=', 'p2.id')
            ->leftjoin('personas as p3', 'c.id_modificador', '=', 'p3.id')
            ->leftjoin('comunas as o', 'i.id_comuna', '=', 'o.comuna_id')
            ->leftjoin('portales as po', 'c.portal', '=', 'po.id')
@@ -70,7 +70,7 @@ class CaptacionController extends Controller
            ->where('p1.email','like','%@%')
            ->where('c.id_creador','=',$id)
            ->where('c.id_estado','=','1')
-           ->select(DB::raw('c.id as id_publicacion, DATE_FORMAT(c.created_at, "%d/%m/%Y") as fecha_creacion, c.id_estado as id_estado, CONCAT(p1.nombre," ",p1.apellido_paterno," ",p1.apellido_materno) as Propietario, CONCAT(p2.nombre," ",p2.apellido_paterno," ",p2.apellido_materno) as Creador'),'i.id as id_inmueble','i.direccion','i.numero','i.departamento', 'o.comuna_nombre','po.nombre as portal','c.id_propietario','c.id_creador','p1.email','p1.nombre as nom_p','p1.apellido_paterno as apep_p','p1.apellido_materno as apem_p','p2.nombre as nom_c','p2.apellido_paterno as apep_c','p2.apellido_materno as apem_c','p3.nombre as nom_m','p3.apellido_paterno as apep_m','p3.apellido_materno as apem_m, p1.email')
+           ->select(DB::raw('c.id as id_publicacion, DATE_FORMAT(c.created_at, "%d/%m/%Y") as fecha_creacion, c.id_estado as id_estado, CONCAT(p1.nombre," ",p1.apellido_paterno," ",p1.apellido_materno) as Propietario, p2.name as Creador'),'i.id as id_inmueble','i.direccion','i.numero','i.departamento', 'o.comuna_nombre','po.nombre as portal','c.id_propietario','c.id_creador','p1.email','p1.nombre as nom_p','p1.apellido_paterno as apep_p','p1.apellido_materno as apem_p','p3.nombre as nom_m','p3.apellido_paterno as apep_m','p3.apellido_materno as apem_m, p1.email')
            ->get();
            return response()->json($publica);
 
@@ -82,14 +82,14 @@ class CaptacionController extends Controller
       $publica = DB::table('cap_publicaciones as c')
            ->leftjoin('personas as p1', 'c.id_propietario', '=', 'p1.id')
            ->leftjoin('inmuebles as i', 'c.id_inmueble', '=', 'i.id')
-           ->leftjoin('personas as p2', 'c.id_creador', '=', 'p2.id')
+           ->leftjoin('users as p2', 'c.id_creador', '=', 'p2.id')
            ->leftjoin('personas as p3', 'c.id_modificador', '=', 'p3.id')
            ->leftjoin('comunas as o', 'i.id_comuna', '=', 'o.comuna_id')
            ->leftjoin('portales as po', 'c.portal', '=', 'po.id')
            ->Where('p1.email','<>','')
            ->where('p1.email','like','%@%')
            ->where('c.id_creador','=',$id)
-           ->select(DB::raw('c.id as id_publicacion, DATE_FORMAT(c.created_at, "%d/%m/%Y") as fecha_creacion, c.id_estado as id_estado, CONCAT(p1.nombre," ",p1.apellido_paterno," ",p1.apellido_materno) as Propietario, CONCAT(p2.nombre," ",p2.apellido_paterno," ",p2.apellido_materno) as Creador'),'i.id as id_inmueble','i.direccion','i.numero','i.departamento', 'o.comuna_nombre','po.nombre as portal','c.id_propietario','c.id_creador','p1.email','p1.nombre as nom_p','p1.apellido_paterno as apep_p','p1.apellido_materno as apem_p','p2.nombre as nom_c','p2.apellido_paterno as apep_c','p2.apellido_materno as apem_c','p3.nombre as nom_m','p3.apellido_paterno as apep_m','p3.apellido_materno as apem_m')
+           ->select(DB::raw('c.id as id_publicacion, DATE_FORMAT(c.created_at, "%d/%m/%Y") as fecha_creacion, c.id_estado as id_estado, CONCAT(p1.nombre," ",p1.apellido_paterno," ",p1.apellido_materno) as Propietario, p2.name as Creador'),'i.id as id_inmueble','i.direccion','i.numero','i.departamento', 'o.comuna_nombre','po.nombre as portal','c.id_propietario','c.id_creador','p1.email','p1.nombre as nom_p','p1.apellido_paterno as apep_p','p1.apellido_materno as apem_p','p3.nombre as nom_m','p3.apellido_paterno as apep_m','p3.apellido_materno as apem_m')
            ->get();
            return response()->json($publica);
 
@@ -128,7 +128,7 @@ class CaptacionController extends Controller
                 }
                 
                     $insert[] = [
-                    'captador'               => $value->captador
+                    'captador'               => Auth::user()->id
                     ,'fecha_publicacion'     => $value->fecha_de_publicacion
                     ,'Direccion'             => $value->direccion
                     ,'nro'                   => $value["nro."]
@@ -149,6 +149,7 @@ class CaptacionController extends Controller
                     ,'OBSERVACIONES'         => $value->observaciones
                     ,'LINK'                  => $value->link_ubicacion_web
                     ,'Codigo_Publicacion'    => $value->codigo_publicacion
+                    ,'Tipo_Correo'           => $value->tipo_correo
                     ,'id_creador'            => $request->idusuario
                     ,'created_at'            => $fecha_creacion
                      ];
@@ -166,9 +167,19 @@ class CaptacionController extends Controller
 
    public function limpiarxls($id)
     {
+        $select = DB::table('cap_import')
+                  ->where("id_creador","=",$id)
+                  ->select(DB::raw('CAPTADOR, Fecha_publicacion, Direccion, Nro, Dpto, Comuna, Dorm, Bano, Esta, Bode, Pisc, Precio, GASTOS_COMUNES, CONDICION, nombre_propietario, TELEFONO, correo, portal, FECHA_ENVIO_CLIENTE, OBSERVACIONES, LINK, Codigo_Publicacion, Tipo_Correo, id_creador, id_estado, ob_estado'));
+
+        $bindings = $select->getBindings();
+
+        $insertQuery = 'INSERT into cap_importrespaldo (CAPTADOR, Fecha_publicacion, Direccion, Nro, Dpto, Comuna, Dorm, Bano, Esta, Bode, Pisc, Precio, GASTOS_COMUNES, CONDICION, nombre_propietario, TELEFONO, correo, portal, FECHA_ENVIO_CLIENTE, OBSERVACIONES, LINK, Codigo_Publicacion, Tipo_Correo, id_creador, id_estado, ob_estado) '
+                        . $select->toSql();
+
+        \DB::insert($insertQuery, $bindings);
+
           DB::table('cap_import')
           ->where("id_creador","=",$id)
-          ->where("id_estado","=",null)
           ->delete();
           return back()->with('status', 'Se ha limpiado la memoria exitosamente');
     }
@@ -178,7 +189,7 @@ class CaptacionController extends Controller
         $registros=DB::table('cap_import')
         ->where('id_creador','=',$id)
         ->where('id_estado','=',null)
-        ->where('id_estado','=',null)
+        ->Orwhere('id_estado','=','')
         ->whereRaw('Date(created_at) = CURDATE()')
         ->get();
         
@@ -187,15 +198,8 @@ class CaptacionController extends Controller
         }
 
         foreach ($registros as $r ) {
-           $user=DB::table('personas')->where('email','=',$r->CAPTADOR)->first();
-           if(count($user)==0){
-                CaptacionImport::where('id','=',$r->id)->update([
-                'id_estado' => 0,
-                'ob_estado' => 'Usuario captador no coincide'
-                ]);
-                continue;
-           }
-           $id_usuario=$user->id;
+
+           $id_usuario=Auth::user()->id;
 
            $part_portal=explode("/", $r->LINK);
            $portal=DB::table('portales')->where('nombre','=',trim($part_portal[2]))->first();
@@ -215,6 +219,24 @@ class CaptacionController extends Controller
                 ]);
                 continue;
            }
+          if($r->Tipo_Correo!="" || $r->Tipo_Correo!=null){
+                     $tipocorreo=DB::table('correos')->where(DB::raw("TRIM(nombre)"),'=',trim($r->Tipo_Correo))->first();
+                     if(count($tipocorreo)==0){
+                          CaptacionImport::where('id','=',$r->id)->update([
+                          'id_estado' => 0,
+                          'ob_estado' => 'Tipo Correo no existe'
+                          ]);
+                          continue;
+                     }
+          }
+          $urls=DB::table('cap_publicaciones')->where('url','=',$r->LINK)->first();
+           if(count($urls)>0){
+                CaptacionImport::where('id','=',$r->id)->update([
+                'id_estado' => 0,
+                'ob_estado' => 'Publicación Existente en el sistema'
+                ]);
+                continue;
+           }
            $id_comuna=$comuna->comuna_id;
            $id_provincia=$comuna->provincia_id;
            $provincia=DB::table('provincias')->where('provincia_id','=',$comuna->provincia_id)->first();
@@ -230,6 +252,12 @@ class CaptacionController extends Controller
            }else{
                 $bodega=0;
            }
+           if($r->Direccion==null || $r->Direccion==''){
+               $direccion_reemplazo="Sin Información";
+           }else{
+               $direccion_reemplazo=$r->Direccion;
+           }
+           
            $inmueble=Inmueble::where("direccion","=",$r->Direccion)
            ->where("numero","=",$r->Nro)
            ->where("departamento","=",$r->Dpto)
@@ -238,7 +266,7 @@ class CaptacionController extends Controller
            if(count($inmueble)==0){
 
                 $inmueble=Inmueble::create([
-                    "direccion"         => $r->Direccion,
+                    "direccion"         => $direccion_reemplazo,
                     "numero"            => $r->Nro,
                     "departamento"      => $r->Dpto,
                     "id_comuna"         => $id_comuna,
@@ -304,6 +332,8 @@ class CaptacionController extends Controller
                    break;
            }
 
+
+
             $persona=Persona::where("email","=",$r->correo)
            ->where("telefono","=",$r->TELEFONO)
            ->where("nombre","=",$nom)
@@ -330,7 +360,9 @@ class CaptacionController extends Controller
 
             $id_persona=$persona['id'];
 
-           Captacion::create([
+
+
+           $cap=Captacion::create([
                 "portal" => $id_portal,
                 "url" => $r->LINK,
                 "fecha_publicacion" => $r->Fecha_publicacion,
@@ -340,10 +372,27 @@ class CaptacionController extends Controller
                 "id_inmueble" => $id_inmueble,
                 "id_estado" => "1"
            ]);
+
            CaptacionImport::where('id','=',$r->id)->update([
                 'id_estado' => 1,
                 'ob_estado' => 'Importado'
                 ]);
+          
+          $cap=DB::table('cap_publicaciones')->where('url','=',$r->LINK)->first();
+           if($r->Tipo_Correo!="" || $r->Tipo_Correo!=null){
+                  $tc=CaptacionGestion::create([
+                    "id_captacion_gestion"=>$cap->id,
+                    "tipo_contacto"=>"Tipo de Correo ".$r->Tipo_Correo." Enviado",
+                    "dir"=>"Información Enviada",
+                    "detalle_contacto"=>$tipocorreo->descripcion,
+                    "id_creador_gestion"=>Auth::user()->id,
+                    "fecha_gestion"=>$r->FECHA_ENVIO_CLIENTE,
+                    "hora_gestion"=>"00:00"
+                  ]);
+
+
+                  $cap=Captacion::find($cap->id)->update(["id_estado"=>2]);
+            }
         }
         
         return back()->with('status', 'Registros procesados, Favor continue al siguiente paso');
@@ -386,11 +435,11 @@ class CaptacionController extends Controller
          $publica = DB::table('cap_publicaciones as c')
          ->leftjoin('personas as p1', 'c.id_propietario', '=', 'p1.id')
          ->leftjoin('inmuebles as i', 'c.id_inmueble', '=', 'i.id')
-         ->leftjoin('personas as p2', 'c.id_creador', '=', 'p2.id')
+         ->leftjoin('users as p2', 'c.id_creador', '=', 'p2.id')
          ->leftjoin('personas as p3', 'c.id_modificador', '=', 'p3.id')
          ->leftjoin('comunas as o', 'i.id_comuna', '=', 'o.comuna_id')
          ->leftjoin('portales as po', 'c.portal', '=', 'po.id')
-         ->select(DB::raw('c.id as id_publicacion, DATE_FORMAT(c.created_at, "%d/%m/%Y") as fecha_creacion,DATE_FORMAT(c.updated_at, "%d/%m/%Y") as fecha_modificacion, c.id_estado as id_estado, CONCAT_WS(" ",p1.nombre,p1.apellido_paterno,p1.apellido_materno) as Propietario, CONCAT_WS(" ",p2.nombre,p2.apellido_paterno,p2.apellido_materno) as Creador, CONCAT_WS(" ",p3.nombre,p3.apellido_paterno,p3.apellido_materno) as Modificador'),'i.id as id_inmueble','i.direccion','i.numero','i.departamento', 'o.comuna_nombre','po.nombre as portal','p1.nombre as nom_p','p1.apellido_paterno as apep_p','p1.apellido_materno as apem_p','p2.nombre as nom_c','p2.apellido_paterno as apep_c','p2.apellido_materno as apem_c','p3.nombre as nom_m','p3.apellido_paterno as apep_m','p3.apellido_materno as apem_m')
+         ->select(DB::raw('c.id as id_publicacion, DATE_FORMAT(c.created_at, "%d/%m/%Y %T") as fecha_creacion,DATE_FORMAT(c.updated_at, "%d/%m/%Y") as fecha_modificacion, c.id_estado as id_estado, CONCAT_WS(" ",p1.nombre,p1.apellido_paterno,p1.apellido_materno) as Propietario, p2.name as Creador, CONCAT_WS(" ",p3.nombre,p3.apellido_paterno,p3.apellido_materno) as Modificador,p1.email,p1.telefono,c.fecha_publicacion'),'i.id as id_inmueble','i.direccion','i.numero','i.departamento', 'o.comuna_nombre','po.nombre as portal','p1.nombre as nom_p','p1.apellido_paterno as apep_p','p1.apellido_materno as apem_p','p3.nombre as nom_m','p3.apellido_paterno as apep_m','p3.apellido_materno as apem_m')
          ->get();
          
          return view('captaciones.index',compact('publica'));
@@ -412,7 +461,7 @@ class CaptacionController extends Controller
         $fecha_gestion = DateTime::createFromFormat('d-m-Y', $request->fecha_gestion);
         array_set($request, 'fecha_gestion', $fecha_gestion);
         $captacion = CaptacionGestion::create($request->all());
-        return redirect()->route('captacion.edit', $request->id_captacion_gestion)
+        return redirect()->route('captacion.edit', [$request->id_captacion_gestion,4])
 
             ->with('status', 'Gestión guardada con éxito');
     }
@@ -439,7 +488,7 @@ class CaptacionController extends Controller
             'fecha_gestion' => $request->fecha_gestion,
             'hora_gestion' => $request->hora_gestion
         ]);
-        return redirect()->route('captacion.edit', $request->id_captacion_gestion)
+        return redirect()->route('captacion.edit', [$request->id_captacion_gestion,4])
 
             ->with('status', 'Gestión guardada con éxito');
     }
@@ -486,6 +535,14 @@ class CaptacionController extends Controller
     public function store(Request $request)
     {
        
+        $cap=DB::table('cap_publicaciones')->where('url','=',$request->url)->first();
+
+        if(count($cap)){
+            return redirect()->route('captacion.edit',[$cap->id,2])
+            ->with('error', '¡Publicación existente!, has sido redireccionado a la Publicación existente');
+        }
+
+
         $fecha_publicacion = DateTime::createFromFormat('d/m/Y', $request->fecha_publicacion);
         array_set($request, 'fecha_publicacion', $fecha_publicacion);
         
@@ -496,8 +553,7 @@ class CaptacionController extends Controller
 
 
         $captacion = Captacion::create($request->all());
-        return redirect()->route('captacion.edit', $captacion->id)
-
+        return redirect()->route('captacion.edit', [$captacion->id,2])
             ->with('status', 'Publicación guardada con éxito');
     }
 
@@ -518,8 +574,9 @@ class CaptacionController extends Controller
      * @param  \App\captacion  $captacion
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($id,$tab)
     {
+      
         $portales=Portales::pluck('nombre','id');
          $regiones=Region::pluck('region_nombre','region_id');
         $captacion = Captacion::find($id);
@@ -529,27 +586,27 @@ class CaptacionController extends Controller
  $captaciones_persona = DB::table('cap_publicaciones as c')
          ->leftjoin('personas as p1', 'c.id_propietario', '=', 'p1.id')
          ->leftjoin('inmuebles as i', 'c.id_inmueble', '=', 'i.id')
-         ->leftjoin('personas as p2', 'c.id_creador', '=', 'p2.id')
+         ->leftjoin('users as p2', 'c.id_creador', '=', 'p2.id')
          ->leftjoin('personas as p3', 'c.id_modificador', '=', 'p3.id')
          ->leftjoin('comunas as o', 'i.id_comuna', '=', 'o.comuna_id')
          ->leftjoin('portales as po', 'c.portal', '=', 'po.id')
          -> where("c.id_propietario","=",isset($captacion->id_propietario)?$captacion->id_propietario:0)
           -> where("c.id_propietario","!=","null")
-        ->where("c.id_estado","=",1)
-         ->select(DB::raw('c.id as id_publicacion, DATE_FORMAT(c.created_at, "%d/%m/%Y") as fecha_creacion, c.id_estado as id_estado, CONCAT(p1.nombre," ",p1.apellido_paterno," ",p1.apellido_materno) as Propietario, CONCAT(p2.nombre," ",p2.apellido_paterno," ",p2.apellido_materno) as Creador'),'i.id as id_inmueble','i.direccion','i.numero','i.departamento', 'o.comuna_nombre','po.nombre as portal')
+        ->whereNotIn("c.id_estado",[0,4])
+         ->select(DB::raw('(select count(*) from cap_gestion where id_captacion_gestion=c.id) as cantGes, c.id as id_publicacion, DATE_FORMAT(c.created_at, "%d/%m/%Y") as fecha_creacion, c.id_estado as id_estado, CONCAT(p1.nombre," ",p1.apellido_paterno," ",p1.apellido_materno) as Propietario, p2.name as Creador'),'i.id as id_inmueble','i.direccion','i.numero','i.departamento', 'o.comuna_nombre','po.nombre as portal')
          ->get();
 
    $captaciones_inmueble = DB::table('cap_publicaciones as c')
          ->leftjoin('personas as p1', 'c.id_propietario', '=', 'p1.id')
          ->leftjoin('inmuebles as i', 'c.id_inmueble', '=', 'i.id')
-         ->leftjoin('personas as p2', 'c.id_creador', '=', 'p2.id')
+         ->leftjoin('users as p2', 'c.id_creador', '=', 'p2.id')
          ->leftjoin('personas as p3', 'c.id_modificador', '=', 'p3.id')
          ->leftjoin('comunas as o', 'i.id_comuna', '=', 'o.comuna_id')
          ->leftjoin('portales as po', 'c.portal', '=', 'po.id')
          -> where("c.id_inmueble","=",isset($captacion->id_inmueble)?$captacion->id_inmueble:0)
          -> where("c.id_inmueble","!=","null")
-        ->where("c.id_estado","=",1)
-         ->select(DB::raw('c.id as id_publicacion, DATE_FORMAT(c.created_at, "%d/%m/%Y") as fecha_creacion, c.id_estado as id_estado, CONCAT(p1.nombre," ",p1.apellido_paterno," ",p1.apellido_materno) as Propietario, CONCAT(p2.nombre," ",p2.apellido_paterno," ",p2.apellido_materno) as Creador'),'i.id as id_inmueble','i.direccion','i.numero','i.departamento', 'o.comuna_nombre','po.nombre as portal')
+        ->whereNotIn("c.id_estado",[0,4])
+         ->select(DB::raw('(select count(*) from cap_gestion where id_captacion_gestion=c.id) as cantGes,c.id as id_publicacion, DATE_FORMAT(c.created_at, "%d/%m/%Y") as fecha_creacion, c.id_estado as id_estado, CONCAT(p1.nombre," ",p1.apellido_paterno," ",p1.apellido_materno) as Propietario, p2.name as Creador'),'i.id as id_inmueble','i.direccion','i.numero','i.departamento', 'o.comuna_nombre','po.nombre as portal')
          ->get();
         $idr=null;
 
@@ -559,9 +616,19 @@ class CaptacionController extends Controller
          ->select(DB::raw('g.id, DATE_FORMAT(g.fecha_gestion, "%d/%m/%Y") as fecha_gestion,  CONCAT(p2.nombre," ",p2.apellido_paterno," ",p2.apellido_materno) as Creador'), 'g.dir','g.tipo_contacto','g.hora_gestion')
          ->get();
 
-        $imagenes=CaptacionFoto::where('id_captacion','=',$id)->get();
 
-        return view('captaciones.edit',compact('captacion','regiones','persona','inmueble','idr','captaciones_persona','captaciones_inmueble','imagenes','portales','gestion'));
+        $imagenes=CaptacionFoto::where('id_captacion','=',$id)->get();
+      if($tab==2){
+          if(count($imagenes)>0){
+            $tab=3;
+          }
+
+          if(count($gestion)>0){
+            $tab=4;
+          }
+      }
+
+        return view('captaciones.edit',compact('captacion','regiones','persona','inmueble','idr','captaciones_persona','captaciones_inmueble','imagenes','portales','gestion','tab'));
 
     }
 
@@ -719,30 +786,30 @@ class CaptacionController extends Controller
       $captaciones_persona = DB::table('cap_publicaciones as c')
          ->leftjoin('personas as p1', 'c.id_propietario', '=', 'p1.id')
          ->leftjoin('inmuebles as i', 'c.id_inmueble', '=', 'i.id')
-         ->leftjoin('personas as p2', 'c.id_creador', '=', 'p2.id')
+         ->leftjoin('users as p2', 'c.id_creador', '=', 'p2.id')
          ->leftjoin('personas as p3', 'c.id_modificador', '=', 'p3.id')
          ->leftjoin('comunas as o', 'i.id_comuna', '=', 'o.comuna_id')
          ->leftjoin('portales as po', 'c.portal', '=', 'po.id')
          -> where("c.id_propietario","=",$captacion->id_propietario)
         ->where("c.id_estado","=",1)
-         ->select(DB::raw('c.id as id_publicacion, DATE_FORMAT(c.created_at, "%d/%m/%Y") as fecha_creacion, c.id_estado as id_estado, CONCAT(p1.nombre," ",p1.apellido_paterno," ",p1.apellido_materno) as Propietario, CONCAT(p2.nombre," ",p2.apellido_paterno," ",p2.apellido_materno) as Creador'),'i.id as id_inmueble','i.direccion','i.numero','i.departamento', 'o.comuna_nombre','po.nombre as portal')
+         ->select(DB::raw('c.id as id_publicacion, DATE_FORMAT(c.created_at, "%d/%m/%Y") as fecha_creacion, c.id_estado as id_estado, CONCAT(p1.nombre," ",p1.apellido_paterno," ",p1.apellido_materno) as Propietario, p2.name as Creador'),'i.id as id_inmueble','i.direccion','i.numero','i.departamento', 'o.comuna_nombre','po.nombre as portal')
          ->get();
 
    $captaciones_inmueble = DB::table('cap_publicaciones as c')
          ->leftjoin('personas as p1', 'c.id_propietario', '=', 'p1.id')
          ->leftjoin('inmuebles as i', 'c.id_inmueble', '=', 'i.id')
-         ->leftjoin('personas as p2', 'c.id_creador', '=', 'p2.id')
+         ->leftjoin('users as p2', 'c.id_creador', '=', 'p2.id')
          ->leftjoin('personas as p3', 'c.id_modificador', '=', 'p3.id')
          ->leftjoin('comunas as o', 'i.id_comuna', '=', 'o.comuna_id')
          ->leftjoin('portales as po', 'c.portal', '=', 'po.id')
          -> where("c.id_inmueble","=",$captacion->id_inmueble)
         ->where("c.id_estado","=",1)
-         ->select(DB::raw('c.id as id_publicacion, DATE_FORMAT(c.created_at, "%d/%m/%Y") as fecha_creacion, c.id_estado as id_estado, CONCAT(p1.nombre," ",p1.apellido_paterno," ",p1.apellido_materno) as Propietario, CONCAT(p2.nombre," ",p2.apellido_paterno," ",p2.apellido_materno) as Creador'),'i.id as id_inmueble','i.direccion','i.numero','i.departamento', 'o.comuna_nombre','po.nombre as portal')
+         ->select(DB::raw('c.id as id_publicacion, DATE_FORMAT(c.created_at, "%d/%m/%Y") as fecha_creacion, c.id_estado as id_estado, CONCAT(p1.nombre," ",p1.apellido_paterno," ",p1.apellido_materno) as Propietario, p2.name as Creador'),'i.id as id_inmueble','i.direccion','i.numero','i.departamento', 'o.comuna_nombre','po.nombre as portal')
          ->get();
 
          $imagenes=CaptacionFoto::where('id_captacion','=',$id)->get();
          $portales=Portales::pluck('nombre','id');
-        return redirect()->route('captacion.edit', $id)->with('status', 'Captación grabado con éxito');
+        return redirect()->route('captacion.edit', [$id,2])->with('status', 'Captación grabado con éxito');
     }
 
 
@@ -763,7 +830,7 @@ class CaptacionController extends Controller
                 'estado'=> 1
             ]
             );
-        return redirect()->route('captacion.edit', $idc)->with('status', 'Inmueble agregado con éxito');
+        return redirect()->route('captacion.edit', [$idc,2])->with('status', 'Inmueble agregado con éxito');
     }
 
 
@@ -780,7 +847,7 @@ class CaptacionController extends Controller
             return back()->with('error', 'Imágen supera 1MB');      
          } */
          if(!isset($request->foto)){
-            return redirect()->route('captacion.edit', $id)->with('error', 'Debe seleccionar una imagen');
+            return redirect()->route('captacion.edit', [$id,3])->with('error', 'Debe seleccionar una imagen');
          }
         $path='uploads/captaciones';
         $archivo=rand().$request->foto->getClientOriginalName();
@@ -799,7 +866,7 @@ class CaptacionController extends Controller
 
         
 
-        return redirect()->route('captacion.edit', $id)->with('status', 'Foto guardada con éxito');
+        return redirect()->route('captacion.edit', [$id,3])->with('status', 'Foto guardada con éxito');
     }
 
 
@@ -815,7 +882,7 @@ class CaptacionController extends Controller
         File::delete($imagen->ruta.'/'.$imagen->nombre);
         $foto = CaptacionFoto::find($idf)->delete();
 
-        return redirect()->route('captacion.edit', $idc)->with('status', 'Foto eliminada con éxito');
+        return redirect()->route('captacion.edit', [$idc,3])->with('status', 'Foto eliminada con éxito');
     }
 
 /**
@@ -836,7 +903,7 @@ class CaptacionController extends Controller
             ]
             );
         
-        return redirect()->route('captacion.edit', $idc)->with('status', 'Propietario agregado con éxito');
+        return redirect()->route('captacion.edit', [$idc,2])->with('status', 'Propietario agregado con éxito');
     }
 
     /**
@@ -851,6 +918,6 @@ class CaptacionController extends Controller
             'id_estado' => '0'
         ]);
 
-        return redirect()->route('captacion.edit', $id)->with('status', 'Captacion desactivado con éxito');
+        return redirect()->route('captacion.edit', [$id,2])->with('status', 'Captacion desactivado con éxito');
     }
 }

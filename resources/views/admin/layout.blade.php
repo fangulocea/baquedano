@@ -166,48 +166,49 @@
                         </li>
                         <li> <a href="#" class="waves-effect"><i class="mdi mdi-clipboard-text fa-fw" data-icon="v"></i> <span class="hide-menu"> Mantenedores <span class="fa arrow"></span> <span class="label label-rouded label-warning pull-right">7</span></span></a>
                             <ul class="nav nav-second-level">
-                                @can('notarias.index')
-                                <li> <a href="{{ route('notarias.index') }}"><i class=" fa-fw">N</i><span class="hide-menu">Notaria</span></a> </li>
-                                @endcan
-                                @can('condicion.index')
-                                <li> <a href="{{ route('condicion.index') }}"><i class=" fa-fw">C</i><span class="hide-menu">Condición</span></a> </li>
-                                @endcan
-                                @can('inmueble.index')
-                                <li> <a href="{{ route('inmueble.index') }}"><i class=" fa-fw">I</i><span class="hide-menu">Inmueble</span></a> </li>
-                                @endcan
-                                @can('persona.index')
-                                <li> <a href="{{ route('persona.index') }}"><i class=" fa-fw">P</i><span class="hide-menu">Personas</span></a> </li>
-                                @endcan
                                 @can('cargo.index')
                                 <li> <a href="{{ route('cargo.index') }}"><i class=" fa-fw">C</i><span class="hide-menu">Cargos</span></a> </li>
-                                @endcan
-                                @can('servicio.index')
-                                <li> <a href="{{ route('servicio.index') }}"><i class=" fa-fw">S</i><span class="hide-menu">Servicios</span></a> </li>
-                                @endcan
-                                @can('multa.index')
-                                <li> <a href="{{ route('multa.index') }}"><i class=" fa-fw">M</i><span class="hide-menu">Multas</span></a> </li>
-                                @endcan
-                                @can('formasDePago.index')
-                                <li> <a href="{{ route('formasDePago.index') }}"><i class=" fa-fw">F</i><span class="hide-menu">Formas de Pago</span></a> </li>
                                 @endcan
                                 @can('comision.index')
                                 <li> <a href="{{ route('comision.index') }}"><i class=" fa-fw">C</i><span class="hide-menu">Comisión</span></a> </li>
                                 @endcan
-                                @can('flexibilidad.index')
-                                <li> <a href="{{ route('flexibilidad.index') }}"><i class=" fa-fw">F</i><span class="hide-menu">Flexibilidad</span></a> </li>
+                                @can('condicion.index')
+                                <li> <a href="{{ route('condicion.index') }}"><i class=" fa-fw">C</i><span class="hide-menu">Condición</span></a> </li>
                                 @endcan
-                                @can('personaInmueble.index')
-                                <li> <a href="{{ route('personaInmueble.index') }}"><i class=" fa-fw">PI</i><span class="hide-menu">Persona Inmueble</span></a> </li>
+                                @can('contrato.index')
+                                <li> <a href="{{ route('contrato.index') }}"><i class=" fa-fw">C</i><span class="hide-menu"> Contrato   </span></a> </li>
                                 @endcan
                                 @can('correo.index')
                                 <li> <a href="{{ route('correo.index') }}"><i class=" fa-fw">C</i><span class="hide-menu">Correo Tipo   </span></a> </li>
                                 @endcan
+                                @can('flexibilidad.index')
+                                <li> <a href="{{ route('flexibilidad.index') }}"><i class=" fa-fw">F</i><span class="hide-menu">Flexibilidad</span></a> </li>
+                                @endcan
+                                @can('formasDePago.index')
+                                <li> <a href="{{ route('formasDePago.index') }}"><i class=" fa-fw">F</i><span class="hide-menu">Formas de Pago</span></a> </li>
+                                @endcan
+                                @can('inmueble.index')
+                                <li> <a href="{{ route('inmueble.index') }}"><i class=" fa-fw">I</i><span class="hide-menu">Inmueble</span></a> </li>
+                                @endcan
+                                @can('multa.index')
+                                <li> <a href="{{ route('multa.index') }}"><i class=" fa-fw">M</i><span class="hide-menu">Multas</span></a> </li>
+                                @endcan
+                                @can('notarias.index')
+                                <li> <a href="{{ route('notarias.index') }}"><i class=" fa-fw">N</i><span class="hide-menu">Notaria</span></a> </li>
+                                @endcan
+                                @can('personaInmueble.index')
+                                <li> <a href="{{ route('personaInmueble.index') }}"><i class=" fa-fw">PI</i><span class="hide-menu">Persona Inmueble</span></a> </li>
+                                @endcan
+                                @can('persona.index')
+                                <li> <a href="{{ route('persona.index') }}"><i class=" fa-fw">P</i><span class="hide-menu">Personas</span></a> </li>
+                                @endcan
                                 @can('portal.index')
                                 <li> <a href="{{ route('portal.index') }}"><i class=" fa-fw">P</i><span class="hide-menu">Portal   </span></a> </li>
                                 @endcan
-                                @can('contrato.index')
-                                <li> <a href="{{ route('contrato.index') }}"><i class=" fa-fw">C</i><span class="hide-menu">Mantenedor Contrato   </span></a> </li>
+                                @can('servicio.index')
+                                <li> <a href="{{ route('servicio.index') }}"><i class=" fa-fw">S</i><span class="hide-menu">Servicios</span></a> </li>
                                 @endcan
+
                             </ul>
                         </li>
                         <li> <a href="#" class="waves-effect"><i class="mdi mdi-settings fa-fw" data-icon="v"></i> <span class="hide-menu"> Captaciones <span class="fa arrow"></span> <span class="label label-rouded label-primary pull-right">6</span></span></a>
@@ -269,11 +270,10 @@
                                     <li> <a href="{{ route('borradorContrato.index') }}"><i class=" fa-fw">CB</i><span class="hide-menu">Contrato Borrador</span></a> </li>
                                     @endcan
                                     @can('finalContrato.index')
-                                    <li> <a href="{{ route('finalContrato.index') }}"><i class=" fa-fw">CB</i><span class="hide-menu">Contrato Final</span></a> </li>
+                                    <li> <a href="{{ route('finalContrato.index') }}"><i class=" fa-fw">CF</i><span class="hide-menu">Contrato Final</span></a> </li>
                                     @endcan
                                 </ul>
                             </li>
-
 
                             <li>
                                 <a href="javascript:void(0)" class="waves-effect"><i data-icon="&#xe008;" class="linea-icon linea-basic fa-fw">A</i><span class="hide-menu">rrendatario </span><span class="fa arrow"></span></a>
@@ -282,7 +282,7 @@
                                     <li> <a href="{{ route('cbararrendatario.index') }}"><i class=" fa-fw">CB</i><span class="hide-menu">Contrato Borrador</span></a> </li>
                                     @endcan
                                     @can('finalContratoArr.index')
-                                    <li> <a href="{{ route('finalContratoArr.index') }}"><i class=" fa-fw">CB</i><span class="hide-menu">Contrato Final</span></a> </li>
+                                    <li> <a href="{{ route('finalContratoArr.index') }}"><i class=" fa-fw">CF</i><span class="hide-menu">Contrato Final</span></a> </li>
                                     @endcan
                                 </ul>
                             </li>

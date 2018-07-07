@@ -240,6 +240,7 @@ class ContratoBorradorController extends Controller
 
   public function editarGestion(Request $request)
     {
+
         $fecha_gestion = DateTime::createFromFormat('d-m-Y', $request->fecha_gestion_m);
         array_set($request, 'fecha_gestion_m', $fecha_gestion);
 
@@ -287,10 +288,68 @@ class ContratoBorradorController extends Controller
         $pdf->index($borradorPDF);
         // FIN PARA PDF
 
-        return redirect()->route('borradorContrato.edit', $request->id_publicacion)
+
+   return redirect()->route('borradorContrato.edit', $request->id_publicacion)
             ->with('status', 'Borrador actualizado con éxito');
+
     }
 
+
+public function editargestion2(Request $request)
+    {
+        dd($request->detalle_revision_m);
+        $fecha_gestion = DateTime::createFromFormat('d-m-Y', $request->fecha_gestion_m);
+        array_set($request, 'fecha_gestion_m', $fecha_gestion);
+
+        $captacion = ContratoBorrador::where('id','=',$request->id_borrador)
+        ->update([
+              "id_modificador" => $request->id_modificador,
+              "id_notaria" => $request->id_notaria_m,
+              "id_servicios" => $request->id_servicios_m,
+              "id_comisiones" => $request->id_comision_m,
+              "id_flexibilidad" => $request->id_flexibilidad_m,
+              "fecha_gestion" => $request->fecha_gestion_m,
+              "id_estado" => $request->id_estado_m,
+              "detalle_revision" => $request->detalle_revision_m,
+              "id_contrato" => $request->id_contrato_m
+        ]);
+
+        //PARA PDF
+         $borradorPDF = DB::table('borradores as b')
+         ->leftjoin('notarias as n', 'b.id_notaria', '=', 'n.id')
+         ->leftjoin('servicios as s', 'b.id_servicios', '=', 's.id')
+         ->leftjoin('comisiones as c', 'b.id_comisiones', '=', 'c.id')
+         ->leftjoin('flexibilidads as f', 'b.id_flexibilidad', '=', 'f.id')
+         ->leftjoin('cap_publicaciones as cp', 'b.id_publicacion', '=', 'cp.id') 
+         ->leftjoin('personas as p1', 'cp.id_propietario','=','p1.id')
+         ->leftjoin('comunas as c1', 'p1.id_comuna','=','c1.comuna_id')
+         ->leftjoin('inmuebles as i', 'cp.id_inmueble','=','i.id')
+         ->leftjoin('comunas as c2', 'i.id_comuna','=','c2.comuna_id')
+         ->leftjoin('regions as reg', 'p1.id_region','=', 'reg.region_id'  )
+         ->leftjoin('contratos as con', 'b.id_contrato','=','con.id')
+         ->where('b.id','=',$request->id_borrador)
+         ->select(DB::raw(' b.id as id, n.razonsocial as n_n, s.nombre as n_s, c.nombre as n_c, f.nombre as n_f , cp.id as id_publicacion,b.fecha_gestion as fecha,
+             CONCAT_WS(" ",p1.nombre,p1.apellido_paterno,p1.apellido_materno) as propietario,
+             p1.rut as rut_p, CONCAT(p1.direccion," ", p1.numero) as direccion_p , c1.comuna_nombre as comuna_p, reg.region_nombre as region_p,
+             CONCAT(i.direccion," ",i.numero) as direccion_i, i.departamento as depto_i, c2.comuna_nombre as comuna_i,
+             i.dormitorio as dormitorio, i.bano as bano, i.bodega, i.piscina, i.precio, i.gastosComunes, 
+             con.nombre, con.nombre as contrato, con.descripcion as deta_contrato,
+             p1.profesion as profesion_p, p1.telefono as telefono_p, p1.departamento as depto_p,
+             CONCAT(s.descripcion, "  $",s.valor) as Servicio, 
+             CONCAT(c.descripcion, " ", c.comision, " %") as comision, 
+             f.descripcion as Flexibilidad ,
+             i.rol as rol, b.detalle_revision as bodyContrato'))->first();
+
+        $pdf = new PdfController();
+
+        $pdf->index($borradorPDF);
+        // FIN PARA PDF
+
+
+   return redirect()->route('borradorContrato.edit', $request->id_publicacion)
+            ->with('status', 'Borrador actualizado con éxito');
+
+    }
 
     public function mostrarGestion(Request $request, $idg){
 
@@ -321,9 +380,10 @@ class ContratoBorradorController extends Controller
 
             Mail::send('emails.contratoborrador', $envioCorreo, function ($message) use($borradorCorreo) {
                 $archivos = 'uploads\pdf\4serafin zamora190.pdf';
-                $message->from('edison.carrizo.j@gmail.com');
+                 $message->from('javier@ibaquedano.cl','Baquedano Rentas');
                 $message->to($borradorCorreo->correo);
-                $message->subject('Asunto del correo');
+                $message->replyTo('javier@ibaquedano.cl', 'Javier Faria - Baquedano Rentas');
+                $message->subject('Propuesta contrato borrador');
                 $message->attach($borradorCorreo->archivo);
             });
 

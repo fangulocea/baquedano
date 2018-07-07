@@ -28,34 +28,14 @@ class ReporteGestionController extends Controller
     {   
         if($dia == 0)
         {
-        $publica = DB::select('Select g.id_captacion_gestion as id,CONCAT_WS(", ",i.direccion,i.numero,c.comuna_nombre) as direccion,
-                                CONCAT_WS(" ",p.nombre,p.apellido_paterno,p.apellido_materno) as creador,
-                                g.tipo_contacto as contacto,DATE_FORMAT(g.fecha_gestion, "%d-%m-%Y") as fecha
-                                from cap_gestion g, personas p, inmuebles i, comunas c
-                                where g.id_creador_gestion = p.id and g.id_captacion_gestion = i.id and
-                                i.id_comuna = c.comuna_id and g.fecha_gestion = CURDATE()');
+        $publica = DB::select('Select g.id_captacion_gestion as id,CONCAT_WS(", ",i.direccion,i.numero,c.comuna_nombre) as direccion, p.name as creador, g.tipo_contacto as contacto,DATE_FORMAT(g.fecha_gestion, "%d-%m-%Y") as fecha from cap_gestion g left join cap_publicaciones ca on ca.id=g.id_captacion_gestion left join users p on g.id_creador_gestion = p.id left join inmuebles i on i.id=ca.id_inmueble left join comunas c on c.comuna_id=i.id_comuna where g.fecha_gestion = CURDATE()');
 
         } elseif($dia == 30){
-        $publica = DB::select('Select g.id_captacion_gestion as id,CONCAT_WS(", ",i.direccion,i.numero,c.comuna_nombre) as direccion,
-                                CONCAT_WS(" ",p.nombre,p.apellido_paterno,p.apellido_materno) as creador,
-                                g.tipo_contacto as contacto,DATE_FORMAT(g.fecha_gestion, "%d-%m-%Y") as fecha
-                                from cap_gestion g, personas p, inmuebles i, comunas c
-                                where g.id_creador_gestion = p.id and g.id_captacion_gestion = i.id and
-                                i.id_comuna = c.comuna_id and g.fecha_gestion > DATE_SUB(CURDATE(), INTERVAL 30 DAY)');            
+        $publica = DB::select('Select g.id_captacion_gestion as id,CONCAT_WS(", ",i.direccion,i.numero,c.comuna_nombre) as direccion, p.name as creador, g.tipo_contacto as contacto,DATE_FORMAT(g.fecha_gestion, "%d-%m-%Y") as fecha from cap_gestion g left join cap_publicaciones ca on ca.id=g.id_captacion_gestion left join users p on g.id_creador_gestion = p.id left join inmuebles i on i.id=ca.id_inmueble left join comunas c on c.comuna_id=i.id_comuna where g.fecha_gestion > DATE_SUB(CURDATE(), INTERVAL 30 DAY)');            
         } elseif($dia == 365){
-        $publica = DB::select('Select g.id_captacion_gestion as id,CONCAT_WS(", ",i.direccion,i.numero,c.comuna_nombre) as direccion,
-                                CONCAT_WS(" ",p.nombre,p.apellido_paterno,p.apellido_materno) as creador,
-                                g.tipo_contacto as contacto,DATE_FORMAT(g.fecha_gestion, "%d-%m-%Y") as fecha
-                                from cap_gestion g, personas p, inmuebles i, comunas c
-                                where g.id_creador_gestion = p.id and g.id_captacion_gestion = i.id and
-                                i.id_comuna = c.comuna_id and g.fecha_gestion > DATE_SUB(CURDATE(), INTERVAL 365 DAY)');            
+        $publica = DB::select('Select g.id_captacion_gestion as id,CONCAT_WS(", ",i.direccion,i.numero,c.comuna_nombre) as direccion, p.name as creador, g.tipo_contacto as contacto,DATE_FORMAT(g.fecha_gestion, "%d-%m-%Y") as fecha from cap_gestion g left join cap_publicaciones ca on ca.id=g.id_captacion_gestion left join users p on g.id_creador_gestion = p.id left join inmuebles i on i.id=ca.id_inmueble left join comunas c on c.comuna_id=i.id_comuna where g.fecha_gestion > DATE_SUB(CURDATE(), INTERVAL 365 DAY)');            
         } else {
-                    $publica = DB::select('Select g.id_captacion_gestion as id,CONCAT_WS(", ",i.direccion,i.numero,c.comuna_nombre) as direccion,
-                                CONCAT_WS(" ",p.nombre,p.apellido_paterno,p.apellido_materno) as creador,
-                                g.tipo_contacto as contacto,DATE_FORMAT(g.fecha_gestion, "%d-%m-%Y") as fecha
-                                from cap_gestion g, personas p, inmuebles i, comunas c
-                                where g.id_creador_gestion = p.id and g.id_captacion_gestion = i.id and
-                                i.id_comuna = c.comuna_id ');
+                    $publica = DB::select('Select g.id_captacion_gestion as id,CONCAT_WS(", ",i.direccion,i.numero,c.comuna_nombre) as direccion, p.name as creador, g.tipo_contacto as contacto,DATE_FORMAT(g.fecha_gestion, "%d-%m-%Y") as fecha from cap_gestion g left join cap_publicaciones ca on ca.id=g.id_captacion_gestion left join users p on g.id_creador_gestion = p.id left join inmuebles i on i.id=ca.id_inmueble left join comunas c on c.comuna_id=i.id_comuna ');
         }
 
 

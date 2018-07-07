@@ -33,13 +33,13 @@ class PrimeraGestionController extends Controller
          $publica = DB::table('cap_publicaciones as c')
          ->leftjoin('personas as p1', 'c.id_propietario', '=', 'p1.id')
          ->leftjoin('inmuebles as i', 'c.id_inmueble', '=', 'i.id')
-         ->leftjoin('personas as p2', 'c.id_creador', '=', 'p2.id')
+         ->leftjoin('users as p2', 'c.id_creador', '=', 'p2.id')
          ->leftjoin('personas as p3', 'c.id_modificador', '=', 'p3.id')
          ->leftjoin('comunas as o', 'i.id_comuna', '=', 'o.comuna_id')
          ->leftjoin('portales as po', 'c.portal', '=', 'po.id')
          ->Where('c.id_estado', '<>', 0)->Where('c.id_estado', '=', $tipo)->OrWhere('c.id_estado', '=', 8)
          ->Where('p1.email','<>','')->where('p1.email','like','%@%')
-         ->select(DB::raw('c.id as id_publicacion, DATE_FORMAT(c.created_at, "%d/%m/%Y") as fecha_creacion, c.id_estado as id_estado, CONCAT(p1.nombre," ",p1.apellido_paterno," ",p1.apellido_materno) as Propietario, CONCAT(p2.nombre," ",p2.apellido_paterno," ",p2.apellido_materno) as Creador'),'i.id as id_inmueble','i.direccion','i.numero','i.departamento', 'o.comuna_nombre','po.nombre as portal','c.id_propietario','c.id_creador','p1.email','p1.nombre as nom_p','p1.apellido_paterno as apep_p','p1.apellido_materno as apem_p','p2.nombre as nom_c','p2.apellido_paterno as apep_c','p2.apellido_materno as apem_c','p3.nombre as nom_m','p3.apellido_paterno as apep_m','p3.apellido_materno as apem_m,p1.email')
+         ->select(DB::raw('c.id as id_publicacion, DATE_FORMAT(c.created_at, "%d/%m/%Y") as fecha_creacion, c.id_estado as id_estado, CONCAT(p1.nombre," ",p1.apellido_paterno," ",p1.apellido_materno) as Propietario, p2.name Creador'),'i.id as id_inmueble','i.direccion','i.numero','i.departamento', 'o.comuna_nombre','po.nombre as portal','c.id_propietario','c.id_creador','p1.email','p1.nombre as nom_p','p1.apellido_paterno as apep_p','p1.apellido_materno as apem_p','p3.nombre as nom_m','p3.apellido_paterno as apep_m','p3.apellido_materno as apem_m,p1.email')
          ->get();
     }
     else
@@ -47,13 +47,13 @@ class PrimeraGestionController extends Controller
          $publica = DB::table('cap_publicaciones as c')
          ->leftjoin('personas as p1', 'c.id_propietario', '=', 'p1.id')
          ->leftjoin('inmuebles as i', 'c.id_inmueble', '=', 'i.id')
-         ->leftjoin('personas as p2', 'c.id_creador', '=', 'p2.id')
+         ->leftjoin('users as p2', 'c.id_creador', '=', 'p2.id')
          ->leftjoin('personas as p3', 'c.id_modificador', '=', 'p3.id')
          ->leftjoin('comunas as o', 'i.id_comuna', '=', 'o.comuna_id')
          ->leftjoin('portales as po', 'c.portal', '=', 'po.id')
          ->Where('c.id_estado', '<>', 0)->Where('c.id_estado', '=', $tipo)
          ->Where('p1.email','<>','')->where('p1.email','like','%@%')
-         ->select(DB::raw('c.id as id_publicacion, DATE_FORMAT(c.created_at, "%d/%m/%Y") as fecha_creacion, c.id_estado as id_estado, CONCAT(p1.nombre," ",p1.apellido_paterno," ",p1.apellido_materno) as Propietario, CONCAT(p2.nombre," ",p2.apellido_paterno," ",p2.apellido_materno) as Creador'),'i.id as id_inmueble','i.direccion','i.numero','i.departamento', 'o.comuna_nombre','po.nombre as portal','c.id_propietario','c.id_creador','p1.email','p1.nombre as nom_p','p1.apellido_paterno as apep_p','p1.apellido_materno as apem_p','p2.nombre as nom_c','p2.apellido_paterno as apep_c','p2.apellido_materno as apem_c','p3.nombre as nom_m','p3.apellido_paterno as apep_m','p3.apellido_materno as apem_m,p1.email')
+         ->select(DB::raw('c.id as id_publicacion, DATE_FORMAT(c.created_at, "%d/%m/%Y") as fecha_creacion, c.id_estado as id_estado, CONCAT(p1.nombre," ",p1.apellido_paterno," ",p1.apellido_materno) as Propietario,p2.name as Creador'),'i.id as id_inmueble','i.direccion','i.numero','i.departamento', 'o.comuna_nombre','po.nombre as portal','c.id_propietario','c.id_creador','p1.email','p1.nombre as nom_p','p1.apellido_paterno as apep_p','p1.apellido_materno as apem_p','p3.nombre as nom_m','p3.apellido_paterno as apep_m','p3.apellido_materno as apem_m,p1.email')
          ->get();
     }
 
@@ -119,8 +119,9 @@ class PrimeraGestionController extends Controller
 
             Mail::send('emails.notificacion', $envioCorreo, function ($message) use($usuario) {
 
-                $message->from('javier@ibaquedano.cl');
+                $message->from('javier@ibaquedano.cl','Baquedano Rentas');
                 $message->to($usuario->email);
+                $message->replyTo('javier@ibaquedano.cl', 'Javier Faria - Baquedano Rentas');
                 $message->subject('Propuesta de arriendo garantizado de Baquedano Rentas');
 
             });
@@ -175,9 +176,10 @@ class PrimeraGestionController extends Controller
              'correo' => $correo->descripcion);
 
             Mail::send('emails.notificacion', $envioCorreo, function ($message) use($usuario) {
-                $message->from('edison.carrizo.j@gmail.com');
+                $message->from('javier@ibaquedano.cl','Baquedano Rentas');
                 $message->to($usuario->email);
-                $message->subject('Asunto del correo');
+                $message->replyTo('javier@ibaquedano.cl', 'Javier Faria - Baquedano Rentas');
+                $message->subject('Propuesta de arriendo garantizado de Baquedano Rentas');
             });
 
             $date = Carbon::now();
@@ -201,6 +203,58 @@ class PrimeraGestionController extends Controller
       ->get();
       $est=1;
         return view('importarbaquedano.index',compact('correo','est'));
+    }
+    
+    
+    public function storeCaptacion2(Request $request)
+    {   
+        for ($i = 0; $i < count($request->check); $i++)
+        {
+            $BuscaPublicacion = DB::table('cap_publicaciones')
+            ->where('id','=',$request->check[$i])->first();
+
+            $usuario = DB::table('personas')
+            ->where('id','=',$BuscaPublicacion->id_propietario)
+            ->select( DB::raw("CONCAT(nombre,' ',apellido_paterno,' ',apellido_materno)  AS nombre"),'email')
+            ->first();
+
+            $correo = DB::table('correos')
+            ->where('id','=',$request->correo)
+            ->select( 'descripcion' )
+            ->first();
+
+            $envioCorreo = array('nombre' => $usuario->nombre ,
+             'email' => $usuario->email ,
+             'correo' => $correo->descripcion);
+
+            Mail::send('emails.notificacion', $envioCorreo, function ($message) use($usuario) {
+                $message->from('javier@ibaquedano.cl','Baquedano Rentas');
+                $message->to($usuario->email);
+                $message->replyTo('javier@ibaquedano.cl', 'Javier Faria - Baquedano Rentas');
+                $message->subject('Propuesta de arriendo garantizado de Baquedano Rentas');
+            });
+
+            $date = Carbon::now();
+            $fechaActual = $date->format('Y-m-d');
+            $horaActual  = $date->format('H:i');
+
+            $persona=CaptacionGestion::create([
+                'id_captacion_gestion'  => $BuscaPublicacion->id,
+                'tipo_contacto'         => trans_choice('mensajes.vigencia', 2),
+                'dir'                   => 'Información Enviada',
+                'detalle_contacto'      => $correo->descripcion,
+                'id_creador_gestion'    => $BuscaPublicacion->id_creador,
+                'fecha_gestion'         => $fechaActual,
+                'hora_gestion'          => $horaActual ]);
+
+            Captacion::find($BuscaPublicacion->id)->update(['id_estado' => 2]);   
+
+        }
+      $correo = DB::table('correos')
+      ->where('estado','=',1)
+      ->get();
+      $est=1;
+        return view('importarcontact.index',compact('correo','est'));
     }
 
     /**
@@ -321,10 +375,5 @@ class PrimeraGestionController extends Controller
         $asg = DB::selectOne('SELECT count(*) as cantidad FROM cap_publicaciones p where (select count(*) from cap_gestion g where g.id_captacion_gestion = p.id) = 0');
         return $asg->cantidad;
     }  
-
-
-
-
-
 
 }

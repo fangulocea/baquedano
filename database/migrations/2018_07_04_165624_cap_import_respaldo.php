@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CaptacionImport extends Migration
+class CapImportRespaldo extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,9 @@ class CaptacionImport extends Migration
      */
     public function up()
     {
-            Schema::dropIfExists('cap_import');
-            Schema::create('cap_import', function (Blueprint $table) {
+        
+            Schema::dropIfExists('cap_importrespaldo');
+            Schema::create('cap_importrespaldo', function (Blueprint $table) {
                 $table->increments('id');
                 $table->string('CAPTADOR')->nullable();
                 $table->string('Fecha_publicacion')->nullable();
@@ -54,6 +55,6 @@ class CaptacionImport extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('cap_import');
+        Schema::dropIfExists('cap_importrespaldo');
     }
 }

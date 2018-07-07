@@ -270,6 +270,11 @@ Route::middleware(['auth'])->group(function(){
 
 //Captacion Propietario
 
+
+	Route::get('captacion/{captacion}/{p}/edit','CaptacionController@edit')->name('captacion.edit')
+		->middleware('permission:captacion.edit');
+
+
 	Route::get('importExportcap', 'CaptacionController@importExportcap')->name('captacion.importExportcap')
 		->middleware('permission:captacion.edit');
 
@@ -326,6 +331,9 @@ Route::middleware(['auth'])->group(function(){
 
     Route::post('procesoCaptacion/store','PrimeraGestionController@storeCaptacion')->name('primeraGestion.storeCaptacion')
 		->middleware('permission:captacion.create');
+		
+	   Route::post('procesoCaptacion/store2','PrimeraGestionController@storeCaptacion2')->name('primeraGestion.storeCaptacion2')
+		->middleware('permission:captacion.create');
 
 	Route::get('captacion/reportes','CaptacionController@reportes')->name('captacion.reportes')
 		->middleware('permission:captacion.edit');
@@ -335,9 +343,6 @@ Route::middleware(['auth'])->group(function(){
 
 	Route::delete('captacion/{captacion}','CaptacionController@destroy')->name('captacion.destroy')
 		->middleware('permission:captacion.destroy');
-
-	Route::get('captacion/{captacion}/edit','CaptacionController@edit')->name('captacion.edit')
-		->middleware('permission:captacion.edit');
 
 	Route::get('captacion/agregarinmueble/{idc}/{idi}','CaptacionController@agregarInmueble')->name('captacion.agregarinmueble')
 		->middleware('permission:captacion.edit');
@@ -609,7 +614,7 @@ Route::middleware(['auth'])->group(function(){
 		->middleware('permission:captacion.edit');
 
 
-//Revisión comercial persona
+//Revisi贸n comercial persona
 
 
 	Route::post('revisionpersona/store','RevisionPersonaController@store')->name('revisionpersona.store')
@@ -646,7 +651,7 @@ Route::get('revisionpersona/eliminarfoto/{idf}/{idc}','RevisionPersonaController
 
 	Route::get('revisionpersona/gestion/{idg}','RevisionPersonaController@mostrarGestion');
 
-//Revisión comercial inmueble
+//Revisi贸n comercial inmueble
 
 
 	Route::post('revisioninmueble/store','RevisionInmuebleController@store')->name('revisioninmueble.store')
@@ -680,6 +685,14 @@ Route::get('revisionpersona/eliminarfoto/{idf}/{idc}','RevisionPersonaController
 
 
 		// COntratos Borrador
+		
+		Route::post('borradorContrato/borrador/update','ContratoBorradorController@editarGestion')->name('borradorContrato.editarGestion')
+		->middleware('permission:borradorContrato.edit');
+		
+		
+			Route::any('bc/borrador/update','ContratoBorradorController@editargestion2')->name('borradorContrato.editarGestion2')
+		->middleware('permission:borradorContrato.edit');
+		
 		Route::post('borradorContrato/updatepersona','PersonaController@updatePersonaContratoBorrador')->name('borradorContrato.updatepersona')
 		->middleware('permission:borradorContrato.edit');
 
@@ -709,8 +722,7 @@ Route::get('revisionpersona/eliminarfoto/{idf}/{idc}','RevisionPersonaController
 		Route::post('borradorContrato/{captacionArrendador}','ContratoBorradorController@update')->name('borradorContrato.update')
 		->middleware('permission:borradorContrato.edit');
 
-		Route::post('borradorContrato/borrador/update','ContratoBorradorController@editarGestion')->name('borradorContrato.editarGestion')
-		->middleware('permission:borradorContrato.edit');
+
 
 		Route::get('borradorContrato/mail/{id}','ContratoBorradorController@enviaMail')->name('borradorContrato.mail');		
 		Route::get('pdf/{data}', 'PdfController@index');
