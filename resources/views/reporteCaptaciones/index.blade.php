@@ -47,7 +47,7 @@
                             <td width="10px">  </td>
                             @can('captacion.edit')
                                 <td width="10px">
-                                    <a href="{{ route('captacion.edit', $p->id) }}"><span class="btn btn-warning btn-circle btn-sm"><i class="ti-pencil-alt"></i></span></a>
+                                    <a href="{{ route('captacion.edit', [$p->id,2]) }}"><span class="btn btn-warning btn-circle btn-sm"><i class="ti-pencil-alt"></i></span></a>
                                 </td>
                                 @endcan
                             </td>

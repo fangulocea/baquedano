@@ -243,6 +243,14 @@
 
                                             </div>
                                             <div class="row"> 
+                                                <div class="col-md-12">
+                                                    <div class="form-group">
+                                                    <label>Observación</label>
+                                                        <input name='i_observaciones' id='i_observaciones' type="text" class="form-control" value='{{ $inmueble->observaciones or '' }}'>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row"> 
                                                 <div class="col-md-4">
                                                     <div class="form-group">
                                                         <label>Gasto Común</label>

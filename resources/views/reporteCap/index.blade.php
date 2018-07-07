@@ -49,7 +49,7 @@
                             <td>{{ $p->direccion }} #{{ $p->numero }} , Dpto {{ $p->departamento }}, {{ $p->comuna_nombre }}</td>
                             <td>{{ $p->nom_p }} {{ $p->apep_p }} {{ $p->apem_p }}</td>
                             <td>{{ $p->fecha_creacion }}</td>
-                            <td>{{ $p->nom_c }} {{ $p->apep_c }} {{ $p->apem_c }}</td>
+                            <td>{{ $p->creador }} </td>
                             <td>{{ trans_choice('mensajes.captacion', $p->id_estado) }}</td>
                             <td>{{ $p->cantCorreos }}</td>
                             <td>{{ $p->cantGes }}</td>

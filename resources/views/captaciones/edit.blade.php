@@ -15,6 +15,7 @@
 <link href="{{ URL::asset('plugins/bower_components/clockpicker/dist/jquery-clockpicker.min.css')}}" rel="stylesheet">
 
 <div class="row">
+
     <div class="col-md-12">
         @if(isset($inmueble->direccion))
          <center><h3 class="box-title m-b-0">{{ $inmueble->direccion or null }} # {{ $inmueble->numero or null }} Dpto {{ $inmueble->departamento or null }}, {{ $inmueble->comuna_nombre or null }}</h3></center>
@@ -27,7 +28,7 @@
             <div class="sttabs tabs-style-iconbox">
                 <nav>
                     <ul>
-                        <li id="li_1"> <a href="#section-iconbox-1" class="sticon ti-bookmark"><span>Portal Aviso</span></a></li>
+                        <li id="li_1"> <a id="1" href="#section-iconbox-1" class="sticon ti-bookmark"><span>Portal Aviso</span></a></li>
                         <li id="li_2"><a id="2" href="#section-iconbox-2" class="sticon ti-home"><span>Propiedad / Propietario</span></a></li>
                         <li id="li_4"><a id="4" href="#section-iconbox-4" class="sticon ti-camera"><span>Imágenes del Portal</span></a></li>
                         <li id="li_5"><a id="5" href="#section-iconbox-5" class="sticon ti-agenda"><span>Gestiones</span></a></li>
@@ -320,7 +321,7 @@
                                                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                                                 <h4 class="modal-title" id="myModalLabel">Captaciones existentes inmuebles</h4> </div>
                                             <div class="modal-body">
-                                                <table id="listusers" class="display nowrap" cellspacing="0" width="100%">
+                                                <table id="listusers" class="display compact" cellspacing="0" width="100%">
                                                     <thead>
                                                         <tr>
                                                             <th>ID</th>
@@ -329,6 +330,8 @@
                                                             <th>Fecha Creación</th>
                                                             <th>Creador</th>
                                                             <th>Portal</th>
+                                                            <th>Cant Gestión</th>
+                                                            <th>Estado</th>
                                                             <th>Ver</th>
                                                         </tr>
                                                     </thead>
@@ -341,9 +344,11 @@
                                                             <td>{{ $p->fecha_creacion }}</td>
                                                             <td>{{ $p->Creador }}</td>
                                                             <td>{{ $p->portal }}</td>
+                                                            <td><center>{{ $p->cantGes }}</center></td>
+                                                            <td>{{ trans_choice('mensajes.captacion', $p->id_estado) }}</td>
                                                             @can('captacion.show')
                                                             <td width="10px">
-                                                                <a href="{{ route('captacion.edit', $p->id_publicacion) }}" 
+                                                                <a href="{{ route('captacion.edit', [$p->id_publicacion,2]) }}" 
                                                                    class="btn btn-success btn-circle btn-lg">
                                                                     <i class="fa fa-check"></i>
                                                                 </a>
@@ -520,6 +525,8 @@
                                                             <th>Fecha Creación</th>
                                                             <th>Creador</th>
                                                             <th>Portal</th>
+                                                            <th>Cant Gestión</th>
+                                                            <th>Estado</th>
                                                             <th>Ver</th>
                                                         </tr>
                                                     </thead>
@@ -532,9 +539,11 @@
                                                             <td>{{ $p->fecha_creacion }}</td>
                                                             <td>{{ $p->Creador }}</td>
                                                             <td>{{ $p->portal }}</td>
+                                                            <td>{{ $p->cantGes }}</td>
+                                                            <td>{{ trans_choice('mensajes.captacion', $p->id_estado) }} }}</td>
                                                             @can('captacion.show')
                                                             <td width="10px">
-                                                                <a href="{{ route('captacion.edit', $p->id_publicacion) }}" 
+                                                                <a href="{{ route('captacion.edit', [$p->id_publicacion,2]) }}" 
                                                                    class="btn btn-success btn-circle btn-lg">
                                                                     <i class="fa fa-check"></i>
                                                                 </a>
@@ -1007,10 +1016,7 @@ $(function() {
         @endif
 
         @if(isset($inmueble->id))
-            $("#li_1").removeClass("tab-current");
-            $("#li_2").addClass("tab-current");
-            $("#section-iconbox-1").removeClass("content-current");
-            $("#section-iconbox-2").addClass("content-current");
+
             $("#i_id_provincia").empty();
             $("#i_id_comuna").empty();
             $.get("/provincias/"+{{ $inmueble->id_region}}+"",function(response,state){
@@ -1071,6 +1077,93 @@ jQuery(document).ready(function () {
     });
 
 
+<?php
+if($tab==2){
+    ?>
+    $(function() {
 
+            $("#li_1").removeClass("tab-current");
+            $("#li_2").addClass("tab-current");
+            $("#section-iconbox-1").removeClass("content-current");
+            $("#section-iconbox-2").addClass("content-current");
+           }); 
+<?php
+}
+?>
+
+
+<?php
+if($tab==3){
+    ?>
+    $(function() {
+
+            $("#li_1").removeClass("tab-current");
+            $("#li_4").addClass("tab-current");
+            $("#section-iconbox-1").removeClass("content-current");
+            $("#section-iconbox-4").addClass("content-current");
+           }); 
+<?php
+}
+?>
+
+<?php
+if($tab==4){
+    ?>
+    $(function() {
+
+            $("#li_1").removeClass("tab-current");
+            $("#li_5").addClass("tab-current");
+            $("#section-iconbox-1").removeClass("content-current");
+            $("#section-iconbox-5").addClass("content-current");
+           }); 
+<?php
+}
+?>
+
+$("#li_1").click(function (event) {
+             $("#li_1").addClass("tab-current");
+            $("#li_2").removeClass("tab-current");
+            $("#li_3").removeClass("tab-current");
+            $("#li_4").removeClass("tab-current");
+            $("#section-iconbox-1").addClass("content-current");
+            $("#section-iconbox-2").removeClass("content-current");
+            $("#section-iconbox-3").removeClass("content-current");
+            $("#section-iconbox-4").removeClass("content-current"); 
+
+            
+});
+$("#li_2").click(function (event) {
+            $("#li_2").addClass("tab-current");
+            $("#li_1").removeClass("tab-current");
+            $("#li_4").removeClass("tab-current");
+            $("#li_5").removeClass("tab-current");
+             $("#section-iconbox-2").addClass("content-current");
+            $("#section-iconbox-1").removeClass("content-current");
+            $("#section-iconbox-4").removeClass("content-current");
+            $("#section-iconbox-5").removeClass("content-current"); 
+       
+});
+$("#li_4").click(function (event) {
+            $("#li_4").addClass("tab-current");
+            $("#li_1").removeClass("tab-current");
+            $("#li_2").removeClass("tab-current");
+            $("#li_5").removeClass("tab-current");
+            $("#section-iconbox-1").removeClass("content-current");
+             $("#section-iconbox-2").removeClass("content-current");
+             $("#section-iconbox-5").removeClass("content-current");
+            $("#section-iconbox-4").addClass("content-current");       
+            
+});
+$("#li_5").click(function (event) {
+            $("#li_5").addClass("tab-current");
+            $("#li_1").removeClass("tab-current");
+            $("#li_2").removeClass("tab-current");
+            $("#li_4").removeClass("tab-current");
+            $("#section-iconbox-1").removeClass("content-current");
+             $("#section-iconbox-2").removeClass("content-current");
+             $("#section-iconbox-4").removeClass("content-current");
+            $("#section-iconbox-5").addClass("content-current");       
+            
+});
 </script>
 @endsection

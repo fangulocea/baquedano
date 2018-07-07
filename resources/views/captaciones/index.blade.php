@@ -15,14 +15,15 @@
                         <th>Dirección</th>
                         <th>Comuna</th>
                         <th>Propietario</th>
-
+                        <th>Mail</th>
+                        <th>Teléfono</th>
                         <th>Fecha/P</th>
-                        <th>Fecha/M</th>
-                        <th>Modificador</th>
+                        <!-- <th>Fecha/M</th>
+                        <th>Modificador</th>-->
                         <th>Estado</th>
                         <th>Portal</th>
                         <th>Creador</th>
-
+                        <th>Fecha/C</th>
                         <th></th>
                         <th></th>
                     </tr>
@@ -33,14 +34,15 @@
                         <th>Dirección</th>
                         <th>Comuna</th>
                         <th>Propietario</th>
-
+                        <th>Mail</th>
+                        <th>Teléfono</th>
                         <th>Fecha/P</th>
-                        <th>Fecha/M</th>
-                        <th>Modificador</th>
+                       <!-- <th>Fecha/M</th>
+                        <th>Modificador</th> -->
                         <th>Estado</th>
                         <th>Portal</th>
                         <th>Creador</th>
-
+                        <th>Fecha/C</th>
                         <th></th>
                         <th></th>
                     </tr>
@@ -50,23 +52,26 @@
                             <tr>
 
 
-                                <td>{{ $p->id_publicacion }}</td>
+                                <td style="font-size: x-small;"> {{ $p->id_publicacion }}</td>
                                 
-                                <td >{{ $p->direccion }} #{{ $p->numero }} , Dpto {{ $p->departamento }}</td>
-                                <td> {{ $p->comuna_nombre }}</td>
+                                <td style="font-size: small;">{{ $p->direccion }} #{{ $p->numero }} , Dpto {{ $p->departamento }}</td>
+                                <td style="font-size: small;"> {{ $p->comuna_nombre }}</td>
                                 
-                                <td>{{ $p->nom_p }} {{ $p->apep_p }} {{ $p->apem_p }}</td>
-                                <td style="font-size: small;">{{ $p->fecha_creacion }}</td>
+                                <td style="font-size: small;">{{ $p->nom_p }} {{ $p->apep_p }} {{ $p->apem_p }}</td>
+                                <td style="font-size: x-small;">{{ $p->email }}</td>
+                                <td>{{ $p->telefono }}</td>
+                                <td style="font-size: small;">{{ $p->fecha_publicacion }}</td>
                                 
-                                <td style="font-size: small;">{{ $p->fecha_modificacion }}</td>
-                                <td>{{ $p->nom_m }}</td>
+                              <!--   <td style="font-size: small;">{{ $p->fecha_modificacion }}</td>
+                                <td>{{ $p->nom_m }}</td>-->
                                  <td>{{ trans_choice('mensajes.captacion', $p->id_estado) }}</td>
                                  <td style="font-size: small;">{{ substr(substr($p->portal, 4),0,10) }}</td>
-                                 <td>{{ $p->nom_c  }}</td>
+                                 <td style="font-size: small;">{{ $p->Creador }} </td>
+                                  <td style="font-size: small;">{{ $p->fecha_creacion }} </td>
 
                                 @can('captacion.edit')
                                 <td width="10px">
-                                    <a href="{{ route('captacion.edit', $p->id_publicacion) }}"><span class="btn btn-warning btn-circle btn-sm"><i class="ti-pencil-alt"></i></span></a>
+                                    <a href="{{ route('captacion.edit', [$p->id_publicacion,2]) }}"><span class="btn btn-warning btn-circle btn-sm"><i class="ti-pencil-alt"></i></span></a>
                                 </td>
                                 @endcan
                                 @can('captacion.destroy')

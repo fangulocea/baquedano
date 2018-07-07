@@ -56,10 +56,10 @@ class CaptacionCorredorController extends Controller
          ->leftjoin('personas as p4', 'c.id_corredor', '=', 'p4.id')
          ->leftjoin('personas as p1', 'c.id_propietario', '=', 'p1.id')
          ->leftjoin('inmuebles as i', 'c.id_inmueble', '=', 'i.id')
-         ->leftjoin('personas as p2', 'c.id_creador', '=', 'p2.id')
+         ->leftjoin('users as p2', 'c.id_creador', '=', 'p2.id')
          ->leftjoin('personas as p3', 'c.id_modificador', '=', 'p3.id')
          ->leftjoin('comunas as o', 'i.id_comuna', '=', 'o.comuna_id')
-         ->select(DB::raw('c.id as id_publicacion, DATE_FORMAT(c.created_at, "%d/%m/%Y") as fecha_creacion, c.id_estado as id_estado, CONCAT_WS(" ",p1.nombre,p1.apellido_paterno,p1.apellido_materno) as Propietario, CONCAT_WS(" ",p2.nombre,p2.apellido_paterno,p2.apellido_materno) as Creador, CONCAT_WS(" ",p4.nombre,p4.apellido_paterno,p4.apellido_materno) as Corredor'),'i.id as id_inmueble','i.direccion','i.numero','i.departamento', 'o.comuna_nombre','p1.nombre as nom_p','p1.apellido_paterno as apep_p','p1.apellido_materno as apem_p','p2.nombre as nom_c','p2.apellido_paterno as apep_c','p2.apellido_materno as apem_c','p3.nombre as nom_m','p3.apellido_paterno as apep_m','p3.apellido_materno as apem_m')
+         ->select(DB::raw('c.id as id_publicacion, DATE_FORMAT(c.created_at, "%d/%m/%Y") as fecha_creacion, c.id_estado as id_estado, CONCAT_WS(" ",p1.nombre,p1.apellido_paterno,p1.apellido_materno) as Propietario,  CONCAT_WS(" ",p4.nombre,p4.apellido_paterno,p4.apellido_materno) as Corredor'),'i.id as id_inmueble','i.direccion','i.numero','i.departamento', 'o.comuna_nombre','p1.nombre as nom_p','p1.apellido_paterno as apep_p','p1.apellido_materno as apem_p','p3.nombre as nom_m','p3.apellido_paterno as apep_m','p3.apellido_materno as apem_m','p2.name as Creador')
          ->get();
          
          return view('captacionesCorredor.index',compact('publica'));
@@ -74,6 +74,7 @@ class CaptacionCorredorController extends Controller
     {
         
         $corredores=Persona::where('tipo_cargo','=','Corredor - Externo')
+        ->Orwhere('tipo_cargo','=','Empleado')
         ->select(DB::raw('id , CONCAT_WS(" ",nombre,apellido_paterno,apellido_materno) as Corredor'))
         ->pluck('Corredor', 'id');
         return view('captacionesCorredor.create',compact('corredores'));
@@ -122,8 +123,10 @@ class CaptacionCorredorController extends Controller
     public function edit($id)
     {
         $corredores=Persona::where('tipo_cargo','=','Corredor - Externo')
+        ->Orwhere('tipo_cargo','=','Empleado')
         ->select(DB::raw('id , CONCAT_WS(" ",nombre,apellido_paterno,apellido_materno) as Corredor'))
         ->pluck('Corredor', 'id');
+
          $regiones=Region::pluck('region_nombre','region_id');
         $captacion = CaptacionCorredor::find($id);
         $persona = Persona::find(isset($captacion->id_propietario)?$captacion->id_propietario:0);
@@ -132,32 +135,32 @@ class CaptacionCorredorController extends Controller
  $captaciones_persona = DB::table('cap_corredores as c')
          ->leftjoin('personas as p1', 'c.id_propietario', '=', 'p1.id')
          ->leftjoin('inmuebles as i', 'c.id_inmueble', '=', 'i.id')
-         ->leftjoin('personas as p2', 'c.id_creador', '=', 'p2.id')
+         ->leftjoin('users as p2', 'c.id_creador', '=', 'p2.id')
          ->leftjoin('personas as p3', 'c.id_modificador', '=', 'p3.id')
          ->leftjoin('comunas as o', 'i.id_comuna', '=', 'o.comuna_id')
          -> where("c.id_propietario","=",isset($captacion->id_propietario)?$captacion->id_propietario:0)
           -> where("c.id_propietario","!=","null")
         ->where("c.id_estado","=",1)
-         ->select(DB::raw('c.id as id_publicacion, DATE_FORMAT(c.created_at, "%d/%m/%Y") as fecha_creacion, c.id_estado as id_estado, CONCAT(p1.nombre," ",p1.apellido_paterno," ",p1.apellido_materno) as Propietario, CONCAT(p2.nombre," ",p2.apellido_paterno," ",p2.apellido_materno) as Creador'),'i.id as id_inmueble','i.direccion','i.numero','i.departamento', 'o.comuna_nombre')
+         ->select(DB::raw('c.id as id_publicacion, DATE_FORMAT(c.created_at, "%d/%m/%Y") as fecha_creacion, c.id_estado as id_estado, CONCAT(p1.nombre," ",p1.apellido_paterno," ",p1.apellido_materno) as Propietario, p2.name as Creador'),'i.id as id_inmueble','i.direccion','i.numero','i.departamento', 'o.comuna_nombre')
          ->get();
 
    $captaciones_inmueble = DB::table('cap_corredores as c')
          ->leftjoin('personas as p1', 'c.id_propietario', '=', 'p1.id')
          ->leftjoin('inmuebles as i', 'c.id_inmueble', '=', 'i.id')
-         ->leftjoin('personas as p2', 'c.id_creador', '=', 'p2.id')
+         ->leftjoin('users as p2', 'c.id_creador', '=', 'p2.id')
          ->leftjoin('personas as p3', 'c.id_modificador', '=', 'p3.id')
          ->leftjoin('comunas as o', 'i.id_comuna', '=', 'o.comuna_id')
          -> where("c.id_inmueble","=",isset($captacion->id_inmueble)?$captacion->id_inmueble:0)
          -> where("c.id_inmueble","!=","null")
         ->where("c.id_estado","=",1)
-         ->select(DB::raw('c.id as id_publicacion, DATE_FORMAT(c.created_at, "%d/%m/%Y") as fecha_creacion, c.id_estado as id_estado, CONCAT(p1.nombre," ",p1.apellido_paterno," ",p1.apellido_materno) as Propietario, CONCAT(p2.nombre," ",p2.apellido_paterno," ",p2.apellido_materno) as Creador'),'i.id as id_inmueble','i.direccion','i.numero','i.departamento', 'o.comuna_nombre')
+         ->select(DB::raw('c.id as id_publicacion, DATE_FORMAT(c.created_at, "%d/%m/%Y") as fecha_creacion, c.id_estado as id_estado, CONCAT(p1.nombre," ",p1.apellido_paterno," ",p1.apellido_materno) as Propietario, p2.name as Creador'),'i.id as id_inmueble','i.direccion','i.numero','i.departamento','i.observaciones', 'o.comuna_nombre')
          ->get();
         $idr=null;
 
          $gestion = DB::table('cap_gestioncorredor as g')
-         ->leftjoin('personas as p2', 'g.id_creador_gestion', '=', 'p2.id')
+         ->leftjoin('users as p2', 'g.id_creador_gestion', '=', 'p2.id')
          ->where("g.id_capcorredor_gestion","=",$id)
-         ->select(DB::raw('g.id, DATE_FORMAT(g.fecha_gestion, "%d/%m/%Y") as fecha_gestion,  CONCAT(p2.nombre," ",p2.apellido_paterno," ",p2.apellido_materno) as Creador'), 'g.dir','g.tipo_contacto','g.hora_gestion')
+         ->select(DB::raw('g.id, DATE_FORMAT(g.fecha_gestion, "%d/%m/%Y") as fecha_gestion,  p2.name as Creador'), 'g.dir','g.tipo_contacto','g.hora_gestion')
          ->get();
 
         $imagenes=CaptacionImageCorredor::where('id_capcorredor','=',$id)->get();
@@ -262,6 +265,7 @@ class CaptacionCorredorController extends Controller
                             'dormitorio'        => $request->i_dormitorio,
                             'bano'              => $request->i_bano,
                             'estacionamiento'   => $request->i_estacionamiento,
+                            'observaciones'     => $request->i_observaciones,
                             'bodega'            => $request->i_bodega,
                             'rol'               => $request->i_rol,
                             'nro_bodega'        => $request->i_nro_bodega,
@@ -288,6 +292,7 @@ class CaptacionCorredorController extends Controller
                             'estacionamiento'   => $request->i_estacionamiento,
                             'bodega'            => $request->i_bodega,
                             'nro_bodega'        => $request->i_nro_bodega,
+                            'observaciones'     => $request->i_observaciones,
                             'rol'               => $request->i_rol,
                             'referencia'         => $request->i_referencia,
                             'piscina'           => $request->i_piscina,
@@ -323,33 +328,33 @@ class CaptacionCorredorController extends Controller
      $captaciones_persona = DB::table('cap_corredores as c')
          ->leftjoin('personas as p1', 'c.id_propietario', '=', 'p1.id')
          ->leftjoin('inmuebles as i', 'c.id_inmueble', '=', 'i.id')
-         ->leftjoin('personas as p2', 'c.id_creador', '=', 'p2.id')
+         ->leftjoin('users as p2', 'c.id_creador', '=', 'p2.id')
          ->leftjoin('personas as p3', 'c.id_modificador', '=', 'p3.id')
          ->leftjoin('comunas as o', 'i.id_comuna', '=', 'o.comuna_id')
          -> where("c.id_propietario","=",isset($captacion->id_propietario)?$captacion->id_propietario:0)
           -> where("c.id_propietario","!=","null")
         ->where("c.id_estado","=",1)
-         ->select(DB::raw('c.id as id_publicacion, DATE_FORMAT(c.created_at, "%d/%m/%Y") as fecha_creacion, c.id_estado as id_estado, CONCAT(p1.nombre," ",p1.apellido_paterno," ",p1.apellido_materno) as Propietario, CONCAT(p2.nombre," ",p2.apellido_paterno," ",p2.apellido_materno) as Creador'),'i.id as id_inmueble','i.direccion','i.numero','i.departamento', 'o.comuna_nombre')
+         ->select(DB::raw('c.id as id_publicacion, DATE_FORMAT(c.created_at, "%d/%m/%Y") as fecha_creacion, c.id_estado as id_estado, CONCAT(p1.nombre," ",p1.apellido_paterno," ",p1.apellido_materno) as Propietario, p2.name as Creador'),'i.id as id_inmueble','i.direccion','i.numero','i.departamento', 'o.comuna_nombre')
          ->get();
 
    $captaciones_inmueble = DB::table('cap_corredores as c')
          ->leftjoin('personas as p1', 'c.id_propietario', '=', 'p1.id')
          ->leftjoin('inmuebles as i', 'c.id_inmueble', '=', 'i.id')
-         ->leftjoin('personas as p2', 'c.id_creador', '=', 'p2.id')
+         ->leftjoin('users as p2', 'c.id_creador', '=', 'p2.id')
          ->leftjoin('personas as p3', 'c.id_modificador', '=', 'p3.id')
          ->leftjoin('comunas as o', 'i.id_comuna', '=', 'o.comuna_id')
          -> where("c.id_inmueble","=",isset($captacion->id_inmueble)?$captacion->id_inmueble:0)
          -> where("c.id_inmueble","!=","null")
         ->where("c.id_estado","=",1)
-         ->select(DB::raw('c.id as id_publicacion, DATE_FORMAT(c.created_at, "%d/%m/%Y") as fecha_creacion, c.id_estado as id_estado, CONCAT(p1.nombre," ",p1.apellido_paterno," ",p1.apellido_materno) as Propietario, CONCAT(p2.nombre," ",p2.apellido_paterno," ",p2.apellido_materno) as Creador'),'i.id as id_inmueble','i.direccion','i.numero','i.departamento', 'o.comuna_nombre')
+         ->select(DB::raw('c.id as id_publicacion, DATE_FORMAT(c.created_at, "%d/%m/%Y") as fecha_creacion, c.id_estado as id_estado, CONCAT(p1.nombre," ",p1.apellido_paterno," ",p1.apellido_materno) as Propietario, p2.name as Creador'),'i.id as id_inmueble','i.direccion','i.numero','i.departamento', 'o.comuna_nombre')
          ->get();
 
         $idr=null;
 
          $gestion = DB::table('cap_gestioncorredor as g')
-         ->leftjoin('personas as p2', 'g.id_creador_gestion', '=', 'p2.id')
+         ->leftjoin('users as p2', 'g.id_creador_gestion', '=', 'p2.id')
          ->where("g.id_capcorredor_gestion","=",$id)
-         ->select(DB::raw('g.id, DATE_FORMAT(g.fecha_gestion, "%d/%m/%Y") as fecha_gestion,  CONCAT(p2.nombre," ",p2.apellido_paterno," ",p2.apellido_materno) as Creador'), 'g.dir','g.tipo_contacto','g.hora_gestion')
+         ->select(DB::raw('g.id, DATE_FORMAT(g.fecha_gestion, "%d/%m/%Y") as fecha_gestion,  p2.name as Creador'), 'g.dir','g.tipo_contacto','g.hora_gestion')
          ->get();
 
         $imagenes=CaptacionImageCorredor::where('id_capcorredor','=',$id)->get();

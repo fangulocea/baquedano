@@ -509,6 +509,7 @@ class ComposerStaticInit0178ccda3db7603c96af3e22d130f715
         'Caffeinated\\Shinobi\\ShinobiServiceProvider' => __DIR__ . '/..' . '/caffeinated/shinobi/src/ShinobiServiceProvider.php',
         'Caffeinated\\Shinobi\\Traits\\PermissionTrait' => __DIR__ . '/..' . '/caffeinated/shinobi/src/Traits/PermissionTrait.php',
         'Caffeinated\\Shinobi\\Traits\\ShinobiTrait' => __DIR__ . '/..' . '/caffeinated/shinobi/src/Traits/ShinobiTrait.php',
+        'CapImportRespaldo' => __DIR__ . '/../..' . '/database/migrations/2018_07_04_165624_cap_import_respaldo.php',
         'CapPublicacion' => __DIR__ . '/../..' . '/database/migrations/2018_05_24_164206_cap_publicacion.php',
         'CaptacionCorredor' => __DIR__ . '/../..' . '/database/migrations/2018_06_10_221625_CaptacionCorredor.php',
         'CaptacionGestion' => __DIR__ . '/../..' . '/database/migrations/2018_05_31_103305_CaptacionGestion.php',
