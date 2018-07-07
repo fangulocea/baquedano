@@ -131,7 +131,7 @@
                                 <td>{{ trans_choice('mensajes.borrador', $p->id_estado) }}</td>
                                 @can('borradorContrato.edit')
                                     <td>
-                                        <button class="btn btn-success btn-circle btn-lg" id='via_edit' onclick="mostrar_modal({{ $p->id }})" ><i class="fa fa-check"></i></span></button>
+                                        <a href="{{ route('borradorContrato.mostrarGestion', $p->id) }}"><span class="btn btn-warning btn-circle btn-lg"><i class="fa fa-check"></i></span></a>
                                     </td>
                                 @endcan
                                 @can('borradorContrato.mail')
@@ -150,119 +150,7 @@
                             </tr>
                             @endforeach
 
-                            <!-- MODAL GESTION UPDATE -->
-                                    <div id="modal-contacto_edit_c" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
-                                            <div class="modal-dialog modal-lg">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                                                        <h4 class="modal-title">Actualice sssu información de contacto</h4> </div>
 
-
-                                                 <form id="form1_e" action="{{ route('borradorContrato.editarGestion') }}" method="post">
-                                                <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                                                {!! csrf_field() !!}
-                                                    <input type="hidden" class="form-control" name="id_modificador" id="id_modificador_e" value="{{ Auth::user()->id }}">
-                                                    <input type="hidden" class="form-control" name="id_borrador" id="id_borrador_e">
-                                                    <input type="hidden" class="form-control" name="id_publicacion" id="id_publicacion_e">
-                                                    <div class="modal-body">
-
-                                        <div class="row">
-
-                                            <div class="col-sm-3">
-                                                <div class="form-group">
-                                                    <label class="control-label">Comision</label>
-                                                    <select class="form-control" id="id_comision_e" name="id_comision_m" required="required" >
-                                                        <option value="">Selecione Comision</option>
-                                                        @foreach($comision as $p)
-                                                             <option value="{{ $p->id }}">{{ $p->nombre }}</option>
-                                                        @endforeach   
-                                                    </select>
-                                                    {{-- <label class="control-label">Notaria</label>
-                                                    <select class="form-control" id="id_notaria_e" name="id_notaria_m" required="required" >
-                                                        <option value="">Selecione Servicio</option>
-                                                        @foreach($notaria as $p)
-                                                             <option value="{{ $p->id }}">{{ $p->nombre }}</option>
-                                                        @endforeach   
-                                                    </select> --}}
-                                                </div>
-                                            </div>
-
-                                            <div class="col-sm-3">
-                                                <div class="form-group">
-                                                    <label class="control-label">Flexibilidad</label>
-                                                    <select class="form-control" id="id_flexibilidad_e" name="id_flexibilidad_m" required="required" >
-                                                        <option value="">Selecione Flexibilidad</option>
-                                                        @foreach($flexibilidad as $p)
-                                                            <option value="{{ $p->id }}" >{{ $p->nombre }}</option>
-                                                        @endforeach   
-                                                    </select>
-                                                    {{-- <label class="control-label">Servicio</label>
-                                                    <select class="form-control" id="id_servicio_e" name="id_servicios_m" required="required" >
-                                                        <option value="">Selecione Servicio</option>
-                                                        @foreach($servicio as $p)
-                                                            <option value="{{ $p->id }}" >{{ $p->nombre }}</option>
-                                                        @endforeach   
-                                                    </select> --}}
-                                                </div>
-                                            </div>
-
-                                            <div class="col-sm-3">
-                                                <div class="form-group">
-                                                    <label class="control-label">Contrato</label>
-                                                    <select class="form-control" id="id_contrato_e" name="id_contrato_m" required="required" >
-                                                        <option value="">Selecione Contrato</option>
-                                                        @foreach($contrato as $p)
-                                                            <option value="{{ $p->id }}">{{ $p->nombre }}</option>
-                                                        @endforeach   
-                                                    </select>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-sm-3">
-                                                <div class="form-group">
-                                                    
-                                                </div>
-                                            </div>
-                                        </div>
- 
-                                        <div class="row">
-                                            <div class="col-sm-3">
-                                                <label>Fecha para Firmar</label>
-                                                <div class="input-group">
-                                                    <input type="text" autocomplete="off" class="form-control datepicker-fecha_contacto1_contrato" placeholder="dd/mm/yyyy" id="datepicker-fecha_contacto1" name="fecha_gestion_m" required="required"> <span class="input-group-addon"><i class="icon-calender"></i></span> 
-                                                </div>
-                                            </div>
-
-                                            <div class="col-sm-3">
-                                                <label>Estado</label>
-                                                <div class="input-group">
-                                                    <select class="form-control" id="id_estado_e" name="id_estado_m" required="required" >
-                                                        <option value="">Selecione Estado</option>    
-                                                            <option value="0" >Rechazdo</option>
-                                                            <option value="1" >Vigente</option>
-                                                            <option value="2" >Correo Enviado</option>
-                                                            <option value="3" >Reenvío Correo</option>
-                                                    </select> 
-                                                </div>
-                                            </div>                                            
-                                        </div>
-
-                                        <div class="form-group">
-                                            <label for="detalle_contacto" class="control-label">Detalle:</label>
-                                                <textarea class="form-control" name="detalle_revision_m" id="detalle_revision_e" cols="25" rows="10" class="form-control" required="required"></textarea>
-                                        </div>
-                                                       
-                                        </div>
-                                            <div class="modal-footer">
-                                                        <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">Cerrar</button>
-                                                        <button type="submit" class="btn btn-danger waves-effect waves-light">Guardar</button>
-                                                    </div>
-                                                </form>
-                                                </div>
-                                            </div>
-                                    </div>
-                                    <!-- FIN MODAL GESTION UPDATE -->
 
                                     <!-- MODAL ACTUALIZAR PERSONA -->
                                     <div id="modal-updatepersona" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
@@ -672,29 +560,29 @@ $(function(){
 });
 
 
-function mostrar_modal(obj){
-    var url= "{{ URL::to('borradorContrato/borradorC')}}"+"/"+obj;
-    $.ajax({
-        type:"get",
-        url:url,
-        data:"",
-        success:function(response){
-            $('#modal-contacto_edit_c').modal('show');
-            var d = response[0].fecha_gestion.split('-');
-            $('#datepicker-fecha_contacto1').val(d[2] + '-' + d[1] + '-' + d[0]);
-            $('#id_servicio_e').val(response[0].id_servicios);
-            $('#id_notaria_e').val(response[0].id_notaria);
-            $('#id_comision_e').val(response[0].id_comisiones);
-            $('#id_flexibilidad_e').val(response[0].id_flexibilidad);
-            $('#id_estado_e').val(response[0].id_estado);
-            $('#id_borrador_e').val(response[0].id);
-            $('#id_publicacion_e').val(response[0].id_publicacion);
-            $('#id_contrato_e').val(response[0].id_contrato);
-            $('#detalle_revision_e').val(response[0].detalle_revision);
-            tinyMCE.activeEditor.setContent(response[0].detalle_revision);
-        }
-    });
-}
+// function mostrar_modal(obj){
+//     var url= "{{ URL::to('borradorContrato/borradorC')}}"+"/"+obj;
+//     $.ajax({
+//         type:"get",
+//         url:url,
+//         data:"",
+//         success:function(response){
+//             $('#modal-contacto_edit_c').modal('show');
+//             var d = response[0].fecha_gestion.split('-');
+//             $('#datepicker-fecha_contacto1').val(d[2] + '-' + d[1] + '-' + d[0]);
+//             $('#id_servicio_e').val(response[0].id_servicios);
+//             $('#id_notaria_e').val(response[0].id_notaria);
+//             $('#id_comision_e').val(response[0].id_comisiones);
+//             $('#id_flexibilidad_e').val(response[0].id_flexibilidad);
+//             $('#id_estado_e').val(response[0].id_estado);
+//             $('#id_borrador_e').val(response[0].id);
+//             $('#id_publicacion_e').val(response[0].id_publicacion);
+//             $('#id_contrato_e').val(response[0].id_contrato);
+//             $('#detalle_revision_e').val(response[0].detalle_revision);
+//             tinyMCE.activeEditor.setContent(response[0].detalle_revision);
+//         }
+//     });
+// }
 
 function mostrar_modalpersona(obj){
     var url= "{{ URL::to('persona/contratoborrador')}}"+"/"+obj;

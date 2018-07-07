@@ -704,7 +704,10 @@ Route::get('revisionpersona/eliminarfoto/{idf}/{idc}','RevisionPersonaController
 		Route::post('borradorContrato/crearBorrador','ContratoBorradorController@crearBorrador')->name('borradorContrato.crearBorrador')
 		->middleware('permission:borradorContrato.edit');
 
-		Route::get('borradorContrato/borradorC/{idg}','ContratoBorradorController@mostrarGestion');
+		//Route::get('borradorContrato/borradorC/{idg}','ContratoBorradorController@mostrarGestion');
+
+		Route::get('borradorContrato/borradorC/{idg}','ContratoBorradorController@mostrarGestion')->name('borradorContrato.mostrarGestion')
+		->middleware('permission:borradorContrato.edit');
 
 		Route::post('borradorContrato/{captacionArrendador}','ContratoBorradorController@update')->name('borradorContrato.update')
 		->middleware('permission:borradorContrato.edit');
