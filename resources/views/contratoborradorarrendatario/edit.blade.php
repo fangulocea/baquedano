@@ -184,7 +184,8 @@
                                 <td>{{ trans_choice('mensajes.borradorArrendatatio', $p->id_estado) }}</td>
                                 @can('revisioncomercial.edit')
                                     <td>
-                                        <button class="btn btn-success btn-circle btn-lg" id='via_edit' onclick="mostrar_modal({{ $p->id_cap_arr }})" ><i class="fa fa-check"></i></span></button>
+                                        <a href="{{ route('cbararrendatario.mostrarGestion', $p->id_cap_arr) }}"><span class="btn btn-success btn-circle btn-lg"><i class="fa fa-check"></i></span></a>
+
                                     </td>
                                 @endcan
                                 @can('cbararrendatario.mail')
@@ -204,165 +205,6 @@
                             @endforeach
 
                             <!-- MODAL GESTION UPDATE -->
-                                    <div id="modal-contacto_edit_c" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
-                                            <div class="modal-dialog modal-lg">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                                                        <h4 class="modal-title">Actualice sssu información de contacto</h4> </div>
-
-
-                                                 <form id="form1_e" action="{{ route('cbararrendatario.editarGestion') }}" method="post">
-                                                <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                                                {!! csrf_field() !!}
-                                                    <input type="hidden" class="form-control" name="id_modificador" id="id_modificador_e" value="{{ Auth::user()->id }}">
-                                                    <input type="hidden" class="form-control" name="id_borrador" id="id_borrador_e">
-                                                    <input type="hidden" class="form-control" name="id_arrendtario" id="id_arrendtario_e">
-                                                    <input type="hidden" name="id_cap_arr" id="id_cap_arr_e">
-                                                    <div class="modal-body">
-
-                    <div class="row">
-                                <div class="col-lg-3 col-sm-3 col-xs-12">
-                                    <div class="form-group">
-                                        <label class="control-label">Comisiones</label>
-                                        <select class="form-control" name="id_comisiones" id="id_comisiones_e" required="required" >
-                                            <option value="">Selecione comision</option>
-                                            @foreach($comision as $p)
-                                                <option value="{{ $p->id }}">{{ $p->nombre }}</option>
-                                            @endforeach   
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-lg-3 col-sm-3 col-xs-12">
-                                    <div class="form-group">
-                                        <label class="control-label">Flexibilidad</label>
-                                        <select class="form-control" name="id_flexibilidad" id="id_flexibilidad_e" required="required" >
-                                            <option value="">Selecione Flexibilidad</option>
-                                            @foreach($flexibilidad as $p)
-                                                <option value="{{ $p->id }}">{{ $p->nombre }}</option>
-                                            @endforeach   
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-lg-3 col-sm-3 col-xs-12">
-                                    <div class="form-group">
-                                        <label class="control-label">Servicio</label>
-                                        <select class="form-control" name="id_servicios" id="id_servicios_e" required="required" >
-                                            <option value="">Selecione Servicio</option>
-                                            @foreach($servicio as $p)
-                                                <option value="{{ $p->id }}">{{ $p->nombre }}</option>
-                                            @endforeach   
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-lg-3 col-sm-3 col-xs-12">
-                                    <label>Fecha Contrato</label>
-                                    <div class="input-group">
-                                        <input type="text" autocomplete="off" class="form-control datepicker-fecha_contacto1_c" placeholder="dd/mm/yyyy" id="datepicker-fecha_contacto1_c11" name="fecha_contrato" required="required"> <span class="input-group-addon"><i class="icon-calender"></i></span> 
-                                    </div>
-
-                                </div>
-                    </div>
-
-                   <div class="row">
-                                <div class="col-lg-3 col-sm-3 col-xs-12">
-                                    <div class="form-group">
-                                        <label class="control-label">Formas de Pago</label>
-                                        <select class="form-control" name="id_formadepago" id="id_formadepago_e" required="required" >
-                                            <option value="">Selecione Forma de Pago</option>
-                                            @foreach($formasdepago as $p)
-                                                <option value="{{ $p->id }}">{{ $p->nombre }}</option>
-                                            @endforeach   
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-lg-3 col-sm-3 col-xs-12">
-                                    <div class="form-group">
-                                        <label class="control-label">Multas</label>
-                                        <select class="form-control" name="id_multa" id="id_multa_e" required="required" >
-                                            <option value="">Selecione Multas</option>
-                                            @foreach($multa as $p)
-                                                <option value="{{ $p->id }}">{{ $p->nombre }}</option>
-                                            @endforeach   
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-lg-3 col-sm-3 col-xs-12">
-                                    <div class="form-group">
-                                        <label class="control-label">Contrato</label>
-                                        <select class="form-control" name="id_contrato" id="id_contrato_e" required="required" >
-                                            <option value="">Selecione Contrato</option>
-                                            @foreach($contrato as $p)
-                                                <option value="{{ $p->id }}">{{ $p->nombre }}</option>
-                                            @endforeach   
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-lg-3 col-sm-3 col-xs-12">
-                                    <div class="form-group">
-                                        <label class="control-label">Día de Pago</label>
-                                        <select class="form-control" name="dia_pago" id="dia_pago_e" required="required" >
-                                            <option value="">Selecione Día</option>
-                                            <option value="1">1</option>
-                                            <option value="2">2</option>
-                                            <option value="3">3</option>
-                                            <option value="4">4</option>
-                                            <option value="5">5</option>
-                                            <option value="6">6</option>
-                                            <option value="7">7</option>
-                                            <option value="8">8</option>
-                                            <option value="9">9</option>
-                                            <option value="10">10</option>
-                                               
-                                        </select>
-                                    </div>
-                                </div>
-                    </div>
-
-                    <div class="row">
-                                <div class="col-lg-3 col-sm-3 col-xs-12">
-                                    <label>Valor Arriendo</label>
-                                    <input name='valorarriendo' id="valorarriendo_e" type="number" class="form-control" required="required">
-                                </div>
-
-                                <div class="col-lg-3 col-sm-3 col-xs-12">
-                                    <label>Estado</label>
-                                    <div class="input-group">
-                                        <select class="form-control" id="id_estado_e" name="id_estado" required="required" >
-                                            <option value="">Selecione Estado</option>    
-                                                <option value="0" >Rechazdo</option>
-                                                <option value="1" >Vigente</option>
-                                                <option value="2" >Correo Enviado</option>
-                                                <option value="3" >Reenvío Correo</option>
-                                                <option value="3" >Contrato Proceso Firma</option>
-                                        </select> 
-                                    </div>
-                                </div>
-
-                                <div class="col-lg-3 col-sm-3 col-xs-12">
-                                </div>
-
-                                <div class="col-lg-3 col-sm-3 col-xs-12">
-                                </div>
-                    </div>
-
-
-
-
-                                        <div class="form-group">
-                                            <label for="detalle_contacto" class="control-label">Detalle:</label>
-                                                <textarea class="form-control" name="detalle" id="detalle_e" cols="25" rows="10" class="form-control" required="required"></textarea>
-                                        </div>
-                                                       
-                                        </div>
-                                            <div class="modal-footer">
-                                                        <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">Cerrar</button>
-                                                        <button type="submit" class="btn btn-danger waves-effect waves-light">Guardar</button>
-                                                    </div>
-                                                </form>
-                                                </div>
-                                            </div>
-                                    </div>
                                     <!-- FIN MODAL GESTION UPDATE -->
 
                                     <!-- MODAL ACTUALIZAR PERSONA -->
@@ -789,34 +631,34 @@ $(function(){
 
 
 
-function mostrar_modal(obj){
-    var url= "{{ URL::to('cbararrendatario/borradorC')}}"+"/"+obj;
-    $.ajax({
-        type:"get",
-        url:url,
-        data:"",
-        success:function(response){
-            $('#modal-contacto_edit_c').modal('show');
-            var d = response[0].fecha_contrato.split('-');
-            $('#datepicker-fecha_contacto1_c11').val(d[2] + '-' + d[1] + '-' + d[0]);
-            $('#id_servicios_e').val(response[0].id_servicios);
-            $('#id_notaria_e').val(response[0].id_notaria);
-            $('#id_comisiones_e').val(response[0].id_comisiones);
-            $('#id_flexibilidad_e').val(response[0].id_flexibilidad);
-            $('#id_estado_e').val(response[0].id_estado);
-            $('#id_borrador_e').val(response[0].id);
-            $('#id_arrendtario_e').val(response[0].id_arrendatario);
-            $('#id_contrato_e').val(response[0].id_contrato);
-            $('#id_formadepago_e').val(response[0].id_formadepago);
-            $('#id_multa_e').val(response[0].id_multa);
-            $('#dia_pago_e').val(response[0].dia_pago);
-            $('#valorarriendo_e').val(response[0].valorarriendo);
-            $('#id_cap_arr_e').val(response[0].id_cap_arr);
-            $('#detalle_e').val(response[0].detalle);
-            tinyMCE.activeEditor.setContent(response[0].detalle);
-        }
-    });
-}
+// function mostrar_modal(obj){
+//     var url= "{{ URL::to('cbararrendatario/borradorC')}}"+"/"+obj;
+//     $.ajax({
+//         type:"get",
+//         url:url,
+//         data:"",
+//         success:function(response){
+//             $('#modal-contacto_edit_c').modal('show');
+//             var d = response[0].fecha_contrato.split('-');
+//             $('#datepicker-fecha_contacto1_c11').val(d[2] + '-' + d[1] + '-' + d[0]);
+//             $('#id_servicios_e').val(response[0].id_servicios);
+//             $('#id_notaria_e').val(response[0].id_notaria);
+//             $('#id_comisiones_e').val(response[0].id_comisiones);
+//             $('#id_flexibilidad_e').val(response[0].id_flexibilidad);
+//             $('#id_estado_e').val(response[0].id_estado);
+//             $('#id_borrador_e').val(response[0].id);
+//             $('#id_arrendtario_e').val(response[0].id_arrendatario);
+//             $('#id_contrato_e').val(response[0].id_contrato);
+//             $('#id_formadepago_e').val(response[0].id_formadepago);
+//             $('#id_multa_e').val(response[0].id_multa);
+//             $('#dia_pago_e').val(response[0].dia_pago);
+//             $('#valorarriendo_e').val(response[0].valorarriendo);
+//             $('#id_cap_arr_e').val(response[0].id_cap_arr);
+//             $('#detalle_e').val(response[0].detalle);
+//             tinyMCE.activeEditor.setContent(response[0].detalle);
+//         }
+//     });
+// }
 
 
 
