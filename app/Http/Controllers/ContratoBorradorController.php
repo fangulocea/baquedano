@@ -242,12 +242,9 @@ class ContratoBorradorController extends Controller
 
   public function editarGestion(Request $request)
     {
-<<<<<<< HEAD
-        $fecha_gestion = DateTime::createFromFormat('d-m-Y', $request->fecha_gestion);
-=======
 
-        $fecha_gestion = DateTime::createFromFormat('d-m-Y', $request->fecha_gestion_m);
->>>>>>> b69f5fd28b02f39bce2acb7c6f6cc2ebd1a0a8f0
+        $fecha_gestion = DateTime::createFromFormat('d-m-Y', $request->fecha_gestion);
+
         array_set($request, 'fecha_gestion_m', $fecha_gestion);
 
         $captacion = ContratoBorrador::where('id','=',$request->id_borrador)
