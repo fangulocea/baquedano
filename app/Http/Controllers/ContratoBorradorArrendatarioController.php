@@ -244,9 +244,44 @@ class ContratoBorradorArrendatarioController extends Controller
 
     public function mostrarGestion(Request $request, $idg){
 
-                $gestion=ContratoBorradorArrendatario::where('id_cap_arr','=',$idg)->get();
-                return response()->json($gestion);  
-        }
+        $gestion=ContratoBorradorArrendatario::where('id_cap_arr','=',$idg)->first();
+          
+         $servicio = DB::table('servicios as s')
+         ->where("s.estado","<>",0)
+         ->select(DB::raw('s.id as id,s.nombre as nombre'))
+         ->get();
+
+         $formasdepago = DB::table('formasdepagos as s')
+         ->where("s.estado","<>",0)
+         ->select(DB::raw('s.id as id,s.nombre as nombre'))
+         ->get();
+
+         $comision = DB::table('comisiones as c')
+         ->where("c.estado","<>",0)
+         ->select(DB::raw('c.id as id,c.nombre as nombre'))
+         ->get();
+
+         $flexibilidad = DB::table('flexibilidads as f')
+         ->where("f.estado","<>",0)
+         ->select(DB::raw('f.id as id,f.nombre as nombre'))
+         ->get();
+
+         $multa = DB::table('multas as m')
+         ->where("m.estado","<>",0)
+         ->select(DB::raw('m.id as id,m.nombre as nombre'))
+         ->get();
+
+         $contrato = DB::table('contratos as c')
+         ->where("c.estado","<>",0)
+         ->select(DB::raw('c.id as id,c.nombre as nombre'))
+         ->get();  
+
+    
+
+        return view('contratoborradorarrendatario.editContratoArr',compact('servicio','formasdepago','comision','flexibilidad','multa','contrato','gestion','borradoresIndex'));
+
+
+    }
 
 
 
@@ -300,13 +335,14 @@ class ContratoBorradorArrendatarioController extends Controller
         $fecha_contrato = DateTime::createFromFormat('d-m-Y', $request->fecha_contrato);
         array_set($request, 'fecha_contrato', $fecha_contrato);
 
+
         $captacion = ContratoBorradorArrendatario::where('id_cap_arr','=',$request->id_cap_arr)
         ->update([
               "id_modificador"  => $request->id_modificador,
               "id_servicios"    => $request->id_servicios,
-              "id_comisiones"   => $request->id_comisiones,
+              "id_comisiones"   => $request->id_comision,
               "id_flexibilidad" => $request->id_flexibilidad,
-              // "fecha_contrato"  => $request->fecha_contrato1,
+               "fecha_contrato"  => $request->fecha_contrato,
               "id_estado"       => $request->id_estado,
               "detalle"         => $request->detalle,
               "id_contrato"     => $request->id_contrato,

@@ -83,7 +83,7 @@
                     <div class="col-sm-3">
                         <label>Fecha para Firmar</label>
                         <div class="input-group">
-                        	<input type="text" autocomplete="off" class="form-control datepicker-fecha_contacto1_c" placeholder="dd/mm/yyyy" id="datepicker-fecha_contacto1_c" name="fecha_gestion" required="required" value="{{ date('d/m/Y', strtotime($gestion->fecha_gestion)) }}"> <span class="input-group-addon"><i class="icon-calender"></i></span> 
+                        	<input type="text" autocomplete="off" class="form-control datepicker-fecha_contacto1_c" placeholder="dd/mm/yyyy" id="datepicker-fecha_contacto1_c" name="fecha_gestion" required="required" value="{{ date('d-m-Y', strtotime($gestion->fecha_gestion)) }}"> <span class="input-group-addon"><i class="icon-calender"></i></span> 
                         </div>
                     </div>
 

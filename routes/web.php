@@ -831,7 +831,10 @@ Route::get('revisionpersona/eliminarfoto/{idf}/{idc}','RevisionPersonaController
 		Route::get('cbararrendatario/destroy/{id}','ContratoBorradorArrendatarioController@destroy')->name('cbararrendatario.destroy')
 		->middleware('permission:contratoborradorarrendatario.destroy');
 
-		Route::get('cbararrendatario/borradorC/{idg}','ContratoBorradorArrendatarioController@mostrarGestion');
+		//Route::get('cbararrendatario/borradorC/{idg}','ContratoBorradorArrendatarioController@mostrarGestion');
+
+		Route::get('cbararrendatario/borradorC/{idg}','ContratoBorradorArrendatarioController@mostrarGestion')->name('cbararrendatario.mostrarGestion')
+		->middleware('permission:borradorContrato.edit');
 
 		Route::post('cbararrendatario/{captacionArrendador}','ContratoBorradorArrendatarioController@update')->name('cbararrendatario.update')
 		->middleware('permission:cbararrendatario.edit');
