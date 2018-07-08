@@ -135,11 +135,7 @@
                                                 <div class="col-md-4">
                                                     <div class="form-group">
                                                         <label>Estado</label>
-                                                        <select class="form-control" name="id_estado" required="required">
-                                                            <option value="">Seleccione Estado</option>
-                                                            <option value="0">Descartado</option>
-                                                            <option value="1">Sin Gestión (Activo)</option>
-                                                        </select>
+                                                  {{ Form::select('id_estado',['4'=>'Activo - Problemas de Pago','5'=>'Activo - Daño al inmueble ','0'=>'Descartado','1'=>'Sin Gestión','2'=>'Activo','3'=>'En Espera','6'=>'Contrato Borrador','7'=>'No Activo - Daño al inmueble','12'=>'No Activo - Problema de Pago','11'=>'Contrato Firmado'], null,array('class'=>'form-control','style'=>'','id'=>'id_estado','placeholder'=>'Seleccione estado','required'=>'required')) }}
                                                     </div>
                                                 </div>
                                             </div>

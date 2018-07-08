@@ -21,6 +21,16 @@ use Illuminate\Support\Facades\File;
 
 class ArrendatarioController extends Controller
 {
+
+      public function crearBorrador($id)
+    {
+        $captacion=Arrendatario::where("id","=",$id)->update([
+          "id_estado"=>6
+        ]);
+        return redirect()->route('arrendatario.edit', $id)
+            ->with('status', 'Captación en estado Borrador con éxito');
+    }
+
     /**
      * Display a listing of the resource.
      *

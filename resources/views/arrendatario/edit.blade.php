@@ -156,7 +156,7 @@
                                                         @else
                                                         <?php $idr = $arrendatario->id_estado; ?>
                                                         @endif
-                                                         {{ Form::select('id_estado',['0'=>'Descartado','1'=>'Sin Gestión','2'=>'Activo','3'=>'En Espera','4'=>'Activo - Problemas de Pago','5'=>'Activo - Daño al inmueble ','6'=>'No Activo - Problema de Pago','7'=>'No Activo - Daño al inmueble'], $idr,array('class'=>'form-control','style'=>'','id'=>'id_estado','placeholder'=>'Seleccione estado','required'=>'required')) }}
+                                                         {{ Form::select('id_estado',['0'=>'Descartado','1'=>'Sin Gestión','2'=>'Activo','3'=>'En Espera','4'=>'Activo - Problemas de Pago','5'=>'Activo - Daño al inmueble ','6'=>'Contrato Borrador','7'=>'No Activo - Daño al inmueble','12'=>'No Activo - Problema de Pago','11'=>'Contrato Firmado'], $idr,array('class'=>'form-control','style'=>'','id'=>'id_estado','placeholder'=>'Seleccione estado','required'=>'required')) }}
                                                         
                                                     </div>
                                                 </div>
@@ -422,6 +422,7 @@
                    <div class="row">
                                 <div class="col-lg-2 col-sm-3 col-xs-12">
                                     <button class="btn btn-block btn-primary" data-toggle="modal" id='via_portal' data-target="#modal-contacto1" >Nueva Cita</button>
+
                                     <div id="modal-contacto1" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
                                             <div class="modal-dialog modal-lg">
                                                 <div class="modal-content">
@@ -510,7 +511,9 @@
                                     </div> 
                                     <!-- FIN MODAL GESTION CREAR -->
                                 </div>
-                                
+                                 <div class="col-lg-2 col-sm-3 col-xs-12">
+                                   <a href="{{ route("arrendatario.crearBorrador",$arrendatario->id) }}"> <button class="btn btn-block btn-secondary" id='crear_contrato' >Contrato Borrador</button> </a>
+                                </div>
                             </div>
                             <br/><br/>
                 <table id="listusers1" class="display nowrap" cellspacing="0" width="100%">

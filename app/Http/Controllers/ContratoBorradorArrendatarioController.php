@@ -25,13 +25,14 @@ class ContratoBorradorArrendatarioController extends Controller
     public function index()
     {
         $publica = DB::table('arrendatarios as a')
-         ->leftjoin('personas as pc', 'a.id_creador', 'pc.id')
+         ->leftjoin('users as pc', 'a.id_creador', 'pc.id')
          ->leftjoin('personas as pm', 'a.id_modificador', 'pm.id')
          ->leftjoin('personas as pa', 'a.id_arrendatario','pa.id')
          ->leftjoin('inmuebles as i','a.id_inmueble','i.id')
          ->leftjoin('comunas as c', 'i.id_comuna', '=', 'c.comuna_id')
          ->where('a.id_estado','=',2)
          ->OrWhere('a.id_estado','=',10)
+         ->OrWhere('a.id_estado','=',6)
          ->select(DB::raw('a.id as id_cap_arr, CONCAT_WS(" ",pa .nombre,pa.apellido_paterno,pa.apellido_materno) as arrendatario,i.direccion,i.numero,c.comuna_nombre as comuna,a.id_estado, a.id_arrendatario as id_arrendatario'))
          ->get();
 

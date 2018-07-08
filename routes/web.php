@@ -530,6 +530,9 @@ Route::middleware(['auth'])->group(function(){
 
 //Captacion Arrendatario
 
+	Route::get('arrendatario/borrador/create/{id}','ArrendatarioController@crearBorrador')->name('arrendatario.crearBorrador')
+		->middleware('permission:arrendatario.edit');
+
 	Route::post('arrendatario/store','ArrendatarioController@store')->name('arrendatario.store')
 		->middleware('permission:arrendatario.create');
 

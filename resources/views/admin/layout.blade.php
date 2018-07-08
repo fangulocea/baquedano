@@ -270,7 +270,7 @@
                                     <li> <a href="{{ route('borradorContrato.index') }}"><i class=" fa-fw">CB</i><span class="hide-menu">Contrato Borrador</span></a> </li>
                                     @endcan
                                     @can('finalContrato.index')
-                                    <li> <a href="{{ route('finalContrato.index') }}"><i class=" fa-fw">CF</i><span class="hide-menu">Contrato Final</span></a> </li>
+                                    <li> <a href="{{ route('finalContrato.index') }}"><i class=" fa-fw">CF</i><span class="hide-menu">Contrato Finales / Pagos</span></a> </li>
                                     @endcan
                                 </ul>
                             </li>

@@ -111,13 +111,13 @@ class ContratoFinalController extends Controller {
         $publica = DB::table('cap_publicaciones as c')
                 ->leftjoin('personas as p1', 'c.id_propietario', '=', 'p1.id')
                 ->leftjoin('inmuebles as i', 'c.id_inmueble', '=', 'i.id')
-                ->leftjoin('personas as p2', 'c.id_creador', '=', 'p2.id')
+                ->leftjoin('users as p2', 'c.id_creador', '=', 'p2.id')
                 ->leftjoin('personas as p3', 'c.id_modificador', '=', 'p3.id')
                 ->leftjoin('comunas as o', 'i.id_comuna', '=', 'o.comuna_id')
                 ->leftjoin('portales as po', 'c.portal', '=', 'po.id')
                 ->where('c.id_estado', '=', "7")
                 ->Orwhere('c.id_estado', '=', "10")
-                ->select(DB::raw('c.id as id_publicacion, DATE_FORMAT(c.created_at, "%d/%m/%Y") as fecha_creacion, c.id_estado as id_estado, CONCAT_WS(" ",p1.nombre,p1.apellido_paterno,p1.apellido_materno) as Propietario, CONCAT(p2.nombre," ",p2.apellido_paterno," ",p2.apellido_materno) as Creador'), 'p1.id as id_propietario', 'i.id as id_inmueble', 'i.direccion', 'i.numero', 'i.departamento', 'o.comuna_nombre', 'po.nombre as portal', 'p1.nombre as nom_p', 'p1.apellido_paterno as apep_p', 'p1.apellido_materno as apem_p', 'p2.nombre as nom_c', 'p2.apellido_paterno as apep_c', 'p2.apellido_materno as apem_c', 'p3.nombre as nom_m', 'p3.apellido_paterno as apep_m', 'p3.apellido_materno as apem_m')
+                ->select(DB::raw('c.id as id_publicacion, DATE_FORMAT(c.created_at, "%d/%m/%Y") as fecha_creacion, c.id_estado as id_estado, CONCAT_WS(" ",p1.nombre,p1.apellido_paterno,p1.apellido_materno) as Propietario, p2.name as Creador'), 'p1.id as id_propietario', 'i.id as id_inmueble', 'i.direccion', 'i.numero', 'i.departamento', 'o.comuna_nombre', 'po.nombre as portal', 'p1.nombre as nom_p', 'p1.apellido_paterno as apep_p', 'p1.apellido_materno as apem_p', 'p3.nombre as nom_m', 'p3.apellido_paterno as apep_m', 'p3.apellido_materno as apem_m')
                 ->get();
 
         return view('contratoFinal.index', compact('publica'));
