@@ -16,4 +16,6 @@ return [
 
 		'contratofinal' => '{1}Proceso de Firma|{2}Contrato Activo|{3}Contrato Vencido|{4}Anexo Contrato{5}Menor 60 días para vencer',
 
+		'pagopropietario' => '{1}No Pagado|{2}Pago Parcial|{3}Pagado|{4}Vencido',
+
 ];

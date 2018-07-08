@@ -26,7 +26,11 @@ class PagosMensualesPropietarios extends Migration
             $table->date('fecha_iniciocontrato');
             $table->integer('mes');
             $table->integer('anio');
-            $table->integer('valor_a_pagar');
+            $table->integer('subtotal_entrada')->nullable();;
+            $table->integer('subtotal_salida')->nullable();;
+            $table->integer('pago_propietario')->nullable();;
+            $table->integer('pago_rentas')->nullable();;
+            $table->integer('valor_a_pagar')->nullable();;
             $table->integer('id_creador');
             $table->integer('id_modificador');
             $table->integer('id_estado');

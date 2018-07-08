@@ -26,6 +26,10 @@ class DetallePagosPropietarios extends Migration
             $table->integer('valor_original');
             $table->integer('valor_pagado');
             $table->integer('saldo');
+            $table->integer('saldo_actual');
+            $table->string('tipo');
+            $table->string('nombre');
+            $table->string('ruta');
             $table->integer('id_creador');
             $table->integer('id_modificador');
             $table->integer('id_estado');

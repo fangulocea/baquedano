@@ -18,7 +18,7 @@ class CreateInmueblesTable extends Migration
             $table->increments('id');
             $table->string('direccion');
             $table->string('condicion')->nullable();
-            $table->integer('numero')->nullable();
+            $table->string('numero')->nullable();
             $table->string('departamento')->nullable();
             $table->string('observaciones')->nullable();
             $table->integer('dormitorio')->nullable();

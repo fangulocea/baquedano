@@ -23,7 +23,7 @@
                     <ul>
                         <li id="li_5_c"><a id="5" href="#section-iconbox-5_c" class="sticon ti-agenda"><span>Gestión</span></a></li>
                         <li id="li_4_c"><a id="4" href="#section-iconbox-4_c" class="sticon ti-home"><span>Inmuebles</span></a></li>
-                        <li id="li_6_c"><a id="6" href="#section-iconbox-6_c" class="sticon ti-agenda"><span>Documentos Iniciales</span></a></li>
+                        <li id="li_6_c"><a id="6" href="#section-iconbox-6_c" class="sticon ti-agenda"><span>Documentos</span></a></li>
                         <li id="li_7_c"><a id="7" href="#section-iconbox-7_c" class="sticon ti-agenda"><span>Generación de Pagos</span></a></li>
                         <li id="li_8_c"><a id="8" href="#section-iconbox-8_c" class="sticon ti-money"><span>Items de Pagos Mensuales</span></a></li>
                         <li id="li_9_c"><a id="8" href="#section-iconbox-9_c" class="sticon ti-money"><span>Gestionar Pago Mensual</span></a></li>
@@ -205,30 +205,34 @@
                     </div>
                      <div class="col-sm-6">
                         <div class="white-box"> 
-                             <table id="ssss"  cellspacing="0" width="100%">
+                             <table id="ssss"  cellspacing="0" width="100%" style="border: 1px solid black;" >
                                                     <thead>
                                                         <tr>
                                                          
                                                             <th><center>Click Ver Documento</center></th>
-                                                            <th>Borrar</th>
+                                                            <th><center>Borrar</center></th>
                                                         </tr>
                                                     </thead>
                                                    
                                                     <tbody>
                                                         @foreach($documentos as $pi)
                                                         <tr>
-                                                            <td  width="10px" height="10px">
-                                                               
-                                                            <center><a href="{{ URL::asset($pi->ruta.'/'.$pi->nombre) }}" target="_blank">BAJAR ARCHIVO<br> {{ $pi->nombre }} </a></center>
+                                                            <td  width="10px" height="10px" style="border: 1px solid black;" >
+                                                            <center>{{ $pi->direccion }}
+                                                            <br/>
+                                                            <b>{{ $pi->tipo }}</b>
+                                                            <br/>
+                                                            <a href="{{ URL::asset($pi->ruta.'/'.$pi->nombre) }}" target="_blank">BAJAR ARCHIVO {{ $pi->nombre }} </a></center>
 
                                                            
                                                             @can('finalContrato.edit')
-                                                            <td width="10px">
-
+                                                            <td width="10px" style="border: 1px solid black;" >
+                                                            <center>
                                                                 <a href="{{ route('finalContrato.eliminarfoto', $pi->id) }}" 
                                                                    class="btn btn-danger btn-circle btn-lg">
                                                                     <i class="fa fa-check"></i>
                                                                 </a>
+                                                            </center>
                                                             </td>
                                                             @endcan
                                                         </tr>
@@ -639,31 +643,13 @@
                                                 </div>
                                                 </div>
 <div class="row">
-         <div class="col-md-7">
+         <div class="col-md-12">
             <div class="table-responsive" id="pagoarea">
        
                                 
             </div>
         </div>
-        <div class="col-md-5">
-            <div class="row">
-                <div class="col-md-6">
-                        <div class="table-responsive" id="detallearea">
-       
-                                
-                        </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-6">
-                        <div class="table-responsive" id="docarea">
-       
-                                
-                        </div>
-                </div>
-            </div>
 
-        </div>
 </div>
 
 
@@ -705,6 +691,7 @@
                                                                                           <input type="hidden" name="id_pago_update" id="id_pago_update"  class="form-control" placeholder="" required="required" >
                                                                                           <input type="hidden" name="id_publicacion_update" id="id_publicacion_update"  class="form-control" placeholder="" required="required" >
                                                                                            <input type="hidden" name="id_contrato_update" id="id_contrato_update"  class="form-control" placeholder="" required="required" >
+                                                                                           <input type="hidden" name="id_inmueble_update" id="id_inmueble_update"  class="form-control" placeholder="" required="required" >
                                                                                          </div>
                                                                                         </div>
                                                                                     </div>
@@ -989,6 +976,7 @@ document.getElementById("tablearea").innerHTML="";
                            
                                     //HEAD
                                     var head_fecha=fecha_iniciocontrato;
+
                                         head_fecha.setDate(1);
                                         var cell = document.createElement("th");
                                         cell.style.border="1px solid black";
@@ -997,12 +985,11 @@ document.getElementById("tablearea").innerHTML="";
                                         rowheader.appendChild(cell);
 
                                      for (var r = 0; r < meses_contrato; r++) {
-
                                         var cell = document.createElement("th");
                                         cell.style.border="1px solid black";
                                         cell.style.padding="8px";
 
-                                        cell.innerHTML = '<b>'+meses[head_fecha.getMonth()]+"/"+head_fecha.getFullYear()+'</b>';
+                                        cell.innerHTML = '<b>'+meses[response[r].mes]+"/"+response[r].anio+'</b>';
                                         head_fecha.setMonth(head_fecha.getMonth()+1);
                                         rowheader.appendChild(cell);
 
@@ -1031,10 +1018,10 @@ document.getElementById("tablearea").innerHTML="";
                                                             cell.style.textAlign="center"
                                                             row.appendChild(cell);
                                                  }
-
+                                                $subtotal=0;
                                                  for (var c = 0; c < meses_contrato; c++) {
                                                     if (!$.isEmptyObject(newArray[c])) {
-
+                                                            $subtotal+=newArray[c].precio_en_pesos;
                                                             var a = document.createElement("button");
                                                             var linkText = document.createTextNode(newArray[c].precio_en_pesos);
                                                             a.appendChild(linkText);
@@ -1275,6 +1262,7 @@ function mostrar_modal(obj){
          document.getElementById('nom_pago').innerHTML = response.tipopago;
                     $("#pago_update").val(response.precio_en_pesos);
                     $("#id_pago_update").val(response.id);
+                    $("#id_inmueble_update").val(response.id_inmueble);
                     $("#id_contrato_update").val(response.id_contratofinal);
                     
                 
@@ -1375,6 +1363,18 @@ document.getElementById("pagoarea").innerHTML="";
                                         cell.innerHTML = 'Pago a Rentas';
                                         rowheader.appendChild(cell);
 
+                                    var cell = document.createElement("th");
+                                        cell.style.border="1px solid black";
+                                        cell.style.padding="8px";
+                                        cell.innerHTML = 'Estado';
+                                        rowheader.appendChild(cell);
+
+                                    var cell = document.createElement("th");
+                                        cell.style.border="1px solid black";
+                                        cell.style.padding="8px";
+                                        cell.innerHTML = 'Pagar';
+                                        rowheader.appendChild(cell);
+
                                      tbl.appendChild(rowheader);
 
                                     // LINEAS
@@ -1394,92 +1394,79 @@ document.getElementById("pagoarea").innerHTML="";
                                                             cell.style.padding="8px"
                                                             cell.style.textAlign="center"
                                                             row.appendChild(cell);
+   
+                                                            var cell = document.createElement("td");
+                                                            var cellText = document.createTextNode("$ "+response[r].subtotal_entrada);
+                                                            cell.appendChild(cellText);
+                                                            cell.style.border="1px solid black";
+                                                            cell.style.padding="8px"
+                                                            cell.style.textAlign="center"
+                                                            row.appendChild(cell);
+
                                                             var a = document.createElement("button");
-                                                            var linkText = document.createTextNode("$ "+response[r].valor_a_pagar);
-                                                            a.appendChild(linkText);
-                                                            if(response[r].E_S=='e'){
-                                                                a.className="btn btn-block btn-outline btn-success";
-                                                                a.style="width:100px";
-                                                            }else{
-                                                                a.className="btn btn-block btn-outline btn-danger";
-                                                                a.style="width:100px";
+                                                            var cell = document.createElement("td");
+                                                            var cellText = document.createTextNode("$ "+response[r].subtotal_salida);
+                                                            cell.appendChild(cellText);
+                                                            cell.style.border="1px solid black";
+                                                            cell.style.padding="8px"
+                                                            cell.style.textAlign="center"
+                                                            row.appendChild(cell);
+
+               
+                                                            var cell = document.createElement("td");
+                                                            var cellText = document.createTextNode("$ "+response[r].pago_propietario);
+                                                            cell.appendChild(cellText);
+                                                            cell.style.border="1px solid black";
+                                                            cell.style.padding="8px"
+                                                            cell.style.textAlign="center"
+                                                            row.appendChild(cell);
+
+
+                                                            var cell = document.createElement("td");
+                                                            var cellText = document.createTextNode("$ "+response[r].pago_rentas);
+                                                            cell.appendChild(cellText);
+                                                            cell.style.border="1px solid black";
+                                                            cell.style.padding="8px"
+                                                            cell.style.textAlign="center"
+                                                            row.appendChild(cell);
+                                                            var estado="";
+                                                            if(response[r].id_estado==1){
+                                                                estado='No Pagado';
                                                             }
-                                                            var id=response[r].id;
-                                                            a.id=id;
-                                                            a.addEventListener('click', function(){
-                                                                    mostrar_modal(this);
-                                                                });
-                                                            var cell = document.createElement("td");
-                                                            cell.appendChild(a);
-                                                            cell.style.border="1px solid black";
-                                                            cell.style.padding="8px"
-                                                            cell.style.textAlign="center"
-                                                            row.appendChild(cell);
-                                                            var a = document.createElement("button");
-                                                            var linkText = document.createTextNode("$ "+response[r+1].valor_a_pagar);
-                                                            a.appendChild(linkText);
-                                                            if(response[r+1].E_S=='e'){
-                                                                a.className="btn btn-block btn-outline btn-success";
-                                                            }else{
-                                                                a.className="btn btn-block btn-outline btn-danger";
+                                                            if(response[r].id_estado==2){
+                                                                estado='Pago Parcial';
                                                             }
-                                                            var id=response[r+1].id;
-                                                            a.id=id;
-                                                            a.addEventListener('click', function(){
-                                                                    mostrar_modal(this);
-                                                                });
+                                                            if(response[r].id_estado==3){
+                                                                estado='Pagado';
+                                                            }                    
+                                                            if(response[r].id_estado==4){
+                                                                estado='Vencido';
+                                                            } 
                                                             var cell = document.createElement("td");
-                                                            cell.appendChild(a);
+                                                            var cellText = document.createTextNode(estado);
+                                                            cell.appendChild(cellText);
                                                             cell.style.border="1px solid black";
                                                             cell.style.padding="8px"
                                                             cell.style.textAlign="center"
                                                             row.appendChild(cell);
-
-                                                            var pagar_a_propietario=response[r+1].valor_a_pagar-response[r].valor_a_pagar;
-                                                            var pagar_a_baquedano=response[r].valor_a_pagar-response[r+1].valor_a_pagar;
-
-                                                            if(pagar_a_propietario<0)
-                                                                pagar_a_propietario=0;
-
-                                                            if(pagar_a_baquedano<0)
-                                                                pagar_a_baquedano=0;
 
                                                             var a = document.createElement("button");
-                                                            var linkText = document.createTextNode("$ "+pagar_a_propietario);
-                                                            a.appendChild(linkText);
-                                                            a.className="btn btn-block btn-outline btn-danger";
-                                                            var id=response[r+1].id;
-                                                            a.id=id;
+                                                            var linkText1 = document.createTextNode("$");
+                                                            a.className="btn btn-success btn-circle btn-lg";
+                                                            a.id=response[r].id;
                                                             a.addEventListener('click', function(){
-                                                                    mostrar_modal(this);
+                                                                    ir_pago(this);
                                                                 });
+                                                            a.appendChild(linkText1);
+                                                            a.style="font-size:small"
                                                             var cell = document.createElement("td");
                                                             cell.appendChild(a);
                                                             cell.style.border="1px solid black";
                                                             cell.style.padding="8px"
                                                             cell.style.textAlign="center"
                                                             row.appendChild(cell);
-
-
-                                                            var a = document.createElement("button");
-                                                            var linkText = document.createTextNode("$ "+pagar_a_baquedano);
-                                                            a.appendChild(linkText);
-                                                            a.className="btn btn-block btn-outline btn-success";
-                                                            var id=response[r+1].id;
-                                                            a.id=id;
-                                                            a.addEventListener('click', function(){
-                                                                    mostrar_modal(this);
-                                                                });
-                                                            var cell = document.createElement("td");
-                                                            cell.appendChild(a);
-                                                            cell.style.border="1px solid black";
-                                                            cell.style.padding="8px"
-                                                            cell.style.textAlign="center"
-                                                            row.appendChild(cell);
-
-  
                                                     }
-                                                 r++
+                                                 
                                                 tbl.appendChild(row); // AGREGA EL PAGO
                                         }
                                     }
@@ -1490,6 +1477,10 @@ document.getElementById("pagoarea").innerHTML="";
             });
 
 });
+
+function ir_pago(obj){
+    window.location.href = '/finalContrato/ir_al_pago/'+obj.id;
+}
 
 </script>
 @endsection

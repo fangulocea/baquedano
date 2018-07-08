@@ -44,7 +44,7 @@ class ContratoFinalController extends Controller {
                 ->leftjoin('adm_contratofinal as cp', 'c.id_contratofinal', '=', 'cp.id')
                 ->where('c.id_contratofinal', '=', $id)
                 ->where('c.id_inmueble', '=', $idi)
-                ->select(DB::raw(' c.E_S, c.fecha_iniciocontrato, c.mes, c.anio, c.valor_a_pagar, cp.meses_contrato'))
+                ->select(DB::raw(' c.id, c.E_S, c.fecha_iniciocontrato, c.mes, c.anio, c.valor_a_pagar, cp.meses_contrato,c.subtotal_entrada, c.subtotal_salida, c.pago_propietario, c.pago_rentas, c.id_estado'))
                 ->orderBy('c.id', 'asc')
                 ->get();
         return response()->json($contrato);
@@ -183,7 +183,10 @@ class ContratoFinalController extends Controller {
                 ->get();
 
         $documentos = DB::table('adm_contratofinaldocs as n')
+                ->leftjoin('inmuebles as i', 'n.id_inmueble', '=', 'i.id')
+                ->leftjoin('comunas as o', 'i.id_comuna', '=', 'o.comuna_id')
                 ->where("n.id_publicacion", "=", $idc)
+                ->select(DB::raw(' n.id ,n.ruta, n.nombre, n.tipo, CONCAT_WS(" ",i.direccion,"#",i.numero,"Depto.",i.departamento,o.comuna_nombre) as direccion'))
                 ->get();
 
         $direcciones = DB::table('adm_contratodirpropietarios as c')
@@ -314,6 +317,7 @@ class ContratoFinalController extends Controller {
     public function eliminartipopago($idc, $idt) {
         $p1 = PagosPropietarios::where("id_contratofinal", "=", $idc)
                 ->first();
+        $idinmueble=$p1->id_inmueble;
         $PagosPropietarios = PagosPropietarios::where("id_contratofinal", "=", $idc)
                 ->where("idtipopago", "=", $idt)
                 ->delete();
@@ -328,33 +332,38 @@ class ContratoFinalController extends Controller {
                 $pagos_mensuales_e = PagosPropietarios::where("id_contratofinal", "=", $idc)
                         ->where("E_S", "=", "e")
                         ->where("mes", "=", $mes)
+                        ->where("id_inmueble", "=", $idinmueble)
                         ->where("anio", "=", $anio)
                         ->sum('precio_en_pesos');
                 $pagos_mensuales_s = PagosPropietarios::where("id_contratofinal", "=", $idc)
                         ->where("E_S", "=", "s")
                         ->where("mes", "=", $mes)
+                        ->where("id_inmueble", "=", $idinmueble)
                         ->where("anio", "=", $anio)
                         ->sum('precio_en_pesos');
 
-                $pago_mensual = PagosMensualesPropietarios::
-                        where("id_contratofinal", "=", $idc)
-                        ->where("E_S", "=", "e")
-                        ->where("mes", "=", $mes)
-                        ->where("anio", "=", $anio)
-                        ->update([
-                    'valor_a_pagar' => $pagos_mensuales_e,
-                    'id_modificador' => Auth::user()->id
-                ]);
+            $pagar_a_propietario=$pagos_mensuales_s-$pagos_mensuales_e;
+            $pagar_a_baquedano=$pagos_mensuales_e-$pagos_mensuales_s;
 
-                $pago_mensual = PagosMensualesPropietarios::
-                        where("id_contratofinal", "=", $idc)
-                        ->where("E_S", "=", "s")
-                        ->where("mes", "=", $mes)
-                        ->where("anio", "=", $anio)
-                        ->update([
-                    'valor_a_pagar' => $pagos_mensuales_s,
-                    'id_modificador' => Auth::user()->id
-                ]);
+            if($pagar_a_propietario<0)
+                $pagar_a_propietario=0;
+
+            if($pagar_a_baquedano<0)
+                $pagar_a_baquedano=0;
+
+            $pago_mensual = PagosMensualesPropietarios::
+                    where("id_contratofinal", "=", $idc)
+                    ->where("id_inmueble", "=", $idinmueble)
+                    ->where("mes", "=", $mes)
+                    ->where("anio", "=", $anio)
+                    ->update([
+                'valor_a_pagar' => $pagos_mensuales_e,
+                'id_modificador' => Auth::user()->id,
+                'subtotal_entrada' => $pagos_mensuales_e,
+                'subtotal_salida' => $pagos_mensuales_s,
+                'pago_propietario' => $pagar_a_propietario,
+                'pago_rentas' => $pagar_a_baquedano
+            ]);
             }
         }else{
             $pago_mensual = PagosMensualesPropietarios::where("id_contratofinal", "=", $idc)->delete();
@@ -375,36 +384,45 @@ class ContratoFinalController extends Controller {
             $mes = date("m", strtotime($fecha_ini));
             $anio = date("Y", strtotime($fecha_ini));
             $fecha_ini = date("d-m-Y", strtotime("+1 month", strtotime($fecha_ini)));
-            $pagos_mensuales_e = PagosPropietarios::where("id_contratofinal", "=", $idp)
+            $pagos_mensuales_e = DB::table('adm_pagospropietarios')
+                    ->where("id_publicacion", "=", $idp)
                     ->where("E_S", "=", "e")
+                    ->where("id_inmueble", "=", $request->id_inmueble_update)
                     ->where("mes", "=", $mes)
                     ->where("anio", "=", $anio)
                     ->sum('precio_en_pesos');
-            $pagos_mensuales_s = PagosPropietarios::where("id_contratofinal", "=", $idp)
+            $pagos_mensuales_s = DB::table('adm_pagospropietarios')
+                    ->where("id_publicacion", "=", $idp)
                     ->where("E_S", "=", "s")
+                    ->where("id_inmueble", "=", $request->id_inmueble_update)
                     ->where("mes", "=", $mes)
                     ->where("anio", "=", $anio)
                     ->sum('precio_en_pesos');
 
+            $pagar_a_propietario=$pagos_mensuales_s-$pagos_mensuales_e;
+            $pagar_a_baquedano=$pagos_mensuales_e-$pagos_mensuales_s;
+
+            if($pagar_a_propietario<0)
+                $pagar_a_propietario=0;
+
+            if($pagar_a_baquedano<0)
+                $pagar_a_baquedano=0;
+//dd($pagar_a_propietario."    ".$pagar_a_baquedano."       e:".$pagos_mensuales_e."        s:".$pagos_mensuales_s ."     ".$request->id_inmueble_update);
             $pago_mensual = PagosMensualesPropietarios::
                     where("id_contratofinal", "=", $idp)
-                    ->where("E_S", "=", "e")
+                    ->where("id_inmueble", "=", $request->id_inmueble_update)
                     ->where("mes", "=", $mes)
                     ->where("anio", "=", $anio)
                     ->update([
                 'valor_a_pagar' => $pagos_mensuales_e,
-                'id_modificador' => Auth::user()->id
+                'id_modificador' => Auth::user()->id,
+                'subtotal_entrada' => $pagos_mensuales_e,
+                'subtotal_salida' => $pagos_mensuales_s,
+                'pago_propietario' => $pagar_a_propietario,
+                'pago_rentas' => $pagar_a_baquedano
             ]);
 
-            $pago_mensual = PagosMensualesPropietarios::
-                    where("id_contratofinal", "=", $idp)
-                    ->where("E_S", "=", "s")
-                    ->where("mes", "=", $mes)
-                    ->where("anio", "=", $anio)
-                    ->update([
-                'valor_a_pagar' => $pagos_mensuales_s,
-                'id_modificador' => Auth::user()->id
-            ]);
+
         }
         return redirect()->route('finalContrato.edit', [$p->id_publicacion, 0, 0, 4])->with('status', 'Pago actualizado con éxito');
     }
@@ -488,19 +506,77 @@ class ContratoFinalController extends Controller {
         $now = new \DateTime();
         $fecha_creacion = $now->format('Y-m-d H:i:s');
 
-        $gastos_comunes_reg = PagosPropietarios::where("id_publicacion", "=", $idp)->whereAnd("idtipopago", "=", 1)->get();
-        $arriendo_reg = PagosPropietarios::where("id_publicacion", "=", $idp)->whereAnd("idtipopago", "=", 2)->get();
-        $garantia_reg = PagosPropietarios::where("id_publicacion", "=", $idp)->whereAnd("idtipopago", "=", 3)->get();
-        $iva_reg = PagosPropietarios::where("id_publicacion", "=", $idp)->whereAnd("idtipopago", "=", 4)->get();
-        $pie_reg = PagosPropietarios::where("id_publicacion", "=", $idp)->whereAnd("idtipopago", "=", 5)->get();
-        $porcentaje_reg = PagosPropietarios::where("id_publicacion", "=", $idp)->whereAnd("idtipopago", "=", 6)->get();
-        $comision_reg = PagosPropietarios::where("id_publicacion", "=", $idp)->whereAnd("idtipopago", "=", 7)->get();
-        $notaria_reg = PagosPropietarios::where("id_publicacion", "=", $idp)->whereAnd("idtipopago", "=", 8)->get();
-        $otro1_reg = PagosPropietarios::where("id_publicacion", "=", $idp)->whereAnd("idtipopago", "=", 9)->get();
-        $otro2_reg = PagosPropietarios::where("id_publicacion", "=", $idp)->whereAnd("idtipopago", "=", 10)->get();
-        $otro3_reg = PagosPropietarios::where("id_publicacion", "=", $idp)->whereAnd("idtipopago", "=", 11)->get();
+        $gastos_comunes_reg = PagosPropietarios::where("id_publicacion", "=", $idp)
+        ->where("idtipopago", "=", 1)
+        ->where("id_inmueble", "=", $idinmueble)
+        ->get();
+        $arriendo_reg = PagosPropietarios::where("id_publicacion", "=", $idp)->where("idtipopago", "=", 2)       
+        ->where("id_inmueble", "=", $idinmueble)
+        ->get();
+        $garantia_reg = PagosPropietarios::where("id_publicacion", "=", $idp)->where("idtipopago", "=", 3)        
+        ->where("id_inmueble", "=", $idinmueble)
+        ->get();
+        $iva_reg = PagosPropietarios::where("id_publicacion", "=", $idp)->where("idtipopago", "=", 4)
+        ->where("id_inmueble", "=", $idinmueble)
+        ->get();
+        $pie_reg = PagosPropietarios::where("id_publicacion", "=", $idp)->where("idtipopago", "=", 5)
+        ->where("id_inmueble", "=", $idinmueble)
+        ->get();
+        $porcentaje_reg = PagosPropietarios::where("id_publicacion", "=", $idp)->where("idtipopago", "=", 6)
+        ->where("id_inmueble", "=", $idinmueble)
+        ->get();
+        $comision_reg = PagosPropietarios::where("id_publicacion", "=", $idp)->where("idtipopago", "=", 7)
+        ->where("id_inmueble", "=", $idinmueble)
+        ->get();
+        $notaria_reg = PagosPropietarios::where("id_publicacion", "=", $idp)->where("idtipopago", "=", 8)
+        ->where("id_inmueble", "=", $idinmueble)
+        ->get();
+        $otro1_reg = PagosPropietarios::where("id_publicacion", "=", $idp)->where("idtipopago", "=", 9)
+        ->where("id_inmueble", "=", $idinmueble)
+        ->get();
+        $otro2_reg = PagosPropietarios::where("id_publicacion", "=", $idp)->where("idtipopago", "=", 10)
+        ->where("id_inmueble", "=", $idinmueble)
+        ->get();
+        $otro3_reg = PagosPropietarios::where("id_publicacion", "=", $idp)->where("idtipopago", "=", 11)
+        ->where("id_inmueble", "=", $idinmueble)
+        ->get();
 
         //gasto comun
+
+        $texto=", Pero No se han generado los siguientes items, ya que se encuentran ingresados en el sistema : ";
+        if(count($gastos_comunes_reg)>0){
+            $texto.=" Gasto Común, ";
+        }
+        if(count($arriendo_reg)>0){
+             $texto.=" Canon de Arriendo, ";
+        }
+        if(count($garantia_reg)>0){
+                 $texto.=" Garantía, ";
+        }
+        if(count($iva_reg)>0){
+             $texto.=" Iva, ";
+        }
+        if(count($pie_reg)>0){
+             $texto.=" Pie, ";
+        }
+        if(count($porcentaje_reg)>0){
+             $texto.=" Porcentaje, ";
+        }
+        if(count($comision_reg)>0){
+             $texto.=" Comisión, ";
+        }
+        if(count($notaria_reg)>0){
+             $texto.=" Notaria, ";
+        }
+        if(count($otro1_reg)>0){
+             $texto.=" Pago Personalizado 1, ";
+        }
+        if(count($otro2_reg)>0){
+             $texto.=" Pago Personalizado 2, ";
+        }
+        if(count($otro3_reg)>0){
+             $texto.=" Pago Personalizado 3 ";
+        }
 
         if (isset($gastocomun) && count($gastos_comunes_reg) == 0) {
             $idtipopago = 1;
@@ -665,6 +741,7 @@ class ContratoFinalController extends Controller {
 
         $fecha_ini = date('Y-m-j', strtotime(date("Y", strtotime($fechafirma)) . '-' . date("m", strtotime($fechafirma)) . '-' . 1));
         //garantia
+
         if (isset($garantia) && count($garantia_reg) == 0) {
             $idtipopago = 3;
             $dias_mes = cal_days_in_month(CAL_GREGORIAN, date("m", strtotime($fecha_ini)), date("Y", strtotime($fecha_ini)));
@@ -1243,15 +1320,34 @@ class ContratoFinalController extends Controller {
             $pagos_mensuales_e = DB::table('adm_pagospropietarios')
                     ->where("id_publicacion", "=", $idp)
                     ->where("E_S", "=", "e")
+                    ->where("id_inmueble", "=", $idinmueble)
                     ->where("mes", "=", $mes)
                     ->where("anio", "=", $anio)
                     ->sum('precio_en_pesos');
             $pagos_mensuales_s = DB::table('adm_pagospropietarios')
                     ->where("id_publicacion", "=", $idp)
                     ->where("E_S", "=", "s")
+                    ->where("id_inmueble", "=", $idinmueble)
                     ->where("mes", "=", $mes)
                     ->where("anio", "=", $anio)
                     ->sum('precio_en_pesos');
+
+            $pagar_a_propietario=$pagos_mensuales_s-$pagos_mensuales_e;
+            $pagar_a_baquedano=$pagos_mensuales_e-$pagos_mensuales_s;
+
+            if($pagar_a_propietario<0)
+                $pagar_a_propietario=0;
+
+            if($pagar_a_baquedano<0)
+                $pagar_a_baquedano=0;
+//dd($pagar_a_propietario."    ".$pagar_a_baquedano."       e:".$pagos_mensuales_e."        s:".$pagos_mensuales_s );
+            $delete=PagosMensualesPropietarios::where("id_contratofinal","=",$idcontrato)
+                    ->where("id_publicacion","=",$idp)
+                    ->where("id_inmueble","=",$idinmueble)
+                    ->where("E_S","=",'e')
+                    ->where("mes","=",$mes)
+                    ->where("anio","=",$anio)
+                    ->delete();
 
             $pago_mensual = PagosMensualesPropietarios::create([
                         'id_contratofinal' => $idcontrato,
@@ -1261,28 +1357,22 @@ class ContratoFinalController extends Controller {
                         'fecha_iniciocontrato' => $fechafirma,
                         'mes' => $mes,
                         'anio' => $anio,
-                        'valor_a_pagar' => $pagos_mensuales_e,
+                        'subtotal_entrada' => $pagos_mensuales_e,
+                        'subtotal_salida' => $pagos_mensuales_s,
+                        'pago_propietario' => $pagar_a_propietario,
+                        'pago_rentas' => $pagar_a_baquedano,
                         'id_creador' => Auth::user()->id,
                         'id_modificador' => Auth::user()->id,
                         'id_estado' => 1
             ]);
 
-            $pago_mensual = PagosMensualesPropietarios::create([
-                        'id_contratofinal' => $idcontrato,
-                        'id_publicacion' => $idp,
-                        'id_inmueble' => $idinmueble,
-                        'E_S' => 's',
-                        'fecha_iniciocontrato' => $fechafirma,
-                        'mes' => $mes,
-                        'anio' => $anio,
-                        'valor_a_pagar' => $pagos_mensuales_s,
-                        'id_creador' => Auth::user()->id,
-                        'id_modificador' => Auth::user()->id,
-                        'id_estado' => 1
-            ]);
+           
+        }
+        if($texto=="Pero no fue posible generar nuevamente los siguientes items, ya que deben ser borrados primero : "){
+            $texto="";
         }
         return redirect()->route('finalContrato.edit', [$idp, 0, 0, 4])
-                        ->with('status', 'Pagos Generados con éxito');
+                        ->with('status', 'Pagos Generados con éxito '.$texto);
     }
 
 }

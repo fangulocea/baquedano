@@ -755,6 +755,11 @@ Route::get('revisionpersona/eliminarfoto/{idf}/{idc}','RevisionPersonaController
 
 
 // COntratos final
+
+		Route::any('pagospropietario/efectuarpago/{id}','PagosMensualesPropietariosController@efectuarpago')->name('pagospropietario.efectuarpago')
+		->middleware('permission:finalContrato.edit');
+
+
 		Route::post('finalContrato/store','ContratoFinalController@store')->name('finalContrato.store')
 		->middleware('permission:finalContrato.create');
 
@@ -804,6 +809,14 @@ Route::get('revisionpersona/eliminarfoto/{idf}/{idc}','RevisionPersonaController
 
 		Route::get('finalContrato/asignarinmueble/{idc}/{idi}/{idp}','ContratoFinalController@asignarinmueble')->name('finalContrato.asignarinmueble')
 		->middleware('permission:finalContrato.edit');
+
+
+		Route::get('finalContrato/volver_pago/{id}','PagosMensualesPropietariosController@volver_pago')->name('PagosMensualesPropietarios.volver_pago')
+		->middleware('permission:finalContrato.edit');
+
+		Route::get('finalContrato/ir_al_pago/{id}','PagosMensualesPropietariosController@ir_al_pago')->name('PagosMensualesPropietarios.ir_al_pago')
+		->middleware('permission:finalContrato.edit');
+
 
 
 		// COntratos Arrendatario Borrador
