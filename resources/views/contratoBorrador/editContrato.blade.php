@@ -23,81 +23,164 @@
                 <input type="hidden" class="form-control" name="id_borrador" value="{{ $gestion->id }}" id="id_borrador_e">
                 <input type="hidden" class="form-control" name="id_publicacion" value="{{ $gestion->id_publicacion }}" id="id_publicacion_e">
                 <div class="modal-body">
-                <div class="row">
-	                <div class="col-sm-3">
-		                <div class="form-group">
-		                    <label class="control-label">Comision</label>
-		                    <select class="form-control" id="id_comision_e" name="id_comision_m" required="required" >
-		                    	<option value="">Selecione Comision</option>
-		                    	@foreach($comision as $p)
-									@if($gestion->id_comisiones == $p->id)
-									{ <option value="{{ $p->id }}" selected="">{{ $p->nombre }}</option> }
-									@else
-									{ <option value="{{ $p->id }}">{{ $p->nombre }}</option> }
-									@endif
-		                    	@endforeach   
-		                    </select>
-		                </div>
-	                </div>
 
-	                <div class="col-sm-3">
-	                    <div class="form-group">
-	                        <label class="control-label">Flexibilidad</label>
-	                        <select class="form-control" id="id_flexibilidad_e" name="id_flexibilidad_m" required="required" >
-	                            <option value="">Selecione Flexibilidad</option>
-	                            @foreach($flexibilidad as $p)
-									@if($gestion->id_flexibilidad == $p->id)
-									{ <option value="{{ $p->id }}" selected="">{{ $p->nombre }}</option> }
-									@else
-									{ <option value="{{ $p->id }}" >{{ $p->nombre }}</option> }
-									@endif	                            
-	                            @endforeach   
-	                        </select>
-	                    </div>
-	                </div>
-	 	
-	                <div class="col-sm-3">
-	                    <div class="form-group">
-	                    	<label class="control-label">Contrato</label>
-	                    	<select class="form-control" id="id_contrato_e" name="id_contrato_m" required="required" >
-	                        	<option value="">Selecione Contrato</option>
-	                        	@foreach($contrato as $p)
-									@if($gestion->id_contrato == $p->id)
-									{ <option value="{{ $p->id }}" selected="">{{ $p->nombre }}</option> }
-									@else
-									{ <option value="{{ $p->id }}">{{ $p->nombre }}</option> }
-									@endif	                        	
-	                            	
-	                        	@endforeach   
-	                    	</select>
-	                	</div>
-	                </div>
+                            <div class="row">
+                                <div class="col-lg-3 col-sm-3 col-xs-12">
+                                    <div class="form-group">
+                                        <label class="control-label">
+                                            Comisiones
+                                        </label>
+                                        <select class="form-control" id="id_comision_e" name="id_comision" required="required" >
+                                            <option value="">Selecione Comision</option>
+                                            @foreach($comision as $p)
+                                                @if($gestion->id_comisiones == $p->id)
+                                                { <option value="{{ $p->id }}" selected="">{{ $p->nombre }}</option> }
+                                                @else
+                                                { <option value="{{ $p->id }}">{{ $p->nombre }}</option> }
+                                                @endif
+                                            @endforeach   
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3 col-sm-3 col-xs-12">
+                                    <div class="form-group">
+                                        <label class="control-label">
+                                            Flexibilidad
+                                        </label>
+                            <select class="form-control" id="id_flexibilidad_e" name="id_flexibilidad" required="required" >
+                                <option value="">Selecione Flexibilidad</option>
+                                @foreach($flexibilidad as $p)
+                                    @if($gestion->id_flexibilidad == $p->id)
+                                    { <option value="{{ $p->id }}" selected="">{{ $p->nombre }}</option> }
+                                    @else
+                                    { <option value="{{ $p->id }}" >{{ $p->nombre }}</option> }
+                                    @endif                              
+                                @endforeach   
+                            </select>>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3 col-sm-3 col-xs-12">
+                                    <div class="form-group">
+                                        <label class="control-label">
+                                            Servicio
+                                        </label>
+                                        <select class="form-control" id="id_servicios_e" name="id_servicios" required="required">
+                                            <option value="">
+                                                Selecione Servicio
+                                            </option>
+                                            @foreach($servicio as $p)
+                                           @if($gestion->id_servicios == $p->id)
+                                                { <option value="{{ $p->id }}" selected="">{{ $p->nombre }}</option> }
+                                                @else
+                                                { <option value="{{ $p->id }}" >{{ $p->nombre }}</option> }
+                                                @endif
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3 col-sm-3 col-xs-12">
+                                    <label>
+                                        Fecha Contrato
+                                    </label>
+                                    <div class="input-group">
+                                        <input type="text" autocomplete="off" class="form-control datepicker-fecha_contacto1_c" placeholder="dd/mm/yyyy" id="datepicker-fecha_contacto1_c" name="fecha_gestion" required="required" value="{{ date('d-m-Y', strtotime($gestion->fecha_gestion)) }}"> <span class="input-group-addon"><i class="icon-calender"></i></span> 
+                                    </div>
+                                </div>
+                            </div>
+                {{--  --}}
 
-	                <div class="col-sm-3">
-	                    <div class="form-group">
-	                    </div>
-	                </div>
-                </div>
- 
-                <div class="row">
-                    <div class="col-sm-3">
-                        <label>Fecha para Firmar</label>
-                        <div class="input-group">
-                        	<input type="text" autocomplete="off" class="form-control datepicker-fecha_contacto1_c" placeholder="dd/mm/yyyy" id="datepicker-fecha_contacto1_c" name="fecha_gestion" required="required" value="{{ date('d-m-Y', strtotime($gestion->fecha_gestion)) }}"> <span class="input-group-addon"><i class="icon-calender"></i></span> 
-                        </div>
-                    </div>
-
-                    <div class="col-sm-3">
-                        <label>Estado</label>
-                        <div class="input-group">
-                        	{{ Form::select('id_estado',['0'=>'Rechazdo','1'=>'Vigente','2'=>'Correo Enviado','3'=>'Reenvío Correo'], $gestion->id_estado ,array('class'=>'form-control','style'=>'','id'=>'estado','placeholder'=>'Selecciona estado','required'=>'required')) }}
-                        </div>
-                    </div>                                            
-                </div>
+                            <div class="row">
+                                <div class="col-lg-3 col-sm-3 col-xs-12">
+                                    <div class="form-group">
+                                        <label class="control-label">
+                                            Formas de Pago
+                                        </label>
+                                        <select class="form-control" id="id_formadepago_e" name="id_formadepago" required="required">
+                                            <option value="">
+                                                Selecione Forma de Pago
+                                            </option>
+                                            @foreach($formasdepago as $p)
+                                           @if($gestion->id_formadepago == $p->id)
+                                                { <option value="{{ $p->id }}" selected="">{{ $p->nombre }}</option> }
+                                                @else
+                                                { <option value="{{ $p->id }}" >{{ $p->nombre }}</option> }
+                                                @endif
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3 col-sm-3 col-xs-12">
+                                    <div class="form-group">
+                                        <label class="control-label">
+                                            Multas
+                                        </label>
+                                        <select class="form-control" id="id_multa_e" name="id_multa" required="required">
+                                            <option value="">
+                                                Selecione Multas
+                                            </option>
+                                            @foreach($multa as $p)
+                                           @if($gestion->id_multa == $p->id)
+                                                { <option value="{{ $p->id }}" selected="">{{ $p->nombre }}</option> }
+                                                @else
+                                                { <option value="{{ $p->id }}" >{{ $p->nombre }}</option> }
+                                                @endif
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3 col-sm-3 col-xs-12">
+                                    <div class="form-group">
+                                        <label class="control-label">
+                                            Contrato
+                                        </label>
+                                        <select class="form-control" id="id_contrato_e" name="id_contrato" required="required">
+                                            <option value="">
+                                                Selecione Contrato
+                                            </option>
+                                            @foreach($contrato as $p)
+                                    @if($gestion->id_contrato == $p->id)
+                                    { <option value="{{ $p->id }}" selected="">{{ $p->nombre }}</option> }
+                                    @else
+                                    { <option value="{{ $p->id }}">{{ $p->nombre }}</option> }
+                                    @endif
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3 col-sm-3 col-xs-12">
+                                    <div class="form-group">
+                                        <label class="control-label">
+                                            Día de Pago
+                                        </label>
+                                            {{ Form::select('dia_pago',['1'=>'1','2'=>'2','3'=>'3','4'=>'4','5'=>'5','6'=>'6','7'=>'7','8'=>'8','9'=>'9','10'=>'10'], $gestion->dia_pago ,array('class'=>'form-control','style'=>'','id'=>'estado','placeholder'=>'Selecciona Día','required'=>'required')) }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-3 col-sm-3 col-xs-12">
+                                    <label>
+                                        Valor Arriendo
+                                    </label>
+                                    <input class="form-control" value="{{ $gestion->valorarriendo }}" id="valorarriendo_e" name="valorarriendo" required="required" type="number">
+                                    </input>
+                                </div>
+                                <div class="col-lg-3 col-sm-3 col-xs-12">
+                                    <label>
+                                        Estado
+                                    </label>
+                                    <div class="input-group">
+                                        {{ Form::select('id_estado',['0'=>'Rechazdo','1'=>'Vigente','2'=>'Correo Enviado','3'=>'Reenvío Correo'], $gestion->id_estado ,array('class'=>'form-control','style'=>'','id'=>'estado','placeholder'=>'Selecciona estado','required'=>'required')) }}
+                                    </div>
+                                </div>
+                                <div class="col-lg-3 col-sm-3 col-xs-12">
+                                </div>
+                                <div class="col-lg-3 col-sm-3 col-xs-12">
+                                </div>
+                            </div>
 
                 <div class="form-group">
                     <label for="detalle_contacto" class="control-label">Detalle:</label>
-                        <textarea class="form-control" name="detalle_revision_m" id="detalle_revision_e" cols="25" rows="10" class="form-control" required="required">{{ $gestion->detalle_revision }}</textarea>
+                        <textarea class="form-control" name="detalle_revision" id="detalle_revision_e" cols="25" rows="10" class="form-control" required="required">{{ $gestion->detalle_revision }}</textarea>
                 </div>
                                                        
                 </div>

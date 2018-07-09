@@ -21,11 +21,17 @@ class CreateBorradoresTable extends Migration
             $table->integer('id_servicios')->unsigned()->nullable();
             $table->foreign('id_servicios')->references('id')->on('servicios')->nullable();
             $table->integer('id_comisiones')->unsigned();
-            $table->foreign('id_comisiones')->references('id')->on('comisiones');
+            $table->foreign('id_comisiones')->references('id')->on('comisiones')->nullable();
             $table->integer('id_flexibilidad')->unsigned();
             $table->foreign('id_flexibilidad')->references('id')->on('flexibilidads');
             $table->integer('id_publicacion')->unsigned();
             $table->foreign('id_publicacion')->references('id')->on('cap_publicaciones');
+            $table->integer('id_formadepago')->unsigned()->nullable();
+            $table->foreign('id_formadepago')->references('id')->on('formasdepagos')->nullable();
+            $table->integer('id_multa')->unsigned();
+            $table->foreign('id_multa')->references('id')->on('multas')->nullable();
+            $table->integer('dia_pago')->nullable();
+            $table->integer('valorarriendo');
             $table->date('fecha_gestion')->nullable();
             $table->text('detalle_revision');
             $table->integer('id_estado');

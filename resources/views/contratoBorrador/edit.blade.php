@@ -29,72 +29,191 @@
                 <input type="hidden" name="_token" value="{{ csrf_token() }}">
                 <input type="hidden" name="id_creador" value="{{ Auth::user()->id }}"">
                 <input type="hidden" name="id_publicacion" value="{{ $borrador->id_publicacion }}">
-                             {!! csrf_field() !!}     
-                   <div class="row">
-                                <div class="col-lg-2 col-sm-3 col-xs-12">
-                                    <div class="form-group">
-                                        <label class="control-label">Comisiones</label>
-                                        <select class="form-control" name="id_comisiones" required="required" >
-                                            <option value="">Selecione comision</option>
-                                            @foreach($comision as $p)
-                                                <option value="{{ $p->id }}">{{ $p->nombre }}</option>
-                                            @endforeach   
-                                        </select>
-                                        {{-- <label class="control-label">Notaria</label>
-                                        <select class="form-control" name="id_notaria" required="required" >
-                                            <option value="">Selecione Notaria</option>
-                                            @foreach($notaria as $p)
-                                                <option value="{{ $p->id }}">{{ $p->nombre }}</option>
-                                            @endforeach   
-                                        </select> --}}
-                                    </div>
-                                </div>
-                                <div class="col-lg-2 col-sm-3 col-xs-12">
-                                    <div class="form-group">
-                                        <label class="control-label">Flexibilidad</label>
-                                        <select class="form-control" name="id_flexibilidad" required="required" >
-                                            <option value="">Selecione Flexibilidad</option>
-                                            @foreach($flexibilidad as $p)
-                                                <option value="{{ $p->id }}">{{ $p->nombre }}</option>
-                                            @endforeach   
-                                        </select>
-                                        {{-- <label class="control-label">Servicio</label>
-                                        <select class="form-control" name="id_servicios" required="required" >
-                                            <option value="">Selecione Servicio</option>
-                                            @foreach($servicio as $p)
-                                                <option value="{{ $p->id }}">{{ $p->nombre }}</option>
-                                            @endforeach   
-                                        </select> --}}
-                                    </div>
-                                </div>
-                                <div class="col-lg-2 col-sm-3 col-xs-12">
-                                    <div class="form-group">
-                                        <label class="control-label">Contrato</label>
-                                        <select class="form-control" name="id_contrato" required="required" >
-                                            <option value="">Selecione Contrato</option>
-                                            @foreach($contrato as $p)
-                                                <option value="{{ $p->id }}">{{ $p->nombre }}</option>
-                                            @endforeach   
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-lg-2 col-sm-3 col-xs-12">
-                                    <div class="form-group">
-                                        
-                                        
-                                    </div>
-                                </div>
-                                <div class="col-lg-2 col-sm-3 col-xs-12">
-                                    <label>Fecha de Firma</label>
-                                    <div class="input-group">
-                                        <input type="text" autocomplete="off" class="form-control datepicker-fecha_contacto1_c" placeholder="dd/mm/yyyy" id="datepicker-fecha_contacto1_c" name="fecha_gestion" required="required"> <span class="input-group-addon"><i class="icon-calender"></i></span> 
-                                    </div>
-                                </div>
-                                <div class="col-lg-2 col-sm-3 col-xs-12">
-                                    <label>Crar Borrador</label>
-                                    <button type="submit" class="btn btn-success"> <i class="fa fa-check"></i> Guardar</button>
-                                </div>
+                {!! csrf_field() !!}     
+
+                <div class="row">
+                    <div class="col-lg-2 col-sm-3 col-xs-12">
+                        <div class="form-group">
+                            <label class="control-label">
+                                Comisiones
+                            </label>
+                            <select class="form-control" name="id_comisiones" required="required">
+                                <option value="">
+                                    Selecione comision
+                                </option>
+                                @foreach($comision as $p)
+                                <option value="{{ $p->id }}">
+                                    {{ $p->nombre }}
+                                </option>
+                                @endforeach
+                            </select>
+                        </div>
                     </div>
+                    <div class="col-lg-2 col-sm-3 col-xs-12">
+                        <div class="form-group">
+                            <label class="control-label">
+                                Flexibilidad
+                            </label>
+                            <select class="form-control" name="id_flexibilidad" required="required">
+                                <option value="">
+                                    Selecione Flexibilidad
+                                </option>
+                                @foreach($flexibilidad as $p)
+                                <option value="{{ $p->id }}">
+                                    {{ $p->nombre }}
+                                </option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-lg-2 col-sm-3 col-xs-12">
+                        <div class="form-group">
+                            <label class="control-label">
+                                Servicio
+                            </label>
+                            <select class="form-control" name="id_servicios" required="required">
+                                <option value="">
+                                    Selecione Servicio
+                                </option>
+                                @foreach($servicio as $p)
+                                <option value="{{ $p->id }}">
+                                    {{ $p->nombre }}
+                                </option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-lg-2 col-sm-3 col-xs-12">
+                        <label>
+                            Fecha Contrato
+                        </label>
+                        <div class="input-group">
+                            <input autocomplete="off" class="form-control datepicker-fecha_contacto1_c" id="datepicker-fecha_contacto1_c" name="fecha_gestion" placeholder="dd/mm/yyyy" required="required" type="text">
+                                <span class="input-group-addon">
+                                    <i class="icon-calender">
+                                    </i>
+                                </span>
+                            </input>
+                        </div>
+                    </div>
+                    <div class="col-lg-2 col-sm-3 col-xs-12">
+                        <label>
+                            Valor Arriendo
+                        </label>
+                        <input class="form-control" name="valorarriendo" required="required" type="number">
+                        </input>
+                    </div>
+                    <div class="col-lg-2 col-sm-3 col-xs-12">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-2 col-sm-3 col-xs-12">
+                        <div class="form-group">
+                            <label class="control-label">
+                                Formas de Pago
+                            </label>
+                            <select class="form-control" name="id_formadepago" required="required">
+                                <option value="">
+                                    Selecione Forma de Pago
+                                </option>
+                                @foreach($formasdepago as $p)
+                                <option value="{{ $p->id }}">
+                                    {{ $p->nombre }}
+                                </option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-lg-2 col-sm-3 col-xs-12">
+                        <div class="form-group">
+                            <label class="control-label">
+                                Multas
+                            </label>
+                            <select class="form-control" name="id_multa" required="required">
+                                <option value="">
+                                    Selecione Multas
+                                </option>
+                                @foreach($multa as $p)
+                                <option value="{{ $p->id }}">
+                                    {{ $p->nombre }}
+                                </option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-lg-2 col-sm-3 col-xs-12">
+                        <div class="form-group">
+                            <label class="control-label">
+                                Contrato
+                            </label>
+                            <select class="form-control" name="id_contrato" required="required">
+                                <option value="">
+                                    Selecione Contrato
+                                </option>
+                                @foreach($contrato as $p)
+                                <option value="{{ $p->id }}">
+                                    {{ $p->nombre }}
+                                </option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-lg-2 col-sm-3 col-xs-12">
+                        <div class="form-group">
+                            <label class="control-label">
+                                Día de Pago
+                            </label>
+                            <select class="form-control" name="dia_pago" required="required">
+                                <option value="">
+                                    Selecione Día
+                                </option>
+                                <option value="1">
+                                    1
+                                </option>
+                                <option value="2">
+                                    2
+                                </option>
+                                <option value="3">
+                                    3
+                                </option>
+                                <option value="4">
+                                    4
+                                </option>
+                                <option value="5">
+                                    5
+                                </option>
+                                <option value="6">
+                                    6
+                                </option>
+                                <option value="7">
+                                    7
+                                </option>
+                                <option value="8">
+                                    8
+                                </option>
+                                <option value="9">
+                                    9
+                                </option>
+                                <option value="10">
+                                    10
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-lg-2 col-sm-3 col-xs-12">
+                        <label>
+                            Crar Borrador Arrendatario
+                        </label>
+                        <button class="btn btn-success" type="submit">
+                            <i class="fa fa-check">
+                            </i>
+                            Guardar
+                        </button>
+                    </div>
+                    <div class="col-lg-2 col-sm-3 col-xs-12">
+                    </div>
+                </div>
+
             </form>
 
                             <div class="content-wrap">

@@ -132,12 +132,12 @@ class ContratoBorradorController extends Controller
          ->where("g.id_publicacion","=",$id)
          ->get();
 
-         $notaria = DB::table('notarias as n')
-         ->where("n.estado","<>",0)
-         ->select(DB::raw('n.id as id,n.razonsocial as nombre'))
+         $servicio = DB::table('servicios as s')
+         ->where("s.estado","<>",0)
+         ->select(DB::raw('s.id as id,s.nombre as nombre'))
          ->get();
 
-        $servicio = DB::table('servicios as s')
+         $formasdepago = DB::table('formasdepagos as s')
          ->where("s.estado","<>",0)
          ->select(DB::raw('s.id as id,s.nombre as nombre'))
          ->get();
@@ -152,12 +152,17 @@ class ContratoBorradorController extends Controller
          ->select(DB::raw('f.id as id,f.nombre as nombre'))
          ->get();
 
+         $multa = DB::table('multas as m')
+         ->where("m.estado","<>",0)
+         ->select(DB::raw('m.id as id,m.nombre as nombre'))
+         ->get();
+
          $contrato = DB::table('contratos as c')
          ->where("c.estado","<>",0)
          ->select(DB::raw('c.id as id,c.nombre as nombre'))
-         ->get();         
+         ->get();        
 
-        return view('contratoBorrador.edit',compact('borrador','borradoresIndex','gestBorradores','notaria','servicio','comision','flexibilidad','contrato'));
+        return view('contratoBorrador.edit',compact('borrador','borradoresIndex','gestBorradores','notaria','servicio','comision','flexibilidad','contrato','formasdepago','multa'));
     }
 
     /**
@@ -244,20 +249,23 @@ class ContratoBorradorController extends Controller
     {
 
         $fecha_gestion = DateTime::createFromFormat('d-m-Y', $request->fecha_gestion);
-
-        array_set($request, 'fecha_gestion_m', $fecha_gestion);
+        array_set($request, 'fecha_gestion', $fecha_gestion);
 
         $captacion = ContratoBorrador::where('id','=',$request->id_borrador)
         ->update([
             "id_modificador" => $request->id_modificador,
             "id_notaria" => $request->id_notaria_m,
-            "id_servicios" => $request->id_servicios_m,
-            "detalle_revision" => $request->detalle_revision_m,
-            "id_contrato" => $request->id_contrato_m,
-            "id_comisiones" => $request->id_comision_m,
-            "id_flexibilidad" => $request->id_flexibilidad_m,
-            "fecha_gestion" => $request->fecha_gestion_m,
-            "id_estado" => $request->id_estado
+            "id_comisiones" => $request->id_comision,
+            "id_flexibilidad" => $request->id_flexibilidad,
+            "id_servicios" => $request->id_servicios,
+            "id_formadepago" => $request->id_formadepago,
+            "id_multa" => $request->id_multa,
+            "id_contrato" => $request->id_contrato,
+            "dia_pago"        => $request->dia_pago,
+            "valorarriendo"   => $request->valorarriendo,
+            "id_estado" => $request->id_estado,         
+            "fecha_gestion" => $request->fecha_gestion,
+            "detalle_revision" => $request->detalle_revision
         ]);
 
         //PARA PDF
@@ -301,20 +309,27 @@ class ContratoBorradorController extends Controller
 public function editargestion2(Request $request)
     {
         dd($request->detalle_revision_m);
-        $fecha_gestion = DateTime::createFromFormat('d-m-Y', $request->fecha_gestion_m);
+        $fecha_gestion = DateTime::createFromFormat('d-m-Y', $request->fecha_gestion);
         array_set($request, 'fecha_gestion_m', $fecha_gestion);
+
+        dd($request->detalle_revision);
 
         $captacion = ContratoBorrador::where('id','=',$request->id_borrador)
         ->update([
               "id_modificador" => $request->id_modificador,
               "id_notaria" => $request->id_notaria_m,
-              "id_servicios" => $request->id_servicios_m,
-              "id_comisiones" => $request->id_comision_m,
-              "id_flexibilidad" => $request->id_flexibilidad_m,
-              "fecha_gestion" => $request->fecha_gestion_m,
-              "id_estado" => $request->id_estado_m,
-              "detalle_revision" => $request->detalle_revision_m,
-              "id_contrato" => $request->id_contrato_m
+              "id_comisiones" => $request->id_comision,
+              "id_flexibilidad" => $request->id_flexibilidad,
+              "id_servicios" => $request->id_servicios,
+              "id_formadepago" => $request->id_formadepago,
+              "id_multa" => $request->id_multa,
+              "id_contrato" => $request->id_contrato,
+              "dia_pago"        => $request->dia_pago,
+              "valorarriendo"   => $request->valorarriendo,
+              "id_estado" => $request->id_estado,         
+              "fecha_gestion" => $request->fecha_gestion,
+              "detalle_revision" => $request->detalle_revision
+              
         ]);
 
         //PARA PDF
@@ -362,12 +377,12 @@ public function editargestion2(Request $request)
          ->where("g.id_publicacion","=",$idg)
          ->get();
 
-         $notaria = DB::table('notarias as n')
-         ->where("n.estado","<>",0)
-         ->select(DB::raw('n.id as id,n.razonsocial as nombre'))
+         $servicio = DB::table('servicios as s')
+         ->where("s.estado","<>",0)
+         ->select(DB::raw('s.id as id,s.nombre as nombre'))
          ->get();
 
-        $servicio = DB::table('servicios as s')
+         $formasdepago = DB::table('formasdepagos as s')
          ->where("s.estado","<>",0)
          ->select(DB::raw('s.id as id,s.nombre as nombre'))
          ->get();
@@ -382,12 +397,17 @@ public function editargestion2(Request $request)
          ->select(DB::raw('f.id as id,f.nombre as nombre'))
          ->get();
 
+         $multa = DB::table('multas as m')
+         ->where("m.estado","<>",0)
+         ->select(DB::raw('m.id as id,m.nombre as nombre'))
+         ->get();
+
          $contrato = DB::table('contratos as c')
          ->where("c.estado","<>",0)
          ->select(DB::raw('c.id as id,c.nombre as nombre'))
-         ->get();  
+         ->get();
 
-        return view('contratoBorrador.editContrato',compact('borrador','gestion','notaria','servicio','comision','flexibilidad','contrato'));
+        return view('contratoBorrador.editContrato',compact('borrador','gestion','notaria','servicio','comision','flexibilidad','contrato','multa','formasdepago'));
 
     }
 
