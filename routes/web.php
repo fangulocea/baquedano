@@ -739,6 +739,9 @@ Route::get('revisionpersona/eliminarfoto/{idf}/{idc}','RevisionPersonaController
 		Route::get('borradorContrato/mail/{id}','ContratoBorradorController@enviaMail')->name('borradorContrato.mail');		
 		Route::get('pdf/{data}', 'PdfController@index');
 
+		Route::post('borradorContrato/generarpagos/{idp}','SimulaPropietarioController@generarpagos')->name('borradorContrato.generarpagos')
+		->middleware('permission:borradorContrato.edit');
+
 
 //contrato
 	Route::post('contrato/store','ContratoMantenedorController@store')->name('contrato.store')

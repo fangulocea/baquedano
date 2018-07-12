@@ -27,67 +27,69 @@
                                         {!! csrf_field() !!}
                                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                         <div class="form-body">
-                                         <h3 class="box-title">Seleccione contacto para captación externa o complete los datos de la publicación Web</h3>
-                                            <hr>
-                                            <div class="row">
+                                        <div class="row">
                                                 <div class="col-md-6">
-                                                    <div class="form-group">
-                                                        <label>Corredor  / Externos</label>
-                                                        <div class="input-group">
-                                                    {{ Form::select('id_corredor',$corredores, null,array('class'=>'form-control','style'=>'','id'=>'id_corredor','placeholder'=>'Seleccione corredor','required'=>'required')) }}
-                                                </div></div></div>
-                                            </div>
-                                            <h3 class="box-title">Información de la publicación web del portal</h3>
-                                            <hr>
-                                            <div class="row">
-                                                <div class="col-md-12">
-                                                    <div class="form-group">
-                                                        <label class="control-label">URL</label>
-                                                        <input type="text" name="url" class="form-control" required="required" placeholder="http://portal.dominio.com/publicacion" > <span class="help-block"> Url del Portal </span> </div>
+                                                      <div class="col-md-12">
+                                                            <div class="form-group">
+                                                                <h3 class="box-title">Seleccione contacto para captación externa</h3>
+                                                                <hr>
+                                                                <label>Corredor  / Externos</label>
+                                                                <div class="input-group">
+                                                                    {{ Form::select('id_corredor',$corredores, null,array('class'=>'form-control','style'=>'','id'=>'id_corredor','placeholder'=>'Seleccione corredor')) }}
+                                                                </div>
+                                                            </div>
+                                                        </div>
                                                 </div>
 
+                                                <div class="col-md-6">
+                                            
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+                                                            <h3 class="box-title">Información de la publicación web del portal</h3>
+                                                            <hr>
+                                                            <div class="form-group">
+                                                                <label class="control-label">URL</label>
+                                                                <input type="hidden" name="paso" value="1">
+                                                                <input type="text" name="url" class="form-control"  placeholder="http://portal.dominio.com/publicacion" > <span class="help-block"> Url del Portal </span> </div>
+                                                        </div>
+
+                                                    </div>
+                                                    <div class="row">
+                                                            <div class="col-md-6 ">
+                                                            <div class="form-group">
+                                                                <label>Portal</label>
+                                                        {{ Form::select('portal',$portales, null,array('class'=>'form-control','style'=>'','id'=>'portal','placeholder'=>'Seleccione portal')) }}
+                                                        </div>
+                                                    </div>
+                                                        <div class="col-md-6">
+                                                            <div class="form-group">
+                                                                <label>Código publicación</label>
+                                                                <input name='codigo_publicacion' type="text" class="form-control"> </div>
+                                                        </div>
+
+                                                    </div>
+                                    
+                                                </div>
                                             </div>
                                             <hr>
                                             <div class="row">
-                                                <div class="col-md-3 ">
+                <div class="row">
+                                              <div class="col-md-6">
                                                     <div class="form-group">
-                                                        <label>Portal</label>
-                                                {{ Form::select('portal',$portales, null,array('class'=>'form-control','style'=>'','id'=>'portal','placeholder'=>'Seleccione portal','required'=>'required')) }}
-                                                </div>
-                                            </div>
-                                                <div class="col-md-3">
-                                                    <div class="form-group">
-                                                        <label>Código publicación</label>
-                                                        <input name='codigo_publicacion' type="text" class="form-control"> </div>
-                                                </div>
-                                                <div class="col-md-3">
-                                                    <div class="form-group">
-                                                        <label>Fecha Publicación</label>
+                                                        <label>Fecha Captación / Publicación</label>
                                                         <div class="input-group">
                                                             <input name="fecha_publicacion" autocomplete="off" type="text" class="form-control" id="datepicker-fecha_publicacion" placeholder="dd/mm/yyyy" required="required"> <span class="input-group-addon"><i class="icon-calender"></i></span> </div>
                                                     </div>
                                                 </div>
-                                                <div class="col-md-3">
+                                                <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label>Fecha Expiración</label>
                                                         <div class="input-group">
                                                             <input name="fecha_expiracion" autocomplete="off" type="text" class="form-control" id="datepicker-fecha_expiracion" placeholder="dd/mm/yyyy"> <span class="input-group-addon"><i class="icon-calender"></i></span> </div>
+                                                            <input type="hidden" name="id_estado" value="1">
                                                     </div>
                                                 </div>
-                                            </div>
-                                            <h3 class="box-title">Información Captación Externa</h3>
-                                            <hr>
-                                            <div class="row"> 
-                                                <div class="col-md-4">
-                                                    <div class="form-group">
-                                                        <input type="hidden" name="id_creador" value="{{ Auth::user()->id_persona}}">
-                                                        <label>Estado</label>
-                                                        <select class="form-control" name="id_estado" required="required">
-                                                            <option value="">Seleccione Estado</option>
-                                                            <option value="1">Activo</option>
-                                                        </select>
                                                     </div>
-                                                </div>
                                             </div>
 
                                         </div>

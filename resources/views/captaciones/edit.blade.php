@@ -30,7 +30,7 @@
                     <ul>
                         <li id="li_1"> <a id="1" href="#section-iconbox-1" class="sticon ti-bookmark"><span>Portal Aviso</span></a></li>
                         <li id="li_2"><a id="2" href="#section-iconbox-2" class="sticon ti-home"><span>Propiedad / Propietario</span></a></li>
-                        <li id="li_4"><a id="4" href="#section-iconbox-4" class="sticon ti-camera"><span>Imágenes del Portal</span></a></li>
+                        <li id="li_4"><a id="4" href="#section-iconbox-4" class="sticon ti-camera"><span>Documentos</span></a></li>
                         <li id="li_5"><a id="5" href="#section-iconbox-5" class="sticon ti-agenda"><span>Gestiones</span></a></li>
                     </ul>
                 </nav>
@@ -45,16 +45,20 @@
                                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                         <input type="hidden" name="paso" value="1">
                                         <div class="form-body">
-                                        <h3 class="box-title">Seleccione contacto para captación externa o complete los datos de la publicación Web</h3>
-                                            <hr>
                                             <div class="row">
-                                                 <div class="col-md-3">
-                                                    <div class="form-group">
-                                                        <label>Corredor / Externo</label>
-                                                        <div class="input-group">
-                                                    {{ Form::select('id_corredor',$corredores, $captacion->id_corredor,array('class'=>'form-control','style'=>'','id'=>'id_corredor','placeholder'=>'Seleccione corredor','required'=>'required')) }}
-                                                </div></div></div>
-                                            </div>
+                                                <div class="col-md-6">
+                                                     <div class="col-md-12">
+                                                        <h3 class="box-title">Seleccione contacto para captación externa</h3>
+                                                        <div class="form-group">
+                                                            <label>Corredor / Externo</label>
+                                                            <div class="input-group">
+                                                            {{  Form::select('id_corredor',$corredores, $captacion->id_corredor,array('class'=>'form-control','style'=>'','id'=>'id_corredor','placeholder'=>'Seleccione corredor')) }}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-6">
                                             <h3 class="box-title">Información de la publicación web del portal</h3>
                                             <hr>
                                             <div class="row">
@@ -62,13 +66,12 @@
                                                     <div class="form-group">
                                                         <label class="control-label">URL</label>
                                                         <input type="hidden" name="paso" value="1">
-                                                        <input type="text" name="url" class="form-control" required="required" placeholder="http://portal.dominio.com/publicacion" value="{{ $captacion->url }}"> <span class="help-block"> Url del Portal </span> </div>
+                                                        <input type="text" name="url" class="form-control" placeholder="http://portal.dominio.com/publicacion" value="{{ $captacion->url }}"> <span class="help-block"> Url del Portal </span> </div>
                                                 </div>
 
                                             </div>
-                                            <hr>
-                                            <div class="row">
-                                                <div class="col-md-3 ">
+                                                 <div class="row">
+                                                <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label>Portal</label>
                                                          @if(!isset($captacion->portal))
@@ -79,33 +82,37 @@
                                                         {{ Form::select('portal',$portales, $idr,array('class'=>'form-control','style'=>'','id'=>'portal','placeholder'=>'Seleccione portal','required'=>'required')) }}
                                                      </div>
                                                 </div>
-                                                <div class="col-md-3">
-                                                    <div class="form-group">
+                                                
+                                                <div class="col-md-6">
+                                                        <div class="form-group">
                                                         <label>Código publicación</label>
                                                         <input name='codigo_publicacion' value="{{ $captacion->codigo_publicacion }}" type="text" class="form-control"> </div>
                                                 </div>
-                                                <div class="col-md-3">
+                                            </div>
+                                                </div>
+                                            </div>
+                                       
+                                            <hr>
+                                            <div class="row">
+                                                <div class="col-md-4">
                                                     <div class="form-group">
                                                         <label>Fecha Publicación</label>
                                                         <div class="input-group">
                                                             <input name="fecha_publicacion" autocomplete="off" value="{{ date('d/m/Y', strtotime($captacion->fecha_publicacion)) }}" type="text" class="form-control" id="datepicker-fecha_publicacion" placeholder="dd/mm/yyyy" required="required"> <span class="input-group-addon"><i class="icon-calender"></i></span> </div>
                                                     </div>
                                                 </div>
-                                                @if(isset($captacion->fecha_expiracion))
+                                                    @if(isset($captacion->fecha_expiracion))
                                                <?php     $exp = date('d/m/Y', strtotime($captacion->fecha_expiracion)); ?>
                                                @else
                                                <?php $exp=''; ?>
                                                @endif
-                                                <div class="col-md-3">
+                                                <div class="col-md-4">
                                                     <div class="form-group">
                                                         <label>Fecha Expiración</label>
                                                         <div class="input-group">
                                                             <input name="fecha_expiracion" autocomplete="off" type="text" class="form-control" id="datepicker-fecha_expiracion" value="{{ $exp }}" placeholder="dd/mm/yyyy"> <span class="input-group-addon"><i class="icon-calender"></i></span> </div>
                                                     </div>
                                                 </div>
-
-                                            </div>
-                                            <div class="row"> 
                                                 <div class="col-md-4">
                                                     <div class="form-group">
                                                         <label>Estado</label>
@@ -125,6 +132,7 @@
                                                     </div>
                                                 </div>
                                             </div>
+
                                         </div>
 
                                         <div class="form-actions">
@@ -599,30 +607,33 @@
                     </div>
                      <div class="col-sm-6">
                         <div class="white-box"> 
-                             <table id="ssss"  cellspacing="0" width="100%">
+
+
+                            <table id="ssss"  cellspacing="0" width="100%" style="border: 1px solid black;" >
                                                     <thead>
                                                         <tr>
                                                          
-                                                            <th><center>Click Ver Imágen</center></th>
-                                                            <th>Borrar</th>
+                                                            <th><center>Click Ver Documento</center></th>
+                                                            <th><center>Borrar</center></th>
                                                         </tr>
                                                     </thead>
                                                    
                                                     <tbody>
-                                                        @foreach($imagenes as $p)
+                                                        @foreach($imagenes as $pi)
                                                         <tr>
-                                                            <td  width="10px" height="10px">
-                                                               
-                                                            <center><a data-lightbox="image-1" href="{{ URL::asset($p->ruta.'/'.$p->nombre) }}" ><img src="{{ URL::asset($p->ruta.'/'.$p->nombre) }}" alt="gallery" class="all studio" width="50" height="80" /> </a></center>
+                                                            <td  width="10px" height="10px" style="border: 1px solid black;" >
+                                                            <center>
+                                                            <a href="{{ URL::asset($pi->ruta.'/'.$pi->nombre) }}" target="_blank">BAJAR ARCHIVO<br/> {{ $pi->nombre }} </a></center>
 
                                                            
                                                             @can('captacion.show')
-                                                            <td width="10px">
-
-                                                                <a href="{{ route('captacion.eliminarfoto', [$p->id,$p->id_captacion]) }}" 
+                                                            <td width="10px" style="border: 1px solid black;">
+                                                                <center>
+                                                                <a href="{{ route('captacion.eliminarfoto', [$pi->id,$pi->id_captacion]) }}" 
                                                                    class="btn btn-danger btn-circle btn-lg">
                                                                     <i class="fa fa-check"></i>
                                                                 </a>
+                                                            </center>
                                                             </td>
                                                             @endcan
                                                         </tr>
@@ -630,6 +641,8 @@
 
                                                     </tbody>
                                                 </table>
+
+
                         </div>
                     </div>
 

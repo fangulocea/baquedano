@@ -23,66 +23,21 @@
                 <nav>
                     <ul>
                         <li id="li_5_c"><a id="5" href="#section-iconbox-5_c" class="sticon ti-agenda"><span>Gestión Contrato Borrador</span></a></li>
+                        <li id="li_6_c"><a id="6" href="#section-iconbox-5_c" class="sticon ti-money"><span>Simulación de Pago</span></a></li>
                     </ul>
                 </nav>
-            <form id="form1_a" action="{{ route('borradorContrato.crearBorrador') }}" method="post">                 
+            
+
+                            <div class="content-wrap">
+                    <section id="section-iconbox-5_c">
+                        <form id="form1_a" action="{{ route('borradorContrato.crearBorrador') }}" method="post">                 
                 <input type="hidden" name="_token" value="{{ csrf_token() }}">
                 <input type="hidden" name="id_creador" value="{{ Auth::user()->id }}"">
                 <input type="hidden" name="id_publicacion" value="{{ $borrador->id_publicacion }}">
                 {!! csrf_field() !!}     
 
                 <div class="row">
-                    <!-- <div class="col-lg-2 col-sm-3 col-xs-12">
-                        <div class="form-group">
-                            <label class="control-label">
-                                Comisiones
-                            </label>
-                            <select class="form-control" name="id_comisiones" required="required">
-                                <option value="">
-                                    Selecione comision
-                                </option>
-                                @foreach($comision as $p)
-                                <option value="{{ $p->id }}">
-                                    {{ $p->nombre }}
-                                </option>
-                                @endforeach
-                            </select>
-                        </div>
-                    </div>
-                    <div class="col-lg-2 col-sm-3 col-xs-12">
-                        <div class="form-group">
-                            <label class="control-label">
-                                Flexibilidad
-                            </label>
-                            <select class="form-control" name="id_flexibilidad" required="required">
-                                <option value="">
-                                    Selecione Flexibilidad
-                                </option>
-                                @foreach($flexibilidad as $p)
-                                <option value="{{ $p->id }}">
-                                    {{ $p->nombre }}
-                                </option>
-                                @endforeach
-                            </select>
-                        </div>
-                    </div>
-                    <div class="col-lg-2 col-sm-3 col-xs-12">
-                        <div class="form-group">
-                            <label class="control-label">
-                                Servicio
-                            </label>
-                            <select class="form-control" name="id_servicios" required="required">
-                                <option value="">
-                                    Selecione Servicio
-                                </option>
-                                @foreach($servicio as $p)
-                                <option value="{{ $p->id }}">
-                                    {{ $p->nombre }}
-                                </option>
-                                @endforeach
-                            </select>
-                        </div>
-                    </div>-->
+                    
                     <div class="col-lg-2 col-sm-3 col-xs-12">
                         <label>
                             Fecha Contrato
@@ -104,43 +59,7 @@
                         </input>
                     </div>
 
-<!--
-                    <div class="col-lg-2 col-sm-3 col-xs-12">
-                        <div class="form-group">
-                            <label class="control-label">
-                                Formas de Pago
-                            </label>
-                            <select class="form-control" name="id_formadepago" required="required">
-                                <option value="">
-                                    Selecione Forma de Pago
-                                </option>
-                                @foreach($formasdepago as $p)
-                                <option value="{{ $p->id }}">
-                                    {{ $p->nombre }}
-                                </option>
-                                @endforeach
-                            </select>
-                        </div>
-                    </div>
-                    <div class="col-lg-2 col-sm-3 col-xs-12">
-                        <div class="form-group">
-                            <label class="control-label">
-                                Multas
-                            </label>
-                            <select class="form-control" name="id_multa" required="required">
-                                <option value="">
-                                    Selecione Multas
-                                </option>
-                                @foreach($multa as $p)
-                                <option value="{{ $p->id }}">
-                                    {{ $p->nombre }}
-                                </option>
-                                @endforeach
-                            </select>
-                        </div>
-                    </div>
-                -->
-                    <div class="col-lg-2 col-sm-3 col-xs-12">
+                    <div class="col-lg-3 col-sm-3 col-xs-12">
                         <div class="form-group">
                             <label class="control-label">
                                 Contrato
@@ -201,12 +120,12 @@
                     </div>
                     <div class="col-lg-2 col-sm-3 col-xs-12">
                         <label>
-                            Crear Borrador Arrendatario
+                            &nbsp;
                         </label>
                         <button class="btn btn-success" type="submit">
                             <i class="fa fa-check">
                             </i>
-                            Guardar
+                            Crear Borrador Arrendatario
                         </button>
                     </div>
                     <div class="col-lg-2 col-sm-3 col-xs-12">
@@ -214,9 +133,7 @@
                 </div>
 
             </form>
-
-                            <div class="content-wrap">
-                    <section id="section-iconbox-5_c">
+            <hr>
                               <div class="col-lg-4 col-sm-3 col-xs-12">
                                     <button class="btn btn-block btn-info"  id='updatepersona'data-toggle="modal" onclick="mostrar_modalpersona({{ $borrador->id_propietario }})" >Actualizar Propietario</button>
                                 </div>
@@ -620,6 +537,126 @@
                                     <!-- FIN MODAL INMUEBLE -->
                 </tbody>
             </table>
+                    </section>
+                    <section id="section-iconbox-6_c">
+ 
+                    <div class="panel panel-info">
+                            <div class="panel-heading"> Simular Pagos</div>
+                            <div class="panel-wrapper collapse in" aria-expanded="true">
+                                <div class="panel-body">
+                                    <form action="{{ route('borradorContrato.generarpagos',[$borrador->id_publicacion]) }}" method="post" enctype='multipart/form-data'>
+                                        {!! csrf_field() !!}
+                                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                        <input type="hidden" name="id_creador" value="{{ Auth::user()->id }}">
+                                        <div class="form-body">
+                                            <div class="row">
+                                                
+                                                    <h3 class="box-title m-b-0">Complete Campos generales para generar simulación de pagos</h3><br/>
+                                                    <div class="row">
+                                            
+                                                <div class="col-md-3">
+                                                    <div class="form-group">
+                                                        <label for="input-file-now-custom-1">Meses</label>
+                                                        <input type="number" name="cant_meses" id="cant_meses" value="12" class="form-control" required="required">
+                                                    </div>
+                                                </div>
+                                                  <div class="col-md-3">
+                                                    <div class="form-group">
+                                                        <label for="input-file-now-custom-1">Fecha Inicio Contrato</label>
+                                                        <input type="date" name="fecha_firmapago" id="fecha_firmapago" class="form-control" required="required">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                        <div class="form-group">
+                                                        <label for="input-file-now-custom-1">Moneda</label>
+                                                       <select class="form-control" name="moneda" required="required" >
+                                                            <option value="CLP">CLP</option>
+                                                            <option value="UF">UF</option>
+                                                       </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                        <div class="form-group">
+                                                        <label for="input-file-now-custom-1">Valor Moneda</label>
+                                                       <input name='valormoneda' id='valormoneda' type="number" class="form-control" required="required" value='1'>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                                <h3 class="box-title m-b-0">INFORMACIÓN PARA GENERAR PROPUESTA 1 CUOTA Y PIE + 11 CUOTAS</h3>
+                                                <hr>
+                                                <div class="col-md-2">
+                                                     <label >% de Descuento</label>
+                                                        <div class="input-group"> 
+                                                            <span class="input-group-addon">%</span>
+                                                            <input name='descuento' id='descuento' type="number" class="form-control"   step="any" required="required" value="0">
+                                                        </div>
+                                                </div>
+                                                <div class="col-md-2">
+                                                     <label >% de Pie</label>
+                                                        <div class="input-group"> 
+                                                            <span class="input-group-addon">%</span>
+                                                            <input name='pie' id='pie' type="number" class="form-control"   step="any" value="42" required="required">
+                                                        </div>
+                                                </div>
+                                                    <div class="col-md-2">
+                                                         <label >Canon de Arriendo</label>
+                                                        <div class="input-group"> 
+                                                            <span class="input-group-addon">$</span>
+                                                            <input name='arriendo' id='arriendo' step="any" type="number" class="form-control" value="{{ $borrador->precio }}" >
+                                                        </div>
+                                                    </div>
+                                                <div class="col-md-2"> 
+                                                    <label >Gasto común</label>
+                                                  <div class="input-group"> 
+                                                            <span class="input-group-addon">$</span>
+                                                            <input name='gastocomun' id='gastocomun' type="number" class="form-control"   step="any" value="{{ $borrador->gastosComunes }}">
+                                                        </div>
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <label >Gastos notariales</label>
+                                                        <div class="input-group"> 
+                                                            <span class="input-group-addon">$</span>
+                                                            <input name='pagonotaria' id='pagonotaria' type="number" class="form-control"  placeholder="$" required="required" value="0">
+                                                        </div>
+                                                </div>
+                                            </div>
+                                                <hr>
+                                            <div class="row">
+                                                <div class="col-md-2">
+                                                    <input name='nombre_otropago1' id='nombre_otropago1' type="text" class="form-control"   placeholder="Otro Pago 1"> </div>
+                                                <div class="col-md-2">
+                                                        <div class="input-group"> 
+                                                            <span class="input-group-addon">$</span>
+                                                            <input name='pagootro1' step="any" id='pagootro1' type="number" class="form-control"   placeholder="$">
+                                                        </div>
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <input name='nombre_otropago2' id='nombre_otropago2' type="text" class="form-control"   placeholder="Otro Pago 1"> </div>
+                                                <div class="col-md-2">
+                                                        <div class="input-group"> 
+                                                            <span class="input-group-addon">$</span>
+                                                            <input name='pagootro2' step="any" id='pagootro2' type="number" class="form-control"   placeholder="$">
+                                                        </div>
+                                                </div>
+                                                 <div class="col-md-2">
+                                                    <button type="submit" class="btn btn-success waves-effect waves-light">Generar Simulación</button>
+                                                </div>
+           
+                                            </div>
+                                            <hr>
+
+                                        </div>
+                                    </form>
+                                            </div>
+                                            <hr>
+                                </div>
+                            </form>
+                            </div>
+                        </div>
+       
                     </section>
 
                 </div>

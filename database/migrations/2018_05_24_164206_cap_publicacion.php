@@ -16,8 +16,9 @@ class CapPublicacion extends Migration
           Schema::dropIfExists('cap_publicaciones');
           Schema::create('cap_publicaciones', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('portal');
+            $table->string('portal')->nullable();
             $table->text('url')->nullable();
+            $table->string('tipo')->nullable();
             $table->string('codigo_publicacion')->nullable();
             $table->text('informacion_publicacion')->nullable();
             $table->date('fecha_publicacion')->nullable();

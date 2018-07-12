@@ -441,7 +441,8 @@ class CaptacionController extends Controller
          ->leftjoin('personas as p4', 'c.id_corredor', '=', 'p4.id')
          ->leftjoin('comunas as o', 'i.id_comuna', '=', 'o.comuna_id')
          ->leftjoin('portales as po', 'c.portal', '=', 'po.id')
-         ->select(DB::raw('c.id as id_publicacion, DATE_FORMAT(c.created_at, "%d/%m/%Y %T") as fecha_creacion,DATE_FORMAT(c.updated_at, "%d/%m/%Y") as fecha_modificacion, c.id_estado as id_estado, CONCAT_WS(" ",p1.nombre,p1.apellido_paterno,p1.apellido_materno) as Propietario, CONCAT_WS(" ",p4.nombre,p4.apellido_paterno,p4.apellido_materno) as Externo, p2.name as Creador, CONCAT_WS(" ",p3.nombre,p3.apellido_paterno,p3.apellido_materno) as Modificador,p1.email,p1.telefono,c.fecha_publicacion'),'i.id as id_inmueble','i.direccion','i.numero','i.departamento', 'o.comuna_nombre','po.nombre as portal','p1.nombre as nom_p','p1.apellido_paterno as apep_p','p1.apellido_materno as apem_p','p3.nombre as nom_m','p3.apellido_paterno as apep_m','p3.apellido_materno as apem_m')
+         ->select(DB::raw('c.id as id_publicacion, DATE_FORMAT(c.created_at, "%d/%m/%Y %T") as fecha_creacion,DATE_FORMAT(c.updated_at, "%d/%m/%Y") as fecha_modificacion, c.id_estado as id_estado, CONCAT_WS(" ",p1.nombre,p1.apellido_paterno,p1.apellido_materno) as Propietario, CONCAT_WS(" ",p4.nombre,p4.apellido_paterno,p4.apellido_materno) as Externo,
+         c.tipo, p2.name as Creador, CONCAT_WS(" ",p3.nombre,p3.apellido_paterno,p3.apellido_materno) as Modificador,p1.email,p1.telefono,c.fecha_publicacion'),'i.id as id_inmueble','i.direccion','i.numero','i.departamento', 'o.comuna_nombre','po.nombre as portal','p1.nombre as nom_p','p1.apellido_paterno as apep_p','p1.apellido_materno as apem_p','p3.nombre as nom_m','p3.apellido_paterno as apep_m','p3.apellido_materno as apem_m')
          ->get();
          
          return view('captaciones.index',compact('publica'));
@@ -459,7 +460,7 @@ class CaptacionController extends Controller
         ->select(DB::raw('id , CONCAT_WS(" ",nombre,apellido_paterno,apellido_materno) as Corredor'))
         ->pluck('Corredor', 'id');
         $portales=Portales::pluck('nombre','id');
-        return view('captaciones.create',compact('portales','corredor'));
+        return view('captaciones.create',compact('portales','corredores'));
     }
 
   public function crearGestion(Request $request)
@@ -475,6 +476,10 @@ class CaptacionController extends Controller
 
   public function crearBorrador($id)
     {
+      $captacion=Captacion::find($id);
+      if($captacion->id_inmueble=='' ||  $captacion->id_inmueble==null || $captacion->id_propietario==''||$captacion->id_propietario==null){
+        return back()->with('error', 'La captación debe contar con el propietario y el inmueble asignado para pasar a contrato borrador');
+      }
         $captacion=Captacion::where("id","=",$id)->update([
           "id_estado"=>6
         ]);
@@ -540,13 +545,23 @@ class CaptacionController extends Controller
      */
     public function store(Request $request)
     {
-       
-        $cap=DB::table('cap_publicaciones')->where('url','=',$request->url)->first();
 
-        if(count($cap)){
-            return redirect()->route('captacion.edit',[$cap->id,2])
-            ->with('error', '¡Publicación existente!, has sido redireccionado a la Publicación existente');
+        if(($request->url=='' || $request->url==null)&&($request->id_corredor=='' || $request->id_corredor==null)){
+          return back()->with('error', 'Debe seleccionar un externo o ingresar url para captación web');
         }
+
+   
+
+       if($request->url!='' || $request->url!=null){
+            $cap=DB::table('cap_publicaciones')->where('url','=',$request->url)->first();
+
+            if(count($cap)){
+                 return redirect()->route('captacion.edit',[$cap->id,1])
+                 ->with('error', '¡Publicación existente!, has sido redireccionado a la Publicación existente');
+            }
+       }
+
+
 
 
         $fecha_publicacion = DateTime::createFromFormat('d/m/Y', $request->fecha_publicacion);
@@ -556,7 +571,11 @@ class CaptacionController extends Controller
                 $fecha_expiracion = DateTime::createFromFormat('d/m/Y', $request->fecha_expiracion);
                 array_set($request, 'fecha_expiracion',$fecha_expiracion);
         }
-
+     if($request->url==''|| $request->url==null){
+          $request->request->add(['tipo'=>'EXT']);
+        }else{
+          $request->request->add(['tipo' => 'POR']);
+        }
 
         $captacion = Captacion::create($request->all());
         return redirect()->route('captacion.edit', [$captacion->id,2])
@@ -862,10 +881,8 @@ class CaptacionController extends Controller
          }
         $path='uploads/captaciones';
         $archivo=rand().$request->foto->getClientOriginalName();
-        $img = Image::make($_FILES['foto']['tmp_name'])->resize(600,400, function ($constraint){ 
-                        $constraint->aspectRatio();
-                    });
-        $img->save($path.'/'.$archivo,72);
+        $file = $request->file('foto');
+        $file->move($path, $archivo);
 
                 $imagen=CaptacionFoto::create([
                             'id_captacion'         => $id,
@@ -875,8 +892,7 @@ class CaptacionController extends Controller
                             'id_creador'           => $request->id_creador
                         ]);
 
-        
-
+      
         return redirect()->route('captacion.edit', [$id,3])->with('status', 'Foto guardada con éxito');
     }
 

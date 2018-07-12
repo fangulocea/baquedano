@@ -232,15 +232,6 @@
                                 @endcan
 
                                 @can('captacion.index')
-                                <li> 
-                                    <a href="{{ route('corredor.index') }}" >
-                                        <i class=" fa-fw">CC</i>
-                                        <span class="hide-menu">Captación Externa</span>
-                                    </a> 
-                                </li>
-                                @endcan
-
-                                @can('captacion.index')
                                 <li id="a_pc"> <a href="{{ route('captacion.importExportcap') }}" ><i class=" fa-fw">PC</i><span class="hide-menu">Proceso de Captación</span></a> </li>
                                 @endcan
 

@@ -12,6 +12,8 @@
                 <thead>
                     <tr>
                         <th>ID</th>
+                        <th>Tipo</th>
+                        <th>Corredor</th>
                         <th>Dirección</th>
                         <th>Comuna</th>
                         <th>Propietario</th>
@@ -31,6 +33,8 @@
                 <tfoot>
                     <tr>
                         <th>ID</th>
+                        <th>Tipo</th>
+                        <th>Corredor</th>
                         <th>Dirección</th>
                         <th>Comuna</th>
                         <th>Propietario</th>
@@ -52,9 +56,11 @@
                             <tr>
 
 
-                                <td style="font-size: x-small;"> {{ $p->id_publicacion }}</td>
+                                <td style="font-size: x-small;"><a href="{{ route('captacion.edit', [$p->id_publicacion,2]) }}"> {{ $p->id_publicacion }}</a></td>
+                                <td style="font-size: x-small;"><a href="{{ route('captacion.edit', [$p->id_publicacion,2]) }}"> {{ $p->tipo }}</a></td>
+                                <td style="font-size: x-small;"> {{ $p->Externo }}</td>
                                 
-                                <td style="font-size: small;">{{ $p->direccion }} #{{ $p->numero }} , Dpto {{ $p->departamento }}</td>
+                                <td style="font-size: small;"><a href="{{ route('captacion.edit', [$p->id_publicacion,2]) }}">{{ $p->direccion }} #{{ $p->numero }} , Dpto {{ $p->departamento }}</a></td>
                                 <td style="font-size: small;"> {{ $p->comuna_nombre }}</td>
                                 
                                 <td style="font-size: small;">{{ $p->nom_p }} {{ $p->apep_p }} {{ $p->apem_p }}</td>
@@ -162,7 +168,7 @@ var table = $('#listusers').DataTable({
     $('#listusers thead th').each( function () {
         var title = $(this).text();
         if(title!='ID' && title!= "")
-        $(this).html( title+'<br/><input type="text" style="width:100px" placeholder="Buscar" />' );
+        $(this).html( title+'<br/><input type="text" style="width:70px" placeholder="" />' );
     } );
  
 
