@@ -26,6 +26,7 @@ class CreateContratofinalarr extends Migration
             $table->integer('id_estado');
             $table->integer('id_creador')->unsigned();
             $table->foreign('id_creador')->references('id')->on('personas');
+            $table->integer('meses_contrato')->nullable();
             $table->integer('id_modificador')->unsigned()->nullable();
             $table->foreign('id_modificador')->references('id')->on('personas')->nullable();
             $table->integer('id_borrador')->unsigned();

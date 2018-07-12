@@ -32,7 +32,7 @@
                 {!! csrf_field() !!}     
 
                 <div class="row">
-                    <div class="col-lg-2 col-sm-3 col-xs-12">
+                    <!-- <div class="col-lg-2 col-sm-3 col-xs-12">
                         <div class="form-group">
                             <label class="control-label">
                                 Comisiones
@@ -82,7 +82,7 @@
                                 @endforeach
                             </select>
                         </div>
-                    </div>
+                    </div>-->
                     <div class="col-lg-2 col-sm-3 col-xs-12">
                         <label>
                             Fecha Contrato
@@ -103,10 +103,8 @@
                         <input class="form-control" name="valorarriendo" required="required" type="number">
                         </input>
                     </div>
-                    <div class="col-lg-2 col-sm-3 col-xs-12">
-                    </div>
-                </div>
-                <div class="row">
+
+<!--
                     <div class="col-lg-2 col-sm-3 col-xs-12">
                         <div class="form-group">
                             <label class="control-label">
@@ -141,6 +139,7 @@
                             </select>
                         </div>
                     </div>
+                -->
                     <div class="col-lg-2 col-sm-3 col-xs-12">
                         <div class="form-group">
                             <label class="control-label">
@@ -202,7 +201,7 @@
                     </div>
                     <div class="col-lg-2 col-sm-3 col-xs-12">
                         <label>
-                            Crar Borrador Arrendatario
+                            Crear Borrador Arrendatario
                         </label>
                         <button class="btn btn-success" type="submit">
                             <i class="fa fa-check">

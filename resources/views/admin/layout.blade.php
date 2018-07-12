@@ -250,7 +250,12 @@
                                 @can('primeraGestion.index')
                                 <li> <a href="{{ route('primeraGestion.index',1) }}" ><i class=" fa-fw">EC</i> <span class="hide-menu">Envío de Correos</span></a> </li>
                                 @endcan
-
+                                  @can('borradorContrato.index')
+                                    <li> <a href="{{ route('borradorContrato.index') }}"><i class=" fa-fw">CB</i><span class="hide-menu">Contrato Borrador Propietario</span></a> </li>
+                                    @endcan
+                                    @can('contratoborradorarrendatario.index')
+                                    <li> <a href="{{ route('cbararrendatario.index') }}"><i class=" fa-fw">CB</i><span class="hide-menu">Contrato Borrador Arrendatario</span></a> </li>
+                                    @endcan
 
                             </ul>
                         </li>
@@ -264,7 +269,7 @@
                                 @endcan
 
                             <li>
-                                <a href="javascript:void(0)" class="waves-effect"><i data-icon="&#xe008;" class="linea-icon linea-basic fa-fw">P</i><span class="hide-menu">ropietario </span><span class="fa arrow"></span></a>
+                                <a href="javascript:void(0)" class="waves-effect"><i data-icon="&#xe008;" class="linea-icon linea-basic fa-fw">P</i><span class="hide-menu">Propietario </span><span class="fa arrow"></span></a>
                                 <ul class="nav nav-third-level">
                                     @can('borradorContrato.index')
                                     <li> <a href="{{ route('borradorContrato.index') }}"><i class=" fa-fw">CB</i><span class="hide-menu">Contrato Borrador</span></a> </li>

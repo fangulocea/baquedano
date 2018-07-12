@@ -9,6 +9,6 @@ class Portales extends Model
 {
     use SoftDeletes;
     protected $table='portales';
-    protected $fillable = ['nombre'];
+    protected $fillable = ['nombre','estado'];
     protected $dates = ['deleted_at'];
 }

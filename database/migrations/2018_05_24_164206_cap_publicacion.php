@@ -17,12 +17,14 @@ class CapPublicacion extends Migration
           Schema::create('cap_publicaciones', function (Blueprint $table) {
             $table->increments('id');
             $table->string('portal');
-            $table->text('url');
+            $table->text('url')->nullable();
             $table->string('codigo_publicacion')->nullable();
             $table->text('informacion_publicacion')->nullable();
             $table->date('fecha_publicacion')->nullable();
             $table->date('fecha_expiracion')->nullable();
             $table->string('observaciones')->nullable();
+            $table->integer('id_corredor')->unsigned()->nullable();
+            $table->foreign('id_corredor')->references('id')->on('personas');
             $table->integer('id_propietario')->unsigned()->nullable();
             $table->foreign('id_propietario')->references('id')->on('personas');
             $table->integer('id_inmueble')->unsigned()->nullable();

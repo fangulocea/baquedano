@@ -976,7 +976,7 @@ document.getElementById("tablearea").innerHTML="";
                            
                                     //HEAD
                                     var head_fecha=fecha_iniciocontrato;
-
+                                    head_fecha.setMonth(head_fecha.getMonth()+1);
                                         head_fecha.setDate(1);
                                         var cell = document.createElement("th");
                                         cell.style.border="1px solid black";
@@ -989,7 +989,7 @@ document.getElementById("tablearea").innerHTML="";
                                         cell.style.border="1px solid black";
                                         cell.style.padding="8px";
 
-                                        cell.innerHTML = '<b>'+meses[response[r].mes]+"/"+response[r].anio+'</b>';
+                                         cell.innerHTML = '<b>'+meses[head_fecha.getMonth()]+"/"+head_fecha.getFullYear()+'</b>';
                                         head_fecha.setMonth(head_fecha.getMonth()+1);
                                         rowheader.appendChild(cell);
 

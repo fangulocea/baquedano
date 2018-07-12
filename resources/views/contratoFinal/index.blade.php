@@ -15,10 +15,21 @@
                         <th>Dirección</th>
                         <th>Comuna</th>
                         <th>Propietario</th>
-                        <th>Fecha</th>
-                        <th>Creador</th>
+                        <th>Día Pago</th>
                         <th>Estado</th>
-                        <th>Portal</th>
+                        <th>{{ $meses->mesanterior6 }}</th>
+                        <th>{{ $meses->mesanterior5 }}</th>
+                        <th>{{ $meses->mesanterior4 }}</th>
+                        <th>{{ $meses->mesanterior3 }}</th>
+                        <th>{{ $meses->mesanterior2 }}</th>
+                        <th>{{ $meses->mesanterior1 }}</th>
+                        <th style="color:red">{{ $meses->mesactual }}</th>
+                        <th>{{ $meses->messiguiente1 }}</th>
+                        <th>{{ $meses->messiguiente2 }}</th>
+                        <th>{{ $meses->messiguiente3 }}</th>
+                        <th>{{ $meses->messiguiente4 }}</th>
+                        <th>{{ $meses->messiguiente5 }}</th>
+                        <th>{{ $meses->messiguiente6 }}</th>
                         <th></th>
 
                     </tr>
@@ -29,10 +40,21 @@
                         <th>Dirección</th>
                         <th>Comuna</th>
                         <th>Propietario</th>
-                        <th>Fecha</th>
-                        <th>Creador</th>
+                        <th>Día Pago</th>
                         <th>Estado</th>
-                        <th>Portal</th>
+                        <th>{{ $meses->mesanterior6 }}</th>
+                        <th>{{ $meses->mesanterior5 }}</th>
+                        <th>{{ $meses->mesanterior4 }}</th>
+                        <th>{{ $meses->mesanterior3 }}</th>
+                        <th>{{ $meses->mesanterior2 }}</th>
+                        <th>{{ $meses->mesanterior1 }}</th>
+                        <th style="color:red">{{ $meses->mesactual }}</th>
+                        <th>{{ $meses->messiguiente1 }}</th>
+                        <th>{{ $meses->messiguiente2 }}</th>
+                        <th>{{ $meses->messiguiente3 }}</th>
+                        <th>{{ $meses->messiguiente4 }}</th>
+                        <th>{{ $meses->messiguiente5 }}</th>
+                        <th>{{ $meses->messiguiente6 }}</th>
                         <th></th>
 
                     </tr>
@@ -46,10 +68,23 @@
                                 
                                 <td>{{ $p->comuna_nombre }}</td>
                                 <td>{{ $p->nom_p }} {{ $p->apep_p }} {{ $p->apem_p }}</td>
-                                <td>{{ $p->fecha_creacion }}</td>
-                                <td>{{ $p->Creador }}</td>
-                                 <td>{{ trans_choice('mensajes.captacion', $p->id_estado) }}</td>
-                                 <td>{{ substr(substr($p->portal, 4),0,10) }}</td>
+                                <td>{{ $p->dia_pago }}</td>
+                                <td>{{ trans_choice('mensajes.captacion', $p->id_estado) }}</td>
+                                <td> {{ $p->valoranterior6 - $p->valorpagadoanterior6 }} </td>
+                                <td> {{ $p->valoranterior5 - $p->valorpagadoanterior5 }} </td>
+                                <td> {{ $p->valoranterior4 - $p->valorpagadoanterior4 }} </td>
+                                <td> {{ $p->valoranterior3 - $p->valorpagadoanterior3 }} </td>
+                                <td> {{ $p->valoranterior2 - $p->valorpagadoanterior2 }} </td>
+                                <td> {{ $p->valoranterior1 - $p->valorpagadoanterior1 }} </td>
+                                <td> {{ $p->valoractual - $p->valorpagadoactual }} </td>
+                                <td> {{ $p->valorsiguiente1 - $p->valorpagadosiguiente1 }} </td>
+                                <td> {{ $p->valorsiguiente2 - $p->valorpagadosiguiente2 }} </td>
+                                <td> {{ $p->valorsiguiente3 - $p->valorpagadosiguiente3 }} </td>
+                                <td> {{ $p->valorsiguiente4 - $p->valorpagadosiguiente4 }} </td>
+                                <td> {{ $p->valorsiguiente5 - $p->valorpagadosiguiente5 }} </td>
+                                <td> {{ $p->valorsiguiente6 - $p->valorpagadosiguiente6 }} </td>
+
+                                 
                                 @can('finalContrato.edit')
                                 <td width="10px">
                                     <a href="{{ route('finalContrato.edit', [$p->id_publicacion,0,0,1]) }}"><span class="btn btn-warning btn-circle btn-lg"><i class="ti-pencil-alt"></i></span></a>
@@ -132,7 +167,7 @@ var table = $('#listusers').DataTable({
     $('#listusers thead th').each( function () {
         var title = $(this).text();
         if(title!='ID' && title!= "")
-        $(this).html( '<input type="text" style="width:100px" placeholder="'+title+'" />' );
+        $(this).html( title+'<br/><input type="text" style="width:100px" placeholder="Buscar" />' );
     } );
  
 

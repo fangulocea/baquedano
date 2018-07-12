@@ -42,9 +42,15 @@ Route::get('provincias/{id}','RegionController@getProvincias');
 
 Route::get('contratofinal/consulta/{id}','ContratoFinalController@getContrato');
 
+Route::get('contratofinalarr/consulta/{id}','ContratoFinalArrController@getContrato');
+
 Route::get('contratofinal/consultapagos/{id}/{id2}','ContratoFinalController@getpagos');
 
+Route::get('contratofinalarr/consultapagos/{id}/{id2}','ContratoFinalArrController@getpagos');
+
 Route::get('contratofinal/consultapagosmensuales/{id}/{id2}','ContratoFinalController@getpagosmensuales');
+
+Route::get('contratofinalarr/consultapagosmensuales/{id}/{id2}','ContratoFinalArrController@getpagosmensuales');
 
 Route::get('regiones/todas','RegionController@getTodasRegiones');
 
@@ -899,5 +905,18 @@ Route::get('revisionpersona/eliminarfoto/{idf}/{idc}','RevisionPersonaController
 		Route::post('finalContratoArr/generarpagos/{idp}','ContratoFinalArrController@generarpagos')->name('finalContratoArr.generarpagos')
 		->middleware('permission:finalContratoArr.edit');	
 
+		Route::get('pagosarrendatario/eliminar/{idp}/{idt}','ContratoFinalArrController@eliminartipopago')->name('finalContratoArr.eliminartipopago')
+		->middleware('permission:finalContratoArr.update');
 
+		Route::get('pagosarrendatario/mostrarpago/{id}','ContratoFinalArrController@mostrar_un_pago')->name('finalContratoArr.mostrarpago')
+		->middleware('permission:finalContratoArr.update');
+
+		Route::post('pagosarrendatario/updatepago','ContratoFinalArrController@updatepago')->name('finalContratoArr.updatepago')
+		->middleware('permission:finalContratoArr.update');
+
+		Route::get('pagosarrendatario/ir_al_pago/{id}','PagosMensualesArrendatariosController@ir_al_pago')->name('pagosarrendatario.ir_al_pago')
+		->middleware('permission:finalContratoArr.edit');
+
+		Route::any('pagosarrendatario/efectuarpago/{id}','PagosMensualesArrendatariosController@efectuarpago')->name('pagosarrendatario.efectuarpago')
+		->middleware('permission:finalContratoArr.edit');
 });

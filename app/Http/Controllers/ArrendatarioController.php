@@ -27,7 +27,8 @@ class ArrendatarioController extends Controller
         $captacion=Arrendatario::where("id","=",$id)->update([
           "id_estado"=>6
         ]);
-        return redirect()->route('arrendatario.edit', $id)
+       
+        return redirect()->route('cbararrendatario.edit', $id)
             ->with('status', 'Captación en estado Borrador con éxito');
     }
 

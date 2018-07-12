@@ -35,6 +35,7 @@
                 <input type="hidden" name="id_cap_arr" value="{{ $publica->id_cap_arr }}">
                              {!! csrf_field() !!}     
                    <div class="row">
+                    <!--
                                 <div class="col-lg-2 col-sm-3 col-xs-12">
                                     <div class="form-group">
                                         <label class="control-label">Comisiones</label>
@@ -67,8 +68,8 @@
                                             @endforeach   
                                         </select>
                                     </div>
-                                </div>
-                                <div class="col-lg-2 col-sm-3 col-xs-12">
+                                </div> -->
+                                <div class="col-lg-3 col-sm-3 col-xs-12">
                                     <label>Fecha Contrato</label>
                                     <div class="input-group">
                                         <input type="text" autocomplete="off" class="form-control datepicker-fecha_contacto1_c" placeholder="dd/mm/yyyy" id="datepicker-fecha_contacto1_c" name="fecha_contrato" required="required"> <span class="input-group-addon"><i class="icon-calender"></i></span> 
@@ -79,12 +80,9 @@
                                     <input name='valorarriendo' type="number" class="form-control" required="required">
                                     
                                 </div>
-                                <div class="col-lg-2 col-sm-3 col-xs-12">
-                                    
-                                </div>
-                    </div>
 
-                   <div class="row">
+
+                    <!--
                                 <div class="col-lg-2 col-sm-3 col-xs-12">
                                     <div class="form-group">
                                         <label class="control-label">Formas de Pago</label>
@@ -106,8 +104,8 @@
                                             @endforeach   
                                         </select>
                                     </div>
-                                </div>
-                                <div class="col-lg-2 col-sm-3 col-xs-12">
+                                </div>-->
+                                <div class="col-lg-3 col-sm-3 col-xs-12">
                                     <div class="form-group">
                                         <label class="control-label">Contrato</label>
                                         <select class="form-control" name="id_contrato" required="required" >
@@ -139,8 +137,10 @@
                                 </div>
                                 
                                 <div class="col-lg-2 col-sm-3 col-xs-12">
-                                    <label>Crar Borrador Arrendatario</label>
+                                    <div class="form-group">
+                                    <label>Crear Borrador Arrendatario</label>
                                     <button type="submit" class="btn btn-success"> <i class="fa fa-check"></i> Guardar</button>
+                                </div>
                                 </div>
                                 <div class="col-lg-2 col-sm-3 col-xs-12">
                                     

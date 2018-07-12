@@ -12,22 +12,48 @@
                 <thead>
                     <tr>
                         <th>ID</th>
-                        <th>Arrendatario</th>
                         <th>Dirección</th>
                         <th>Comuna</th>
+                        <th>Arrendatario</th>
+                        <th>Día Pago</th>
                         <th>Estado</th>
-                        <th></th>
+                        <th>{{ $meses->mesanterior6 }}</th>
+                        <th>{{ $meses->mesanterior5 }}</th>
+                        <th>{{ $meses->mesanterior4 }}</th>
+                        <th>{{ $meses->mesanterior3 }}</th>
+                        <th>{{ $meses->mesanterior2 }}</th>
+                        <th>{{ $meses->mesanterior1 }}</th>
+                        <th style="color:red">{{ $meses->mesactual }}</th>
+                        <th>{{ $meses->messiguiente1 }}</th>
+                        <th>{{ $meses->messiguiente2 }}</th>
+                        <th>{{ $meses->messiguiente3 }}</th>
+                        <th>{{ $meses->messiguiente4 }}</th>
+                        <th>{{ $meses->messiguiente5 }}</th>
+                        <th>{{ $meses->messiguiente6 }}</th>
                         <th></th>
                     </tr>
                 </thead>
                 <tfoot>
                     <tr>
-                        <th>ID</th>
-                        <th>Arrendatario</th>
+                       <th>ID</th>
                         <th>Dirección</th>
                         <th>Comuna</th>
+                        <th>Arrendatario</th>
+                        <th>Día Pago</th>
                         <th>Estado</th>
-                        <th></th>
+                        <th>{{ $meses->mesanterior6 }}</th>
+                        <th>{{ $meses->mesanterior5 }}</th>
+                        <th>{{ $meses->mesanterior4 }}</th>
+                        <th>{{ $meses->mesanterior3 }}</th>
+                        <th>{{ $meses->mesanterior2 }}</th>
+                        <th>{{ $meses->mesanterior1 }}</th>
+                        <th style="color:red">{{ $meses->mesactual }}</th>
+                        <th>{{ $meses->messiguiente1 }}</th>
+                        <th>{{ $meses->messiguiente2 }}</th>
+                        <th>{{ $meses->messiguiente3 }}</th>
+                        <th>{{ $meses->messiguiente4 }}</th>
+                        <th>{{ $meses->messiguiente5 }}</th>
+                        <th>{{ $meses->messiguiente6 }}</th>
                         <th></th>
                     </tr>
                 </tfoot>
@@ -35,10 +61,24 @@
                     @foreach($publica as $p)
                             <tr>
                                 <td>{{ $p->id_cap_arr }}</td>
-                                <td>{{ $p->arrendatario }}</td>
                                 <td>{{ $p->direccion }} #{{ $p->numero }}</td>
                                 <td>{{ $p->comuna }}</td>
+                                <td>{{ $p->arrendatario }}</td>
+                                <td>{{ $p->dia_pago }}</td>
                                 <td>{{ trans_choice('mensajes.arrendatario', $p->id_estado) }}</td>
+                                <td> {{ $p->valoranterior6 - $p->valorpagadoanterior6 }} </td>
+                                <td> {{ $p->valoranterior5 - $p->valorpagadoanterior5 }} </td>
+                                <td> {{ $p->valoranterior4 - $p->valorpagadoanterior4 }} </td>
+                                <td> {{ $p->valoranterior3 - $p->valorpagadoanterior3 }} </td>
+                                <td> {{ $p->valoranterior2 - $p->valorpagadoanterior2 }} </td>
+                                <td> {{ $p->valoranterior1 - $p->valorpagadoanterior1 }} </td>
+                                <td> {{ $p->valoractual - $p->valorpagadoactual }} </td>
+                                <td> {{ $p->valorsiguiente1 - $p->valorpagadosiguiente1 }} </td>
+                                <td> {{ $p->valorsiguiente2 - $p->valorpagadosiguiente2 }} </td>
+                                <td> {{ $p->valorsiguiente3 - $p->valorpagadosiguiente3 }} </td>
+                                <td> {{ $p->valorsiguiente4 - $p->valorpagadosiguiente4 }} </td>
+                                <td> {{ $p->valorsiguiente5 - $p->valorpagadosiguiente5 }} </td>
+                                <td> {{ $p->valorsiguiente6 - $p->valorpagadosiguiente6 }} </td>
                                 @can('cbararrendatario.edit')
                                 <td width="10px">
                                     <a href="{{ route('finalContratoArr.edit', [$p->id_cap_arr,0,0,1]) }}"><span class="btn btn-warning btn-circle btn-lg"><i class="ti-pencil-alt"></i></span></a>

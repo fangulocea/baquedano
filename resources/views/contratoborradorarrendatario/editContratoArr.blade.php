@@ -24,7 +24,7 @@
                     <input id="id_cap_arr_e" name="id_cap_arr" value="{{ $gestion->id_cap_arr }}" type="hidden">
                         <div class="modal-body">
                             <div class="row">
-                                <div class="col-lg-3 col-sm-3 col-xs-12">
+                              <!--  <div class="col-lg-3 col-sm-3 col-xs-12">
                                     <div class="form-group">
                                         <label class="control-label">
                                             Comisiones
@@ -76,7 +76,7 @@
                                             @endforeach
                                         </select>
                                     </div>
-                                </div>
+                                </div>-->
                                 <div class="col-lg-3 col-sm-3 col-xs-12">
                                     <label>
                                         Fecha Contrato
@@ -85,8 +85,7 @@
                                         <input type="text" autocomplete="off" class="form-control datepicker-fecha_contacto1_c" placeholder="dd/mm/yyyy" id="datepicker-fecha_contacto1_c" name="fecha_contrato" required="required" value="{{ date('d-m-Y', strtotime($gestion->fecha_contrato)) }}"> <span class="input-group-addon"><i class="icon-calender"></i></span> 
                                     </div>
                                 </div>
-                            </div>
-                            <div class="row">
+<!--
                                 <div class="col-lg-3 col-sm-3 col-xs-12">
                                     <div class="form-group">
                                         <label class="control-label">
@@ -124,7 +123,7 @@
                                             @endforeach
                                         </select>
                                     </div>
-                                </div>
+                                </div> -->
                                 <div class="col-lg-3 col-sm-3 col-xs-12">
                                     <div class="form-group">
                                         <label class="control-label">

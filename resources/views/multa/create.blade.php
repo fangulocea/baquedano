@@ -32,7 +32,7 @@
 
                             <div class="row"> 
 
-                                <div class="col-md-1">
+                                <div class="col-md-3">
                                     <div class="form-group">
                                         <label>Tipo Multa</label>
                                         <select class="form-control" name="tipo_multa" required="required">

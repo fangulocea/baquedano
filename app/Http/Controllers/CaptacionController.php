@@ -205,7 +205,8 @@ class CaptacionController extends Controller
            $portal=DB::table('portales')->where('nombre','=',trim($part_portal[2]))->first();
            if(count($portal)==0){
                     $portal=Portales::create([
-                    "nombre"         => $part_portal[2]
+                    "nombre"         => $part_portal[2],
+                    "estado"         => 1
                 ])->toArray();
            }
            $portal=DB::table('portales')->where('nombre','=',trim($part_portal[2]))->first();
@@ -437,9 +438,10 @@ class CaptacionController extends Controller
          ->leftjoin('inmuebles as i', 'c.id_inmueble', '=', 'i.id')
          ->leftjoin('users as p2', 'c.id_creador', '=', 'p2.id')
          ->leftjoin('personas as p3', 'c.id_modificador', '=', 'p3.id')
+         ->leftjoin('personas as p4', 'c.id_corredor', '=', 'p4.id')
          ->leftjoin('comunas as o', 'i.id_comuna', '=', 'o.comuna_id')
          ->leftjoin('portales as po', 'c.portal', '=', 'po.id')
-         ->select(DB::raw('c.id as id_publicacion, DATE_FORMAT(c.created_at, "%d/%m/%Y %T") as fecha_creacion,DATE_FORMAT(c.updated_at, "%d/%m/%Y") as fecha_modificacion, c.id_estado as id_estado, CONCAT_WS(" ",p1.nombre,p1.apellido_paterno,p1.apellido_materno) as Propietario, p2.name as Creador, CONCAT_WS(" ",p3.nombre,p3.apellido_paterno,p3.apellido_materno) as Modificador,p1.email,p1.telefono,c.fecha_publicacion'),'i.id as id_inmueble','i.direccion','i.numero','i.departamento', 'o.comuna_nombre','po.nombre as portal','p1.nombre as nom_p','p1.apellido_paterno as apep_p','p1.apellido_materno as apem_p','p3.nombre as nom_m','p3.apellido_paterno as apep_m','p3.apellido_materno as apem_m')
+         ->select(DB::raw('c.id as id_publicacion, DATE_FORMAT(c.created_at, "%d/%m/%Y %T") as fecha_creacion,DATE_FORMAT(c.updated_at, "%d/%m/%Y") as fecha_modificacion, c.id_estado as id_estado, CONCAT_WS(" ",p1.nombre,p1.apellido_paterno,p1.apellido_materno) as Propietario, CONCAT_WS(" ",p4.nombre,p4.apellido_paterno,p4.apellido_materno) as Externo, p2.name as Creador, CONCAT_WS(" ",p3.nombre,p3.apellido_paterno,p3.apellido_materno) as Modificador,p1.email,p1.telefono,c.fecha_publicacion'),'i.id as id_inmueble','i.direccion','i.numero','i.departamento', 'o.comuna_nombre','po.nombre as portal','p1.nombre as nom_p','p1.apellido_paterno as apep_p','p1.apellido_materno as apem_p','p3.nombre as nom_m','p3.apellido_paterno as apep_m','p3.apellido_materno as apem_m')
          ->get();
          
          return view('captaciones.index',compact('publica'));
@@ -452,8 +454,12 @@ class CaptacionController extends Controller
      */
     public function create()
     {
+          $corredores=Persona::where('tipo_cargo','=','Corredor - Externo')
+        ->Orwhere('tipo_cargo','=','Empleado')
+        ->select(DB::raw('id , CONCAT_WS(" ",nombre,apellido_paterno,apellido_materno) as Corredor'))
+        ->pluck('Corredor', 'id');
         $portales=Portales::pluck('nombre','id');
-        return view('captaciones.create',compact('portales'));
+        return view('captaciones.create',compact('portales','corredor'));
     }
 
   public function crearGestion(Request $request)
@@ -576,6 +582,11 @@ class CaptacionController extends Controller
      */
     public function edit($id,$tab)
     {
+
+      $corredores=Persona::where('tipo_cargo','=','Corredor - Externo')
+        ->Orwhere('tipo_cargo','=','Empleado')
+        ->select(DB::raw('id , CONCAT_WS(" ",nombre,apellido_paterno,apellido_materno) as Corredor'))
+        ->pluck('Corredor', 'id');
       
         $portales=Portales::pluck('nombre','id');
          $regiones=Region::pluck('region_nombre','region_id');
@@ -628,7 +639,7 @@ class CaptacionController extends Controller
           }
       }
 
-        return view('captaciones.edit',compact('captacion','regiones','persona','inmueble','idr','captaciones_persona','captaciones_inmueble','imagenes','portales','gestion','tab'));
+        return view('captaciones.edit',compact('captacion','regiones','persona','inmueble','idr','captaciones_persona','captaciones_inmueble','imagenes','portales','gestion','tab','corredores'));
 
     }
 

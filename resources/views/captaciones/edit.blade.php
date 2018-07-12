@@ -45,6 +45,16 @@
                                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                         <input type="hidden" name="paso" value="1">
                                         <div class="form-body">
+                                        <h3 class="box-title">Seleccione contacto para captación externa o complete los datos de la publicación Web</h3>
+                                            <hr>
+                                            <div class="row">
+                                                 <div class="col-md-3">
+                                                    <div class="form-group">
+                                                        <label>Corredor / Externo</label>
+                                                        <div class="input-group">
+                                                    {{ Form::select('id_corredor',$corredores, $captacion->id_corredor,array('class'=>'form-control','style'=>'','id'=>'id_corredor','placeholder'=>'Seleccione corredor','required'=>'required')) }}
+                                                </div></div></div>
+                                            </div>
                                             <h3 class="box-title">Información de la publicación web del portal</h3>
                                             <hr>
                                             <div class="row">

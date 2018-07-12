@@ -27,6 +27,16 @@
                                         {!! csrf_field() !!}
                                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                         <div class="form-body">
+                                         <h3 class="box-title">Seleccione contacto para captación externa o complete los datos de la publicación Web</h3>
+                                            <hr>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label>Corredor  / Externos</label>
+                                                        <div class="input-group">
+                                                    {{ Form::select('id_corredor',$corredores, null,array('class'=>'form-control','style'=>'','id'=>'id_corredor','placeholder'=>'Seleccione corredor','required'=>'required')) }}
+                                                </div></div></div>
+                                            </div>
                                             <h3 class="box-title">Información de la publicación web del portal</h3>
                                             <hr>
                                             <div class="row">
@@ -65,6 +75,8 @@
                                                     </div>
                                                 </div>
                                             </div>
+                                            <h3 class="box-title">Información Captación Externa</h3>
+                                            <hr>
                                             <div class="row"> 
                                                 <div class="col-md-4">
                                                     <div class="form-group">

@@ -304,9 +304,10 @@ class ContratoBorradorArrendatarioController extends Controller
 
             Mail::send('emails.contratoborrador', $envioCorreo, function ($message) use($borradorCorreo) {
                 $archivos = $borradorCorreo->archivo;
-                $message->from('edison.carrizo.j@gmail.com');
+                $message->from('javier@ibaquedano.cl','Baquedano Rentas');
                 $message->to($borradorCorreo->correo);
-                $message->subject('Asunto del correo');
+                $message->replyTo('javier@ibaquedano.cl', 'Javier Faria - Baquedano Rentas');
+                $message->subject('Propuesta contrato borrador');
                 $message->attach($borradorCorreo->archivo);
             });
 

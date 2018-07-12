@@ -25,7 +25,7 @@
                 <div class="modal-body">
 
                             <div class="row">
-                                <div class="col-lg-3 col-sm-3 col-xs-12">
+                               <!-- <div class="col-lg-3 col-sm-3 col-xs-12">
                                     <div class="form-group">
                                         <label class="control-label">
                                             Comisiones
@@ -77,7 +77,7 @@
                                             @endforeach
                                         </select>
                                     </div>
-                                </div>
+                                </div>-->
                                 <div class="col-lg-3 col-sm-3 col-xs-12">
                                     <label>
                                         Fecha Contrato
@@ -86,10 +86,7 @@
                                         <input type="text" autocomplete="off" class="form-control datepicker-fecha_contacto1_c" placeholder="dd/mm/yyyy" id="datepicker-fecha_contacto1_c" name="fecha_gestion" required="required" value="{{ date('d-m-Y', strtotime($gestion->fecha_gestion)) }}"> <span class="input-group-addon"><i class="icon-calender"></i></span> 
                                     </div>
                                 </div>
-                            </div>
-                {{--  --}}
-
-                            <div class="row">
+<!--
                                 <div class="col-lg-3 col-sm-3 col-xs-12">
                                     <div class="form-group">
                                         <label class="control-label">
@@ -127,7 +124,7 @@
                                             @endforeach
                                         </select>
                                     </div>
-                                </div>
+                                </div> -->
                                 <div class="col-lg-3 col-sm-3 col-xs-12">
                                     <div class="form-group">
                                         <label class="control-label">
@@ -172,10 +169,7 @@
                                         {{ Form::select('id_estado',['0'=>'Rechazdo','1'=>'Vigente','2'=>'Correo Enviado','3'=>'Reenvío Correo'], $gestion->id_estado ,array('class'=>'form-control','style'=>'','id'=>'estado','placeholder'=>'Selecciona estado','required'=>'required')) }}
                                     </div>
                                 </div>
-                                <div class="col-lg-3 col-sm-3 col-xs-12">
-                                </div>
-                                <div class="col-lg-3 col-sm-3 col-xs-12">
-                                </div>
+
                             </div>
 
                 <div class="form-group">
