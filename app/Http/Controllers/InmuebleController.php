@@ -35,9 +35,9 @@ class InmuebleController extends Controller
     {
         $id_inmueble=$request->id_inmueble;
         $id_persona=$request->id_persona;
-        $data = request()->except(['_token','id_inmueble','id_persona']);
+        $data = request()->except(['_token','id_inmueble','id_persona','id_publicacion']);
         $inmueble = Inmueble::whereId($id_inmueble)->update($data);
-        return redirect()->route('cbararrendatario.edit', $request->id_persona)
+        return redirect()->route('cbararrendatario.edit', $request->id_publicacion)
         ->with('status', 'Inmueble Actualizado con éxito');
     }    
 
