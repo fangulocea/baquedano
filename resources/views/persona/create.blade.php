@@ -136,6 +136,85 @@
                                 </div>
                             </div>
                             <!--/row-->
+
+                            <div class="row"> 
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Banco</label>
+                                        <select class="form-control" name="banco"  >
+                                            <option value="">Selecione Banco</option>
+                                            <option value=" Banco Bice  ">  Banco Bice  </option>
+                                            <option value="Banco BTG Pactual Chile">Banco BTG Pactual Chile</option>
+                                            <option value="Banco Consorcio">Banco Consorcio</option>
+                                            <option value="Banco de Chile, Edwards">Banco de Chile, Edwards</option>
+                                            <option value="Banco de Crédito e Inversiones">Banco de Crédito e Inversiones</option>
+                                            <option value="Banco de la Nacion Argentina">Banco de la Nacion Argentina</option>
+                                            <option value="Banco Falabella">Banco Falabella</option>
+                                            <option value="Banco Internacional">Banco Internacional</option>
+                                            <option value="Banco Itaú Chile">Banco Itaú Chile</option>
+                                            <option value="Banco Paris">Banco Paris</option>
+                                            <option value="Banco Penta">Banco Penta</option>
+                                            <option value="Banco RIpley">Banco RIpley</option>
+                                            <option value="Banco Santander">Banco Santander</option>
+                                            <option value="Banco Security">Banco Security</option>
+                                            <option value="BBVA">BBVA</option>
+                                            <option value="Deutsche Bank">Deutsche Bank</option>
+                                            <option value="HSBC Bank (Chile)">HSBC Bank (Chile)</option>
+                                            <option value="JP Morgan Chase Bank">JP Morgan Chase Bank</option>
+                                            <option value="Rabobank Chile">Rabobank Chile</option>
+                                            <option value="Scotiabank Chile">Scotiabank Chile</option>
+                                            <option value="The Bank of Tokyo">The Bank of Tokyo</option>
+                                        </select>
+                                     </div>
+                                </div>
+
+                                <!--/span-->
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Tipo de Cuenta</label>
+                                        <select class="form-control" name="tipo_cuenta"  >
+                                            <option value="">Selecione Tipo de Cuenta</option>
+                                            <option value="Ahorro">Ahorro</option>
+                                            <option value="Corriente">Corriente</option>
+                                            <option value="Rut">Rut</option>
+                                            <option value="Vista">Vista</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <!--/span-->
+                                 <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Numero de cuenta</label>
+                                        <input name='cuenta' id='cuenta' class="form-control" type="number" placeholder="Número de cuenta" >
+                                    </div>
+                                </div>
+                            </div>
+                            <!--/row-->
+                            <div class="row"> 
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Rut Titular</label>
+                                        <input type="text" name="rut_titular" class="form-control" placeholder="" oninput='checkRut(this)' >
+                                     </div>
+                                </div>
+
+                                <!--/span-->
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Nombre Titular</label>
+                                        <input name='titular' id='titular' class=" form-control" type="text" placeholder="Nombre Titular" > 
+                                    </div>
+                                </div>
+                                <!--/span-->
+                                 <div class="col-md-4">
+                                    
+                                </div>
+                            </div>
+                            <!--/row-->
+
+
+
+
                             <div class="row">
                                 <!--/span-->
                                 <div class="col-md-3">
@@ -147,6 +226,7 @@
                                             <option value="Arrendatario">Arrendatario</option>
                                             <option value="Empleado">Empleado</option>
                                             <option value="Corredor - Externo">Corredor - Externo</option>
+                                            <option value="Aval">Aval</option>
                                         </select>
                                     </div>
                                 </div>                                                                       

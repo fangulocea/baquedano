@@ -121,13 +121,65 @@
                                 </div>
                             </div>
                             <!--/row-->
+
+
+                            <div class="row"> 
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Banco</label>
+                                        {{ Form::select('banco',['Banco Bice'=>'Banco Bice','Banco BTG Pactual Chile'=>'Banco BTG Pactual Chile','Banco Consorcio'=>'Banco Consorcio','Banco de Chile, Edwards '=>'Banco de Chile, Edwards','Banco de Crédito e Inversiones'=>'Banco de Crédito e Inversiones','Banco de la Nacion Argentina'=>'Banco de la Nacion Argentina','Banco Falabella'=>'Banco Falabella','Banco Internacional'=>'Banco Internacional','Banco Itaú Chile'=>'Banco Itaú Chile','Banco Paris'=>'Banco Paris','Banco Penta'=>'Banco Penta','Banco RIpley'=>'Banco RIpley','Banco Santander'=>'Banco Santander','Banco Security'=>'Banco Security','BBVA'=>'BBVA','Deutsche Bank'=>'Deutsche Bank','HSBC Bank (Chile)'=>'HSBC Bank (Chile)','JP Morgan Chase Bank'=>'JP Morgan Chase Bank','Rabobank Chile'=>'Rabobank Chile','Scotiabank Chile'=>'Scotiabank Chile','The Bank of Tokyo'=>'The Bank of Tokyo'], $_persona->banco ,array('class'=>'form-control','style'=>'','id'=>'banco')) }}
+                                     </div>
+                                </div>
+
+                                <!--/span-->
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Tipo de Cuenta</label>
+                                        {{ Form::select('tipo_cuenta',['Ahorro'=>'Ahorro','Corriente'=>'Corriente','Rut'=>'Rut','Vista'=>'Vista'], $_persona->tipo_cuenta ,array('class'=>'form-control','style'=>'','id'=>'tipo_cuenta')) }}
+                                    </div>
+                                </div>
+                                <!--/span-->
+                                 <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Numero de cuenta</label>
+                                        <input name='cuenta' id='cuenta' value="{{ $_persona->cuenta }}" class="form-control" type="number" placeholder="Número de cuenta" >
+                                    </div>
+                                </div>
+                            </div>
+                            <!--/row-->
+                            <div class="row"> 
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Rut Titular</label>
+                                        <input type="text" name="rut_titular" value="{{ $_persona->rut_titular }}" class="form-control" placeholder="" oninput='checkRut(this)' >
+                                     </div>
+                                </div>
+
+                                <!--/span-->
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Nombre Titular</label>
+                                        <input name='titular' id='titular' value="{{ $_persona->titular }}" class=" form-control" type="text" placeholder="Nombre Titular" > 
+                                    </div>
+                                </div>
+                                <!--/span-->
+                                 <div class="col-md-4">
+                                    
+                                </div>
+                            </div>
+                            <!--/row-->
+
+
+
+
+
                             <div class="row">
                                 <!--/span-->
                                 <div class="col-md-3">
                                     <div class="form-group">
                                         <label>Tipo Persona</label>
                                        
-                                         {{ Form::select('tipo_cargo',['Propietario'=>'Propietario','Arrendatario'=>'Arrendatario','Empleado'=>'Empleado','Corredor - Externo'=>'Corredor - Externo'], $_persona->tipo_cargo ,array('class'=>'form-control','style'=>'','id'=>'tipo_cargo','required'=>'required','onChange'=>'mostrar(this.value)')) }}
+                                         {{ Form::select('tipo_cargo',['Propietario'=>'Propietario','Arrendatario'=>'Arrendatario','Empleado'=>'Empleado','Corredor - Externo'=>'Corredor - Externo','Aval'=>'Aval'], $_persona->tipo_cargo ,array('class'=>'form-control','style'=>'','id'=>'tipo_cargo','required'=>'required','onChange'=>'mostrar(this.value)')) }}
                                     </div>
                                 </div>                                                                       
                                 <div class="col-md-3">

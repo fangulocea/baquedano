@@ -89,6 +89,9 @@ class ContratoBorradorArrendatarioController extends Controller
          ->select(DB::raw('a.id id_cap_arr, CONCAT_WS(" ",pa.nombre,pa.apellido_paterno,pa.apellido_materno) as arrendatario,i.direccion,i.numero,c.comuna_nombre as comuna,a.id_estado, a.id_arrendatario as id_arrendatario,i.id as id_inmueble'))
          ->first();
 
+         $id_publicacion = DB::table('arrendatarios as a')
+         ->where('a.id','=',$id)->first();
+
          // $borradoresIndex = DB::table('contratoborradorarrendatarios as b')
          // ->leftjoin('personas as p1','b.id_arrendatario','=','p1.id')
          // ->leftjoin('contratos as con','b.id_contrato','=','con.id')
@@ -156,7 +159,7 @@ class ContratoBorradorArrendatarioController extends Controller
          ->select(DB::raw('c.id as id,c.nombre as nombre'))
          ->get();  
 
-        return view('contratoborradorarrendatario.edit',compact('servicio','formasdepago','comision','flexibilidad','multa','contrato','publica','borradoresIndex'));
+        return view('contratoborradorarrendatario.edit',compact('servicio','formasdepago','comision','flexibilidad','multa','contrato','publica','borradoresIndex','id_publicacion'));
     }
 
     /**

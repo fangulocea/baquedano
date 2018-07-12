@@ -31,9 +31,14 @@ class CreatePersonasTable extends Migration
             $table->integer('id_comuna')->nullable();
             $table->integer('id_region')->nullable();
             $table->integer('id_provincia')->nullable();
-             $table->string('tipo_cargo')->nullable();
+            $table->string('tipo_cargo')->nullable();
             $table->integer('cargo_id')->unsigned()->nullable();;
             $table->foreign('cargo_id')->references('id')->on('cargos');
+            $table->string('banco')->nullable();
+            $table->string('tipo_cuenta')->nullable();
+            $table->integer('cuenta')->nullable();
+            $table->string('titular')->nullable();
+            $table->string('rut_titular')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

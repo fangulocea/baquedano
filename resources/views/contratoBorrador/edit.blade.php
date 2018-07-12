@@ -406,6 +406,81 @@
                                                                                             </div>
                                                                                         </div>
                                                              
+                            <div class="row"> 
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Banco</label>
+                                        <select class="form-control" name="banco" id="pe_banco" >
+                                            <option value="">Selecione Banco</option>
+                                            <option value=" Banco Bice  ">  Banco Bice  </option>
+                                            <option value="Banco BTG Pactual Chile">Banco BTG Pactual Chile</option>
+                                            <option value="Banco Consorcio">Banco Consorcio</option>
+                                            <option value="Banco de Chile, Edwards">Banco de Chile, Edwards</option>
+                                            <option value="Banco de Crédito e Inversiones">Banco de Crédito e Inversiones</option>
+                                            <option value="Banco de la Nacion Argentina">Banco de la Nacion Argentina</option>
+                                            <option value="Banco Falabella">Banco Falabella</option>
+                                            <option value="Banco Internacional">Banco Internacional</option>
+                                            <option value="Banco Itaú Chile">Banco Itaú Chile</option>
+                                            <option value="Banco Paris">Banco Paris</option>
+                                            <option value="Banco Penta">Banco Penta</option>
+                                            <option value="Banco RIpley">Banco RIpley</option>
+                                            <option value="Banco Santander">Banco Santander</option>
+                                            <option value="Banco Security">Banco Security</option>
+                                            <option value="BBVA">BBVA</option>
+                                            <option value="Deutsche Bank">Deutsche Bank</option>
+                                            <option value="HSBC Bank (Chile)">HSBC Bank (Chile)</option>
+                                            <option value="JP Morgan Chase Bank">JP Morgan Chase Bank</option>
+                                            <option value="Rabobank Chile">Rabobank Chile</option>
+                                            <option value="Scotiabank Chile">Scotiabank Chile</option>
+                                            <option value="The Bank of Tokyo">The Bank of Tokyo</option>
+                                        </select>
+                                     </div>
+                                </div>
+
+                                <!--/span-->
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Tipo de Cuenta</label>
+                                        <select class="form-control" name="tipo_cuenta" id="pe_tipo_cuenta"  >
+                                            <option value="">Selecione Tipo de Cuenta</option>
+                                            <option value="Ahorro">Ahorro</option>
+                                            <option value="Corriente">Corriente</option>
+                                            <option value="Rut">Rut</option>
+                                            <option value="Vista">Vista</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <!--/span-->
+                                 <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Numero de cuenta</label>
+                                        <input name='cuenta' id='pe_cuenta' class="form-control" type="number" placeholder="Número de cuenta" >
+                                    </div>
+                                </div>
+                            </div>
+                            <!--/row-->
+                            <div class="row"> 
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Rut Titular</label>
+                                        <input type="text" name="rut_titular" id="pe_rut_titular" class="form-control" placeholder="" oninput='checkRut(this)' >
+                                     </div>
+                                </div>
+
+                                <!--/span-->
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Nombre Titular</label>
+                                        <input name='titular' id='pe_titular' class=" form-control" type="text" placeholder="Nombre Titular" > 
+                                    </div>
+                                </div>
+                                <!--/span-->
+                                 <div class="col-md-4">
+                                    
+                                </div>
+                            </div>
+                            <!--/row-->
+
 
                                                                                     </div>
                                                                                     <div class="form-actions">
@@ -722,6 +797,13 @@ function mostrar_modalpersona(obj){
             $('#pe_departamento').val(response.departamento);
             $('#pe_telefono').val(response.telefono);
             $('#pe_email').val(response.email);
+
+            $('#pe_banco').val(response.banco);
+            $('#pe_tipo_cuenta').val(response.tipo_cuenta);
+            $('#pe_cuenta').val(response.cuenta);
+            $('#pe_rut_titular').val(response.rut_titular);
+            $('#pe_titular').val(response.titular);
+            
             $("#pe_provincia").empty();
             $("#pe_comuna").empty();
             $("#pe_region").empty();

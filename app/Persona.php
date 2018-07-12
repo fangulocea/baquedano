@@ -10,7 +10,7 @@ class Persona extends Model
 {
 	use SoftDeletes;
     protected $table='personas';
-    protected $fillable=['rut','nombre','apellido_paterno','apellido_materno','direccion','numero','departamento','telefono','email','id_comuna','id_region','id_provincia','tipo_cargo','cargo_id','id_estado','estado_civil','profesion'];
+    protected $fillable=['rut','nombre','apellido_paterno','apellido_materno','direccion','numero','departamento','telefono','email','id_comuna','id_region','id_provincia','tipo_cargo','cargo_id','id_estado','estado_civil','profesion','banco','tipo_cuenta','cuenta','titular','rut_titular'];
 	 protected $dates = ['deleted_at'];
 
 public static function personas($text){
@@ -29,6 +29,3 @@ public static function personasFono($text){
         return DB::table('personas')->where('telefono','like','%'.$text.'%')->get();
     }
 }
-
-
-			
