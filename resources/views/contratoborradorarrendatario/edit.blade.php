@@ -57,7 +57,7 @@
                                             @endforeach   
                                         </select>
                                     </div>
-                                </div>
+                                </div>-->
                                 <div class="col-lg-2 col-sm-3 col-xs-12">
                                     <div class="form-group">
                                         <label class="control-label">Servicio</label>
@@ -68,7 +68,7 @@
                                             @endforeach   
                                         </select>
                                     </div>
-                                </div> -->
+                                </div> 
                                 <div class="col-lg-3 col-sm-3 col-xs-12">
                                     <label>Fecha Contrato</label>
                                     <div class="input-group">
@@ -94,6 +94,7 @@
                                         </select>
                                     </div>
                                 </div>
+                    -->            
                                 <div class="col-lg-2 col-sm-3 col-xs-12">
                                     <div class="form-group">
                                         <label class="control-label">Multas</label>
@@ -104,7 +105,7 @@
                                             @endforeach   
                                         </select>
                                     </div>
-                                </div>-->
+                                </div>
                                 <div class="col-lg-3 col-sm-3 col-xs-12">
                                     <div class="form-group">
                                         <label class="control-label">Contrato</label>

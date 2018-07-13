@@ -57,7 +57,7 @@
 	                            @endforeach   
 	                        </select>>
                                     </div>
-                                </div>
+                                </div>-->
                                 <div class="col-lg-3 col-sm-3 col-xs-12">
                                     <div class="form-group">
                                         <label class="control-label">
@@ -76,7 +76,7 @@
                                             @endforeach
                                         </select>
                                     </div>
-                                </div>-->
+                                </div>
                                 <div class="col-lg-3 col-sm-3 col-xs-12">
                                     <label>
                                         Fecha Contrato
@@ -104,7 +104,7 @@
                                             @endforeach
                                         </select>
                                     </div>
-                                </div>
+                                </div>-->
                                 <div class="col-lg-3 col-sm-3 col-xs-12">
                                     <div class="form-group">
                                         <label class="control-label">
@@ -123,7 +123,7 @@
                                             @endforeach
                                         </select>
                                     </div>
-                                </div> -->
+                                </div> 
                                 <div class="col-lg-3 col-sm-3 col-xs-12">
                                     <div class="form-group">
                                         <label class="control-label">

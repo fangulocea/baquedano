@@ -217,12 +217,12 @@ class ContratoBorradorArrendatarioController extends Controller
          ->leftjoin('comunas as cci','i.id_comuna','=','cci.comuna_id')
          ->leftjoin('contratoborradorarrendatariospdf as bp', 'b.id_arrendatario', '=', 'bp.id_b_arrendatario')
          ->select(DB::raw('b.id, CONCAT_WS(" ",p1.nombre,p1.apellido_paterno,p1.apellido_materno) as arrendatario, 
-            CONCAT(s.descripcion, "  $",s.valor) as Servicio, 
+            s.descripcion as Servicio, 
             CONCAT(fp.descripcion, " Pie $", fp.pie, "  ", fp.cuotas, " Cuotas") as FormasDePago, 
             CONCAT(c.descripcion, " ", c.comision, " %") as comision, 
             f.descripcion as Flexibilidad ,
             b.valorarriendo ,
-            CONCAT(m.descripcion, " ", m.tipo_multa,m.valor ) as Multas, 
+            CONCAT("Multa de ", m.valor ," % Equivalente a ", ROUND((valorarriendo * m.valor)/100,0)) as Multas, 
             DATE_FORMAT(b.fecha_contrato, "%d/%m/%Y") as fecha, b.id_estado, CONCAT_WS(" ", p2.nombre,p2.apellido_paterno,p2.apellido_materno) as creador, b.id_arrendatario,i.id as id_inmueble,  b.detalle as bodyContrato, b.id_contrato as id_contrato, b.dia_pago as dia_pago_p, p1.profesion as profesion_p, p1.rut as rut_p, CONCAT_WS(" ",p1.direccion,p1.numero) as direccion_p, p1.telefono as telefono_p, p1.departamento as depto_p, cc.comuna_nombre as comuna_p, rr.region_nombre as region_p, i.rol as rol, CONCAT_WS(" ",i.direccion, i.numero) as direccion_i, i.departamento as depto_i, cci.comuna_nombre as comuna_i, i.dormitorio as dormitorio, i.bano as bano,
              CONCAT_WS(" ",p1.nombre,p1.apellido_paterno,p1.apellido_materno) as arrendatario ' ))
          ->first();
@@ -376,12 +376,12 @@ class ContratoBorradorArrendatarioController extends Controller
          ->leftjoin('contratoborradorarrendatariospdf as bp', 'b.id_arrendatario', '=', 'bp.id_b_arrendatario')
             ->where('b.id_cap_arr','=',$request->id_cap_arr)
          ->select(DB::raw('b.id, CONCAT_WS(" ",p1.nombre,p1.apellido_paterno,p1.apellido_materno) as arrendatario, 
-            CONCAT(s.descripcion, "  $",s.valor) as Servicio, 
+            s.descripcion as Servicio, 
             CONCAT(fp.descripcion, " Pie $", fp.pie, "  ", fp.cuotas, " Cuotas") as FormasDePago, 
             CONCAT(c.descripcion, " ", c.comision, " %") as comision, 
             f.descripcion as Flexibilidad ,
             b.valorarriendo ,
-            CONCAT(m.descripcion, " ", m.tipo_multa,m.valor ) as Multas, 
+            CONCAT("Multa de ",m.valor," % Equivalente a ", ROUND((valorarriendo * m.valor)/100,0)) as Multas, 
             DATE_FORMAT(b.fecha_contrato, "%d/%m/%Y") as fecha, b.id_estado, CONCAT_WS(" ", p2.nombre,p2.apellido_paterno,p2.apellido_materno) as creador, b.id_arrendatario,i.id as id_inmueble,  b.detalle as bodyContrato, b.id_contrato as id_contrato, b.dia_pago as dia_pago_p, p1.profesion as profesion_p, p1.rut as rut_p, CONCAT_WS(" ",p1.direccion,p1.numero) as direccion_p, p1.telefono as telefono_p, p1.departamento as depto_p, cc.comuna_nombre as comuna_p, rr.region_nombre as region_p, i.rol as rol, CONCAT_WS(" ",i.direccion, i.numero) as direccion_i, i.departamento as depto_i, cci.comuna_nombre as comuna_i, i.dormitorio as dormitorio, i.bano as bano,
              CONCAT_WS(" ",p1.nombre,p1.apellido_paterno,p1.apellido_materno) as arrendatario ' ))
          ->first();

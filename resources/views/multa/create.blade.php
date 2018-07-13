@@ -37,7 +37,7 @@
                                         <label>Tipo Multa</label>
                                         <select class="form-control" name="tipo_multa" required="required">
                                             <option value="">Seleccione Tipo</option>
-                                            <option value="$">$</option>
+                                            {{-- <option value="$">$</option> --}}
                                             <option value="%">%</option>
                                         </select>
                                     </div>
