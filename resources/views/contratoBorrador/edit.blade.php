@@ -629,10 +629,19 @@
                                                     <h3 class="box-title m-b-0">Complete Campos generales para generar simulación de pagos</h3><br/>
                                                     <div class="row">
                                             
-                                                <div class="col-md-3">
+                                                <div class="col-md-2">
                                                     <div class="form-group">
                                                         <label for="input-file-now-custom-1">Meses</label>
                                                         <input type="number" name="cant_meses" id="cant_meses" value="12" class="form-control" required="required">
+                                                    </div>
+                                                </div>
+                                                 <div class="col-md-2">
+                                                    <div class="form-group">
+                                                        <label for="input-file-now-custom-1">Proporcionales?</label>
+                                                        <select name="proporcional" class="form-control">
+                                                            <option value="NO">NO</option>
+                                                            <option value="SI">SI</option>
+                                                        </select>
                                                     </div>
                                                 </div>
                                                   <div class="col-md-3">
@@ -641,7 +650,8 @@
                                                         <input type="date" name="fecha_firmapago" id="fecha_firmapago" class="form-control" required="required">
                                                     </div>
                                                 </div>
-                                                <div class="col-md-3">
+
+                                                <div class="col-md-2">
                                                         <div class="form-group">
                                                         <label for="input-file-now-custom-1">Moneda</label>
                                                        <select class="form-control" name="moneda" required="required" >
@@ -680,14 +690,14 @@
                                                          <label >Canon de Arriendo</label>
                                                         <div class="input-group"> 
                                                             <span class="input-group-addon">$</span>
-                                                            <input name='arriendo' id='arriendo' step="any" type="number" class="form-control" value="{{ $borrador->precio }}" >
+                                                            <input name='arriendo_sim' id='arriendo_sim' step="any" type="number" class="form-control" required="required" value="{{ $borrador->precio }}" >
                                                         </div>
                                                     </div>
                                                 <div class="col-md-2"> 
                                                     <label >Gasto común</label>
                                                   <div class="input-group"> 
                                                             <span class="input-group-addon">$</span>
-                                                            <input name='gastocomun' id='gastocomun' type="number" class="form-control"   step="any" value="{{ $borrador->gastosComunes }}">
+                                                            <input name='gastocomun_sim' id='gastocomun_sim' type="number" class="form-control" required="required"  step="any" value="{{ $borrador->gastosComunes }}">
                                                         </div>
                                                 </div>
                                                 <div class="col-md-2">

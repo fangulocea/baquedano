@@ -24,6 +24,7 @@ class SimulaPropietario extends Migration
             $table->foreign('id_propietario')->references('id')->on('personas');
             $table->integer('meses_contrato')->nullable();
             $table->date('fecha_iniciocontrato')->nullable();
+            $table->string('proporcional')->nullable();
             $table->integer('dia')->nullable();
             $table->integer('mes')->nullable();
             $table->integer('anio')->nullable();

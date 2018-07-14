@@ -30,6 +30,7 @@ class SimulaPagoPropietario extends Migration
             $table->integer('meses_contrato');
             $table->date('fecha_iniciocontrato');
             $table->integer('dia');
+            $table->double('descuento', 20, 8);
             $table->integer('mes');
             $table->integer('anio');
             $table->integer('cant_diasmes');
