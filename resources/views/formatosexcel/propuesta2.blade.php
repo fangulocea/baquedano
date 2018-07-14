@@ -25,18 +25,13 @@
     </tr>
     </tbody>
 </table>
-
-
-<hr>
-<!-- PROPUESTA 2 -->
-
 @php 
 $fila1=$propuesta2->where("idtipopago",'=',1);
 @endphp
 <table id='propuesta2' name='propuesta2'>
     <thead>
     <tr>
-        <th><h3>Propuesta 2: PIE + {{ $cuotas}} CUOTAS</h3></th>
+        <th><h3>Propuesta 2: PIE + {{ $header->nrocuotas }} CUOTAS</h3></th>
 @foreach($fila1 as $p)
     <th style="background-color: #F2F4F4;text-align: center">{{  $meses[$p->mes] }}/{{ $p->anio }}</th>
 @endforeach
@@ -49,7 +44,7 @@ $fila1=$propuesta2->where("idtipopago",'=',1);
        <td style="background-color: #F2F4F4;text-align: center">{{  $p->precio_en_pesos }} </td>
 @endforeach
         </tr>
-@for ($i = 2; $i < 50; $i++)
+@for ($i = 2; $i <= 33; $i++)
     @php 
         $fila=$propuesta2->where("idtipopago",'=',$i);
 
@@ -76,23 +71,23 @@ $fila1=$propuesta2->where("idtipopago",'=',1);
 @endfor
 <tr></tr>
 @php 
-$fila20=$propuesta1->where("idtipopago",'=',20);
+$fila20=$propuesta2->where("idtipopago",'=',34);
 @endphp
         <tr>
-            <td style="background-color: #F6DDCC"><strong>Total Costos Propietario</strong></td>
+            <td style="background-color: #F6DDCC;text-align: center"><strong>Total Costos Propietario</strong></td>
 @foreach($fila20 as $p)
-       <td style="background-color: #F6DDCC">{{  $p->precio_en_pesos }} </td>
+       <td style="background-color: #F6DDCC;text-align: center">{{  $p->precio_en_pesos }} </td>
 @endforeach
         </tr>
 
 <tr></tr>
 @php 
-$fila21=$propuesta1->where("idtipopago",'=',21);
+$fila21=$propuesta2->where("idtipopago",'=',35);
 @endphp
         <tr>
-            <td style="background-color: #D5F5E3"><strong>Saldo a depositar</strong></td>
+            <td style="background-color: #D5F5E3;text-align: center"><strong>Saldo a depositar</strong></td>
 @foreach($fila21 as $p)
-       <td style="background-color: #D5F5E3">{{  $p->precio_en_pesos }} </td>
+       <td style="background-color: #D5F5E3;text-align: center">{{  $p->precio_en_pesos }} </td>
 @endforeach
         </tr>
 
