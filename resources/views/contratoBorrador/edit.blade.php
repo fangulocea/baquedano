@@ -629,7 +629,7 @@
                                                     <h3 class="box-title m-b-0">Complete Campos generales para generar simulación de pagos</h3><br/>
                                                     <div class="row">
                                             
-                                                <div class="col-md-2">
+                                                <div class="col-md-1">
                                                     <div class="form-group">
                                                         <label for="input-file-now-custom-1">Meses</label>
                                                         <input type="number" name="cant_meses" id="cant_meses" value="12" class="form-control" required="required">
@@ -637,10 +637,21 @@
                                                 </div>
                                                  <div class="col-md-2">
                                                     <div class="form-group">
-                                                        <label for="input-file-now-custom-1">Proporcionales?</label>
+                                                        <label for="input-file-now-custom-1">Proporcional</label>
                                                         <select name="proporcional" class="form-control">
                                                             <option value="NO">NO</option>
                                                             <option value="SI">SI</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                 <div class="col-md-3">
+                                                    <div class="form-group">
+                                                        <label for="input-file-now-custom-1">Tipo Propuesta</label>
+                                                        <select name="propuesta"  id="propuesta" class="form-control" required="required">
+                                                            <option value="">Seleccione Propuesta</option>
+                                                            <option value="1">1 Cuota</option>
+                                                            <option value="2">Pie + Cuotas</option>
+                                                            <option value="3">Renovación</option>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -650,7 +661,6 @@
                                                         <input type="date" name="fecha_firmapago" id="fecha_firmapago" class="form-control" required="required">
                                                     </div>
                                                 </div>
-
                                                 <div class="col-md-2">
                                                         <div class="form-group">
                                                         <label for="input-file-now-custom-1">Moneda</label>
@@ -660,9 +670,9 @@
                                                        </select>
                                                     </div>
                                                 </div>
-                                                <div class="col-md-3">
+                                                <div class="col-md-1">
                                                         <div class="form-group">
-                                                        <label for="input-file-now-custom-1">Valor Moneda</label>
+                                                        <label for="input-file-now-custom-1">Valor</label>
                                                        <input name='valormoneda' id='valormoneda' type="number" class="form-control" required="required" value='1'>
                                                     </div>
                                                 </div>
@@ -672,28 +682,14 @@
                                         <div class="row">
                                                 <h3 class="box-title m-b-0">INFORMACIÓN PARA GENERAR PROPUESTA 1 CUOTA Y PIE + 11 CUOTAS</h3>
                                                 <hr>
-                                                <div class="col-md-2">
-                                                     <label >% de Descuento</label>
-                                                        <div class="input-group"> 
-                                                            <span class="input-group-addon">%</span>
-                                                            <input name='descuento' id='descuento' type="number" class="form-control"   step="any" required="required" value="0">
-                                                        </div>
-                                                </div>
-                                                <div class="col-md-2">
-                                                     <label >% de Pie</label>
-                                                        <div class="input-group"> 
-                                                            <span class="input-group-addon">%</span>
-                                                            <input name='pie' id='pie' type="number" class="form-control"   step="any" value="42" required="required">
-                                                        </div>
-                                                </div>
-                                                    <div class="col-md-2">
+                                                 <div class="col-md-2">
                                                          <label >Canon de Arriendo</label>
                                                         <div class="input-group"> 
                                                             <span class="input-group-addon">$</span>
                                                             <input name='arriendo_sim' id='arriendo_sim' step="any" type="number" class="form-control" required="required" value="{{ $borrador->precio }}" >
                                                         </div>
                                                     </div>
-                                                <div class="col-md-2"> 
+                                                 <div class="col-md-2"> 
                                                     <label >Gasto común</label>
                                                   <div class="input-group"> 
                                                             <span class="input-group-addon">$</span>
@@ -707,8 +703,46 @@
                                                             <input name='pagonotaria' id='pagonotaria' type="number" class="form-control"  placeholder="$" required="required" value="0">
                                                         </div>
                                                 </div>
+                                                <div class="col-md-2">
+                                                     <label>% de Descuento</label>
+                                                        <div class="input-group"> 
+                                                            <span class="input-group-addon">%</span>
+                                                            <input name='descuento' id='descuento' type="number" class="form-control"   step="any" required="required" value="0">
+                                                        </div>
+                                                </div>
+                                                <div class="col-md-2">
+                                                     <label>Nro. Cuotas</label>
+                                                        <div class="input-group"> 
+                                                            <input name='cuotas' id='cuotas' type="number" class="form-control"   step="any" required="required">
+                                                        </div>
+                                                </div>
                                             </div>
                                                 <hr>
+                                            <div class="row">
+
+                                                <div class="col-md-2">
+                                                     <label>% IVA</label>
+                                                        <div class="input-group"> 
+                                                            <span class="input-group-addon">%</span>
+                                                            <input name='iva' id='iva' type="number" class="form-control"   step="any" required="required" value="0">
+                                                        </div>
+                                                </div>
+                                                <div class="col-md-2">
+                                                     <label>% de Pie</label>
+                                                        <div class="input-group"> 
+                                                            <span class="input-group-addon">%</span>
+                                                            <input name='pie' id='pie' type="number" class="form-control"   step="any" value="0"  required="required">
+                                                        </div>
+                                                </div>
+                                                <div class="col-md-2">
+                                                     <label>% Cobro Mensual</label>
+                                                        <div class="input-group"> 
+                                                            <span class="input-group-addon">%</span>
+                                                            <input name='cobromensual' id='cobromensual' type="number" class="form-control"   step="any" value="0" required="required">
+                                                        </div>
+                                                </div>
+                                            </div>
+                                            <hr>
                                             <div class="row">
                                                 <div class="col-md-2">
                                                     <input name='nombre_otropago1' id='nombre_otropago1' type="text" class="form-control"   placeholder="Otro Pago 1"> </div>
@@ -778,7 +812,18 @@
 
 $(function(){
 
-
+$("#propuesta").change(function (event) {
+    if(this.value==1){
+        $("#cuotas").val("");
+        $("#iva").val("");
+    }
+    if(this.value==2){
+        $("#cuotas").val("");
+        $("#iva").val(0);
+        $("#pie").val("");
+        $("#cobromensual").val("");
+    }
+});
 
         $('#modal-contacto1_c').on('hidden.bs.modal', function () {
         $("#form1_c")[0].reset();

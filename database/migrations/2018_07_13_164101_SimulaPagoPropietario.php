@@ -16,14 +16,10 @@ class SimulaPagoPropietario extends Migration
         Schema::dropIfExists('cap_simulapagopropietarios');
         Schema::create('cap_simulapagopropietarios', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('id_simulacion')->unsigned();
-            $table->foreign('id_simulacion')->references('id')->on('cap_simulapropietario');
-            $table->integer('id_publicacion')->unsigned();
-            $table->foreign('id_publicacion')->references('id')->on('cap_publicaciones');
-            $table->integer('id_inmueble')->unsigned();
-            $table->foreign('id_inmueble')->references('id')->on('inmuebles');
-            $table->integer('id_propietario')->unsigned();
-            $table->foreign('id_propietario')->references('id')->on('personas');
+            $table->integer('id_simulacion')->nullable();
+            $table->integer('id_publicacion')->nullable();
+            $table->integer('id_inmueble')->nullable();
+            $table->integer('id_propietario')->nullable();
             $table->integer('tipo');
             $table->string('tipopago');
             $table->string('idtipopago');

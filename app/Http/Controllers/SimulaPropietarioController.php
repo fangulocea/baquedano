@@ -26,6 +26,10 @@ public function generarpagos(Request $request, $idp) {
         $fechafirma = $request->fecha_firmapago;
         $tipomoneda = $request->moneda;
         $valormoneda = $request->valormoneda;
+        $iva=$request->iva;
+        $nrocuotas=$request->cuotas;
+        $cobromensual=$request->cobromensual;
+        $tipopropuesta=$request->propuesta;
 
         //pagos
         $gastocomun = $request->gastocomun_sim;
@@ -39,7 +43,6 @@ public function generarpagos(Request $request, $idp) {
         $nombre_otropago2 = $request->nombre_otropago2;
         $pagootro1 = $request->pagootro1;
         $pagootro2 = $request->pagootro2;
-        $garantia = $request->garantia;
         $pie = $request->pie;
         $descuento = $request->descuento;
         $proporcional=$request->proporcional;
@@ -59,6 +62,12 @@ public function generarpagos(Request $request, $idp) {
                             'dia' => $dia,
                             'mes' => $mes,
                             'anio' => $anio,
+                            'iva' => $iva,
+                            'descuento' => $descuento,
+                            'pie' => $pie,
+                            'cobromensual' => $cobromensual,
+                            'tipopropuesta' => $tipopropuesta,
+                            'nrocuotas' => $nrocuotas,
                             'moneda' => $tipomoneda,
                             'valormoneda' => $valormoneda,
                             'id_creador' => $id_creador,
@@ -80,7 +89,8 @@ if($proporcional=='SI'){
             $dias_proporcionales = cal_days_in_month(CAL_GREGORIAN, date("m", strtotime($fechafirma)), date("Y", strtotime($fechafirma))) - date("d", strtotime($fechafirma)) + 1;
             $precio_proporcional = $dias_proporcionales * $valor_diario;
             $valor_en_pesos = $precio_proporcional * $valormoneda;
-            $valor_en_pesos_proporcional=$valor_en_pesos;
+            $valor_en_pesos_proporcional=$valor_en_pesos+$arriendo;
+
             $fecha_ini = date("d-m-Y", strtotime("+1 month", strtotime($fecha_ini)));
             $fecha_ini = date('Y-m-j', strtotime(date("Y", strtotime($fecha_ini)) . '-' . date("m", strtotime($fecha_ini)) . '-' . 1));
             $fecha_ini2 = date('Y-m-j', strtotime(date("Y", strtotime($fecha_ini)) . '-' . date("m", strtotime($fecha_ini)) . '-' . 1));
@@ -117,6 +127,11 @@ if($proporcional=='SI'){
                 ]);
                 $primer_mes+=ceil($valor_en_pesos);
 }else{
+
+
+}
+
+           
 $dias_mes = cal_days_in_month(CAL_GREGORIAN, date("m", strtotime($fecha_ini)), date("Y", strtotime($fecha_ini)));
             $valor_diario = $arriendo / $dias_mes;
             $dias_proporcionales = cal_days_in_month(CAL_GREGORIAN, date("m", strtotime($fechafirma)), date("Y", strtotime($fechafirma))) - date("d", strtotime($fechafirma)) + 1;
@@ -161,13 +176,9 @@ $dias_mes = cal_days_in_month(CAL_GREGORIAN, date("m", strtotime($fecha_ini)), d
                 
             } 
 
-}
-
-           
-
             $dias_mes = cal_days_in_month(CAL_GREGORIAN, date("m", strtotime($fecha_ini)), date("Y", strtotime($fecha_ini)));
             $valor_diario = $arriendo / $dias_mes;
-            for ($i = 0; $i < $cant_meses; $i++) {
+            for ($i = $ini; $i < $cant_meses; $i++) {
 
                 $dia = date("d", strtotime($fecha_ini));
                 $mes = date("m", strtotime($fecha_ini));
@@ -353,14 +364,14 @@ $dias_mes = cal_days_in_month(CAL_GREGORIAN, date("m", strtotime($fecha_ini)), d
                             'moneda' => $tipomoneda,
                             'valormoneda' => $valormoneda,
                             'valordia' => 1,
-                            'precio_en_moneda' => $valor_en_pesos_con_desc*0.19,
-                            'precio_en_pesos' => ceil($valor_en_pesos_con_desc*0.19),
+                            'precio_en_moneda' => $valor_en_pesos_con_desc*($iva/100),
+                            'precio_en_pesos' => ceil($valor_en_pesos_con_desc*($iva/100)),
                             'id_creador' => $id_creador,
                             'id_modificador' => $id_creador,
                             'id_estado' => 1,
                             'canondearriendo' => $arriendo
                 ]);
-            $primer_mes+=ceil($valor_en_pesos_con_desc*0.19);
+            $primer_mes+=ceil($valor_en_pesos_con_desc*($iva/100));
 
        if($pagonotaria!=0){
         //Notaria
@@ -472,7 +483,7 @@ $dias_mes = cal_days_in_month(CAL_GREGORIAN, date("m", strtotime($fecha_ini)), d
             $idtipopago = 9;
 
 
-            $pendiente=$arriendo-$primer_mes;
+            $pendiente=$valor_en_pesos_proporcional-$primer_mes;
 
             if(($arriendo-$primer_mes)<0){
                             $dia = date("d", strtotime($fecha_ini));
@@ -505,7 +516,7 @@ $dias_mes = cal_days_in_month(CAL_GREGORIAN, date("m", strtotime($fecha_ini)), d
                             'id_estado' => 1,
                             'canondearriendo' => $arriendo
                 ]);
-                           $pendiente= ($arriendo-$primer_mes)*-1;
+                           $pendiente= ($valor_en_pesos_proporcional-$primer_mes)*-1;
                            $fecha_ini = date("d-m-Y", strtotime("+1 month", strtotime($fecha_ini)));
                             $dias_mes = cal_days_in_month(CAL_GREGORIAN, date("m", strtotime($fecha_ini)), date("Y", strtotime($fecha_ini)));
                             $dia = date("d", strtotime($fecha_ini));
@@ -585,7 +596,8 @@ $dias_mes = cal_days_in_month(CAL_GREGORIAN, date("m", strtotime($fecha_ini)), d
 
             $fecha_ini = date('Y-m-j', strtotime(date("Y", strtotime($fechafirma)) . '-' . date("m", strtotime($fechafirma)) . '-' . 1));
             $idtipopago = 21;
-            
+
+           
                for ($i = 0; $i < $cant_meses; $i++) {
                 $dia = date("d", strtotime($fecha_ini));
                 $mes = date("m", strtotime($fecha_ini));
@@ -597,7 +609,12 @@ $dias_mes = cal_days_in_month(CAL_GREGORIAN, date("m", strtotime($fecha_ini)), d
             ->whereNotIn("idtipopago",[1,20,31,32,33,34,35,36])
             ->where("id_simulacion",'=',$idsimulacion)
             ->sum('precio_en_pesos');
-            $saldo=$arriendo-$pagomensual;
+            if($i==0){
+                $saldo=$valor_en_pesos_proporcional-$pagomensual;
+               // dd("valor_en_pesos_proporcional: ".$valor_en_pesos_proporcional."     pagomensual : ".$pagomensual."    saldo ".$saldo);
+            }else{
+                $saldo=$arriendo-$pagomensual;
+            }
             $pago = SimulaPagoPropietario::create([
                             'id_simulacion' => $idsimulacion,
                             'id_publicacion' => $idp,
@@ -628,7 +645,7 @@ $dias_mes = cal_days_in_month(CAL_GREGORIAN, date("m", strtotime($fecha_ini)), d
             }
 
 
-
+/*
 
 
              //general para pago 11 cuotas
@@ -771,6 +788,7 @@ $dias_mes = cal_days_in_month(CAL_GREGORIAN, date("m", strtotime($fecha_ini)), d
                             'dia' => $dia,
                             'mes' => $mes,
                             'anio' => $anio,
+                            'descuento' => $descuento,
                             'cant_diasmes' => $dias_mes,
                             'cant_diasproporcional' => $dias_mes,
                             'moneda' => $tipomoneda,
@@ -802,6 +820,7 @@ $dias_mes = cal_days_in_month(CAL_GREGORIAN, date("m", strtotime($fecha_ini)), d
                             'dia' => $dia,
                             'mes' => $mes,
                             'anio' => $anio,
+                            'descuento' => $descuento,
                             'cant_diasmes' => $dias_mes,
                             'cant_diasproporcional' => $dias_mes,
                             'moneda' => $tipomoneda,
@@ -818,7 +837,7 @@ $dias_mes = cal_days_in_month(CAL_GREGORIAN, date("m", strtotime($fecha_ini)), d
 
 
             $fecha_ini = date('Y-m-j', strtotime(date("Y", strtotime($fechafirma)) . '-' . date("m", strtotime($fechafirma)) . '-' . 1));
-            $idtipopago = 20;
+            $idtipopago = 34;
             
                for ($i = 0; $i < $cant_meses; $i++) {
                 $dia = date("d", strtotime($fecha_ini));
@@ -843,6 +862,7 @@ $dias_mes = cal_days_in_month(CAL_GREGORIAN, date("m", strtotime($fecha_ini)), d
                             'dia' => $dia,
                             'mes' => $mes,
                             'anio' => $anio,
+                            'descuento' => $descuento,
                             'cant_diasmes' => $dias_mes,
                             'cant_diasproporcional' => $dias_proporcionales,
                             'moneda' => $tipomoneda,
@@ -860,7 +880,7 @@ $dias_mes = cal_days_in_month(CAL_GREGORIAN, date("m", strtotime($fecha_ini)), d
 
 
             $fecha_ini = date('Y-m-j', strtotime(date("Y", strtotime($fechafirma)) . '-' . date("m", strtotime($fechafirma)) . '-' . 1));
-            $idtipopago = 21;
+            $idtipopago = 35;
             
                for ($i = 0; $i < $cant_meses; $i++) {
                 $dia = date("d", strtotime($fecha_ini));
@@ -888,6 +908,7 @@ $dias_mes = cal_days_in_month(CAL_GREGORIAN, date("m", strtotime($fecha_ini)), d
                             'dia' => $dia,
                             'mes' => $mes,
                             'anio' => $anio,
+                            'descuento' => $descuento,
                             'cant_diasmes' => $dias_mes,
                             'cant_diasproporcional' => $dias_proporcionales,
                             'moneda' => $tipomoneda,
@@ -902,9 +923,9 @@ $dias_mes = cal_days_in_month(CAL_GREGORIAN, date("m", strtotime($fecha_ini)), d
                 ]);
             $fecha_ini = date("d-m-Y", strtotime("+1 month", strtotime($fecha_ini)));
             }
+*/
 
-
-             $this->downloadExcel($idsimulacion);
+             $this->downloadExcel($idsimulacion,1);
 
 /*
         $fecha_ini = date('Y-m-j', strtotime(date("Y", strtotime($fechafirma)) . '-' . date("m", strtotime($fechafirma)) . '-' . 1));
@@ -972,7 +993,7 @@ $dias_mes = cal_days_in_month(CAL_GREGORIAN, date("m", strtotime($fecha_ini)), d
     }
 
 
-  public function downloadExcel($id)
+  public function downloadExcel($id,$propuesta)
     {
         $meses = array("","Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre");
         $header = DB::table('cap_simulapropietario as c')
@@ -982,25 +1003,37 @@ $dias_mes = cal_days_in_month(CAL_GREGORIAN, date("m", strtotime($fecha_ini)), d
         ->leftjoin('comunas as o', 'i.id_comuna', '=', 'o.comuna_id')
         ->where("c.id","=",$id)
         ->select(DB::raw(' DATE_FORMAT(c.created_at, "%d/%m/%Y") as fecha_creacion, CONCAT_WS(" ",p1.nombre,p1.apellido_paterno,p1.apellido_materno) as Propietario,
-         p2.name as Creador,CONCAT_WS(" ",i.direccion,i.numero,i.departamento,o.comuna_nombre) as propiedad,c.meses_contrato,c.fecha_iniciocontrato'))
+         p2.name as Creador,CONCAT_WS(" ",i.direccion,i.numero,i.departamento,o.comuna_nombre) as propiedad,c.meses_contrato,c.fecha_iniciocontrato, c.iva, c.descuento, c.pie, c.cobromensual, c.tipopropuesta, c.nrocuotas'))
         ->get()->toArray();
         $header=$header[0];
-        $propuesta1=DB::table('cap_simulapagopropietarios as c')
-        ->where("id_simulacion",'=',$id)
-        ->whereNotIn("idtipopago",[31,32,33,34,35,36])->get();
-        $propuesta2=DB::table('cap_simulapagopropietarios as c')
-        ->where("id_simulacion",'=',$id)
-        ->whereNotIn("idtipopago",[9,20,21,3,4])->get();
-        $descuento=$propuesta1[0]->descuento;
-        return   Excel::create('Propuesta de Pago', function ($excel) use ($header,$propuesta1,$propuesta2,$meses,$descuento){
-            
-            /** La hoja se llamará Usuarios */
-            $excel->sheet('Propuesta', function ($sheet) use ($header,$propuesta1,$propuesta2,$meses,$descuento){
-                /** El método loadView nos carga la vista blade a utilizar */
-                $sheet->loadView('formatosexcel.propuesta',compact('header','meses','propuesta1','propuesta2','descuento'));
-            });
+
+
+        if($propuesta==1){
+                    $propuesta1=DB::table('cap_simulapagopropietarios as c')
+                    ->where("id_simulacion",'=',$id)
+                    ->whereNotIn("idtipopago",[31,32,33,34,35,36])->get();
+             return   Excel::create('Propuesta de Pago', function ($excel) use ($header,$propuesta1,$meses){
+                    $excel->sheet('Propuesta', function ($sheet) use ($header,$propuesta1,$meses){
+                        $sheet->setBorder('A8:M17', 'thin');
+                        $sheet->setBorder('A5:G6', 'thin');
+                        $sheet->loadView('formatosexcel.propuesta1',compact('header','meses','propuesta1'));
+                    });
          
-        })->download('xlsx');
+                })->download('xlsx');
+        }else{
+                    $propuesta2=DB::table('cap_simulapagopropietarios as c')
+                    ->where("id_simulacion",'=',$id)
+                    ->whereNotIn("idtipopago",[9,20,21,3,4])->get();
+            return   Excel::create('Propuesta de Pago', function ($excel) use ($header,$propuesta2,$meses){
+                    $excel->sheet('Propuesta', function ($sheet) use ($header,$propuesta2,$meses){
+                        $sheet->loadView('formatosexcel.propuesta2',compact('header','meses','propuesta2'));
+                        $sheet->setBorder('A8:M17', 'thin');
+                        $sheet->setBorder('A5:G6', 'thin');
+                    });
+         
+                })->download('xlsx');
+        }
+       
     }
     /**
      * Display a listing of the resource.

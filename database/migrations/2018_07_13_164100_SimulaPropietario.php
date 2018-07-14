@@ -16,18 +16,21 @@ class SimulaPropietario extends Migration
         Schema::dropIfExists('cap_simulapropietario');
         Schema::create('cap_simulapropietario', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('id_publicacion')->unsigned();
-            $table->foreign('id_publicacion')->references('id')->on('cap_publicaciones');
-            $table->integer('id_inmueble')->unsigned();
-            $table->foreign('id_inmueble')->references('id')->on('inmuebles');
-            $table->integer('id_propietario')->unsigned();
-            $table->foreign('id_propietario')->references('id')->on('personas');
+            $table->integer('id_publicacion')->nullable();
+            $table->integer('id_inmueble')->nullable();
+            $table->integer('id_propietario')->nullable();
             $table->integer('meses_contrato')->nullable();
             $table->date('fecha_iniciocontrato')->nullable();
             $table->string('proporcional')->nullable();
             $table->integer('dia')->nullable();
             $table->integer('mes')->nullable();
             $table->integer('anio')->nullable();
+            $table->double('iva', 20, 8)->nullable();
+            $table->double('descuento', 20, 8)->nullable();
+            $table->double('pie', 20, 8)->nullable();
+            $table->double('cobromensual', 20, 8)->nullable();
+            $table->integer('tipopropuesta')->nullable();
+            $table->integer('nrocuotas')->nullable();
             $table->string('moneda')->nullable();
             $table->double('valormoneda', 20, 8)->nullable();
             $table->integer('id_creador')->nullable();
