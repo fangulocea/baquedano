@@ -734,7 +734,7 @@ Route::get('revisionpersona/eliminarfoto/{idf}/{idc}','RevisionPersonaController
 		Route::post('borradorContrato/{captacionArrendador}','ContratoBorradorController@update')->name('borradorContrato.update')
 		->middleware('permission:borradorContrato.edit');
 
-
+		Route::get('borradorContrato/propuesta/{id}','SimulaPropietarioController@downloadExcel')->name('borradorContrato.excelsimulacion')->middleware('permission:borradorContrato.edit');	
 
 		Route::get('borradorContrato/mail/{id}','ContratoBorradorController@enviaMail')->name('borradorContrato.mail');		
 		Route::get('pdf/{data}', 'PdfController@index');
@@ -799,7 +799,7 @@ Route::get('revisionpersona/eliminarfoto/{idf}/{idc}','RevisionPersonaController
 		Route::get('finalContrato/destroy/{id}/{idpdf}','ContratoFinalController@destroy')->name('finalContrato.destroy')
 		->middleware('permission:finalContrato.destroy');
 
-		Route::get('finalContrato/crearContrato/{idcb}/{idpdf}/{idu}','ContratoFinalController@crearContrato')->name('finalContrato.crearContrato')
+		Route::post('finalContrato/crearContrato','ContratoFinalController@crearContrato')->name('finalContrato.crearContrato')
 		->middleware('permission:finalContrato.create');
 
 		Route::get('finalContrato/borradorC/{idg}','ContratoFinalController@mostrarGestion');

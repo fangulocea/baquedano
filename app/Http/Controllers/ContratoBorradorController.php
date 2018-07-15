@@ -160,9 +160,14 @@ class ContratoBorradorController extends Controller
          $contrato = DB::table('contratos as c')
          ->where("c.estado","<>",0)
          ->select(DB::raw('c.id as id,c.nombre as nombre'))
-         ->get();        
+         ->get();  
 
-        return view('contratoBorrador.edit',compact('borrador','borradoresIndex','gestBorradores','notaria','servicio','comision','flexibilidad','contrato','formasdepago','multa'));
+        $propuestas = DB::table('cap_simulapropietario')
+         ->where("id_publicacion","=",$id)
+         ->select(DB::raw(" id, (CASE  WHEN tipopropuesta=1 THEN '1 Cuota' WHEN tipopropuesta=2 THEN'Pie + Cuota' ELSE 'Renovación' END) as tipopropuesta, proporcional, fecha_iniciocontrato, meses_contrato, iva,descuento, pie, cobromensual, nrocuotas,canondearriendo" ))
+         ->get();       
+
+        return view('contratoBorrador.edit',compact('borrador','borradoresIndex','gestBorradores','notaria','servicio','comision','flexibilidad','contrato','formasdepago','multa','propuestas'));
     }
 
     /**

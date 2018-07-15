@@ -10,6 +10,7 @@ use App\Captacion;
 use App\PagosPropietarios;
 use App\PagosMensualesPropietarios;
 use App\ContratoInmueblesPropietarios;
+use App\Contratoborradorpdf;
 use Illuminate\Http\Request;
 use DB;
 use Illuminate\Support\Facades\File;
@@ -50,19 +51,20 @@ class ContratoFinalController extends Controller {
         return response()->json($contrato);
     }
 
-    public function crearContrato($idcb, $idpdf, $idu) {
+    public function crearContrato(Request $request) {
 
 
-        $ContratoBorrador = ContratoBorrador::find($idcb);
+        $ContratoBorrador = ContratoBorrador::find($request->id_borradorfinal);
+        $ContratoBorradorPDF = Contratoborradorpdf::where("id_borrador","=",$request->id_borradorfinal)->first();
         $captacion = Captacion::find($ContratoBorrador->id_publicacion)->update([
             "id_estado" => 10
         ]);
         $contratoFinal = ContratoFinal::create([
                     "id_publicacion" => $ContratoBorrador->id_publicacion,
                     "id_estado" => 1,
-                    "id_creador" => $idu,
-                    "id_borrador" => $idcb,
-                    "id_borradorpdf" => $idpdf
+                    "id_creador" => $request->id_creadorfinal,
+                    "id_borrador" => $request->id_borradorfinal,
+                    "id_borradorpdf" => $ContratoBorradorPDF->id
         ]);
 
         //PARA PDF
@@ -78,7 +80,7 @@ class ContratoFinalController extends Controller {
                         ->leftjoin('comunas as c2', 'i.id_comuna', '=', 'c2.comuna_id')
                         ->leftjoin('regions as reg', 'p1.id_region', '=', 'reg.region_id')
                         ->leftjoin('contratos as con', 'b.id_contrato', '=', 'con.id')
-                        ->where('b.id', '=', $idcb)
+                        ->where('b.id', '=', $request->id_borradorfinal)
                         ->select(DB::raw(' b.id as id, n.razonsocial as n_n, s.nombre as n_s, c.nombre as n_c, f.nombre as n_f , cp.id as id_publicacion,DATE_FORMAT(b.fecha_gestion, "%d/%m/%Y") as fecha,
              CONCAT_WS(" ",p1.nombre,p1.apellido_paterno,p1.apellido_materno) as propietario,
              p1.rut as rut_p, CONCAT(p1.direccion," ", p1.numero) as direccion_p , c1.comuna_nombre as comuna_p, reg.region_nombre as region_p,
@@ -96,9 +98,9 @@ class ContratoFinalController extends Controller {
                     "id_final" => $contratoFinal->id,
                     "nombre" => $numero . $borradorPDF->id . $borradorPDF->direccion_i . '-FINAL.pdf',
                     "ruta" => "uploads/pdf_final/",
-                    "id_creador" => $idu,
+                    "id_creador" => $request->id_creadorfinal,
                 ])->toArray();
-        return redirect()->route('finalContrato.edit', [$ContratoBorrador->id_publicacion, $idcb, $idpdf, 1])
+        return redirect()->route('finalContrato.edit', [$ContratoBorrador->id_publicacion, $request->id_borradorfinal, $ContratoBorradorPDF->id, 1])
                         ->with('status', 'Contrato Final guardado con éxito');
     }
 

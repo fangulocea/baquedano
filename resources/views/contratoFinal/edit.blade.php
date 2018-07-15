@@ -772,7 +772,7 @@ jQuery('#i_direccion').on('typeahead:selected', function (e, datum) {
             confirmButtonText: "SI",   
             closeOnConfirm: false 
         }, function(){   
-             window.location.href = '/finalContrato/asignarinmueble/'+$("#id_final_inmueble").val()+'/'+datum.option+'/'+{{ $p->id_publicacion }}; 
+             window.location.href = '/finalContrato/asignarinmueble/'+$("#id_final_inmueble").val()+'/'+datum.option+'/'+{{ $borrador->id_publicacion }}; 
         });
 }else{
     swal({   

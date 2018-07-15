@@ -31,6 +31,12 @@ class SimulaPropietario extends Migration
             $table->double('cobromensual', 20, 8)->nullable();
             $table->integer('tipopropuesta')->nullable();
             $table->integer('nrocuotas')->nullable();
+            $table->integer('gastocomun')->nullable();
+            $table->integer('notaria')->nullable();
+            $table->integer('otro1')->nullable();
+            $table->integer('otro2')->nullable();
+            $table->string('nomotro1')->nullable();
+            $table->string('nomotro2')->nullable();
             $table->string('moneda')->nullable();
             $table->double('valormoneda', 20, 8)->nullable();
             $table->integer('id_creador')->nullable();

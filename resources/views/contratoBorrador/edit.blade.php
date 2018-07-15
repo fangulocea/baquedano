@@ -186,6 +186,44 @@
 
                                         </div>
                                     </form>
+
+<table id="listusers1_c" class="display compact" cellspacing="0" width="100%">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Propuesta</th>
+                        <th>Fecha Inicio</th>
+                        <th>Meses</th>
+                        <th>Proporcional</th>
+                        <th>$ Arriendo</th>
+                        <th>% Descuento</th>
+                        <th># Cuotas</th>
+                        <th>% Iva</th>
+                        <th>% Pie</th>
+                        <th>% Mensual</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                            @foreach($propuestas as $p)
+                                    <tr>
+                                        <td>{{ $p->id }}</td>
+                                <td>{{ $p->tipopropuesta }}</td>
+                                <td>{{ $p->fecha_iniciocontrato }}</td>
+                                <td>{{ $p->meses_contrato }}</td>
+                                <td>{{ $p->proporcional }}</td>
+                                <td>{{ $p->canondearriendo }}</td>
+                                <td>{{ $p->descuento }}</td>
+                               <td>{{ $p->nrocuotas }}</td>
+                                <td>{{ $p->iva }}</td>
+                                <td>{{ $p->pie }}</td>
+                                <td>{{ $p->cobromensual }}</td>
+                                <td><a href="{{ route('borradorContrato.excelsimulacion',$p->id) }}"><span class="ti-export"></span></span></a></td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                        </table>
+
                                 </div>
                                             <hr>
                                 </div>
@@ -293,19 +331,73 @@
                             Crear Borrador Arrendatario
                         </button>
                     </div>
-                    <div class="col-lg-2 col-sm-3 col-xs-12">
-                    </div>
+
                 </div>
 
             </form>
             <hr>
-                              <div class="col-lg-4 col-sm-3 col-xs-12">
+            <div class="row">
+                              <div class="col-md-3">
                                     <button class="btn btn-block btn-info"  id='updatepersona'data-toggle="modal" onclick="mostrar_modalpersona({{ $borrador->id_propietario }})" >Actualizar Propietario</button>
                                 </div>
-                                <div class="col-lg-4 col-sm-3 col-xs-12">
+                                <div class="col-md-3">
                                     <button class="btn btn-block btn-success" id='updateinmueble' onclick="mostrar_modalinmueble({{ $borrador->id_inmueble }})" >Actualizar Inmueble</button>
                                 </div>
-                            <br/><br/>
+                </div>
+                            <hr>
+                            <div class="row">
+                                <form  action="{{ route('finalContrato.crearContrato') }}" method="post"> 
+                                    {!! csrf_field() !!}  
+                                <input type="hidden" name="id_creadorfinal" value="{{ Auth::user()->id }}">  
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                            <label class="control-label">
+                                                Propuesta
+                                            </label>
+                                            <select class="form-control" name="id_propuesta" required="required">
+                                                <option value="">
+                                                    Selecione Propuesta
+                                                </option>
+                                                @foreach($propuestas as $p)
+                                                <option value="{{ $p->id }}">
+                                                    {{ $p->id }} - {{ $p->tipopropuesta }}
+                                                </option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                            <label class="control-label">
+                                                Contrato Borrador
+                                            </label>
+                                            <select class="form-control" name="id_borradorfinal" required="required">
+                                                <option value="">
+                                                    Selecione Borrador
+                                                </option>
+                                                @foreach($borradoresIndex as $p)
+                                                <option value="{{ $p->id }}">
+                                                    {{ $p->id }}-{{ $p->fecha }}
+                                                </option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                </div>
+                                 <div class="col-md-4">
+                                    <label class="control-label">
+                                             
+                                            </label>
+                                    <div class="form-group">
+                                              <button class="btn btn-success" type="submit">
+                                            <i class="fa fa-check">
+                                            </i>
+                                            Pasar a Contrato Final
+                                        </button>
+                                        </div>
+                                </div>
+                            </form>
+                         </div>
+                        <hr>
                 <table id="listusers1_c" class="display nowrap" cellspacing="0" width="100%">
                 <thead>
                     <tr>
@@ -317,7 +409,6 @@
                         <th>Editar</th>
                         <th>Correo</th>
                         <th>Ver Pdf</th>
-                        <th>Pasar a Final</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -342,11 +433,7 @@
                                    <td>
                                         <a href="{{asset('uploads/pdf/'.$p->nombre)}}" target="_blank"><span class="btn btn-success btn-circle btn-lg"><i class="ti ti-file"></i></span></a>
                                     </td>
-                                @can('borradorContrato.edit')
-                                    <td>
-                                        <a href="{{ route('finalContrato.crearContrato', [$p->id ,$p->id_pdfborrador,Auth::user()->id]) }}"><span class="btn btn-danger btn-circle btn-lg"><i class="ti ti-file"></i></span></a>
-                                    </td>
-                                @endcan
+            
                             </tr>
                             @endforeach
 
