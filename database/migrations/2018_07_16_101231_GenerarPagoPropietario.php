@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class SimulaPropietario extends Migration
+class GenerarPagoPropietario extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,11 @@ class SimulaPropietario extends Migration
      */
     public function up()
     {
-        Schema::dropIfExists('cap_simulapropietario');
-        Schema::create('cap_simulapropietario', function (Blueprint $table) {
+        Schema::dropIfExists('adm_generapagopropietario');
+        Schema::create('adm_generapagopropietario', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('id_publicacion')->nullable();
+            $table->integer('id_contratofinal')->nullable();
             $table->integer('id_inmueble')->nullable();
             $table->integer('id_propietario')->nullable();
             $table->integer('meses_contrato')->nullable();
@@ -55,6 +56,6 @@ class SimulaPropietario extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('cap_simulapropietario');
+        Schema::dropIfExists('adm_generapagopropietario');
     }
 }

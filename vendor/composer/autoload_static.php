@@ -1173,6 +1173,7 @@ class ComposerStaticInit0178ccda3db7603c96af3e22d130f715
         'FontLib\\WOFF\\TableDirectoryEntry' => __DIR__ . '/..' . '/phenx/php-font-lib/src/FontLib/WOFF/TableDirectoryEntry.php',
         'FotoRevisionInmueble' => __DIR__ . '/../..' . '/database/migrations/2018_06_12_215628_FotoRevisionInmueble.php',
         'FotoRevisionPersona' => __DIR__ . '/../..' . '/database/migrations/2018_06_12_215612_FotoRevisionPersona.php',
+        'GenerarPagoPropietario' => __DIR__ . '/../..' . '/database/migrations/2018_07_16_101231_GenerarPagoPropietario.php',
         'GuzzleHttp\\Psr7\\AppendStream' => __DIR__ . '/..' . '/guzzlehttp/psr7/src/AppendStream.php',
         'GuzzleHttp\\Psr7\\BufferStream' => __DIR__ . '/..' . '/guzzlehttp/psr7/src/BufferStream.php',
         'GuzzleHttp\\Psr7\\CachingStream' => __DIR__ . '/..' . '/guzzlehttp/psr7/src/CachingStream.php',

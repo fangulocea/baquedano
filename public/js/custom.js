@@ -602,8 +602,6 @@ jQuery('#datepicker-fecha_publicacion_c').datepicker({
     format: 'dd-mm-yyyy',
     todayHighlight: true,
     autoclose: true, 
-    daysOfWeekDisabled: "0",
-    daysOfWeekHighlighted: "0",
     language: "es",
     locale: "es",
 });
@@ -612,8 +610,6 @@ jQuery('#datepicker-fecha_expiracion_c').datepicker({
     format: 'dd-mm-yyyy',
     todayHighlight: true,
     autoclose: true, 
-    daysOfWeekDisabled: "0",
-    daysOfWeekHighlighted: "0",
     language: "es",
     locale: "es",
 });
@@ -622,8 +618,6 @@ jQuery('#datepicker-fecha_contacto1_c').datepicker({
     format: 'dd-mm-yyyy',
     todayHighlight: true,
     autoclose: true, 
-    daysOfWeekDisabled: "0",
-    daysOfWeekHighlighted: "0",
     language: "es",
     locale: "es",
 });
@@ -632,8 +626,6 @@ jQuery('#datepicker-fecha_contacto_e_c').datepicker({
     format: 'dd-mm-yyyy',
     todayHighlight: true,
     autoclose: true, 
-    daysOfWeekDisabled: "0",
-    daysOfWeekHighlighted: "0",
     language: "es",
     locale: "es",
 });
@@ -642,8 +634,6 @@ jQuery('#datepicker-fecha_contrato_a_b').datepicker({
     format: 'dd-mm-yyyy',
     todayHighlight: true,
     autoclose: true, 
-    daysOfWeekDisabled: "0",
-    daysOfWeekHighlighted: "0",
     language: "es",
     locale: "es",
 });

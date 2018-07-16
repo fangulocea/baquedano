@@ -802,6 +802,7 @@ return array(
     'FontLib\\WOFF\\TableDirectoryEntry' => $vendorDir . '/phenx/php-font-lib/src/FontLib/WOFF/TableDirectoryEntry.php',
     'FotoRevisionInmueble' => $baseDir . '/database/migrations/2018_06_12_215628_FotoRevisionInmueble.php',
     'FotoRevisionPersona' => $baseDir . '/database/migrations/2018_06_12_215612_FotoRevisionPersona.php',
+    'GenerarPagoPropietario' => $baseDir . '/database/migrations/2018_07_16_101231_GenerarPagoPropietario.php',
     'GuzzleHttp\\Psr7\\AppendStream' => $vendorDir . '/guzzlehttp/psr7/src/AppendStream.php',
     'GuzzleHttp\\Psr7\\BufferStream' => $vendorDir . '/guzzlehttp/psr7/src/BufferStream.php',
     'GuzzleHttp\\Psr7\\CachingStream' => $vendorDir . '/guzzlehttp/psr7/src/CachingStream.php',
