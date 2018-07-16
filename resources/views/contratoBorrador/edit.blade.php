@@ -884,8 +884,6 @@
     format: 'dd-mm-yyyy',
     todayHighlight: true,
     autoclose: true, 
-    daysOfWeekDisabled: "0",
-    daysOfWeekHighlighted: "0",
     language: "es",
     locale: "es",
 });

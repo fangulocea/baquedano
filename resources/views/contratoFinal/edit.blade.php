@@ -260,7 +260,7 @@
                                                 <div class="col-md-6">
                                                     <h3 class="box-title m-b-0">Complete Campos generales para generar pago</h3><br/>
                                             <div class="row">
-                                             
+                                             <input type="hidden" name="tipopropuesta" id="tipopropuesta">
                                                 <div class="col-md-12">
                                                     <div class="form-group">
                                                         <label class="control-label">
@@ -1284,6 +1284,7 @@ $("#id_propuesta").change(function (event) {
         $("#pie").val(response.pie!=null?response.pie:0);
         $("#descuento").val(response.descuento!=null?response.descuento:0);
         $("#iva").val(response.iva!=null?response.iva:0);
+        $("#tipopropuesta").val(response.tipopropuesta!=null?response.tipopropuesta:0);
         $("#fecha_firmapago").val(response.fecha_iniciocontrato!=null?response.fecha_iniciocontrato:'');
         $("#cant_meses").val(response.meses_contrato!=null?response.meses_contrato:0);
          $("#nombre_otropago1").val(response.nomotro1!=null?response.nomotro1:'');
