@@ -259,7 +259,26 @@
                                             <div class="row">
                                                 <div class="col-md-6">
                                                     <h3 class="box-title m-b-0">Complete Campos generales para generar pago</h3><br/>
-                                                    <div class="row">
+                                            <div class="row">
+                                             
+                                                <div class="col-md-12">
+                                                    <div class="form-group">
+                                                        <label class="control-label">
+                                                            Propuesta
+                                                        </label>
+                                                        <select class="form-control" name="id_propuesta" id="id_propuesta"required="required">
+                                                            <option value="">
+                                                                Selecione Propuesta
+                                                            </option>
+                                                            @foreach($propuestas as $p)
+                                                            <option value="{{ $p->id }}">
+                                                                {{ $p->id }} - {{ $p->tipopropuesta }}
+                                                            </option>
+                                                            @endforeach
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label for="input-file-now-custom-1">Contrato</label>
@@ -273,10 +292,8 @@
                                                             @endforeach  
                                                         </select>
                                                     </div>
-                                            <div class="form-group">
-                                                <label>Dirección</label>
-                                                {{ Form::select('id_inmueble_pago',[''=>'Seleccione dirección'], null, array('class'=>'form-control','style'=>'','id'=>'id_inmueble_pago','required'=>'required')) }} 
-                                                 </div>
+                                   
+                                                
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="form-group">
@@ -285,6 +302,42 @@
                                                     </div>
                                                 </div>
                                             </div>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                         <div class="form-group">
+                                                <label>Dirección</label>
+                                                {{ Form::select('id_inmueble_pago',[''=>'Seleccione dirección'], null, array('class'=>'form-control','style'=>'','id'=>'id_inmueble_pago','required'=>'required')) }} 
+                                                 </div>
+                                                    </div>
+                                                    <div class="col-md-6">                                       
+                                                    <div class="form-group">
+                                                        <label for="input-file-now-custom-1">Proporcional</label>
+                                                        <select name="proporcional" class="form-control">
+                                                            <option value="NO">NO</option>
+                                                            <option value="SI">SI</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                
+                                                <div class="col-md-6">
+                                                    <label for="input-file-now-custom-1">Nro. Cuotas</label> 
+                                                        <div class="input-group"> 
+                                                            <span class="input-group-addon">#</span>
+                                                            <input name='cuotas' id='cuotas' type="number" class="form-control" >
+                                                        </div>
+                                                </div>
+                                                
+                                                <div class="col-md-6">
+                                                    <label for="input-file-now-custom-1">IVA</label>
+                                                        <div class="input-group"> 
+                                                            <span class="input-group-addon">%</span>
+                                                            <input name='iva' id='iva' type="number" step="any" class="form-control"   value=''>
+                                                        </div>
+                                                </div>
+                                                
+                                            </div><br>
                                             <div class="row">
                                                 <div class="col-md-6">
                                                     <div class="form-group">
@@ -308,16 +361,73 @@
                                                     </div>
                                                 </div>
                                             </div>
+
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                <table id="listusers1_c" class="display compact" cellspacing="0" width="100%">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Propuesta</th>
+                                                            <th>Inicio</th>
+                                                            <th>% Desc</th>
+                                                            <th></th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                                @foreach($propuestas as $p)
+                                                                        <tr>
+                                                                    <td>{{ $p->tipopropuesta }}</td>
+                                                                    <td>{{ $p->fecha_iniciocontrato }}</td>
+                                                                    <td>{{ $p->descuento }}</td>
+                                                                    <td><a href="{{ route('borradorContrato.excelsimulacion',$p->id) }}"><span class="ti-export"></span></span></a></td>
+                                                                </tr>
+                                                                @endforeach
+                                                            </tbody>
+                                                            </table>
+                                                    </div>     
+                                            </div>
                                         </div>
                                         <div class="col-md-6">
                                             <h3 class="box-title m-b-0">Generar pagos por Item</h3><br/>
+                                            <div class="row">
+                                                <div class="col-md-3"><label for="input-file-now-custom-1">% Descuento</label> </div>
+                                                <div class="col-md-5">
+                                                        <div class="input-group"> 
+                                                            <span class="input-group-addon">%</span>
+                                                            <input name='descuento' id='descuento' type="number" class="form-control">
+                                                        </div>
+                                                </div>
+                                             </div>
+                                           
+                                                            <div class="row">
+                                                <div class="col-md-3"><label for="input-file-now-custom-1">Canon de Arriendo</label> </div>
+                                                <div class="col-md-5">
+                                                        <div class="input-group"> 
+                                                            <span class="input-group-addon">$</span>
+                                                            <input name='precio' id='precio' step="any" type="number" class="form-control" value="0" required="required">
+                                                        </div>
+                                                </div>
+                                            <div class="col-md-1">
+                                                     <div class="radio radio-success">
+                                                        <input type="radio" name="ca_radio" id="ca_radio" value="e" checked="">
+                                                        <label for="radio14"> E </label>
+                                                    </div>
+                                            </div>
+                                            <div class="col-md-1">
+                                                    <div class="radio radio-danger">
+                                                         <input type="radio" name="ca_radio" id="ca_radio" value="s" checked="">
+                                                         <label for="radio14"> S </label>
+                                                    </div>
+                                            </div>
+
+                                            </div>
                                              <div class="row">
                                                 <div class="col-md-3"><label for="input-file-now-custom-1">Gasto Común</label> </div>
-                                                <div class="col-md-7">
+                                                <div class="col-md-5">
                                                      
                                                   <div class="input-group"> 
                                                             <span class="input-group-addon">$</span>
-                                                            <input name='gastocomun' id='gastocomun' type="number" class="form-control"   step="any" value='{{ $borrador->gastosComunes or '' }}'>
+                                                            <input name='gastocomun' id='gastocomun' type="number" class="form-control"   step="any" value="0" required="required">
                                                         </div>
                     
                                                 </div>
@@ -335,82 +445,36 @@
                                                     </div>
                                                 </div>
                                             </div>
+                            
                                             <div class="row">
-                                                <div class="col-md-3"><label for="input-file-now-custom-1">Canon de Arriendo</label> </div>
-                                                <div class="col-md-7">
+                                                <div class="col-md-3"><label for="input-file-now-custom-1">Gastos Notariales</label> </div>
+                                                <div class="col-md-5">
                                                         <div class="input-group"> 
                                                             <span class="input-group-addon">$</span>
-                                                            <input name='precio' id='precio' step="any" type="number" class="form-control"   value='{{ $borrador->precio or '' }}'>
+                                                            <input name='pagonotaria' id='pagonotaria' type="number" class="form-control" value="0" required="required" >
                                                         </div>
                                                 </div>
-                                            <div class="col-md-1">
+                                              <div class="col-md-1">
                                                      <div class="radio radio-success">
-                                                        <input type="radio" name="ca_radio" id="ca_radio" value="e" checked="">
+                                                        <input type="radio" name="no_radio" id="no_radio" value="e" checked="">
                                                         <label for="radio14"> E </label>
                                                     </div>
                                             </div>
                                             <div class="col-md-1">
                                                     <div class="radio radio-danger">
-                                                         <input type="radio" name="ca_radio" id="ca_radio" value="s" checked="">
+                                                         <input type="radio" name="no_radio" id="no_radio" value="s" >
                                                          <label for="radio14"> S </label>
                                                     </div>
                                             </div>
+                                            </div>
+                                         
 
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-md-3"><label for="input-file-now-custom-1">Garantía</label> </div>
-                                                <div class="col-md-7">
-                                                        <div class="input-group"> 
-                                                            <span class="input-group-addon">$</span>
-                                                            <input name='garantia' id='garantia' type="number" class="form-control"  >
-                                                        </div>
-                                                </div>
-                                            <div class="col-md-1">
-                                                     <div class="radio radio-success">
-                                                        <input type="radio" name="ga_radio" id="ga_radio" value="e" checked="">
-                                                        <label for="radio14"> E </label>
-                                                    </div>
-                                            </div>
-                                            <div class="col-md-1">
-                                                    <div class="radio radio-danger">
-                                                         <input type="radio" name="ga_radio" id="ga_radio" value="s" checked="">
-                                                         <label for="radio14"> S </label>
-                                                    </div>
-                                            </div>
-
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-md-3"><label for="input-file-now-custom-1">IVA</label> </div>
-                                                <div class="col-md-4">
-                                                        <div class="input-group"> 
-                                                            <span class="input-group-addon">$</span>
-                                                            <input name='iva' id='iva' type="number" step="any" class="form-control"   value=''>
-                                                        </div>
-                                                </div>
-                                                <div class="col-md-3">
-                                                        <div class="input-group"> 
-                                                            <input name='mes_iva' id='mes_iva' type="number" class="form-control"   placeholder="C/Mes">
-                                                        </div>
-                                                </div>
-                                            <div class="col-md-1">
-                                                     <div class="radio radio-success">
-                                                        <input type="radio" name="iva_radio" id="iva_radio" value="e" checked="">
-                                                        <label for="radio14"> E </label>
-                                                    </div>
-                                            </div>
-                                            <div class="col-md-1">
-                                                    <div class="radio radio-danger">
-                                                         <input type="radio" name="iva_radio" id="iva_radio" value="s">
-                                                         <label for="radio14"> S </label>
-                                                    </div>
-                                            </div>
-                                            </div>
                                             <div class="row">
                                                 <div class="col-md-3"><label for="input-file-now-custom-1">Pie Comisión</label> </div>
-                                                <div class="col-md-7">
+                                                <div class="col-md-5">
                                                         <div class="input-group"> 
-                                                            <span class="input-group-addon">$</span>
-                                                            <input name='pie' id='pie' type="number" step="any" class="form-control"  >
+                                                            <span class="input-group-addon">%</span>
+                                                            <input name='pie' id='pie' type="number" step="any" class="form-control" value="0" required="required"  >
                                                         </div>
                                                 </div>
                                             <div class="col-md-1">
@@ -427,18 +491,14 @@
                                             </div>
                                             </div>
                                         <div class="row">
-                                                <div class="col-md-3"><label for="input-file-now-custom-1">Comisión Mensual</label> </div>
-                                                <div class="col-md-4">
+                                                <div class="col-md-3"><label for="input-file-now-custom-1">Cobro Mensual</label> </div>
+                                                <div class="col-md-5">
                                                         <div class="input-group"> 
-                                                            <span class="input-group-addon">$</span>
-                                                            <input name='porcentaje' step="any" id='porcentaje' type="number" class="form-control"   placeholder="$">
+                                                            <span class="input-group-addon">%</span>
+                                                            <input name='cobromensual' step="any" id='cobromensual' type="number" class="form-control" value="0" required="required" >
                                                         </div>
                                                 </div>
-                                                <div class="col-md-3">
-                                                        <div class="input-group"> 
-                                                            <input name='mes_porcentaje' id='mes_porcentaje' type="number" class="form-control"   placeholder="C/Mes">
-                                                        </div>
-                                                </div>
+                                               
                                             <div class="col-md-1">
                                                      <div class="radio radio-success">
                                                         <input type="radio" name="pj_radio" id="pj_radio" value="e" checked="">
@@ -453,60 +513,15 @@
                                             </div>
                                             </div>
 
-                                            <div class="row">
-                                                <div class="col-md-3"><label for="input-file-now-custom-1">Comisión Rentas</label> </div>
-                                                <div class="col-md-7">
-                                                        <div class="input-group"> 
-                                                            <span class="input-group-addon">$</span>
-                                                            <input name='comision' id='comision' step="any" type="number" class="form-control"   value=''>
-                                                        </div>
-                                                </div>
-                                            <div class="col-md-1">
-                                                     <div class="radio radio-success">
-                                                        <input type="radio" name="co_radio" id="co_radio" value="e" checked="">
-                                                        <label for="radio14"> E </label>
-                                                    </div>
-                                            </div>
-                                            <div class="col-md-1">
-                                                    <div class="radio radio-danger">
-                                                         <input type="radio" name="co_radio" id="co_radio" value="s" >
-                                                         <label for="radio14"> S </label>
-                                                    </div>
-                                            </div>
-                                            </div>
+                                           
 
-                                        <div class="row">
-                                                <div class="col-md-3"><label for="input-file-now-custom-1">Pago por Notaría</label> </div>
-                                                <div class="col-md-7">
-                                                        <div class="input-group"> 
-                                                            <span class="input-group-addon">$</span>
-                                                            <input name='pagonotaria' id='pagonotaria' type="number" class="form-control"  placeholder="$">
-                                                        </div>
-                                                </div>
-                                              <div class="col-md-1">
-                                                     <div class="radio radio-success">
-                                                        <input type="radio" name="no_radio" id="no_radio" value="e" checked="">
-                                                        <label for="radio14"> E </label>
-                                                    </div>
-                                            </div>
-                                            <div class="col-md-1">
-                                                    <div class="radio radio-danger">
-                                                         <input type="radio" name="no_radio" id="no_radio" value="s" >
-                                                         <label for="radio14"> S </label>
-                                                    </div>
-                                            </div>
-                                            </div>
+                                        
                                    <div class="row">
                                                 <div class="col-md-3"><input name='nombre_otropago1' id='nombre_otropago1' type="text" class="form-control"   placeholder="Otro Pago"> </div>
-                                                <div class="col-md-4">
+                                                <div class="col-md-5">
                                                         <div class="input-group"> 
                                                             <span class="input-group-addon">$</span>
-                                                            <input name='pagootro1' step="any" id='pagootro1' type="number" class="form-control"   placeholder="$">
-                                                        </div>
-                                                </div>
-                                                <div class="col-md-3">
-                                                        <div class="input-group"> 
-                                                            <input name='mes_otro1' id='mes_otro1' type="number" class="form-control"   placeholder="C/Mes">
+                                                            <input name='pagootro1' step="any" id='pagootro1' type="number" class="form-control"   >
                                                         </div>
                                                 </div>
                                                <div class="col-md-1">
@@ -523,16 +538,11 @@
                                             </div>
                                             </div>
                                    <div class="row">
-                                                <div class="col-md-3"><input name='nombre_otropago2' id='nombre_otropago2' type="text" class="form-control"   placeholder="Otro Pago"> </div>
-                                                <div class="col-md-4">
+                                                <div class="col-md-3"><input name='nombre_otropago2' id='nombre_otropago2' type="text" class="form-control" placeholder="Otro Pago"> </div>
+                                                <div class="col-md-5">
                                                         <div class="input-group"> 
                                                             <span class="input-group-addon">$</span>
-                                                            <input name='pagootro2' step="any" id='pagootro2' type="number" class="form-control"   placeholder="$">
-                                                        </div>
-                                                </div>
-                                                <div class="col-md-3">
-                                                        <div class="input-group"> 
-                                                            <input name='mes_otro2' id='mes_otro2' type="number" class="form-control"   placeholder="C/Mes">
+                                                            <input name='pagootro2' step="any" id='pagootro2' type="number" class="form-control" >
                                                         </div>
                                                 </div>
                                                 <div class="col-md-1">
@@ -548,32 +558,7 @@
                                                     </div>
                                             </div>
                                             </div>
-                                   <div class="row">
-                                                <div class="col-md-3"><input name='nombre_otropago3' id='nombre_otropago3' type="text" class="form-control"   placeholder="Otro Pago"> </div>
-                                                <div class="col-md-4">
-                                                        <div class="input-group"> 
-                                                            <span class="input-group-addon">$</span>
-                                                            <input name='pagootro3' step="any" id='pagootro3' type="number" class="form-control"   placeholder="$">
-                                                        </div>
-                                                </div>
-                                                <div class="col-md-3">
-                                                        <div class="input-group"> 
-                                                            <input name='mes_otro3' id='mes_otro3' type="number" class="form-control"   placeholder="C/Mes">
-                                                        </div>
-                                                </div>
-                                                <div class="col-md-1">
-                                                     <div class="radio radio-success">
-                                                        <input type="radio" name="o3_radio" id="o3_radio" value="e" checked="">
-                                                        <label for="radio14"> E </label>
-                                                    </div>
-                                            </div>
-                                            <div class="col-md-1">
-                                                    <div class="radio radio-danger">
-                                                         <input type="radio" name="o3_radio" id="o3_radio" value="s" checked="">
-                                                         <label for="radio14"> S </label>
-                                                    </div>
-                                            </div>
-                                            </div>
+                                  
                                    <div class="row">
                                                 <br>
                                                 <div class="col-md-12">
@@ -1288,6 +1273,26 @@ $("#id_final").change(function (event) {
 }
 });
 
+
+$("#id_propuesta").change(function (event) {
+    $.get("/pagospropietario/mostrarsimulacion/" + event.target.value + "", function (response, state) {
+        $("#precio").val(response.canondearriendo!=''?response.canondearriendo:0);
+        $("#gastocomun").val(response.gastocomun!=null?response.gastocomun:0);
+        $("#pagonotaria").val(response.notaria!=null?response.notaria:0);
+        $("#cuotas").val(response.nrocuotas!=null?response.nrocuotas:0);
+        $("#cobromensual").val(response.cobromensual!=null?response.cobromensual:0);
+        $("#pie").val(response.pie!=null?response.pie:0);
+        $("#descuento").val(response.descuento!=null?response.descuento:0);
+        $("#iva").val(response.iva!=null?response.iva:0);
+        $("#fecha_firmapago").val(response.fecha_iniciocontrato!=null?response.fecha_iniciocontrato:'');
+        $("#cant_meses").val(response.meses_contrato!=null?response.meses_contrato:0);
+         $("#nombre_otropago1").val(response.nomotro1!=null?response.nomotro1:'');
+          $("#nombre_otropago2").val(response.nomotro2!=null?response.nomotro2:'');
+           $("#pagootro1").val(response.otro1!=null?response.otro1:0);
+           $("#pagootro2").val(response.otro2!=null?response.otro2:0);
+    });
+
+});
 
  $("#id_final_pagar").change(function (event) {
 document.getElementById("pagoarea").innerHTML="";

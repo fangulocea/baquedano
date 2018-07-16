@@ -11,6 +11,7 @@ use App\PagosPropietarios;
 use App\PagosMensualesPropietarios;
 use App\ContratoInmueblesPropietarios;
 use App\Contratoborradorpdf;
+use App\SimulaPropietario;
 use Illuminate\Http\Request;
 use DB;
 use Illuminate\Support\Facades\File;
@@ -274,7 +275,12 @@ class ContratoFinalController extends Controller {
 
         $flag = 0;
 
-        return view('contratoFinal.edit', compact('borrador', 'finalIndex', 'notaria', 'documentos', 'flag', 'tab','direcciones'));
+             $propuestas = DB::table('cap_simulapropietario')
+         ->where("id_publicacion","=",$idc)
+         ->select(DB::raw(" id, (CASE  WHEN tipopropuesta=1 THEN '1 Cuota' WHEN tipopropuesta=2 THEN'Pie + Cuota' ELSE 'Renovación' END) as tipopropuesta, proporcional, fecha_iniciocontrato, meses_contrato, iva,descuento, pie, cobromensual, nrocuotas,canondearriendo" ))
+         ->get();   
+
+        return view('contratoFinal.edit', compact('borrador', 'finalIndex', 'notaria', 'documentos', 'flag', 'tab','direcciones','propuestas'));
     }
 
     /**
@@ -286,6 +292,11 @@ class ContratoFinalController extends Controller {
      */
     public function update(Request $request, ContratoFinal $contratoFinal) {
         //
+    }
+
+    public function mostrarsimulacion($id) {
+        $simulacion=SimulaPropietario::find($id);
+        return response()->json($simulacion);
     }
 
     public function asignarNotaria(Request $request, $id) {

@@ -781,6 +781,9 @@ Route::get('revisionpersona/eliminarfoto/{idf}/{idc}','RevisionPersonaController
 		Route::get('pagospropietario/mostrarpago/{id}','ContratoFinalController@mostrar_un_pago')->name('finalContrato.mostrarpago')
 		->middleware('permission:finalContrato.update');
 
+		Route::get('pagospropietario/mostrarsimulacion/{id}','ContratoFinalController@mostrarsimulacion')->name('finalContrato.mostrarsimulacion')
+		->middleware('permission:finalContrato.edit');
+
 		Route::get('pagospropietario/mostrardirecciones/{id}','ContratoFinalController@mostrardirecciones')->name('finalContrato.mostrardirecciones')
 		->middleware('permission:finalContrato.update');
 
