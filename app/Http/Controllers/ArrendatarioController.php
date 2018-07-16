@@ -18,6 +18,12 @@ use Image;
 use DateTime;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\File;
+use App\Arr_Reservas;
+use App\Arr_ReservasDocs;
+use Illuminate\Support\Facades\Storage;
+use App\ArrReservaGes;
+use App\ArrReservaGesDocs;
+
 
 class ArrendatarioController extends Controller
 {
@@ -45,7 +51,7 @@ class ArrendatarioController extends Controller
          ->leftjoin('personas as p3', 'a.id_modificador', '=', 'p3.id')
          ->select(DB::raw('a.id, DATE_FORMAT(a.created_at, "%d/%m/%Y") as fecha_creacion, a.id_estado, CONCAT_WS(" ", p1.nombre, p1.apellido_paterno, p1.apellido_materno) as Arrendador, p2.name as Creador'))->get();
          
-         return view('arrendatario.index',compact('arrendador'));
+         return view('arrendatario.index',compact('arrendador',1));
     }
 
     /**
@@ -57,6 +63,65 @@ class ArrendatarioController extends Controller
     {
         $regiones=Region::pluck('region_nombre','region_id');
         return view('arrendatario.create',compact('regiones')); 
+    }
+
+    public function CrearReserva(Request $request,$id)
+    {
+        $S_Arr_reservas = Arr_Reservas::where('id_arr_ges','=', $id)->first();
+
+        if(!isset($S_Arr_reservas->id))
+        {
+            $request = array_add($request, 'id_estado', 1);
+            $reserva = Arr_Reservas::create(request()->except(['_token','idinmueble','paso','foto']));
+            if(!isset($request->foto)){
+                return redirect()->route('arrendatario.edit', [$id,2])->with('status', 'Datos actualizados con exito');
+            }
+            $destinationPath='uploads/reserva';
+            $archivo=rand().$request->foto->getClientOriginalName();
+            $file = $request->file('foto');
+            $file->move($destinationPath,$archivo);
+            $imagen=Arr_ReservasDocs::create([
+                'id_arrendatario'      => $id,
+                'descripcion'          => '',
+                'nombre'               => $archivo,
+                'ruta'                 => $destinationPath,
+                'id_estado'            => 1,
+                'id_creador'           => $request->id_creador
+            ]);
+            return redirect()->route('arrendatario.edit', [$id,2])->with('status', 'Datos ingresados con éxito');
+        }
+        else
+        {
+            $inmueble=Arr_Reservas::whereId($S_Arr_reservas->id)->update([
+                    'id_condicion'    => $request->id_condicion,
+                    'monto_reserva'   => $request->monto_reserva,
+                    'descripcion'     => $request->descripcion,
+                    'id_modificador'  => $request->id_modificador, 
+                    'id_estado'       => 1  
+            ]);
+
+            if(!isset($request->foto)){
+                return redirect()->route('arrendatario.edit', [$id,2])->with('error', 'Debe seleccionar archivo');
+            }
+            $destinationPath='uploads/reserva';
+            $archivo=rand().$request->foto->getClientOriginalName();
+            $file = $request->file('foto');
+            $file->move($destinationPath,$archivo);
+            $imagen=Arr_ReservasDocs::create([
+                'id_arrendatario'      => $id,
+                'descripcion'          => '',
+                'nombre'               => $archivo,
+                'ruta'                 => $destinationPath,
+                'id_estado'            => 1,
+                'id_creador'           => $request->id_creador
+            ]);
+            
+            return redirect()->route('arrendatario.edit', [$id,2])->with('status', 'Datos Actualizados con éxito');
+        }
+
+
+
+
     }
 
     /**
@@ -79,8 +144,8 @@ class ArrendatarioController extends Controller
                             'preferencias'      => $request->preferencias,
                             'id_estado'         => '1',
                     ]);
-
-        return redirect()->route('arrendatario.edit', $arrendatario->id)
+       
+        return redirect()->route('arrendatario.edit', [$arrendatario->id, 1] )
             ->with('status', 'Persona guardada con éxito');
     }
 
@@ -101,28 +166,44 @@ class ArrendatarioController extends Controller
      * @param  \App\Arrendatario  $arrendatario
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($id,$tab)
     {
+
         $regiones=Region::pluck('region_nombre','region_id');
         $arrendatario = Arrendatario::find($id);
-        $persona = Persona::find(isset($arrendatario->id_arrendatario)?$arrendatario->id_arrendatario:0);
-        $imagenes=ArrendatarioFoto::where('id_arrendatario','=',$id)->get();
-        $citas=ArrendatarioCitas::where('id_arrendatario','=',$id)->get();
-        $inmueble = Inmueble::find($arrendatario->id_inmueble);
-        return view('arrendatario.edit',compact('arrendatario','regiones','persona','imagenes','citas','inmueble'));
+        
+        $persona    = Persona::find(isset($arrendatario->id_arrendatario)?$arrendatario->id_arrendatario:0);
+        $imagenes   = ArrendatarioFoto::where('id_arrendatario','=',$id)->get();
+        $citas      = ArrendatarioCitas::where('id_arrendatario','=',$id)->get();
+        $inmueble   = Inmueble::find($arrendatario->id_inmueble);
+        $reserva    = Arr_Reservas::where('id_arr_ges','=',$id)->where('id_estado','=',1)->first();
+        $imgReserva = Arr_ReservasDocs::where('id_arrendatario','=',$id)->where('id_estado','=',1)->get();
+
+        $corredores=Persona::where('tipo_cargo','=','Corredor - Externo')
+        ->Orwhere('tipo_cargo','=','Empleado')
+        ->select(DB::raw('id , CONCAT_WS(" ",nombre,apellido_paterno,apellido_materno) as Corredor'))
+        ->get();
+
+        $condicion = DB::table('condicions as c')
+        ->where("c.estado","<>",0)
+        ->select(DB::raw('c.id as id,c.nombre as nombre'))
+        ->get();
+
+        return view('arrendatario.edit',compact('corredores','reserva','imgReserva','tab','condicion','arrendatario','regiones','persona','imagenes','citas','inmueble'));
     }
 
     public function agregarInmueble($idc,$idi)
     {        
              $captacion = Arrendatario::whereId($idc)->update([
-                'id_inmueble'=> $idi
+                'id_inmueble'   => $idi,
+                'id_estado'     => 3
             ]
             );
         $inmueble = Inmueble::whereId($idi)->update([
-                'estado'=> 1
+                'estado'=> 2
             ]
             );
-        return redirect()->route('arrendatario.edit', $idc)->with('status', 'Inmueble agregado con éxito');
+        return redirect()->route('arrendatario.edit', [$idc,3])->with('status', 'Inmueble agregado con éxito');
     }
 
 
@@ -158,7 +239,7 @@ class ArrendatarioController extends Controller
                             'gastosComunes'     => $request->i_gastosComunes,
                             'condicion'         => $request->i_condicion,
 
-                            'estado'            => '1',
+                            'estado'            => '2',
                             'id_comuna'         => $request->i_id_comuna,
                             'id_region'         => $request->i_id_region,
                             'id_provincia'      => $request->i_id_provincia,   
@@ -189,10 +270,11 @@ class ArrendatarioController extends Controller
             }
 
                 $captacion = Arrendatario::find($id)->update([
-                    "id_inmueble"  => $inmueble->id
+                    "id_inmueble"  => $inmueble->id,
+                    "id_estado"     => 3
                 ]);
 
-        return redirect()->route('arrendatario.edit', $id)->with('status', 'Datos almacenados correctamente');
+        return redirect()->route('arrendatario.edit', [$id,1])->with('status', 'Datos almacenados correctamente');
     }
 
     /**
@@ -323,7 +405,7 @@ class ArrendatarioController extends Controller
 
         // $imagenes=CaptacionFoto::where('id_captacion','=',$id)->get();
 
-        return redirect()->route('arrendatario.edit', $id)->with('status', 'Datos almacenados correctamente');
+        return redirect()->route('arrendatario.edit',[$id,1])->with('status', 'Datos almacenados correctamente');
     }
 
     /**
@@ -339,7 +421,7 @@ class ArrendatarioController extends Controller
             'id_estado' => '0'
         ]);
 
-        return redirect()->route('arrendatario.edit', $id)->with('status', 'Arrendatario desactivado con éxito');
+        return redirect()->route('arrendatario.edit', [$id,1])->with('status', 'Arrendatario desactivado con éxito');
     }
 
 
@@ -367,9 +449,9 @@ class ArrendatarioController extends Controller
         }
         else
         {
-            return redirect()->route('arrendatario.edit', $id)->with('status', 'No se ha actualizado ninguna imágen');
+            return redirect()->route('arrendatario.edit', [$id,4])->with('status', 'No se ha actualizado ninguna imágen');
         }
-        return redirect()->route('arrendatario.edit', $id)->with('status', 'Foto guardada con éxito');
+        return redirect()->route('arrendatario.edit', [$id,4])->with('status', 'Foto guardada con éxito');
     }
 
 
@@ -384,7 +466,7 @@ class ArrendatarioController extends Controller
         $imagen=ArrendatarioFoto::find($idf);
         File::delete($imagen->ruta.'/'.$imagen->nombre);
         $foto = ArrendatarioFoto::find($idf)->delete();
-        return redirect()->route('arrendatario.edit', $idc)->with('status', 'Foto eliminada con éxito');
+        return redirect()->route('arrendatario.edit', [$idc,1])->with('status', 'Foto eliminada con éxito');
     }
 
 
@@ -392,10 +474,8 @@ class ArrendatarioController extends Controller
     {
         $fecha = DateTime::createFromFormat('d-m-Y', $request->fecha);
         array_set($request, 'fecha', $fecha);
-
         $citas = ArrendatarioCitas::create($request->all());
-        return redirect()->route('arrendatario.edit', $request->id_arrendatario)
-
+        return redirect()->route('arrendatario.edit', [$request->id_arrendatario,5])
             ->with('status', 'Cita guardada con éxito');
     }
 
@@ -420,7 +500,7 @@ class ArrendatarioController extends Controller
             'id_creador'        => $request->id_creador,
             'id_arrendatario'   => $request->id_arrendatario
         ]);
-        return redirect()->route('arrendatario.edit', $request->id_citas)
+        return redirect()->route('arrendatario.edit', [$request->id_citas,5])
 
             ->with('status', 'Cita guardada con éxito');
     }
@@ -430,7 +510,106 @@ public function mostrarGestion(Request $request, $idg){
             return response()->json($gestion);  
     }
 
+public function eliminararchivo($idf,$idc){
+        $imagen=Arr_ReservasDocs::find($idf);
 
+        File::delete($imagen->ruta.'/'.$imagen->nombre);
+        $foto = Arr_ReservasDocs::find($idf)->delete();
+
+        return redirect()->route('arrendatario.edit', [$idc,3])->with('status', 'Foto eliminada con éxito');
+    }
+
+public function crearDevolucion(Request $request,$id){
+    $ArrDetalle=ArrReservaGes::create([
+                'monto_reserva'     => $request->monto_reserva_d,
+                'descripcion'       => $request->detalle_d,
+                'E_S'               => "S",
+                'id_estado'         => 1,
+                'id_creador'        => $request->id_creador,
+                'id_arr_ges'        => $id
+            ]);
+
+    if(isset($request->foto_d))
+    {
+        $destinationPath='uploads/reservages';
+        $archivo=rand().$request->foto_d->getClientOriginalName();
+        $file = $request->file('foto_d');
+        $file->move($destinationPath,$archivo);
+        $imagen=ArrReservaGesDocs::create([
+            'id_arrendatario'      => $id,
+            'descripcion'          => 'Salida',
+            'nombre'               => $archivo,
+            'ruta'                 => $destinationPath,
+            'id_creador'           => $request->id_creador,
+            'id_estado'            => 1
+        ]);
+    }
+
+    $arrReserva = Arr_Reservas::where('id_arr_ges','=',$id)
+        ->update([ 'id_estado' => 2 ]);
+
+    $busInmu = Arrendatario::where('id','=',$id)->first();
+
+    if(isset($busInmu->id_inmueble))
+    {
+        $actInmu = Inmueble::where('id','=',$busInmu->id_inmueble)
+            ->update([ 'estado' => 1 ]);
+    }
+
+    $arrInmu = Arrendatario::where('id','=',$id)
+        ->update([ 'id_inmueble' => null ]);
+
+    $captacion = Arr_ReservasDocs::where('id_arrendatario','=',$id)
+        ->update([ 'id_estado' => 2  ]);
+
+    return redirect()->route('arrendatario.edit', [$id,2])->with('status', 'Datos ingresados con éxito');           
+}
+
+public function crearIncumplimiento(Request $request,$id){
+    $ArrDetalle=ArrReservaGes::create([
+                'monto_reserva'     => $request->monto_reserva_i,
+                'descripcion'       => $request->detalle_i,
+                'E_S'               => "E",
+                'id_estado'         => 1,
+                'id_creador'        => $request->id_creador,
+                'id_arr_ges'        => $id
+            ]);
+
+    if(isset($request->foto_i))
+    {
+        $destinationPath='uploads/reservages';
+        $archivo=rand().$request->foto_i->getClientOriginalName();
+        $file = $request->file('foto_i');
+        $file->move($destinationPath,$archivo);
+        $imagen=ArrReservaGesDocs::create([
+            'id_arrendatario'      => $id,
+            'descripcion'          => 'Entrada',
+            'nombre'               => $archivo,
+            'ruta'                 => $destinationPath,
+            'id_creador'           => $request->id_creador,
+            'id_estado'            => 1
+        ]);
+    }
+
+    $arrReserva = Arr_Reservas::where('id_arr_ges','=',$id)
+        ->update([ 'id_estado' => 2 ]);
+
+    $busInmu = Arrendatario::where('id','=',$id)->first();
+
+    if(isset($busInmu->id_inmueble))
+    {
+        $actInmu = Inmueble::where('id','=',$busInmu->id_inmueble)
+            ->update([ 'estado' => 1 ]);
+    }
+
+    $arrInmu = Arrendatario::where('id','=',$id)
+        ->update([ 'id_inmueble' => null ]);
+
+    $captacion = Arr_ReservasDocs::where('id_arrendatario','=',$id)
+        ->update([ 'id_estado' => 2  ]);
+
+    return redirect()->route('arrendatario.edit', [$id,2])->with('status', 'Datos ingresados con éxito');  
+}
 
 
 

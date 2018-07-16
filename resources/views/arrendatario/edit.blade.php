@@ -16,14 +16,16 @@
         <center><h3 class="box-title m-b-0">{{ $persona->nombre or null }} {{ $persona->apellido_paterno or null }}, Fono : {{ $persona->telefono or null }}, Email: {{ $persona->email or null }}</h3></center>
         <br><br>
         @endif --}}
+       
         <section>
             <div class="sttabs tabs-style-iconbox">
-                <nav>
+                <nav>   
                     <ul>
-                        <li><a href="#section-iconbox-1" class="sticon ti ti-user"><span>Arrendatario</span></a></li>
-                        <li><a href="#section-iconbox-2" class="sticon ti ti-user"><span>Asignar Inmueble</span></a></li>
-                        <li><a id="4" href="#section-iconbox-4" class="sticon ti-camera"><span>Fotos</span></a></li>
-                        <li><a id="5" href="#section-iconbox-5" class="sticon ti-agenda"><span>Gestiones</span></a></li>
+                        <li><a id="li_1" href="#section-iconbox-1" class="sticon ti ti-user"><span>Arrendatario</span></a></li>
+                        <li><a id="li_2" href="#section-iconbox-2" class="sticon ti ti-alarm-clock"><span>Reserva</span></a></li>
+                        <li><a id="li_3" href="#section-iconbox-3" class="sticon ti ti-home"><span>Asignar Inmueble</span></a></li>
+                        <li><a id="li_4" href="#section-iconbox-4" class="sticon ti-camera"><span>Fotos</span></a></li>
+                        <li><a id="li_5" href="#section-iconbox-5" class="sticon ti-agenda"><span>Gestiones</span></a></li>
                     </ul>
                 </nav>
                 <div class="content-wrap">
@@ -179,7 +181,259 @@
                             </div>
                         </div>
                     </section>
+
 <section id="section-iconbox-2">
+
+<div class="panel panel-info">
+    <div class="panel-heading"> Registro de Reserva </div>
+</div>
+
+@if(isset($reserva->monto_reserva))
+    <div class='row'>
+        <div class="col-md-4">
+            <div class="form-group">
+                <button class="btn btn-block btn-primary" data-toggle="modal" id='via_portal' data-target="#modal-gestion1" >Devolución</button>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group">
+                <button class="btn btn-block btn-primary" data-toggle="modal" id='via_portal' data-target="#modal-gestion2" >Incumplimiento Arrendatario</button>
+            </div>
+        </div>
+    </div>
+@endif
+
+{{-- MODAL DEVOLUCION --}}
+<div id="modal-gestion1" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+<div class="modal-dialog modal-lg">
+<div class="modal-content">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h4 class="modal-title">Ingrese información para devolución</h4> 
+    </div>
+    <form id="form1" action="{{ route('arrendatario.crearDev',$arrendatario->id) }}" method="post" enctype="multipart/form-data">
+        <input type="hidden" name="_token" value="{{ csrf_token() }}">
+        {!! csrf_field() !!}
+        <input type="hidden" class="form-control" name="id_creador" id="id_creador" value="{{ Auth::user()->id }}">
+        <input type="hidden" class="form-control" name="id_arr_ges" id="id_arr_ges" value="{{ $arrendatario->id }}">
+        <div class="modal-body">
+            <hr>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>Monto a Devolver</label>
+                        <input class="form-control" value="{{ $reserva->monto_reserva or null }}" name="monto_reserva_d" placeholder="" type="number"></input>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12 ">
+                <div class="form-group">
+                    <label>Detalle</label>
+                    <textarea name="detalle_d"  id="detalle" cols="20" class="form-control"></textarea>
+                </div>
+                </div>                                            
+            </div>
+
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="white-box">
+                        <h3 class="box-title"> Subir Documento </h3>
+                        <label for="input-file-now-custom-1"> Documentos de Reserva</label>
+                        <input class="dropify" id="foto_d" name="foto_d" type="file"/>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">Cerrar</button>
+            <button type="submit" class="btn btn-danger waves-effect waves-light">Guardar</button>
+        </div>
+    </form>
+</div>
+</div>
+</div> 
+<!-- FIN MODAL DEVOLUCION -->
+
+{{-- MODAL INCUMPLIMIENTO --}}
+<div id="modal-gestion2" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+<div class="modal-dialog modal-lg">
+<div class="modal-content">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h4 class="modal-title">Ingrese información sobre incumplimiento de Arrendatario</h4> 
+    </div>
+    <form id="form1" action="{{ route('arrendatario.crearIn',$arrendatario->id) }}" method="post" enctype='multipart/form-data'>
+        <input type="hidden" name="_token" value="{{ csrf_token() }}">
+        {!! csrf_field() !!}
+        <input type="hidden" class="form-control" name="id_creador" id="id_creador" value="{{ Auth::user()->id }}">
+        <input type="hidden" class="form-control" name="id_arr_ges" id="id_arr_ges" value="{{ $arrendatario->id }}">
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>Monto a Ingresar</label>
+                        <input class="form-control" value="{{ $reserva->monto_reserva or null }}" name="monto_reserva_i" placeholder="" type="number"></input>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12 ">
+                <div class="form-group">
+                    <label>Detalle</label>
+                    <textarea name="detalle_i"  id="detalle" cols="20" class="form-control"></textarea>
+                </div>
+                </div>                                            
+            </div>
+
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="white-box">
+                        <h3 class="box-title"> Subir Documento </h3>
+                        <label for="input-file-now-custom-1"> Documentos de Reserva</label>
+                        <input class="dropify" id="foto_i" name="foto_i" type="file"/>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">Cerrar</button>
+            <button type="submit" class="btn btn-danger waves-effect waves-light">Guardar</button>
+        </div>
+    </form>
+</div>
+</div>
+</div> 
+<!-- FIN MODAL INCUMPLIMIENTO -->
+
+
+
+
+
+{{-- INICIO RESERVA --}}
+<form action="{{ route('arrendatario.CrearReserva',$arrendatario->id) }}" method="post" enctype='multipart/form-data'>
+{!! csrf_field() !!}
+<div class="row"> 
+    <div class="panel panel-info">
+           <div class="panel-body">
+                <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                {!! csrf_field() !!}
+                <div class="form-body">
+
+                    <div class="row"> 
+                        <input type="hidden" name="idinmueble" id="idinmueble" value='{{ $inmueble->id or null}}'>
+                        <input type="hidden" name="paso" value="2">
+                        <input type="hidden" name="id_arr_ges" id="id_arr_ges" value='{{ $arrendatario->id }}'>
+                        <input type="hidden" name="id_modificador"value="{{ Auth::user()->id_persona }}">
+                        <input type="hidden" name="id_creador"value="{{ Auth::user()->id_persona }}">
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="control-label">Condición</label>
+                                <select class="form-control" name="id_condicion" required="required" >
+                                    <option value="">Selecione Condición</option>
+                                    @if(!isset($reserva->id_condicion))
+                                        @foreach($condicion as $p)
+                                            <option value="{{ $p->id }}">{{ $p->nombre }}</option>
+                                        @endforeach    
+                                    @else
+                                        @foreach($condicion as $p)
+                                            @if($reserva->id_condicion == $p->id)
+                                                <option selected value="{{ $p->id }}">{{ $p->nombre }}</option>
+                                            @else
+                                                <option value="{{ $p->id }}">{{ $p->nombre }}</option>
+                                            @endif
+                                        @endforeach
+                                    @endif
+                                </select>
+                            </div>
+                        </div>
+                        <!--/span-->
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Monto Reserva</label>
+                                <input class="form-control" value="{{ $reserva->monto_reserva or null }}" name="monto_reserva" placeholder="" type="number"></input>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-8"> 
+                            <div class="form-group">
+                                <label class="control-label">Observaciones</label>
+                                <textarea name="descripcion"  id="descripcion" cols="20" class="form-control">{{ $reserva->descripcion or null }}</textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="white-box"> 
+                                    <h3 class="box-title">Subir Documento</h3>
+                                    <label for="input-file-now-custom-1">Documentos de Reserva</label>
+                                    <input type="file" id="foto" name="foto"  class="dropify"  />  
+                                </form>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <div class="white-box"> 
+                        
+                        <table id="ssss"  cellspacing="0" width="100%">
+                        <thead>
+                            <tr>
+                                <th><center>Click Ver Documento</center></th>
+                                <th>Borrar</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        @foreach($imgReserva as $p)
+                        <tr>
+                            <td  width="10px" height="10px">
+                            <center><a href="{{ URL::asset($p->ruta.'/'.$p->nombre) }}" target="_blank">BAJAR ARCHIVO<br> {{ $p->nombre }} </a></center>
+                            @can('revisioncomercial.edit')
+                                <td width="10px">
+                                <a href="{{ route('arrendatario.eliminararchivo', [$p->id,$persona->id]) }}" class="btn btn-danger btn-circle btn-lg"><i class="fa fa-check"></i></a>
+                                </td>
+                            @endcan
+                        </tr>
+                        @endforeach
+                        </tbody>
+                        </table>
+                        </div>
+                       
+
+                </div> {{-- form-body --}} 
+            </div> {{-- panel-body --}}
+        </div> {{-- panel-heading --}}
+    </div> {{-- panel-info --}}
+</div> {{-- Class Row --}}
+                                
+        <div class="form-actions">
+            <button type="submit" class="btn btn-success"> <i class="fa fa-check"></i> Guardar</button>
+            <a href="{{ route('arrendatario.index') }}" class="btn btn-info" style="color:white"><i class="fa fa-times-circle"></i>&nbsp;&nbsp;Calcelar</a>
+        </div>
+</form>
+
+
+{{-- FIN RESERVA --}}
+
+
+
+
+
+
+
+
+</section>    
+
+<section id="section-iconbox-3">
     <form action="{{ route('arrendatario.updateinmueble',$arrendatario->id) }}" method="post">
                             {!! csrf_field() !!}
                             <div class="row"> 
@@ -363,7 +617,8 @@
                                 </div>
                         </form>
 </section>
-                    <section id="section-iconbox-4">
+
+<section id="section-iconbox-4">
                     <div class="row">
                     <div class="col-sm-6">
                         <div class="white-box"> 
@@ -414,14 +669,18 @@
                                                 </table>
                         </div>
                     </div>
+        </div>
+</section>
 
-                </div>
-            </section>
-                   <section id="section-iconbox-5">
+<section id="section-iconbox-5">
                         <!-- MODAL GESTION CREAR -->
-                   <div class="row">
-                                <div class="col-lg-2 col-sm-3 col-xs-12">
-                                    <button class="btn btn-block btn-primary" data-toggle="modal" id='via_portal' data-target="#modal-contacto1" >Nueva Cita</button>
+                    <div class="row">
+                    <div class="col-lg-2 col-sm-3">
+                    <button class="btn btn-block btn-primary" data-toggle="modal" id='via_portal' data-target="#modal-contacto1" >Nueva Cita</button>
+                    </div>
+                                 <div class="col-lg-2 col-sm-3">
+                                   <a href="{{ route("arrendatario.crearBorrador",$arrendatario->id) }}"><button class="btn btn-block btn-secondary" id='crear_contrato' >Contrato Borrador</button></a>
+                                </div>
 
                                     <div id="modal-contacto1" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
                                             <div class="modal-dialog modal-lg">
@@ -483,7 +742,12 @@
                                                 <div class="col-md-4">
                                                     <div class="form-group">
                                                         <label class="control-label">Nombre Captador</label>
-                                                        <input type="text" name="nombre_c" id="nombre_c"  class="form-control" placeholder="" required="required" value='{{ $citas->nombre_c or '' }}' > 
+                                                        <select class="form-control" name="nombre_c" id="nombre_c"  required="required" >
+                                                            <option value="">Selecione Captador</option>
+                                                            @foreach($corredores as $p)
+                                                                <option value="{{ $p->Corredor }}">{{ $p->Corredor }}</option>
+                                                            @endforeach                                                            
+                                                        </select>
                                                     </div>
                                                 </div>
                                                 
@@ -495,7 +759,7 @@
                                                 <div class="col-md-12 ">
                                                     <div class="form-group">
                                                         <label>Detalle</label>
-                                                        <input name='detalle' id='detalle' type="text" class="form-control"  value="{{ $citas->detalle or '' }}" > </div>
+                                                        <textarea name="detalle"  id="detalle" cols="20" class="form-control"></textarea>
                                                 </div>
                                             </div>                                            
 
@@ -510,17 +774,14 @@
                                             </div>
                                     </div> 
                                     <!-- FIN MODAL GESTION CREAR -->
-                                </div>
-                                 <div class="col-lg-2 col-sm-3 col-xs-12">
-                                   <a href="{{ route("arrendatario.crearBorrador",$arrendatario->id) }}"> <button class="btn btn-block btn-secondary" id='crear_contrato' >Contrato Borrador</button> </a>
-                                </div>
+                                
                             </div>
                             <br/><br/>
                 <table id="listusers1" class="display nowrap" cellspacing="0" width="100%">
                 <thead>
                     <tr>
                         <th>Cita</th>
-                        <th>Contacto</th>
+                        <th>Nombre</th>
                         <th>Captador</th>
                         <th>Detalle</th>
                         <th></th>
@@ -610,7 +871,13 @@
                                                 <div class="col-md-4">
                                                     <div class="form-group">
                                                         <label class="control-label">Nombre Captador</label>
-                                                        <input type="text" name="nombre_c" id="nombre_c_e"  class="form-control" placeholder="" required="required" > 
+                                                        <select class="form-control" name="nombre_c" id="nombre_c_e" required="required" >
+                                                            <option value="">Selecione Captador</option>
+                                                            @foreach($corredores as $p)
+
+                                                                <option value="{{ $p->Corredor }}">{{ $p->Corredor }}</option>
+                                                            @endforeach                                                            
+                                                        </select> 
                                                     </div>
                                                 </div>
 
@@ -622,7 +889,8 @@
                                                 <div class="col-md-12 ">
                                                     <div class="form-group">
                                                         <label>Detalle</label>
-                                                        <input name='detalle' id='detalle_e' type="text" class="form-control"  > </div>
+                                                        <textarea name="detalle"  id="detalle_e" cols="20" class="form-control"></textarea>
+                                                        </div>
                                                 </div>
                                             </div>                                            
 
@@ -842,6 +1110,83 @@ $(function() {
 
 
 $(function(){
+
+    $('#modal-gestion1').on('hidden.bs.modal', function () {
+        $("#form1")[0].reset();
+         var fecha =  new Date();
+         var year = fecha.getFullYear();
+         var mes = fecha.getMonth()+1;
+         var dia = fecha.getDate();
+         var hora = fecha.getHours();
+         var minutos = fecha.getMinutes();
+         var segundos = fecha.getSeconds();
+         if(mes<10){mes='0'+mes}
+         if(dia<10){dia='0'+dia}
+         if(hora<10){hora='0'+hora}
+         if(minutos<10){minutos='0'+minutos}
+         if(segundos<10){segundos='0'+segundos}
+        $('#datepicker-fecha_contacto1').val(dia+'-'+mes+'-'+year);;
+        $('#hora_gestion').val(hora+':'+minutos);;
+    });
+
+    $('#modal-gestion1').on('shown.bs.modal', function () {
+        $("#form1")[0].reset();
+         var fecha =  new Date();
+         var year = fecha.getFullYear();
+         var mes = fecha.getMonth()+1;
+         var dia = fecha.getDate();
+         var hora = fecha.getHours();
+         var minutos = fecha.getMinutes();
+         var segundos = fecha.getSeconds();
+         if(mes<10){mes='0'+mes}
+         if(dia<10){dia='0'+dia}
+         if(hora<10){hora='0'+hora}
+         if(minutos<10){minutos='0'+minutos}
+         if(segundos<10){segundos='0'+segundos}
+        $('#datepicker-fecha_contacto1').val(dia+'-'+mes+'-'+year);;
+        $('#hora_gestion').val(hora+':'+minutos);;
+    });
+
+    $('#modal-gestion2').on('hidden.bs.modal', function () {
+        $("#form1")[0].reset();
+         var fecha =  new Date();
+         var year = fecha.getFullYear();
+         var mes = fecha.getMonth()+1;
+         var dia = fecha.getDate();
+         var hora = fecha.getHours();
+         var minutos = fecha.getMinutes();
+         var segundos = fecha.getSeconds();
+         if(mes<10){mes='0'+mes}
+         if(dia<10){dia='0'+dia}
+         if(hora<10){hora='0'+hora}
+         if(minutos<10){minutos='0'+minutos}
+         if(segundos<10){segundos='0'+segundos}
+        $('#datepicker-fecha_contacto1').val(dia+'-'+mes+'-'+year);;
+        $('#hora_gestion').val(hora+':'+minutos);;
+    });
+
+    $('#modal-gestion2').on('shown.bs.modal', function () {
+        $("#form1")[0].reset();
+         var fecha =  new Date();
+         var year = fecha.getFullYear();
+         var mes = fecha.getMonth()+1;
+         var dia = fecha.getDate();
+         var hora = fecha.getHours();
+         var minutos = fecha.getMinutes();
+         var segundos = fecha.getSeconds();
+         if(mes<10){mes='0'+mes}
+         if(dia<10){dia='0'+dia}
+         if(hora<10){hora='0'+hora}
+         if(minutos<10){minutos='0'+minutos}
+         if(segundos<10){segundos='0'+segundos}
+        $('#datepicker-fecha_contacto1').val(dia+'-'+mes+'-'+year);;
+        $('#hora_gestion').val(hora+':'+minutos);;
+    });
+
+
+
+
+
     
     $('#modal-contacto1').on('hidden.bs.modal', function () {
         $("#form1")[0].reset();
@@ -956,7 +1301,7 @@ $('#listusers1').DataTable({
             tinymce.init({
                 selector: "textarea",
                 theme: "modern",
-            height: 250,
+            height: 100,
             menubar: false,
                 plugins: [
                     "advlist autolink link lists charmap print preview hr anchor pagebreak spellchecker", "searchreplace wordcount visualblocks visualchars code fullscreen insertdatetime nonbreaking", "save table contextmenu directionality template paste textcolor"
@@ -1031,10 +1376,147 @@ $("#i_id_provincia").change(function (event) {
     });
 });
 
+<?php if($tab==1){  ?>
+    $(function() {
+            $("#li_1").addClass("tab-current");
+            $("#li_2").removeClass("tab-current");
+            $("#li_3").removeClass("tab-current");
+            $("#li_4").removeClass("tab-current");
+            $("#li_5").removeClass("tab-current");
+            $("#section-iconbox-1").addClass("content-current");
+            $("#section-iconbox-2").removeClass("content-current");
+            $("#section-iconbox-3").removeClass("content-current");
+            $("#section-iconbox-4").removeClass("content-current");
+            $("#section-iconbox-5").removeClass("content-current"); 
+           }); 
+<?php } ?>
 
+<?php if($tab==2){  ?>
+    $(function() {
+            $("#li_1").removeClass("tab-current");
+            $("#li_2").addClass("tab-current");
+            $("#li_3").removeClass("tab-current");
+            $("#li_4").removeClass("tab-current");
+            $("#li_5").removeClass("tab-current");
+            $("#section-iconbox-1").removeClass("content-current");
+            $("#section-iconbox-2").addClass("content-current");
+            $("#section-iconbox-3").removeClass("content-current");
+            $("#section-iconbox-4").removeClass("content-current");
+            $("#section-iconbox-5").removeClass("content-current");
+           }); 
+<?php } ?>
 
+<?php if($tab==3){  ?>
+    $(function() {
+            $("#li_1").removeClass("tab-current");
+            $("#li_2").removeClass("tab-current");
+            $("#li_3").addClass("tab-current");
+            $("#li_4").removeClass("tab-current");
+            $("#li_5").removeClass("tab-current");
+            $("#section-iconbox-1").removeClass("content-current");
+            $("#section-iconbox-2").removeClass("content-current");
+            $("#section-iconbox-3").addClass("content-current");
+            $("#section-iconbox-4").removeClass("content-current");
+            $("#section-iconbox-5").removeClass("content-current"); 
+           }); 
+<?php } ?>
 
-        
-    
+<?php if($tab==4){  ?>
+    $(function() {
+            $("#li_1").removeClass("tab-current");
+            $("#li_2").removeClass("tab-current");
+            $("#li_3").removeClass("tab-current");
+            $("#li_4").addClass("tab-current");
+            $("#li_5").removeClass("tab-current");
+            $("#section-iconbox-1").removeClass("content-current");
+            $("#section-iconbox-2").removeClass("content-current");
+            $("#section-iconbox-3").removeClass("content-current");
+            $("#section-iconbox-4").addClass("content-current");
+            $("#section-iconbox-5").removeClass("content-current");
+           }); 
+<?php } ?>
+
+<?php if($tab==5){  ?>
+    $(function() {
+            $("#li_1").removeClass("tab-current");
+            $("#li_2").removeClass("tab-current");
+            $("#li_3").removeClass("tab-current");
+            $("#li_4").removeClass("tab-current");
+            $("#li_5").addClass("tab-current");
+            $("#section-iconbox-1").removeClass("content-current");
+            $("#section-iconbox-2").removeClass("content-current");
+            $("#section-iconbox-3").removeClass("content-current");
+            $("#section-iconbox-4").removeClass("content-current");
+            $("#section-iconbox-5").addClass("content-current"); 
+           }); 
+<?php } ?>
+
+$("#li_1").click(function (event) {
+            $("#li_1").addClass("tab-current");
+            $("#li_2").removeClass("tab-current");
+            $("#li_3").removeClass("tab-current");
+            $("#li_4").removeClass("tab-current");
+            $("#li_5").removeClass("tab-current");
+            $("#section-iconbox-1").addClass("content-current");
+            $("#section-iconbox-2").removeClass("content-current");
+            $("#section-iconbox-3").removeClass("content-current");
+            $("#section-iconbox-4").removeClass("content-current");
+            $("#section-iconbox-5").removeClass("content-current"); 
+
+            
+});
+$("#li_2").click(function (event) {
+            $("#li_1").removeClass("tab-current");
+            $("#li_2").addClass("tab-current");
+            $("#li_3").removeClass("tab-current");
+            $("#li_4").removeClass("tab-current");
+            $("#li_5").removeClass("tab-current");
+            $("#section-iconbox-1").removeClass("content-current");
+            $("#section-iconbox-2").addClass("content-current");
+            $("#section-iconbox-3").removeClass("content-current");
+            $("#section-iconbox-4").removeClass("content-current");
+            $("#section-iconbox-5").removeClass("content-current"); 
+       
+});
+$("#li_3").click(function (event) {
+            $("#li_1").removeClass("tab-current");
+            $("#li_2").removeClass("tab-current");
+            $("#li_3").addClass("tab-current");
+            $("#li_4").removeClass("tab-current");
+            $("#li_5").removeClass("tab-current");
+            $("#section-iconbox-1").removeClass("content-current");
+            $("#section-iconbox-2").removeClass("content-current");
+            $("#section-iconbox-3").addClass("content-current");
+            $("#section-iconbox-4").removeClass("content-current");
+            $("#section-iconbox-5").removeClass("content-current"); 
+       
+});
+$("#li_4").click(function (event) {
+            $("#li_1").removeClass("tab-current");
+            $("#li_2").removeClass("tab-current");
+            $("#li_3").removeClass("tab-current");
+            $("#li_4").addClass("tab-current");
+            $("#li_5").removeClass("tab-current");
+            $("#section-iconbox-1").removeClass("content-current");
+            $("#section-iconbox-2").removeClass("content-current");
+            $("#section-iconbox-3").removeClass("content-current");
+            $("#section-iconbox-4").addClass("content-current");
+            $("#section-iconbox-5").removeClass("content-current"); 
+       
+});
+$("#li_5").click(function (event) {
+            $("#li_1").removeClass("tab-current");
+            $("#li_2").removeClass("tab-current");
+            $("#li_3").removeClass("tab-current");
+            $("#li_4").removeClass("tab-current");
+            $("#li_5").addClass("tab-current");
+            $("#section-iconbox-1").removeClass("content-current");
+            $("#section-iconbox-2").removeClass("content-current");
+            $("#section-iconbox-3").removeClass("content-current");
+            $("#section-iconbox-4").removeClass("content-current");
+            $("#section-iconbox-5").addClass("content-current"); 
+       
+});
+   
 </script>
 @endsection

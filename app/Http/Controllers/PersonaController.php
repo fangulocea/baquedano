@@ -112,7 +112,7 @@ class PersonaController extends Controller
             } 
             else
             {
-                $request = array_add($request, 'name', $request->nombre);
+                $request = array_add($request, 'name', $request->nombre.' '.$request->apellido_paterno.' '.$request->apellido_materno);
                 $request = array_add($request, 'password', '$2y$10$G4rI0Q743N/iWVhdUVtYsOAan.8gNsZkcvvl6w.A60QyluAYVe8eW');
                 $request = array_add($request, 'id_persona', $id_user);
                 $user = User::create($request->all());    

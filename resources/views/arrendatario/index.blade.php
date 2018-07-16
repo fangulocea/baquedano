@@ -41,7 +41,7 @@
                                 <td>{{ trans_choice('mensajes.arrendatario', $arr->id_estado) }}</td>
                                 @can('arrendatario.edit')
                                 <td width="10px">
-                                    <a href="{{ route('arrendatario.edit', $arr->id) }}"><span class="btn btn-warning btn-circle btn-sm"><i class="ti-pencil-alt"></i></span></a>
+                                    <a href="{{ route('arrendatario.edit',[$arr->id,1]) }}"><span class="btn btn-warning btn-circle btn-sm"><i class="ti-pencil-alt"></i></span></a>
                                 </td>
                                 @endcan
                                 @can('arrendatario.destroy')

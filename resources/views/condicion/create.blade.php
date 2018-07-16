@@ -26,7 +26,8 @@
                                 <div class="col-md-12 ">
                                     <div class="form-group">
                                         <label>Detalle de la condición</label>
-                                        <input name='descripcion' type="text" class="form-control"> </div>
+                                        <textarea name="descripcion"  id="descripcion" cols="25" rows="10" class="form-control" required="required"></textarea>
+                                    </div>
                                 </div>
                             </div>
 
@@ -55,5 +56,30 @@
     </div>
 </div>
 <script src="{{ URL::asset('plugins/bower_components/jquery/dist/jquery.min.js') }}"></script>
+       
+
+ 
+        <script src="{{ URL::asset('plugins/bower_components/tinymce/tinymce.min.js') }}"></script>
+        <script type="text/javascript">
+
+               if ($("#descripcion").length > 0) {
+            tinymce.init({
+                selector: "textarea#descripcion",
+                theme: "modern",
+            height: 250,
+            menubar: false,
+                plugins: [
+                    "advlist autolink link lists charmap print preview hr anchor pagebreak spellchecker", "searchreplace wordcount visualblocks visualchars code fullscreen insertdatetime nonbreaking", "save table contextmenu directionality template paste textcolor"
+                ],
+                toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | l      ink | print preview media fullpage | forecolor backcolor",
+            setup: function (editor) {
+                editor.on('change', function (e) {
+                    editor.save();
+                });
+            }
+        });
+        }
+          
+    </script>
 
 @endsection

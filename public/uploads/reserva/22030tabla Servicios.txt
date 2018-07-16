@@ -1,0 +1,314 @@
+<table border=1 cellspacing=0 cellpadding=2 bordercolor="000000" style="undefined;table-layout: fixed; width: 631px;">
+<colgroup>
+<col style="width: 110px">
+<col style="width: 282px">
+<col style="width: 125px">
+<col style="width: 114px">
+</colgroup>
+  <tr>
+    <th>ITEM<br></th>
+    <th>DESCRIPCIÓN</th>
+    <th>PRECIO<br>  UNITARIO ($)</th>
+    <th>  UNIDAD<br></th>
+  </tr>
+  <tr>
+    <td>Aseo</td>
+    <td>Aseo General Básico</td>
+    <td>1,145 UF + IVA</td>
+    <td>c/u</td>
+  </tr>
+  <tr>
+    <td>Aseo</td>
+    <td>Aseo General Intenso</td>
+    <td>1,527 UF + IVA</td>
+    <td>c/u</td>
+  </tr>
+  <tr>
+    <td>Pintura</td>
+    <td>Pintura Guardapolvos</td>
+    <td>0,046 UF + IVA</td>
+    <td>ml</td>
+  </tr>
+  <tr>
+    <td>Pintura</td>
+    <td>Pintura Muros</td>
+    <td>0,573 UF + IVA</td>
+    <td>c/u</td>
+  </tr>
+  <tr>
+    <td>Pintura</td>
+    <td>Pintura Interior de Closet Chico</td>
+    <td>0,382 UF + IVA</td>
+    <td>c/u</td>
+  </tr>
+  <tr>
+    <td>Pintura</td>
+    <td>Pintura Interior de Closet Grande</td>
+    <td>0,573 UF + IVA</td>
+    <td>c/u</td>
+  </tr>
+  <tr>
+    <td>Pintura</td>
+    <td>Pintura Puerta</td>
+    <td>0,382 UF + IVA</td>
+    <td>c/u</td>
+  </tr>
+  <tr>
+    <td>Pintura</td>
+    <td>Pintura Marco de Puerta</td>
+    <td>0,305 UF + IVA</td>
+    <td>c/u</td>
+  </tr>
+  <tr>
+    <td>Pintura</td>
+    <td>Pintura Cielo</td>
+    <td>1,145 UF + IVA</td>
+    <td>Por hab</td>
+  </tr>
+  <tr>
+    <td>Gasfitería</td>
+    <td>Cambio de Flexible</td>
+    <td>0,305 UF + IVA</td>
+    <td>c/u</td>
+  </tr>
+  <tr>
+    <td>Gasfitería</td>
+    <td>Cambio de Flexible Ducha</td>
+    <td>0,229 UF + IVA</td>
+    <td>c/u</td>
+  </tr>
+  <tr>
+    <td>Gasfitería</td>
+    <td>Cambio de Challa Ducha</td>
+    <td>0,191 UF + IVA</td>
+    <td>c/u</td>
+  </tr>
+  <tr>
+    <td>Gasfitería</td>
+    <td>Destape Desagües y Sifón</td>
+    <td>0,153 UF + IVA</td>
+    <td>c/u</td>
+  </tr>
+  <tr>
+    <td>Gasfitería</td>
+    <td>Cambio de Sifón</td>
+    <td>0,573 UF + IVA</td>
+    <td>c/u</td>
+  </tr>
+  <tr>
+    <td>Gasfitería</td>
+    <td>Cambio tapa WC</td>
+    <td>0,954  UF + IVA</td>
+    <td>c/u</td>
+  </tr>
+  <tr>
+    <td>Gasfitería</td>
+    <td>Flaper WC</td>
+    <td>0,763 UF + IVA</td>
+    <td>c/u</td>
+  </tr>
+  <tr>
+    <td>Gasfitería</td>
+    <td>Monomando Cocina</td>
+    <td>1,145 UF + IVA</td>
+    <td>c/u</td>
+  </tr>
+  <tr>
+    <td>Gasfitería</td>
+    <td>Monomando Baño</td>
+    <td>0,763 UF + IVA</td>
+    <td>c/u</td>
+  </tr>
+  <tr>
+    <td>Gasfitería</td>
+    <td>Cambio Inversor Ducha Teléfono</td>
+    <td>1,145 UF + IVA</td>
+    <td>c/u</td>
+  </tr>
+  <tr>
+    <td>Gasfitería</td>
+    <td>Reparación de Grifería</td>
+    <td>A Evaluar   </td>
+    <td>c/u</td>
+  </tr>
+  <tr>
+    <td>Electricidad</td>
+    <td>Rep. Enchufe/Interruptor</td>
+    <td>0,229 UF + IVA</td>
+    <td>c/u</td>
+  </tr>
+  <tr>
+    <td>Electricidad</td>
+    <td>Camb. Enchufe/ Interruptor</td>
+    <td>0,305 UF + IVA</td>
+    <td>c/u</td>
+  </tr>
+  <tr>
+    <td>Electricidad</td>
+    <td>Ampolleta Campana/ Horno</td>
+    <td>0,191 UF + IVA</td>
+    <td>c/u</td>
+  </tr>
+  <tr>
+    <td>Electricidad</td>
+    <td>Cambio de Extractor</td>
+    <td>0,954 + IVA</td>
+    <td>c/u</td>
+  </tr>
+  <tr>
+    <td>Electricidad</td>
+    <td>Reposición Ampolletas</td>
+    <td>0,095 UF + IVA</td>
+    <td>c/u</td>
+  </tr>
+  <tr>
+    <td>Electricidad</td>
+    <td>Cambio Foco/Luminaria</td>
+    <td>0,382 UF + IVA</td>
+    <td>c/u</td>
+  </tr>
+  <tr>
+    <td>Electricidad</td>
+    <td>Cambio Controles de Campana</td>
+    <td>0,573 UF + IVA</td>
+    <td>Por la placa</td>
+  </tr>
+  <tr>
+    <td>Electricidad</td>
+    <td>Cambio Controles Encimera</td>
+    <td>0,229 UF + IVA</td>
+    <td>c/u</td>
+  </tr>
+  <tr>
+    <td>Electricidad</td>
+    <td>Cambio Encimera</td>
+    <td>4,034 UF + IVA</td>
+    <td>c/u</td>
+  </tr>
+  <tr>
+    <td>Electricidad</td>
+    <td>Cambio Campana</td>
+    <td>1,718 UF + IVA</td>
+    <td>c/u</td>
+  </tr>
+  <tr>
+    <td>Electricidad</td>
+    <td>Cambio Horno Eléctrico</td>
+    <td>11,45 UF + IVA </td>
+    <td>c/u</td>
+  </tr>
+  <tr>
+    <td>Electricidad</td>
+    <td>Camb. Acumulador Eléctrico</td>
+    <td>9,547 UF + IVA</td>
+    <td>c/u</td>
+  </tr>
+  <tr>
+    <td>Cerrajería</td>
+    <td>Cambio Chapa Acceso Princ.</td>
+    <td>0,763 UF + IVA</td>
+    <td>c/u</td>
+  </tr>
+  <tr>
+    <td>Cerrajería</td>
+    <td>Cambio de Chapa Dormi/Bodeg</td>
+    <td>0,573 UF + IVA</td>
+    <td>c/u</td>
+  </tr>
+  <tr>
+    <td>Carpintería</td>
+    <td>Rep. Forado o piquete en puertas interiores</td>
+    <td>0,573 UF + IVA</td>
+    <td>c/u</td>
+  </tr>
+  <tr>
+    <td>Carpintería</td>
+    <td>Cambio de Puerta Interior</td>
+    <td>1,718 UF + IVA</td>
+    <td>c/u</td>
+  </tr>
+  <tr>
+    <td>Carpintería</td>
+    <td>Fijación de Muebles</td>
+    <td>0,267 UF + IVA</td>
+    <td>c/u</td>
+  </tr>
+  <tr>
+    <td>Carpintería</td>
+    <td>Cambio de Bandejas de Closet</td>
+    <td>0,458 UF + IVA</td>
+    <td>c/u</td>
+  </tr>
+  <tr>
+    <td>Carpintería</td>
+    <td>Cambio de Bisagras de Mueble</td>
+    <td>0,191 UF + IVA</td>
+    <td>c/u</td>
+  </tr>
+  <tr>
+    <td>Carpintería</td>
+    <td>Cambio de Bisagras de Puerta </td>
+    <td>0,191 UF + IVA</td>
+    <td>c/u</td>
+  </tr>
+  <tr>
+    <td>Rep. Generales</td>
+    <td>Cambio de Rieles de Cortina</td>
+    <td>0,324 UF + IVA</td>
+    <td>c/u</td>
+  </tr>
+  <tr>
+    <td>Rep. Generales</td>
+    <td>Reparación Forado en Tabique (r&lt;6cm)</td>
+    <td>0,954 UF + IVA</td>
+    <td>c/u</td>
+  </tr>
+  <tr>
+    <td>Rep. Generales</td>
+    <td>Cambio Pavimento</td>
+    <td>A Evaluar</td>
+    <td>Por hab</td>
+  </tr>
+  <tr>
+    <td>Ventanas</td>
+    <td>Reparación Ventana</td>
+    <td>A Evaluar</td>
+    <td>c/u</td>
+  </tr>
+  <tr>
+    <td>Ventanas</td>
+    <td>Cambio de Vidrio</td>
+    <td>A Evaluar</td>
+    <td>c/u</td>
+  </tr>
+  <tr>
+    <td>Ventanas</td>
+    <td>Reparación de Chapa</td>
+    <td>A Evaluar</td>
+    <td>c/u</td>
+  </tr>
+  <tr>
+    <td>Accesorios</td>
+    <td>Cambio Cubierta Muebles</td>
+    <td>A Evaluar</td>
+    <td>c/u</td>
+  </tr>
+  <tr>
+    <td>Accesorios</td>
+    <td>Tirador Puerta Closet</td>
+    <td>0,191 UF + IVA</td>
+    <td>c/u</td>
+  </tr>
+  <tr>
+    <td>Accesorios</td>
+    <td>Toallero</td>
+    <td>0,191 UF + IVA</td>
+    <td>c/u</td>
+  </tr>
+  <tr>
+    <td>Otros</td>
+    <td>Otros</td>
+    <td>A Evaluar</td>
+    <td>c/u</td>
+  </tr>
+</table>

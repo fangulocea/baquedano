@@ -11,148 +11,201 @@
                 <nav>
                     <ul>
                         <li><a href="#section-iconbox-1" class="sticon ti ti-user"><span>Arrendatario</span></a></li>
+                        <li><a id="2" href="#section-iconbox-2" class="sticon ti ti-alarm-clock"><span>Reserva</span></a></li>
+                        <li><a id="3" href="#section-iconbox-3" class="sticon ti ti-home"><span>Asignar Inmueble</span></a></li>
                         <li><a id="4" href="#section-iconbox-4" class="sticon ti-camera"><span>Documentos</span></a></li>
                         <li><a id="5" href="#section-iconbox-5" class="sticon ti-agenda"><span>Gestiones</span></a></li>
                     </ul>
                 </nav>
                 <div class="content-wrap">
-                    <section id="section-iconbox-1">
-                        <div class="panel panel-info">
-                            <div class="panel-heading"> Nuevo Arrendatario</div>
-                            <div class="panel-wrapper collapse in" aria-expanded="true">
-                                <div class="panel-body">
-                                    <form action="{{ route('arrendatario.store') }}" method="post">
-                                        {!! csrf_field() !!}
-                                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                                        <div class="form-body">
-                                            <h3 class="box-title">Información del Arrendatario</h3>
-                                            <hr>
-                            <div class="row">
-                                <div class="col-md-2">
-                                    <div class="form-group">
-                                        <label class="control-label">Rut</label>
-                                        <input type="text" name="rut" class="form-control" placeholder="" oninput='checkRut(this)' > 
-                                    </div>
-                                </div>
-                                
-                                <div class="col-md-10">
-                                </div>
-                            </div>
 
-                            <div class="row"> 
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label class="control-label">Nombre</label>
-                                        <input type="text" name="nombre" class="form-control" placeholder="" required="required" > 
-                                     </div>
-                                </div>
-                                <!--/span-->
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label>Apellido Paterno</label>
-                                        <input type="text" name="apellido_paterno" class="form-control" placeholder=""  > 
-                                    </div>
-                                </div>
-                                <!--/span-->
-                                 <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label>Apellido Materno</label>
-                                        <input type="text" name="apellido_materno" class="form-control" placeholder=""  >
+<section id="section-iconbox-1">
+    <div class="panel panel-info">
+        <div class="panel-heading">
+            Nuevo Arrendatario
+        </div>
+        <div aria-expanded="true" class="panel-wrapper collapse in">
+            <div class="panel-body">
+                <form action="{{ route('arrendatario.store') }}" method="post">
+                    {!! csrf_field() !!}
+                    <input name="_token" type="hidden" value="{{ csrf_token() }}">
+                        <div class="form-body">
+                            <h3 class="box-title">
+                                Información del Arrendatario
+                            </h3>
+                            <hr>
+                                <div class="row">
+                                    <div class="col-md-2">
+                                        <div class="form-group">
+                                            <label class="control-label">
+                                                Rut
+                                            </label>
+                                            <input class="form-control" name="rut" oninput="checkRut(this)" placeholder="" type="text">
+                                            </input>
                                         </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-6 ">
-                                    <div class="form-group">
-                                        <label>Dirección</label>
-                                        <div id="direcciones">
-                                                    <input name='direccion' id='direccion' class="typeahead form-control" type="text" placeholder="Dirección" > 
-                                            </div>
+                                    </div>
+                                    <div class="col-md-10">
                                     </div>
                                 </div>
-                                  <div class="col-md-3 ">
-                                    <div class="form-group">
-                                        <label>Número</label>
-                                            <input name='numero' id='numero' class="form-control" type="text" placeholder="Dirección" > 
-                                    </div>
-                                </div>
-                                  <div class="col-md-3 ">
-                                    <div class="form-group">
-                                        <label>Departamento</label>
-                                            <input name='departamento' id='departamento' class=" form-control" type="text" placeholder="Dirección" > 
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-   
-                                <div class="col-md-4 ">
-                                    <div class="form-group">
-                                        <label>Teléfono</label>
-                                        <input name='telefono' type="numero" class="form-control"> </div>
-                                </div>
-                                <div class="col-md-8 ">
-                                    <div class="form-group">
-                                        <label>Email</label>
-                                        <input name='email' type="text" class="form-control"> </div>
-                                </div>
-
-                            </div>
-
-                            <div class="row">
-   
-                                <div class="col-md-12 ">
-                                    <div class="form-group">
-                                        <label>Preferencias para el Inmueble</label>
-                                        <input name='preferencias' type="text" class="form-control" maxlength="190"> </div>
-                                </div>
-
-                            </div>
-
-                            <div class="row"> 
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label>Región</label>
-                                        {{ Form::select('id_region',$regiones, null,array('class'=>'form-control','style'=>'','required'=>'required','id'=>'regiones',''=>'Selecciona región')) }}
-                                     </div>
-                                </div>
-
-                                <!--/span-->
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label>Provincia</label>
-                                        {{ Form::select('id_provincia',[''=>'Selecciona provincia'], null, array('class'=>'form-control','style'=>'','id'=>'provincias')) }} </div>
-                                </div>
-                                <!--/span-->
-                                 <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label>Comuna</label>
-                                        {{ Form::select('id_comuna',[''=>'Selecciona comuna'], null, array('class'=>'form-control','style'=>'','id'=>'comunas')) }}
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label class="control-label">
+                                                Nombre
+                                            </label>
+                                            <input class="form-control" name="nombre" placeholder="" required="required" type="text">
+                                            </input>
                                         </div>
+                                    </div>
+                                    <!--/span-->
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label>
+                                                Apellido Paterno
+                                            </label>
+                                            <input class="form-control" name="apellido_paterno" placeholder="" type="text">
+                                            </input>
+                                        </div>
+                                    </div>
+                                    <!--/span-->
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label>
+                                                Apellido Materno
+                                            </label>
+                                            <input class="form-control" name="apellido_materno" placeholder="" type="text">
+                                            </input>
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                            <!--/row-->
-                                           <div class="row"> 
-                                                <div class="col-md-4">
-                                                    <div class="form-group">
-                                                        <label>Estado</label>
-                                                  {{ Form::select('id_estado',['4'=>'Activo - Problemas de Pago','5'=>'Activo - Daño al inmueble ','0'=>'Descartado','1'=>'Sin Gestión','2'=>'Activo','3'=>'En Espera','6'=>'Contrato Borrador','7'=>'No Activo - Daño al inmueble','12'=>'No Activo - Problema de Pago','11'=>'Contrato Firmado'], null,array('class'=>'form-control','style'=>'','id'=>'id_estado','placeholder'=>'Seleccione estado','required'=>'required')) }}
-                                                    </div>
-                                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 ">
+                                        <div class="form-group">
+                                            <label>
+                                                Dirección
+                                            </label>
+                                            <div id="direcciones">
+                                                <input class="typeahead form-control" id="direccion" name="direccion" placeholder="Dirección" type="text">
+                                                </input>
                                             </div>
-
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 ">
+                                        <div class="form-group">
+                                            <label>
+                                                Número
+                                            </label>
+                                            <input class="form-control" id="numero" name="numero" placeholder="Dirección" type="text">
+                                            </input>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 ">
+                                        <div class="form-group">
+                                            <label>
+                                                Departamento
+                                            </label>
+                                            <input class=" form-control" id="departamento" name="departamento" placeholder="Dirección" type="text">
+                                            </input>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4 ">
+                                        <div class="form-group">
+                                            <label>
+                                                Teléfono
+                                            </label>
+                                            <input class="form-control" name="telefono" type="numero">
+                                            </input>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-8 ">
+                                        <div class="form-group">
+                                            <label>
+                                                Email
+                                            </label>
+                                            <input class="form-control" name="email" type="text">
+                                            </input>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12 ">
+                                        <div class="form-group">
+                                            <label>
+                                                Preferencias para el Inmueble
+                                            </label>
+                                            <input class="form-control" maxlength="190" name="preferencias" type="text">
+                                            </input>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label>
+                                                Región
+                                            </label>
+                                            {{ Form::select('id_region',$regiones, null,array('class'=>'form-control','style'=>'','required'=>'required','id'=>'regiones',''=>'Selecciona región')) }}
+                                        </div>
+                                    </div>
+                                    <!--/span-->
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label>
+                                                Provincia
+                                            </label>
+                                            {{ Form::select('id_provincia',[''=>'Selecciona provincia'], null, array('class'=>'form-control','style'=>'','id'=>'provincias')) }}
+                                        </div>
+                                    </div>
+                                    <!--/span-->
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label>
+                                                Comuna
+                                            </label>
+                                            {{ Form::select('id_comuna',[''=>'Selecciona comuna'], null, array('class'=>'form-control','style'=>'','id'=>'comunas')) }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--/row-->
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label>
+                                                Estado
+                                            </label>
+                                            {{ Form::select('id_estado',['4'=>'Activo - Problemas de Pago','5'=>'Activo - Daño al inmueble ','0'=>'Descartado','1'=>'Sin Gestión','2'=>'Activo','3'=>'En Espera','6'=>'Contrato Borrador','7'=>'No Activo - Daño al inmueble','12'=>'No Activo - Problema de Pago','11'=>'Contrato Firmado'], null,array('class'=>'form-control','style'=>'','id'=>'id_estado','placeholder'=>'Seleccione estado','required'=>'required')) }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </hr>
                         </div>
                         <div class="form-actions">
-                            <input type="hidden" name="id_creador" value="{{ Auth::user()->id_persona}}">
-                            <button type="submit" class="btn btn-success"> <i class="fa fa-check"></i> Guardar</button>
-                            <a href="{{ route('arrendatario.index') }}" class="btn btn-info" style="color:white"><i class="fa fa-times-circle"></i>&nbsp;&nbsp;Calcelar</a>
+                            <input name="id_creador" type="hidden" value="{{ Auth::user()->id_persona}}">
+                                <button class="btn btn-success" type="submit">
+                                    <i class="fa fa-check">
+                                    </i>
+                                    Guardar
+                                </button>
+                                <a class="btn btn-info" href="{{ route('arrendatario.index') }}" style="color:white">
+                                    <i class="fa fa-times-circle">
+                                    </i>
+                                    Calcelar
+                                </a>
+                            </input>
                         </div>
-                    </form>
-                                </div>
-                            </div>
-                        </div>
-                    </section>
+                    </input>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
                     <section id="section-iconbox-2" >
                         <h2>Tabbing 2</h2></section>
+                    <section id="section-iconbox-3" >
+                        <h2>Tabbing 3</h2></section>
                     <section id="section-iconbox-4">
                         <h2>Tabbing 4</h2></section>
                     <section id="section-iconbox-5">

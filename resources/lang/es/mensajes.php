@@ -16,4 +16,6 @@ return [
 
 		'pagopropietario' => '{1}No Pagado|{2}Pago Parcial|{3}Pagado|{4}Vencido',
 
+		'inmueble' => '{0}No Vigente|{1}Vigente|{2}Reservado',
+
 ];

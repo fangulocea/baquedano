@@ -12,7 +12,6 @@
                     <tr>
                         <th>ID</th>
                         <th>Nombre</th>
-                        <th>Descripción</th>
                         <th>Estado</th>
                         <th></th>
                         <th></th>
@@ -23,7 +22,6 @@
                     <tr>
                         <th>ID</th>
                         <th>Nombre</th>
-                        <th>Descripción</th>
                         <th>Estado</th>
                         <th></th>
                         <th></th>
@@ -35,7 +33,6 @@
                             <tr>
                                 <td>{{ $condicion->id }}</td>
                                 <td>{{ $condicion->nombre }}</td>
-                                <td>{{ $condicion->descripcion }}</td>
                                 <td>{{ trans_choice('mensajes.vigencia', $condicion->estado ) }}</td>
                                 @can('condicion.show')
                                 <td width="10px">
@@ -100,7 +97,7 @@ $('#listusers').DataTable({
     ],
 
     columnDefs: [{
-            "targets": [4, 5, 6],
+            "targets": [3, 4, 5],
             "orderable": false
         }],
 

@@ -6,6 +6,8 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+    'App\\Arr_Reservas' => $baseDir . '/app/Arr_Reservas.php',
+    'App\\Arr_ReservasDocs' => $baseDir . '/app/Arr_ReservasDocs.php',
     'App\\Arrendatario' => $baseDir . '/app/Arrendatario.php',
     'App\\ArrendatarioCitas' => $baseDir . '/app/ArrendatarioCitas.php',
     'App\\ArrendatarioFoto' => $baseDir . '/app/ArrendatarioFoto.php',
@@ -180,6 +182,10 @@ return array(
     'ContratoFinalPdf' => $baseDir . '/database/migrations/2018_06_21_223030_ContratoFinalPdf.php',
     'ContratoInmueblesPropietarios' => $baseDir . '/database/migrations/2018_07_02_163211_ContratoInmueblesPropietarios.php',
     'Cpdf' => $vendorDir . '/dompdf/dompdf/lib/Cpdf.php',
+    'CreateArrReservas' => $baseDir . '/database/migrations/2018_07_15_190718_create_arr_reservas.php',
+    'CreateArrReservasGes' => $baseDir . '/database/migrations/2018_07_16_123732_create_arr_reservas_ges.php',
+    'CreateArrReservasGesDocs' => $baseDir . '/database/migrations/2018_07_16_123813_create_arr_reservas_ges_docs.php',
+    'CreateArrReservasdocs' => $baseDir . '/database/migrations/2018_07_15_190913_create_arr_reservasdocs.php',
     'CreateArrendatario' => $baseDir . '/database/migrations/2018_06_10_2100308_create_Arrendatario.php',
     'CreateArrendatarioCita' => $baseDir . '/database/migrations/2018_06_10_210342_create_ArrendatarioCita.php',
     'CreateArrendatarioImg' => $baseDir . '/database/migrations/2018_06_10_210309_create_ArrendatarioImg.php',
@@ -3370,9 +3376,9 @@ return array(
     'SebastianBergmann\\ResourceOperations\\ResourceOperations' => $vendorDir . '/sebastian/resource-operations/src/ResourceOperations.php',
     'SebastianBergmann\\Version' => $vendorDir . '/sebastian/version/src/Version.php',
     'SessionUpdateTimestampHandlerInterface' => $vendorDir . '/symfony/polyfill-php70/Resources/stubs/SessionUpdateTimestampHandlerInterface.php',
-    'SimulaMensualPropietario' => $baseDir . '/database/migrations/2018_07_12_000455_SimulaMensualPropietario.php',
-    'SimulaPagoPropietario' => $baseDir . '/database/migrations/2018_07_12_000351_SimulaPagoPropietario.php',
-    'SimulaPropietario' => $baseDir . '/database/migrations/2018_07_12_000307_SimulaPropietario.php',
+    'SimulaMensualPropietario' => $baseDir . '/database/migrations/2018_07_13_164199_SimulaMensualPropietario.php',
+    'SimulaPagoPropietario' => $baseDir . '/database/migrations/2018_07_13_164101_SimulaPagoPropietario.php',
+    'SimulaPropietario' => $baseDir . '/database/migrations/2018_07_13_164100_SimulaPropietario.php',
     'SuperClosure\\Analyzer\\AstAnalyzer' => $vendorDir . '/jeremeamia/SuperClosure/src/Analyzer/AstAnalyzer.php',
     'SuperClosure\\Analyzer\\ClosureAnalyzer' => $vendorDir . '/jeremeamia/SuperClosure/src/Analyzer/ClosureAnalyzer.php',
     'SuperClosure\\Analyzer\\Token' => $vendorDir . '/jeremeamia/SuperClosure/src/Analyzer/Token.php',

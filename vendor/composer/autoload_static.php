@@ -377,6 +377,8 @@ class ComposerStaticInit0178ccda3db7603c96af3e22d130f715
     );
 
     public static $classMap = array (
+        'App\\Arr_Reservas' => __DIR__ . '/../..' . '/app/Arr_Reservas.php',
+        'App\\Arr_ReservasDocs' => __DIR__ . '/../..' . '/app/Arr_ReservasDocs.php',
         'App\\Arrendatario' => __DIR__ . '/../..' . '/app/Arrendatario.php',
         'App\\ArrendatarioCitas' => __DIR__ . '/../..' . '/app/ArrendatarioCitas.php',
         'App\\ArrendatarioFoto' => __DIR__ . '/../..' . '/app/ArrendatarioFoto.php',
@@ -551,6 +553,10 @@ class ComposerStaticInit0178ccda3db7603c96af3e22d130f715
         'ContratoFinalPdf' => __DIR__ . '/../..' . '/database/migrations/2018_06_21_223030_ContratoFinalPdf.php',
         'ContratoInmueblesPropietarios' => __DIR__ . '/../..' . '/database/migrations/2018_07_02_163211_ContratoInmueblesPropietarios.php',
         'Cpdf' => __DIR__ . '/..' . '/dompdf/dompdf/lib/Cpdf.php',
+        'CreateArrReservas' => __DIR__ . '/../..' . '/database/migrations/2018_07_15_190718_create_arr_reservas.php',
+        'CreateArrReservasGes' => __DIR__ . '/../..' . '/database/migrations/2018_07_16_123732_create_arr_reservas_ges.php',
+        'CreateArrReservasGesDocs' => __DIR__ . '/../..' . '/database/migrations/2018_07_16_123813_create_arr_reservas_ges_docs.php',
+        'CreateArrReservasdocs' => __DIR__ . '/../..' . '/database/migrations/2018_07_15_190913_create_arr_reservasdocs.php',
         'CreateArrendatario' => __DIR__ . '/../..' . '/database/migrations/2018_06_10_2100308_create_Arrendatario.php',
         'CreateArrendatarioCita' => __DIR__ . '/../..' . '/database/migrations/2018_06_10_210342_create_ArrendatarioCita.php',
         'CreateArrendatarioImg' => __DIR__ . '/../..' . '/database/migrations/2018_06_10_210309_create_ArrendatarioImg.php',
@@ -3741,9 +3747,9 @@ class ComposerStaticInit0178ccda3db7603c96af3e22d130f715
         'SebastianBergmann\\ResourceOperations\\ResourceOperations' => __DIR__ . '/..' . '/sebastian/resource-operations/src/ResourceOperations.php',
         'SebastianBergmann\\Version' => __DIR__ . '/..' . '/sebastian/version/src/Version.php',
         'SessionUpdateTimestampHandlerInterface' => __DIR__ . '/..' . '/symfony/polyfill-php70/Resources/stubs/SessionUpdateTimestampHandlerInterface.php',
-        'SimulaMensualPropietario' => __DIR__ . '/../..' . '/database/migrations/2018_07_12_000455_SimulaMensualPropietario.php',
-        'SimulaPagoPropietario' => __DIR__ . '/../..' . '/database/migrations/2018_07_12_000351_SimulaPagoPropietario.php',
-        'SimulaPropietario' => __DIR__ . '/../..' . '/database/migrations/2018_07_12_000307_SimulaPropietario.php',
+        'SimulaMensualPropietario' => __DIR__ . '/../..' . '/database/migrations/2018_07_13_164199_SimulaMensualPropietario.php',
+        'SimulaPagoPropietario' => __DIR__ . '/../..' . '/database/migrations/2018_07_13_164101_SimulaPagoPropietario.php',
+        'SimulaPropietario' => __DIR__ . '/../..' . '/database/migrations/2018_07_13_164100_SimulaPropietario.php',
         'SuperClosure\\Analyzer\\AstAnalyzer' => __DIR__ . '/..' . '/jeremeamia/SuperClosure/src/Analyzer/AstAnalyzer.php',
         'SuperClosure\\Analyzer\\ClosureAnalyzer' => __DIR__ . '/..' . '/jeremeamia/SuperClosure/src/Analyzer/ClosureAnalyzer.php',
         'SuperClosure\\Analyzer\\Token' => __DIR__ . '/..' . '/jeremeamia/SuperClosure/src/Analyzer/Token.php',

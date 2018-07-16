@@ -542,13 +542,16 @@ Route::middleware(['auth'])->group(function(){
 	Route::post('arrendatario/store','ArrendatarioController@store')->name('arrendatario.store')
 		->middleware('permission:arrendatario.create');
 
+	Route::post('arrendatario/CrearReserva/{id}','ArrendatarioController@CrearReserva')->name('arrendatario.CrearReserva')
+		->middleware('permission:arrendatario.create');
+
 	Route::get('arrendatario','ArrendatarioController@index')->name('arrendatario.index')
 		->middleware('permission:arrendatario.index');
 
 	Route::get('arrendatario/create','ArrendatarioController@create')->name('arrendatario.create')
 		->middleware('permission:arrendatario.create');
 
-	Route::get('arrendatario/edit/{id}','ArrendatarioController@edit')->name('arrendatario.edit')
+	Route::get('arrendatario/edit/{id}/{tab}','ArrendatarioController@edit')->name('arrendatario.edit')
 		->middleware('permission:arrendatario.edit');
 
 	Route::get('arrendatario/destroy/{id}','ArrendatarioController@destroy')->name('arrendatario.destroy')
@@ -568,6 +571,9 @@ Route::middleware(['auth'])->group(function(){
 	Route::get('arrendatario/eliminarfoto/{idf}/{idc}','ArrendatarioController@eliminarfoto')->name('arrendatario.eliminarfoto')
 		->middleware('permission:arrendatario.edit');
 
+	Route::get('arrendatario/eliminararchivo/{idf}/{idc}','ArrendatarioController@eliminararchivo')->name('arrendatario.eliminararchivo')
+		->middleware('permission:arrendatario.edit');
+
 	Route::post('arrendatario/gestion/create','ArrendatarioController@crearGestion')->name('arrendatario.crearGestion')
 		->middleware('permission:arrendatario.edit');
 
@@ -578,6 +584,14 @@ Route::middleware(['auth'])->group(function(){
 
 	Route::get('arrendatario/agregarinmueble/{idc}/{idi}','ArrendatarioController@agregarInmueble')->name('arrendatario.agregarinmueble')
 		->middleware('permission:arrendatario.edit');
+
+	Route::post('arrendatario/reserva/dev/{id}','ArrendatarioController@crearDevolucion')->name('arrendatario.crearDev')
+		->middleware('permission:arrendatario.edit');
+
+	Route::post('arrendatario/reserva/in/{id}','ArrendatarioController@crearIncumplimiento')->name('arrendatario.crearIn')
+		->middleware('permission:arrendatario.edit');
+
+
 
 	
 

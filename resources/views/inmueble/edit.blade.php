@@ -148,7 +148,7 @@
                                     <div class="col-md-3">
                                         <div class="form-group">
                                             <label>Estado</label>
-                                            {{ Form::select('estado',['1'=>'Vigente','0'=>'No Vigente'], $inmueble->estado ,array('class'=>'form-control','style'=>'','id'=>'estado','placeholder'=>'Selecciona estado','required'=>'required')) }}
+                                            {{ Form::select('estado',['1'=>'Vigente','0'=>'No Vigente','2'=>'Reservado'], $inmueble->estado ,array('class'=>'form-control','style'=>'','id'=>'estado','placeholder'=>'Selecciona estado','required'=>'required')) }}
                                         </div>
                                     </div>
                                       <div class="col-md-3">

@@ -45,7 +45,7 @@
                                 <td>{{ $i->comuna_nombre }}</td>
                                 <td>{{ $i->precio }}</td>
                                 <td>{{ $i->gastosComunes }}</td>
-                                <td>{{ trans_choice('mensajes.vigencia', $i->estado ) }}</td>
+                                <td>{{ trans_choice('mensajes.inmueble', $i->estado ) }}</td>
                                 @can('inmueble.show')
                                 <td width="10px">
                                     <a href="{{ route('inmueble.show', $i->id) }}" 

@@ -1,0 +1,3 @@
+adm_pagosarrendatario tabla de paso para pagos de garantia
+
+

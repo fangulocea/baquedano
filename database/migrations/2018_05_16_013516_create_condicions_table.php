@@ -17,7 +17,7 @@ class CreateCondicionsTable extends Migration
         Schema::create('condicions', function (Blueprint $table) {
             $table->increments('id');
             $table->string('nombre');
-            $table->string('descripcion');
+            $table->longText('descripcion');
             $table->integer('estado');
             $table->timestamps();
             $table->softDeletes();
