@@ -16,6 +16,8 @@ class CreateArrReservasdocs extends Migration
         Schema::dropIfExists('arr_reservasdocs');
         Schema::create('arr_reservasdocs', function (Blueprint $table) {
             $table->increments('id');
+            $table->integer('id_reserva')->unsigned();
+            $table->foreign('id_reserva')->references('id')->on('arr_reservas');
             $table->integer('id_arrendatario')->unsigned();
             $table->foreign('id_arrendatario')->references('id')->on('arrendatarios');
             $table->string('descripcion')->nullable();

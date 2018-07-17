@@ -18,4 +18,6 @@ return [
 
 		'inmueble' => '{0}No Vigente|{1}Vigente|{2}Reservado',
 
+		'reserva' => '{2}No Vigente|{1}Vigente', 
+
 ];
