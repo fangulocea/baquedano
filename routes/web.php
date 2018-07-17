@@ -801,7 +801,7 @@ Route::get('revisionpersona/eliminarfoto/{idf}/{idc}','RevisionPersonaController
 		Route::get('pagospropietario/mostrardirecciones/{id}','ContratoFinalController@mostrardirecciones')->name('finalContrato.mostrardirecciones')
 		->middleware('permission:finalContrato.update');
 
-		Route::get('pagospropietario/eliminar/{idp}/{idt}','ContratoFinalController@eliminartipopago')->name('finalContrato.eliminartipopago')
+		Route::post('pagospropietario/eliminarpagos','ContratoFinalController@eliminartipopago')->name('finalContrato.eliminartipopago')
 		->middleware('permission:finalContrato.update');
 
 		Route::get('finalContrato','ContratoFinalController@index')->name('finalContrato.index')
