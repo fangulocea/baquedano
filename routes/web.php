@@ -807,7 +807,7 @@ Route::get('borradorContrato/garantia/eliminar/{id}/{pub}','ContratoBorradorCont
 		Route::get('pagospropietario/mostrardirecciones/{id}','ContratoFinalController@mostrardirecciones')->name('finalContrato.mostrardirecciones')
 		->middleware('permission:finalContrato.update');
 
-		Route::get('pagospropietario/eliminar/{idp}/{idt}','ContratoFinalController@eliminartipopago')->name('finalContrato.eliminartipopago')
+		Route::post('pagospropietario/eliminarpagos','ContratoFinalController@eliminartipopago')->name('finalContrato.eliminartipopago')
 		->middleware('permission:finalContrato.update');
 
 		Route::get('finalContrato','ContratoFinalController@index')->name('finalContrato.index')
@@ -893,6 +893,11 @@ Route::get('borradorContrato/garantia/eliminar/{id}/{pub}','ContratoBorradorCont
 		Route::get('cbararrendatario/mail/{id}','ContratoBorradorArrendatarioController@enviaMail')->name('cbararrendatario.mail');		
 		Route::get('pdf/{data}', 'PdfController@index');
 
+		Route::post('cbararrendatario/generarpagos/{idp}','SimulaArrendatarioController@generarpagos')->name('cbararrendatario.generarpagos')
+		->middleware('permission:cbararrendatario.edit');
+
+				Route::get('cbararrendatario/propuesta/{id}','SimulaArrendatarioController@downloadExcel')->name('cbararrendatario.excelsimulacion')->middleware('permission:cbararrendatario.edit');
+
 
 
 // COntratos final Arrendatario
@@ -911,7 +916,7 @@ Route::get('borradorContrato/garantia/eliminar/{id}/{pub}','ContratoBorradorCont
 		Route::get('finalContratoArr/destroy/{id}/{idpdf}','ContratoFinalArrController@destroy')->name('finalContratoArr.destroy')
 		->middleware('permission:finalContratoArr.destroy');
 
-		Route::get('finalContratoArr/crearContrato/{idcb}/{idpdf}/{idu}','ContratoFinalArrController@crearContrato')->name('finalContratoArr.crearContrato')
+		Route::get('finalContratoArr/crearContrato','ContratoFinalArrController@crearContrato')->name('finalContratoArr.crearContrato')
 		->middleware('permission:finalContratoArr.create');
 
 		Route::get('finalContratoArr/borradorC/{idg}','ContratoFinalArrController@mostrarGestion');
