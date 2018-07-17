@@ -1273,167 +1273,6 @@ function mostrar_modal(obj){
 });
 }
 
-
-
-
-$('#listusers1').DataTable({
-    dom: 'Bfrtip',
-    buttons: [
-        'excel', 'pdf', 'print'
-
-    ],
-    columnDefs: [{
-            "targets": [4],
-            "orderable": false
-        }],
-    language: {
-        "sProcessing": "Procesando...",
-        "sLengthMenu": "Mostrar _MENU_ registros",
-        "sZeroRecords": "No se encontraron resultados",
-        "sEmptyTable": "Ningún dato disponible en esta tabla",
-        "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
-        "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
-        "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
-        "sInfoPostFix": "",
-        "sSearch": "Buscar:",
-        "sUrl": "",
-        "sInfoThousands": ",",
-        "sLoadingRecords": "Cargando...",
-        "oPaginate": {
-            "sFirst": "Primero",
-            "sLast": "Último",
-            "sNext": "Siguiente",
-            "sPrevious": "Anterior"
-        },
-        "buttons": {
-            "copy": 'Copiar',
-            "csv": 'Exportar a CSV',
-            "print": 'Imprimir'},
-        "oAria": {
-            "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
-            "sSortDescending": ": Activar para ordenar la columna de manera descendente"
-        }
-    }
-});
-
-$('#listusers2').DataTable({
-    dom: 'Bfrtip',
-    buttons: [    ],
-    columnDefs: [{
-            "targets": [4],
-            "orderable": true,
-        }],
-    language: {
-        "sProcessing": "Procesando...",
-        "sLengthMenu": "Mostrar _MENU_ registros",
-        "sZeroRecords": "No se encontraron resultados",
-        "sEmptyTable": "Ningún dato disponible en esta tabla",
-        "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
-        "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
-        "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
-        "sInfoPostFix": "",
-        "sSearch": "Buscar:",
-        "sUrl": "",
-        "sInfoThousands": ",",
-        "sLoadingRecords": "Cargando...",
-        "oPaginate": {
-            "sFirst": "Primero",
-            "sLast": "Último",
-            "sNext": "Siguiente",
-            "sPrevious": "Anterior"
-        },
-        "buttons": {
-            "copy": 'Copiar',
-            "csv": 'Exportar a CSV',
-            "print": 'Imprimir'},
-        "oAria": {
-            "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
-            "sSortDescending": ": Activar para ordenar la columna de manera descendente"
-        }
-    }
-});
-
-
-
-
-            tinymce.init({
-                selector: "textarea",
-                theme: "modern",
-            height: 100,
-            menubar: false,
-                plugins: [
-                    "advlist autolink link lists charmap print preview hr anchor pagebreak spellchecker", "searchreplace wordcount visualblocks visualchars code fullscreen insertdatetime nonbreaking", "save table contextmenu directionality template paste textcolor"
-                ],
-                toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | l      ink | print preview fullpage | forecolor backcolor ",
-            setup: function (editor) {
-                editor.on('change', function (e) {
-                    editor.save();
-                });
-            }
-        });
-        
-      
-
-
-
-
-jQuery(document).ready(function () {
-
-
-        // delegate calls to data-toggle="lightbox"
-        $(document).delegate('[data-toggle="lightbox"]', 'click', function(event) {
-            event.preventDefault();
-           $(this).ekkoLightbox();
-
-        });
-        //Programatically call
-        $('#open-image').click(function(e) {
-            e.preventDefault();
-            $(this).ekkoLightbox();
-        });
-        $('#open-youtube').click(function(e) {
-            e.preventDefault();
-            $(this).ekkoLightbox();
-        });
-        // navigateTo
-        $(document).delegate('*[data-gallery="navigateTo"]', 'click', function(event) {
-            event.preventDefault();
-            var lb;
-            return $(this).ekkoLightbox({
-                onShown: function() {
-                    lb = this;
-                    $(lb.modal_content).on('click', '.modal-footer a', function(e) {
-                        e.preventDefault();
-                        lb.navigateTo(2);
-                    });
-                }
-            });
-        });
-    });
-
-
-
-$("#i_id_region").change(function (event) {
-    $("#i_id_provincia").empty();
-    $("#i_id_comuna").empty();
-    $.get("/provincias/" + event.target.value + "", function (response, state) {
-        $("#i_id_provincia").append("<option value=''>Seleccione provincia</option>");
-        for (i = 0; i < response.length; i++) {
-            $("#i_id_provincia").append("<option value='" + response[i].provincia_id + "'>" + response[i].provincia_nombre + "</option>");
-        }
-    });
-});
-
-$("#i_id_provincia").change(function (event) {
-    $("#i_id_comuna").empty();
-    $.get("/comunas/" + event.target.value + "", function (response, state) {
-        $("#i_id_comuna").append("<option value=''>Seleccione comuna</option>");
-        for (i = 0; i < response.length; i++) {
-            $("#i_id_comuna").append("<option value='" + response[i].comuna_id + "'>" + response[i].comuna_nombre + "</option>");
-        }
-    });
-});
-
 <?php if($tab==1){  ?>
     $(function() {
             $("#li_1").addClass("tab-current");
@@ -1575,6 +1414,161 @@ $("#li_5").click(function (event) {
             $("#section-iconbox-5").addClass("content-current"); 
        
 });
+
+
+            tinymce.init({
+                selector: "textarea",
+                theme: "modern",
+            height: 100,
+            menubar: false,
+                plugins: [
+                    "advlist autolink link lists charmap print preview hr anchor pagebreak spellchecker", "searchreplace wordcount visualblocks visualchars code fullscreen insertdatetime nonbreaking", "save table contextmenu directionality template paste textcolor"
+                ],
+                toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | l      ink | print preview fullpage | forecolor backcolor ",
+            setup: function (editor) {
+                editor.on('change', function (e) {
+                    editor.save();
+                });
+            }
+        });
+
+
+$('#listusers1').DataTable({
+    dom: 'Bfrtip',
+    buttons: [
+        'excel', 'pdf', 'print'
+
+    ],
+    columnDefs: [{
+            "targets": [4],
+            "orderable": false
+        }],
+    language: {
+        "sProcessing": "Procesando...",
+        "sLengthMenu": "Mostrar _MENU_ registros",
+        "sZeroRecords": "No se encontraron resultados",
+        "sEmptyTable": "Ningún dato disponible en esta tabla",
+        "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+        "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+        "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+        "sInfoPostFix": "",
+        "sSearch": "Buscar:",
+        "sUrl": "",
+        "sInfoThousands": ",",
+        "sLoadingRecords": "Cargando...",
+        "oPaginate": {
+            "sFirst": "Primero",
+            "sLast": "Último",
+            "sNext": "Siguiente",
+            "sPrevious": "Anterior"
+        },
+        "buttons": {
+            "copy": 'Copiar',
+            "csv": 'Exportar a CSV',
+            "print": 'Imprimir'},
+        "oAria": {
+            "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+            "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+        }
+    }
+});
+
+$('#listusers2').DataTable({
+    dom: 'Bfrtip',
+    buttons: [    ],
+    columnDefs: [{
+            "targets": [4],
+            "orderable": true,
+        }],
+    language: {
+        "sProcessing": "Procesando...",
+        "sLengthMenu": "Mostrar _MENU_ registros",
+        "sZeroRecords": "No se encontraron resultados",
+        "sEmptyTable": "Ningún dato disponible en esta tabla",
+        "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+        "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+        "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+        "sInfoPostFix": "",
+        "sSearch": "Buscar:",
+        "sUrl": "",
+        "sInfoThousands": ",",
+        "sLoadingRecords": "Cargando...",
+        "oPaginate": {
+            "sFirst": "Primero",
+            "sLast": "Último",
+            "sNext": "Siguiente",
+            "sPrevious": "Anterior"
+        },
+        "buttons": {
+            "copy": 'Copiar',
+            "csv": 'Exportar a CSV',
+            "print": 'Imprimir'},
+        "oAria": {
+            "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+            "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+        }
+    }
+});
+
+
+jQuery(document).ready(function () {
+
+
+        // delegate calls to data-toggle="lightbox"
+        $(document).delegate('[data-toggle="lightbox"]', 'click', function(event) {
+            event.preventDefault();
+           $(this).ekkoLightbox();
+
+        });
+        //Programatically call
+        $('#open-image').click(function(e) {
+            e.preventDefault();
+            $(this).ekkoLightbox();
+        });
+        $('#open-youtube').click(function(e) {
+            e.preventDefault();
+            $(this).ekkoLightbox();
+        });
+        // navigateTo
+        $(document).delegate('*[data-gallery="navigateTo"]', 'click', function(event) {
+            event.preventDefault();
+            var lb;
+            return $(this).ekkoLightbox({
+                onShown: function() {
+                    lb = this;
+                    $(lb.modal_content).on('click', '.modal-footer a', function(e) {
+                        e.preventDefault();
+                        lb.navigateTo(2);
+                    });
+                }
+            });
+        });
+    });
+
+
+
+$("#i_id_region").change(function (event) {
+    $("#i_id_provincia").empty();
+    $("#i_id_comuna").empty();
+    $.get("/provincias/" + event.target.value + "", function (response, state) {
+        $("#i_id_provincia").append("<option value=''>Seleccione provincia</option>");
+        for (i = 0; i < response.length; i++) {
+            $("#i_id_provincia").append("<option value='" + response[i].provincia_id + "'>" + response[i].provincia_nombre + "</option>");
+        }
+    });
+});
+
+$("#i_id_provincia").change(function (event) {
+    $("#i_id_comuna").empty();
+    $.get("/comunas/" + event.target.value + "", function (response, state) {
+        $("#i_id_comuna").append("<option value=''>Seleccione comuna</option>");
+        for (i = 0; i < response.length; i++) {
+            $("#i_id_comuna").append("<option value='" + response[i].comuna_id + "'>" + response[i].comuna_nombre + "</option>");
+        }
+    });
+});
+
+
    
 </script>
 @endsection
