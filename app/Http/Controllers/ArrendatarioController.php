@@ -67,7 +67,7 @@ class ArrendatarioController extends Controller
 
     public function CrearReserva(Request $request,$id)
     {
-        $S_Arr_reservas = Arr_Reservas::where('id_arr_ges','=', $id)->first();
+        $S_Arr_reservas = Arr_Reservas::where('id_arr_ges','=', $id)->where('id_estado','=',1)->first();
 
         if(!isset($S_Arr_reservas->id))
         {
@@ -81,6 +81,7 @@ class ArrendatarioController extends Controller
             $file = $request->file('foto');
             $file->move($destinationPath,$archivo);
             $imagen=Arr_ReservasDocs::create([
+                'id_reserva'           => $reserva->id,
                 'id_arrendatario'      => $id,
                 'descripcion'          => '',
                 'nombre'               => $archivo,
@@ -108,6 +109,7 @@ class ArrendatarioController extends Controller
             $file = $request->file('foto');
             $file->move($destinationPath,$archivo);
             $imagen=Arr_ReservasDocs::create([
+                'id_reserva'           => $S_Arr_reservas->id,
                 'id_arrendatario'      => $id,
                 'descripcion'          => '',
                 'nombre'               => $archivo,
@@ -169,17 +171,25 @@ class ArrendatarioController extends Controller
     public function edit($id,$tab)
     {
 
-        $regiones=Region::pluck('region_nombre','region_id');
-        $arrendatario = Arrendatario::find($id);
-        
-        $persona    = Persona::find(isset($arrendatario->id_arrendatario)?$arrendatario->id_arrendatario:0);
-        $imagenes   = ArrendatarioFoto::where('id_arrendatario','=',$id)->get();
-        $citas      = ArrendatarioCitas::where('id_arrendatario','=',$id)->get();
-        $inmueble   = Inmueble::find($arrendatario->id_inmueble);
-        $reserva    = Arr_Reservas::where('id_arr_ges','=',$id)->where('id_estado','=',1)->first();
-        $imgReserva = Arr_ReservasDocs::where('id_arrendatario','=',$id)->where('id_estado','=',1)->get();
+        $regiones       = Region::pluck('region_nombre','region_id');
+        $arrendatario   = Arrendatario::find($id);
+        $persona        = Persona::find(isset($arrendatario->id_arrendatario)?$arrendatario->id_arrendatario:0);
+        $imagenes       = ArrendatarioFoto::where('id_arrendatario','=',$id)->get();
+        $citas          = ArrendatarioCitas::where('id_arrendatario','=',$id)->get();
+        $inmueble       = Inmueble::find($arrendatario->id_inmueble);
+        $reserva        = Arr_Reservas::where('id_arr_ges','=',$id)->where('id_estado','=',1)->first();
+        $imgReserva     = Arr_ReservasDocs::where('id_arrendatario','=',$id)->where('id_estado','=',1)->get();
 
-        $corredores=Persona::where('tipo_cargo','=','Corredor - Externo')
+        $historiaRes    = DB::table('arr_reservas as r')
+                        ->leftjoin('arr_reservasdocs as d','r.id','=','d.id_reserva')
+                        ->leftjoin('condicions as c','r.id_condicion','=','c.id')
+                        ->where('r.id_arr_ges','=',$id)
+                        ->select(DB::raw('c.nombre as condicion, r.monto_reserva as monto, r.id_arr_ges, d.ruta, d.nombre, r.id_estado as estado'))
+                        ->get();
+
+        //dd($historiaRes);
+
+        $corredores     = Persona::where('tipo_cargo','=','Corredor - Externo')
         ->Orwhere('tipo_cargo','=','Empleado')
         ->select(DB::raw('id , CONCAT_WS(" ",nombre,apellido_paterno,apellido_materno) as Corredor'))
         ->get();
@@ -189,7 +199,7 @@ class ArrendatarioController extends Controller
         ->select(DB::raw('c.id as id,c.nombre as nombre'))
         ->get();
 
-        return view('arrendatario.edit',compact('corredores','reserva','imgReserva','tab','condicion','arrendatario','regiones','persona','imagenes','citas','inmueble'));
+        return view('arrendatario.edit',compact('historiaRes','corredores','reserva','imgReserva','tab','condicion','arrendatario','regiones','persona','imagenes','citas','inmueble'));
     }
 
     public function agregarInmueble($idc,$idi)
