@@ -80,13 +80,13 @@ class ContratoBorradorArrendatarioController extends Controller
     public function edit($id)
     {
         $publica = DB::table('arrendatarios as a')
-         ->leftjoin('personas as pc', 'a.id_creador', 'pc.id')
+         ->leftjoin('users as pc', 'a.id_creador', 'pc.id')
          ->leftjoin('personas as pm', 'a.id_modificador', 'pm.id')
          ->leftjoin('personas as pa', 'a.id_arrendatario','pa.id')
          ->leftjoin('inmuebles as i','a.id_inmueble','i.id')
          ->leftjoin('comunas as c', 'i.id_comuna', '=', 'c.comuna_id')
          ->where('a.id','=',$id)
-         ->select(DB::raw('a.id id_cap_arr, CONCAT_WS(" ",pa.nombre,pa.apellido_paterno,pa.apellido_materno) as arrendatario,i.direccion,i.numero,c.comuna_nombre as comuna,a.id_estado, a.id_arrendatario as id_arrendatario,i.id as id_inmueble'))
+         ->select(DB::raw('a.id as id_cap_arr, CONCAT_WS(" ",pa.nombre,pa.apellido_paterno,pa.apellido_materno) as arrendatario,i.direccion,i.numero,c.comuna_nombre as comuna,a.id_estado, a.id_arrendatario as id_arrendatario,i.id as id_inmueble,i.precio, i.gastosComunes'))
          ->first();
 
          $id_publicacion = DB::table('arrendatarios as a')
@@ -159,7 +159,12 @@ class ContratoBorradorArrendatarioController extends Controller
          ->select(DB::raw('c.id as id,c.nombre as nombre'))
          ->get();  
 
-        return view('contratoborradorarrendatario.edit',compact('servicio','formasdepago','comision','flexibilidad','multa','contrato','publica','borradoresIndex','id_publicacion'));
+        $propuestas = DB::table('cap_simulaarrendatario')
+         ->where("id_publicacion","=",$id)
+         ->select(DB::raw(" id, (CASE  WHEN tipopropuesta=1 THEN '1 Cuota' WHEN tipopropuesta=2 THEN'Pie + Cuota' ELSE 'Renovación' END) as tipopropuesta, proporcional, fecha_iniciocontrato, meses_contrato, iva,descuento, pie, cobromensual, nrocuotas,canondearriendo" ))
+         ->get();  
+
+        return view('contratoborradorarrendatario.edit',compact('servicio','formasdepago','comision','flexibilidad','multa','contrato','publica','borradoresIndex','id_publicacion','propuestas'));
     }
 
     /**

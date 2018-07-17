@@ -30,6 +30,10 @@ class ArrendatarioController extends Controller
 
       public function crearBorrador($id)
     {
+        $captacion = Arrendatario::find($id);
+        if ($captacion->id_inmueble == '' || $captacion->id_inmueble == null || $captacion->id_arrendatario == '' || $captacion->id_arrendatario == null) {
+            return back()->with('error', 'La captación debe contar con el arrendatario y el inmueble asignado para pasar a contrato borrador');
+        }
         $captacion=Arrendatario::where("id","=",$id)->update([
           "id_estado"=>6
         ]);

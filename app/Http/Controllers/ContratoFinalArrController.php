@@ -50,31 +50,31 @@ class ContratoFinalArrController extends Controller
         return response()->json($contrato);
     }
 
-     public function crearContrato($idArr,$idCbA,$idu)
+     public function crearContrato(Request $request)
     {
       
-      $ContratoBorradorArrendatario=ContratoBorradorArrendatario::find($idCbA);
+      $ContratoBorradorArrendatario=ContratoBorradorArrendatario::find($request->id_borradorfinal);
 
 
 
       $pdfBorradorArrendatario = DB::table('contratoborradorarrendatariospdf as pdf')
-        ->where("pdf.id_b_arrendatario","=",$idCbA)
+        ->where("pdf.id_b_arrendatario","=",$request->id_borradorfinal)
         ->select(DB::raw('pdf.id as id'))
         ->first();  
 
-      $captacionArrendatario=Arrendatario::find($idArr)->update([
+      $captacionArrendatario=Arrendatario::find($ContratoBorradorArrendatario->id_cap_arr)->update([
             "id_estado"=> 10
         ]);
 
-      $contratoBorrador = ContratoBorradorArrendatario::find($idCbA)->update([
+      $contratoBorrador = ContratoBorradorArrendatario::find($request->id_borradorfinal)->update([
             "id_estado"=> 10
         ]);
 
       $contratoFinal=ContratoFinalArr::create([
-            "id_publicacion" => $idArr, //arrendatarios
+            "id_publicacion" => $ContratoBorradorArrendatario->id_cap_arr, //arrendatarios
             "id_estado"      => 1,
-            "id_creador"     => $idu,
-            "id_borrador"    => $idCbA, //contrato borrador arrendatario
+            "id_creador"     => $request->id_creadorfinal,
+            "id_borrador"    => $request->id_borradorfinal, //contrato borrador arrendatario
             "id_borradorpdf" => $pdfBorradorArrendatario->id  //contrato borrador PDF
       ]);
       // //PARA PDF
