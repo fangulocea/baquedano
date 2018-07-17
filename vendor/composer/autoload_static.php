@@ -377,6 +377,8 @@ class ComposerStaticInit0178ccda3db7603c96af3e22d130f715
     );
 
     public static $classMap = array (
+        'App\\ArrReservaGes' => __DIR__ . '/../..' . '/app/ArrReservaGes.php',
+        'App\\ArrReservaGesDocs' => __DIR__ . '/../..' . '/app/ArrReservaGesDocs.php',
         'App\\Arr_Reservas' => __DIR__ . '/../..' . '/app/Arr_Reservas.php',
         'App\\Arr_ReservasDocs' => __DIR__ . '/../..' . '/app/Arr_ReservasDocs.php',
         'App\\Arrendatario' => __DIR__ . '/../..' . '/app/Arrendatario.php',
@@ -416,6 +418,9 @@ class ComposerStaticInit0178ccda3db7603c96af3e22d130f715
         'App\\FormasDePago' => __DIR__ . '/../..' . '/app/FormasDePago.php',
         'App\\FotoRevisionInmueble' => __DIR__ . '/../..' . '/app/FotoRevisionInmueble.php',
         'App\\FotoRevisionPersona' => __DIR__ . '/../..' . '/app/FotoRevisionPersona.php',
+        'App\\GenerarPagoPropietario' => __DIR__ . '/../..' . '/app/GenerarPagoPropietario.php',
+        'App\\Http\\Controllers\\ArrReservaGesController' => __DIR__ . '/../..' . '/app/Http/Controllers/ArrReservaGesController.php',
+        'App\\Http\\Controllers\\ArrReservaGesDocsController' => __DIR__ . '/../..' . '/app/Http/Controllers/ArrReservaGesDocsController.php',
         'App\\Http\\Controllers\\ArrendatarioController' => __DIR__ . '/../..' . '/app/Http/Controllers/ArrendatarioController.php',
         'App\\Http\\Controllers\\Auth\\ForgotPasswordController' => __DIR__ . '/../..' . '/app/Http/Controllers/Auth/ForgotPasswordController.php',
         'App\\Http\\Controllers\\Auth\\LoginController' => __DIR__ . '/../..' . '/app/Http/Controllers/Auth/LoginController.php',
@@ -451,6 +456,7 @@ class ComposerStaticInit0178ccda3db7603c96af3e22d130f715
         'App\\Http\\Controllers\\FormasDePagoController' => __DIR__ . '/../..' . '/app/Http/Controllers/FormasDePagoController.php',
         'App\\Http\\Controllers\\FotoRevisionInmuebleController' => __DIR__ . '/../..' . '/app/Http/Controllers/FotoRevisionInmuebleController.php',
         'App\\Http\\Controllers\\FotoRevisionPersonaController' => __DIR__ . '/../..' . '/app/Http/Controllers/FotoRevisionPersonaController.php',
+        'App\\Http\\Controllers\\GenerarPagoPropietarioController' => __DIR__ . '/../..' . '/app/Http/Controllers/GenerarPagoPropietarioController.php',
         'App\\Http\\Controllers\\HomeController' => __DIR__ . '/../..' . '/app/Http/Controllers/HomeController.php',
         'App\\Http\\Controllers\\InmuebleController' => __DIR__ . '/../..' . '/app/Http/Controllers/InmuebleController.php',
         'App\\Http\\Controllers\\MultaController' => __DIR__ . '/../..' . '/app/Http/Controllers/MultaController.php',
@@ -580,6 +586,7 @@ class ComposerStaticInit0178ccda3db7603c96af3e22d130f715
         'CreatePasswordResetsTable' => __DIR__ . '/../..' . '/database/migrations/2014_10_12_100000_create_password_resets_table.php',
         'CreatePersonaInmueblesTable' => __DIR__ . '/../..' . '/database/migrations/2018_05_27_124638_create_personaInmuebles_table.php',
         'CreatePersonasTable' => __DIR__ . '/../..' . '/database/migrations/2013_05_20_224557_create_personas_table.php',
+        'CreatePropietarioGarantia' => __DIR__ . '/../..' . '/database/migrations/2018_07_17_141957_create_propietario_garantia.php',
         'CreateServiciosTable' => __DIR__ . '/../..' . '/database/migrations/2018_05_21_180938_create_servicios_table.php',
         'CreateUsersTable' => __DIR__ . '/../..' . '/database/migrations/2014_10_12_000000_create_users_table.php',
         'Cron\\AbstractField' => __DIR__ . '/..' . '/mtdowling/cron-expression/src/Cron/AbstractField.php',

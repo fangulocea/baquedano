@@ -284,7 +284,7 @@ class ArrendatarioController extends Controller
                     "id_estado"     => 3
                 ]);
 
-        return redirect()->route('arrendatario.edit', [$id,1])->with('status', 'Datos almacenados correctamente');
+        return redirect()->route('arrendatario.edit', [$id,3])->with('status', 'Datos almacenados correctamente');
     }
 
     /**

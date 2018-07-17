@@ -709,11 +709,16 @@ Route::get('revisionpersona/eliminarfoto/{idf}/{idc}','RevisionPersonaController
 
 		// COntratos Borrador
 		
+Route::post('borradorContrato/garantia/{id}','ContratoBorradorController@garantia')->name('borradorContrato.garantia')->middleware('permission:borradorContrato.edit');
+
+Route::get('borradorContrato/garantia/eliminar/{id}/{pub}','ContratoBorradorController@eliminarGarantia')->name('borradorContrato.eliminarGarantia')
+		->middleware('permission:borradorContrato.edit');
+
+
 		Route::post('borradorContrato/borrador/update','ContratoBorradorController@editarGestion')->name('borradorContrato.editarGestion')
 		->middleware('permission:borradorContrato.edit');
 		
-		
-			Route::any('bc/borrador/update','ContratoBorradorController@editargestion2')->name('borradorContrato.editarGestion2')
+		Route::any('bc/borrador/update','ContratoBorradorController@editargestion2')->name('borradorContrato.editarGestion2')
 		->middleware('permission:borradorContrato.edit');
 		
 		Route::post('borradorContrato/updatepersona','PersonaController@updatePersonaContratoBorrador')->name('borradorContrato.updatepersona')
@@ -755,6 +760,7 @@ Route::get('revisionpersona/eliminarfoto/{idf}/{idc}','RevisionPersonaController
 
 		Route::post('borradorContrato/generarpagos/{idp}','SimulaPropietarioController@generarpagos')->name('borradorContrato.generarpagos')
 		->middleware('permission:borradorContrato.edit');
+
 
 
 //contrato

@@ -21,11 +21,11 @@
             <div class="sttabs tabs-style-iconbox">
                 <nav>   
                     <ul>
-                        <li><a id="li_1" href="#section-iconbox-1" class="sticon ti ti-user"><span>Arrendatario</span></a></li>
-                        <li><a id="li_2" href="#section-iconbox-2" class="sticon ti ti-alarm-clock"><span>Reserva</span></a></li>
-                        <li><a id="li_3" href="#section-iconbox-3" class="sticon ti ti-home"><span>Asignar Inmueble</span></a></li>
-                        <li><a id="li_4" href="#section-iconbox-4" class="sticon ti-camera"><span>Fotos</span></a></li>
-                        <li><a id="li_5" href="#section-iconbox-5" class="sticon ti-agenda"><span>Gestiones</span></a></li>
+                        <li id="li_1" ><a href="#section-iconbox-1" class="sticon ti ti-user"><span>Arrendatario</span></a></li>
+                        <li id="li_2" ><a href="#section-iconbox-2" class="sticon ti ti-alarm-clock"><span>Reserva</span></a></li>
+                        <li id="li_3"><a href="#section-iconbox-3" class="sticon ti ti-home"><span>Asignar Inmueble</span></a></li>
+                        <li id="li_4"><a href="#section-iconbox-4" class="sticon ti-camera"><span>Fotos</span></a></li>
+                        <li id="li_5"><a href="#section-iconbox-5" class="sticon ti-agenda"><span>Gestiones</span></a></li>
                     </ul>
                 </nav>
                 <div class="content-wrap">
@@ -200,6 +200,9 @@
                 <button class="btn btn-block btn-primary" data-toggle="modal" id='via_portal' data-target="#modal-gestion2" >Incumplimiento Arrendatario</button>
             </div>
         </div>
+        <div class="col-md-4">
+
+        </div>
     </div>
 @endif
 
@@ -311,8 +314,6 @@
 
 
 
-
-
 {{-- INICIO RESERVA --}}
 <form action="{{ route('arrendatario.CrearReserva',$arrendatario->id) }}" method="post" enctype='multipart/form-data'>
 {!! csrf_field() !!}
@@ -360,7 +361,9 @@
                                 <input class="form-control" value="{{ $reserva->monto_reserva or null }}" name="monto_reserva" placeholder="" type="number"></input>
                             </div>
                         </div>
-
+                        <div class='row'>
+                            
+                        </div>
                     </div>
 
                     <div class="row">
@@ -1130,6 +1133,42 @@ $(function() {
 
 
 $(function(){
+
+    $('#modal-garantia').on('hidden.bs.modal', function () {
+        $("#form1")[0].reset();
+         var fecha =  new Date();
+         var year = fecha.getFullYear();
+         var mes = fecha.getMonth()+1;
+         var dia = fecha.getDate();
+         var hora = fecha.getHours();
+         var minutos = fecha.getMinutes();
+         var segundos = fecha.getSeconds();
+         if(mes<10){mes='0'+mes}
+         if(dia<10){dia='0'+dia}
+         if(hora<10){hora='0'+hora}
+         if(minutos<10){minutos='0'+minutos}
+         if(segundos<10){segundos='0'+segundos}
+        $('#datepicker-fecha_contacto1').val(dia+'-'+mes+'-'+year);;
+        $('#hora_gestion').val(hora+':'+minutos);;
+    });
+
+    $('#modal-garantia').on('shown.bs.modal', function () {
+        $("#form1")[0].reset();
+         var fecha =  new Date();
+         var year = fecha.getFullYear();
+         var mes = fecha.getMonth()+1;
+         var dia = fecha.getDate();
+         var hora = fecha.getHours();
+         var minutos = fecha.getMinutes();
+         var segundos = fecha.getSeconds();
+         if(mes<10){mes='0'+mes}
+         if(dia<10){dia='0'+dia}
+         if(hora<10){hora='0'+hora}
+         if(minutos<10){minutos='0'+minutos}
+         if(segundos<10){segundos='0'+segundos}
+        $('#datepicker-fecha_contacto1').val(dia+'-'+mes+'-'+year);;
+        $('#hora_gestion').val(hora+':'+minutos);;
+    });
 
     $('#modal-gestion1').on('hidden.bs.modal', function () {
         $("#form1")[0].reset();

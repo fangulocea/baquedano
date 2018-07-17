@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\File;    
 use Illuminate\Support\Facades\Mail;
 use URL;
+use App\PropietarioGarantia;
 
 class ContratoBorradorController extends Controller
 {
@@ -113,8 +114,6 @@ class ContratoBorradorController extends Controller
          ->select(DB::raw('c.id as id_publicacion, p1.id as id_propietario, i.id as id_inmueble, CONCAT_WS(" ",i.direccion,"#",i.numero,"Depto.",i.departamento,o.comuna_nombre) as direccion, CONCAT_WS(" ",p1.nombre , p1.apellido_paterno, " Fono: " ,p1.telefono, " Email: " ,p1.email ) as propietario, i.precio, i.gastosComunes '))
          ->first();
 
-
-
          $borradoresIndex = DB::table('borradores as b')
          ->leftjoin('notarias as n', 'b.id_notaria', '=', 'n.id')
          ->leftjoin('servicios as s', 'b.id_servicios', '=', 's.id')
@@ -125,8 +124,6 @@ class ContratoBorradorController extends Controller
             ->where('b.id_publicacion','=',$id)
          ->select(DB::raw(' b.id as id, n.razonsocial as n_n, s.nombre as n_s, c.nombre as n_c, f.nombre as n_f , cp.id as id_publicacion,DATE_FORMAT(b.fecha_gestion, "%d/%m/%Y") as fecha,b.id_servicios as id_servicios,b.id_estado,bp.nombre, bp.id as id_pdfborrador'))
          ->get();
-
-
             
         $gestBorradores = DB::table('borradores as g')
          ->where("g.id_publicacion","=",$id)
@@ -165,9 +162,14 @@ class ContratoBorradorController extends Controller
         $propuestas = DB::table('cap_simulapropietario')
          ->where("id_publicacion","=",$id)
          ->select(DB::raw(" id, (CASE  WHEN tipopropuesta=1 THEN '1 Cuota' WHEN tipopropuesta=2 THEN'Pie + Cuota' ELSE 'Renovación' END) as tipopropuesta, proporcional, fecha_iniciocontrato, meses_contrato, iva,descuento, pie, cobromensual, nrocuotas,canondearriendo" ))
-         ->get();       
+         ->get();     
 
-        return view('contratoBorrador.edit',compact('borrador','borradoresIndex','gestBorradores','notaria','servicio','comision','flexibilidad','contrato','formasdepago','multa','propuestas'));
+        $garantias = DB::table('propietario_garantia as g')
+        ->where("id_publicacion","=",$id)
+        ->select(DB::raw(" g.id, g.mes, g.ano, g.banco, g.numero, g.valor, DATE_FORMAT(g.fecha_cobro, '%d/%m/%Y') as fecha_cobro"))
+        ->get();
+
+        return view('contratoBorrador.edit',compact('garantias','borrador','borradoresIndex','gestBorradores','notaria','servicio','comision','flexibilidad','contrato','formasdepago','multa','propuestas'));
     }
 
     /**
@@ -462,5 +464,28 @@ public function editargestion2(Request $request)
         }
 
     }
+
+    public function garantia(Request $request,$id){
+
+        $fecha_cobro = DateTime::createFromFormat('d-m-Y', $request->fecha_cobro);
+        array_set($request, 'fecha_cobro', $fecha_cobro);
+        array_set($request, 'id_publicacion', $id);
+
+        $reserva = PropietarioGarantia::create(request()->except(['_token']));
+
+        return redirect()->route('borradorContrato.edit', $id)
+                ->with('status', 'Garantía ingresada con éxito');
+
+    }
+
+    public function eliminarGarantia($id,$idp){
+        PropietarioGarantia::destroy($id);
+
+        return redirect()->route('borradorContrato.edit', $idp)
+                ->with('status', 'Garantía eliminada con éxito');
+    }
+
+
+
 
 }

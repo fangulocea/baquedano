@@ -6,6 +6,8 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+    'App\\ArrReservaGes' => $baseDir . '/app/ArrReservaGes.php',
+    'App\\ArrReservaGesDocs' => $baseDir . '/app/ArrReservaGesDocs.php',
     'App\\Arr_Reservas' => $baseDir . '/app/Arr_Reservas.php',
     'App\\Arr_ReservasDocs' => $baseDir . '/app/Arr_ReservasDocs.php',
     'App\\Arrendatario' => $baseDir . '/app/Arrendatario.php',
@@ -45,6 +47,9 @@ return array(
     'App\\FormasDePago' => $baseDir . '/app/FormasDePago.php',
     'App\\FotoRevisionInmueble' => $baseDir . '/app/FotoRevisionInmueble.php',
     'App\\FotoRevisionPersona' => $baseDir . '/app/FotoRevisionPersona.php',
+    'App\\GenerarPagoPropietario' => $baseDir . '/app/GenerarPagoPropietario.php',
+    'App\\Http\\Controllers\\ArrReservaGesController' => $baseDir . '/app/Http/Controllers/ArrReservaGesController.php',
+    'App\\Http\\Controllers\\ArrReservaGesDocsController' => $baseDir . '/app/Http/Controllers/ArrReservaGesDocsController.php',
     'App\\Http\\Controllers\\ArrendatarioController' => $baseDir . '/app/Http/Controllers/ArrendatarioController.php',
     'App\\Http\\Controllers\\Auth\\ForgotPasswordController' => $baseDir . '/app/Http/Controllers/Auth/ForgotPasswordController.php',
     'App\\Http\\Controllers\\Auth\\LoginController' => $baseDir . '/app/Http/Controllers/Auth/LoginController.php',
@@ -80,6 +85,7 @@ return array(
     'App\\Http\\Controllers\\FormasDePagoController' => $baseDir . '/app/Http/Controllers/FormasDePagoController.php',
     'App\\Http\\Controllers\\FotoRevisionInmuebleController' => $baseDir . '/app/Http/Controllers/FotoRevisionInmuebleController.php',
     'App\\Http\\Controllers\\FotoRevisionPersonaController' => $baseDir . '/app/Http/Controllers/FotoRevisionPersonaController.php',
+    'App\\Http\\Controllers\\GenerarPagoPropietarioController' => $baseDir . '/app/Http/Controllers/GenerarPagoPropietarioController.php',
     'App\\Http\\Controllers\\HomeController' => $baseDir . '/app/Http/Controllers/HomeController.php',
     'App\\Http\\Controllers\\InmuebleController' => $baseDir . '/app/Http/Controllers/InmuebleController.php',
     'App\\Http\\Controllers\\MultaController' => $baseDir . '/app/Http/Controllers/MultaController.php',
@@ -209,6 +215,7 @@ return array(
     'CreatePasswordResetsTable' => $baseDir . '/database/migrations/2014_10_12_100000_create_password_resets_table.php',
     'CreatePersonaInmueblesTable' => $baseDir . '/database/migrations/2018_05_27_124638_create_personaInmuebles_table.php',
     'CreatePersonasTable' => $baseDir . '/database/migrations/2013_05_20_224557_create_personas_table.php',
+    'CreatePropietarioGarantia' => $baseDir . '/database/migrations/2018_07_17_141957_create_propietario_garantia.php',
     'CreateServiciosTable' => $baseDir . '/database/migrations/2018_05_21_180938_create_servicios_table.php',
     'CreateUsersTable' => $baseDir . '/database/migrations/2014_10_12_000000_create_users_table.php',
     'Cron\\AbstractField' => $vendorDir . '/mtdowling/cron-expression/src/Cron/AbstractField.php',

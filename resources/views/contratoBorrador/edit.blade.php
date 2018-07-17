@@ -21,19 +21,153 @@
         <section>
             <div class="sttabs tabs-style-iconbox">
                 <nav>
-                    <ul>
-                         <li id="li_6_c"><a id="6" href="#section-iconbox-6_c" class="sticon ti-money"><span>Simulación de Pago</span></a></li>
+                    <ul>                         
+                        <li id="li_1_c"><a id="6" href="#section-iconbox-1_c" class="sticon ti-money"><span>Registro de Garantía</span></a></li>
+                        <li id="li_6_c"><a id="6" href="#section-iconbox-6_c" class="sticon ti-money"><span>Simulación de Pago</span></a></li>
                         <li id="li_5_c"><a id="5" href="#section-iconbox-5_c" class="sticon ti-agenda"><span>Gestión Contrato Borrador</span></a></li>
-                       
                     </ul>
                 </nav>
-            
+        
+            <div class="content-wrap">
 
-                            <div class="content-wrap">
-                                <section id="section-iconbox-6_c">
- 
+{{-- INICIO GARANTIA --}}
+<section id="section-iconbox-1_c">
+<div class="panel panel-info">
+    <div class="panel-heading"> Registro de Garantía</div>
+    <div class="panel-wrapper collapse in" aria-expanded="true">
+    <div class="panel-body">
+        <form action="{{ route('borradorContrato.garantia',$borrador->id_publicacion) }}" method="post">
+            {!! csrf_field() !!}
+            <input type="hidden" name="_token" value="{{ csrf_token() }}">
+            <input type="hidden" name="id_creador" value="{{ Auth::user()->id }}">
+            <div class="form-body">
+                <div class="row">
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <label for="input-file-now-custom-1">Mes</label>
+                            <select name="mes" class="form-control">
+                                <option value="Enero">Enero</option>
+                                <option value="Febrero">Febrero</option>
+                                <option value="Marzo">Marzo</option>
+                                <option value="Abril">Abril</option>
+                                <option value="Mayo">Mayo</option>
+                                <option value="Junio">Junio</option>
+                                <option value="Julio">Julio</option>
+                                <option value="Agosto">Agosto</option>
+                                <option value="Septiembre">Septiembre</option>
+                                <option value="Octubre">Octubre</option>
+                                <option value="Noviembre">Noviembre</option>
+                                <option value="Diciembre">Diciembre</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <label for="input-file-now-custom-1">Año</label>
+                            <input name='ano' type="number" class="form-control" required="required">
+                        </div>
+                    </div>
+
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <label>Banco</label>
+                            <select class="form-control" name="banco" id="banco" >
+                                <option value="">Selecione Banco</option>
+                                <option value="Banco Bice">  Banco Bice  </option>
+                                <option value="Banco BTG Pactual Chile">Banco BTG Pactual Chile</option>
+                                <option value="Banco Consorcio">Banco Consorcio</option>
+                                <option value="Banco de Chile, Edwards">Banco de Chile, Edwards</option>
+                                <option value="Banco de Crédito e Inversiones">Banco de Crédito e Inversiones</option>
+                                <option value="Banco de la Nacion Argentina">Banco de la Nacion Argentina</option>
+                                <option value="Banco Falabella">Banco Falabella</option>
+                                <option value="Banco Internacional">Banco Internacional</option>
+                                <option value="Banco Itaú Chile">Banco Itaú Chile</option>
+                                <option value="Banco Paris">Banco Paris</option>
+                                <option value="Banco Penta">Banco Penta</option>
+                                <option value="Banco RIpley">Banco RIpley</option>
+                                <option value="Banco Santander">Banco Santander</option>
+                                <option value="Banco Security">Banco Security</option>
+                                <option value="BBVA">BBVA</option>
+                                <option value="Deutsche Bank">Deutsche Bank</option>
+                                <option value="HSBC Bank (Chile)">HSBC Bank (Chile)</option>
+                                <option value="JP Morgan Chase Bank">JP Morgan Chase Bank</option>
+                                <option value="Rabobank Chile">Rabobank Chile</option>
+                                <option value="Scotiabank Chile">Scotiabank Chile</option>
+                                <option value="The Bank of Tokyo">The Bank of Tokyo</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <label for="input-file-now-custom-1">N° Cheque/Deposito</label>
+                            <input name='numero' type="number" class="form-control" required="required">
+                        </div>
+                    </div>
+
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <label for="input-file-now-custom-1">Valor</label>
+                            <input name='valor' type="number" class="form-control" required="required">
+                        </div>
+                    </div>
+
+                    <div class="col-md-2">
+                        <div class="input-group">
+                            <label>Fecha de Cobro</label>
+                            <input autocomplete="off" class="form-control datepicker-fecha_contacto1_c" id="datepicker-fecha_contacto1_c" name="fecha_cobro" placeholder="dd/mm/yyyy" required="required" type="text"><span class="input-group-addon"><i class="icon-calender"></i></span></input>
+                        </div>
+                    </div>
+
+                </div>
+                <hr>
+                <div class="row">
+                    <div class="col-md-2">
+                        <button type="submit" class="btn btn-success waves-effect waves-light">Ingresar Garantía</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+        <table id="listusers1_c" class="display compact" cellspacing="0" width="100%">
+            <thead>
+                <tr>
+                    <th>Mes</th>
+                    <th>Año</th>
+                    <th>Banco</th>
+                    <th>N° Cheque/Deposito</th>
+                    <th>Monto</th>
+                    <th>Fecha Cobro</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach($garantias as $p)
+                    <tr>
+                        <td>{{ $p->mes }}</td>
+                        <td>{{ $p->ano }}</td>
+                        <td>{{ $p->banco }}</td>
+                        <td>{{ $p->numero }}</td>
+                        <td>$ {{ $p->valor }}</td>
+                        <td>{{ $p->fecha_cobro }}</td>
+                        <td><a href="{{ route('borradorContrato.eliminarGarantia',[$p->id, $borrador->id_publicacion]) }}"><span class="ti-trash"></span></span></a></td>
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
+    </div>
+    </div>             
+</div>
+                        
+</section>
+{{-- FIN INICIO GARANTIA --}}
+
+
+
+<section id="section-iconbox-6_c">
                     <div class="panel panel-info">
-                            <div class="panel-heading"> Simular Pagos</div>
+                            <div class="panel-heading"> Simulación de Pagos</div>
                             <div class="panel-wrapper collapse in" aria-expanded="true">
                                 <div class="panel-body">
                                     <form action="{{ route('borradorContrato.generarpagos',[$borrador->id_publicacion]) }}" method="post" enctype='multipart/form-data'>
@@ -230,9 +364,12 @@
                            
                             </div>
                         
-       
-                    </section>
-                    <section id="section-iconbox-5_c">
+</section>
+<section id="section-iconbox-5_c">
+        <div class="panel panel-info">
+            <div class="panel-heading"> Gestión Contrato Borrador</div>
+        </div>
+
                         <form id="form1_a" action="{{ route('borradorContrato.crearBorrador') }}" method="post">                 
                 <input type="hidden" name="_token" value="{{ csrf_token() }}">
                 <input type="hidden" name="id_creador" value="{{ Auth::user()->id }}"">
@@ -864,14 +1001,15 @@
                                     <!-- FIN MODAL INMUEBLE -->
                 </tbody>
             </table>
-                    </section>
+</section>
                     
 
                 </div>
                 <!-- /content -->
             </div>
             <!-- /tabs -->
-        </section>
+</section>
+
     </div>
 </div>
   <a href="{{ route('borradorContrato.index') }}" class="btn btn-info" style="color:white"><i class="fa fa-times-circle"></i>&nbsp;&nbsp;Volver</a>
