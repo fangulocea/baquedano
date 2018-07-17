@@ -22,17 +22,10 @@
                 <nav>   
                     <ul>
                         <li id="li_1" ><a href="#section-iconbox-1" class="sticon ti ti-user"><span>Arrendatario</span></a></li>
-<<<<<<< HEAD
-                        <li id="li_2" ><a href="#section-iconbox-2" class="sticon ti ti-alarm-clock"><span>Reserva</span></a></li>
-                        <li id="li_3"><a href="#section-iconbox-3" class="sticon ti ti-home"><span>Asignar Inmueble</span></a></li>
-                        <li id="li_4"><a href="#section-iconbox-4" class="sticon ti-camera"><span>Fotos</span></a></li>
-                        <li id="li_5"><a href="#section-iconbox-5" class="sticon ti-agenda"><span>Gestiones</span></a></li>
-=======
                         <li id="li_2"><a  href="#section-iconbox-2" class="sticon ti ti-alarm-clock"><span>Reserva</span></a></li>
                         <li id="li_3"><a  href="#section-iconbox-3" class="sticon ti ti-home"><span>Asignar Inmueble</span></a></li>
                         <li id="li_4"><a  href="#section-iconbox-4" class="sticon ti-camera"><span>Fotos</span></a></li>
                         <li id="li_5"><a  href="#section-iconbox-5" class="sticon ti-agenda"><span>Gestiones</span></a></li>
->>>>>>> cbb3dc5fcd2bf6281634a42efaf2c90d26c09b5f
                     </ul>
                 </nav>
                 <div class="content-wrap">

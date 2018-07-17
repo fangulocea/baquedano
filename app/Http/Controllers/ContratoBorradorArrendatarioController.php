@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\File;    
 use Illuminate\Support\Facades\Mail;
 use App\ContratoBorradorArrendatarioPdf;
+use App\ArrendatarioGarantia;
 
 
 
@@ -164,7 +165,12 @@ class ContratoBorradorArrendatarioController extends Controller
          ->select(DB::raw(" id, (CASE  WHEN tipopropuesta=1 THEN '1 Cuota' WHEN tipopropuesta=2 THEN'Pie + Cuota' ELSE 'Renovación' END) as tipopropuesta, proporcional, fecha_iniciocontrato, meses_contrato, iva,descuento, pie, cobromensual, nrocuotas,canondearriendo" ))
          ->get();  
 
-        return view('contratoborradorarrendatario.edit',compact('servicio','formasdepago','comision','flexibilidad','multa','contrato','publica','borradoresIndex','id_publicacion','propuestas'));
+         $garantias = DB::table('arrendatario_garantia as g')
+        ->where("id_publicacion","=",$id)
+        ->select(DB::raw(" g.id, g.mes, g.ano, g.banco, g.numero, g.valor, DATE_FORMAT(g.fecha_cobro, '%d/%m/%Y') as fecha_cobro"))
+        ->get();
+
+        return view('contratoborradorarrendatario.edit',compact('garantias','servicio','formasdepago','comision','flexibilidad','multa','contrato','publica','borradoresIndex','id_publicacion','propuestas'));
     }
 
     /**
@@ -399,6 +405,27 @@ class ContratoBorradorArrendatarioController extends Controller
         return redirect()->route('cbararrendatario.edit', $request->id_cap_arr)
             ->with('status', 'Borrador actualizado con éxito');
     }
+
+    public function garantia(Request $request,$id){
+
+        $fecha_cobro = DateTime::createFromFormat('d-m-Y', $request->fecha_cobro);
+        array_set($request, 'fecha_cobro', $fecha_cobro);
+        array_set($request, 'id_publicacion', $id);
+
+        $reserva = ArrendatarioGarantia::create(request()->except(['_token']));
+
+        return redirect()->route('cbararrendatario.edit', $id)
+                ->with('status', 'Garantía ingresada con éxito');
+
+    }
+
+    public function eliminarGarantia($id,$idp){
+        ArrendatarioGarantia::destroy($id);
+
+        return redirect()->route('cbararrendatario.edit', $idp)
+                ->with('status', 'Garantía eliminada con éxito');
+    }
+
 
 
 
