@@ -1,6 +1,0 @@
-Fecha Gestion
-Quien hizo la ultima modificacion
-Estado Negociacion en captacion
-
-
-***** Arrendatario en espera, que es lo que necesita (Solicitud)

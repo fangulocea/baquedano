@@ -1,9 +1,0 @@
-inmuebles -> $table->string('numero')->nullable();
-adm_pagosmensualespropietarios
-            $table->integer('subtotal_entrada')->nullable();;
-            $table->integer('subtotal_salida')->nullable();;
-            $table->integer('pago_propietario')->nullable();;
-            $table->integer('pago_rentas')->nullable();;
-            $table->integer('valor_a_pagar')->nullable();;
-
-mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm
