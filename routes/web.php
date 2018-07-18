@@ -922,7 +922,7 @@ Route::get('cbararrendatario/garantia/eliminar/{id}/{pub}','ContratoBorradorArre
 		Route::get('finalContratoArr/destroy/{id}/{idpdf}','ContratoFinalArrController@destroy')->name('finalContratoArr.destroy')
 		->middleware('permission:finalContratoArr.destroy');
 
-		Route::get('finalContratoArr/crearContrato','ContratoFinalArrController@crearContrato')->name('finalContratoArr.crearContrato')
+		Route::post('finalContratoArr/crearContrato','ContratoFinalArrController@crearContrato')->name('finalContratoArr.crearContrato')
 		->middleware('permission:finalContratoArr.create');
 
 		Route::get('finalContratoArr/borradorC/{idg}','ContratoFinalArrController@mostrarGestion');

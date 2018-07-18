@@ -52,10 +52,7 @@ class ContratoFinalArrController extends Controller
 
      public function crearContrato(Request $request)
     {
-      
       $ContratoBorradorArrendatario=ContratoBorradorArrendatario::find($request->id_borradorfinal);
-
-
 
       $pdfBorradorArrendatario = DB::table('contratoborradorarrendatariospdf as pdf')
         ->where("pdf.id_b_arrendatario","=",$request->id_borradorfinal)
@@ -79,7 +76,7 @@ class ContratoFinalArrController extends Controller
       ]);
       // //PARA PDF
       $borradorPDF = DB::table('contratoborradorarrendatarios as b')
-         ->where('b.id','=',$idCbA)
+         ->where('b.id','=',$request->id_borradorfinal)
          ->leftjoin('personas as p1','b.id_arrendatario','=','p1.id')
          ->leftjoin('inmuebles as i','b.id_inmueble','=','i.id')
          ->leftjoin('comunas as cc','p1.id_comuna','=','cc.comuna_id')
@@ -111,7 +108,7 @@ class ContratoFinalArrController extends Controller
                     "id_final"    => $contratoFinal->id,
                     "nombre"      => $numero . $borradorPDF->id . $borradorPDF->direccion_i .'-FINAL.pdf',
                     "ruta"        => "uploads/pdfarrfinal/",
-                    "id_creador"  => $idu,
+                    "id_creador"  => $request->id_creadorfinal,
                 ])->toArray();
         return redirect()->route('finalContratoArr.edit', [$ContratoBorradorArrendatario->id_cap_arr,$idCbA,$idCbA,1])
          ->with('status', 'Contrato Final guardado con éxito');
@@ -126,7 +123,7 @@ class ContratoFinalArrController extends Controller
     {
     
 
-    $meses=DB::table('cap_publicaciones as c')->select(DB::raw('CONCAT(MONTH(DATE_ADD(now(), INTERVAL -6 MONTH)),"/",YEAR(DATE_ADD(now(), INTERVAL -6 MONTH))) as mesanterior6,
+    $meses=DB::table('arrendatarios as c')->select(DB::raw('CONCAT(MONTH(DATE_ADD(now(), INTERVAL -6 MONTH)),"/",YEAR(DATE_ADD(now(), INTERVAL -6 MONTH))) as mesanterior6,
                     CONCAT(MONTH(DATE_ADD(now(), INTERVAL -5 MONTH)),"/",YEAR(DATE_ADD(now(), INTERVAL -5 MONTH))) as mesanterior5,
                     CONCAT(MONTH(DATE_ADD(now(), INTERVAL -4 MONTH)),"/",YEAR(DATE_ADD(now(), INTERVAL -4 MONTH))) as mesanterior4,
                     CONCAT(MONTH(DATE_ADD(now(), INTERVAL -3 MONTH)),"/",YEAR(DATE_ADD(now(), INTERVAL -3 MONTH))) as mesanterior3,
@@ -139,7 +136,6 @@ class ContratoFinalArrController extends Controller
                     CONCAT(MONTH(DATE_ADD(now(), INTERVAL +4 MONTH)),"/",YEAR(DATE_ADD(now(), INTERVAL +4 MONTH))) as messiguiente4,
                     CONCAT(MONTH(DATE_ADD(now(), INTERVAL +5 MONTH)),"/",YEAR(DATE_ADD(now(), INTERVAL +5 MONTH))) as messiguiente5,
                     CONCAT(MONTH(DATE_ADD(now(), INTERVAL +6 MONTH)),"/",YEAR(DATE_ADD(now(), INTERVAL +6 MONTH))) as messiguiente6'))->first();
-
 
 
     $publica = DB::table('adm_contratofinalarr as co')

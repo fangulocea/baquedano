@@ -238,10 +238,18 @@ tinymce.init({
     toolbar1: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | l      ink | print preview fullpage | forecolor backcolor  | mybutton",
     toolbar2: "Persona | Rut | Profesion | Teléfono | Domicilio | Depto | Comuna | Región",
     toolbar3: "Propiedad | DireccionProp | DeptoProp | RolProp | ComunaProp | DormitorioProp | BanoProp | ValorArriendo ",
-       toolbar4: "Comisiones | Flexibilidad | Servicio | FormasDePago | Multas",
+       toolbar4: "Comisiones | Flexibilidad | Servicio | FormasDePago | Multas | Cheques",
 
 	setup: function (editor) 
 	{
+
+        editor.addButton('Cheques', 
+                    {   text: '{Cheques}',
+                        icon: false,
+                        onclick: function () 
+                        { editor.insertContent('{Cheques}'); }
+                    });
+
     	editor.addButton('Comisiones', 
     	{   text: '{Comisiones}',
      		icon: false,

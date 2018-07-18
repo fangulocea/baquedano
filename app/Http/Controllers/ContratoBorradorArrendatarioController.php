@@ -130,6 +130,7 @@ class ContratoBorradorArrendatarioController extends Controller
         left join contratoborradorarrendatariospdf bp on b.id = bp.id_b_arrendatario
         where b.id_cap_arr =".$id);
 
+
          $servicio = DB::table('servicios as s')
          ->where("s.estado","<>",0)
          ->select(DB::raw('s.id as id,s.nombre as nombre'))
