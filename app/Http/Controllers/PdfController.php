@@ -18,7 +18,6 @@ class PdfController extends Controller
         $body    = $data->bodyContrato;
 
         $bodymail=str_replace("{fecha}",$data->fecha,$body);
-
         $bodymail=str_replace("{diaFirma}",date("d", strtotime($data->fecha)),$bodymail);
         $bodymail=str_replace("{mesFirma}",$meses[date("m", strtotime($data->fecha))-1],$bodymail);
         $bodymail=str_replace("{anioFirma}",date("Y", strtotime($data->fecha)),$bodymail);
@@ -115,7 +114,7 @@ class PdfController extends Controller
         $bodymail=str_replace("{Multas}",$data->Multas,$bodymail);
         $bodymail=str_replace("{ValorArriendo}",$data->valorarriendo,$bodymail);
 
-            $simulacionContrato = " ";
+        $simulacionContrato = " ";
         foreach ($simulacion as $s) {
             $simulacionContrato .= $s->precio_en_pesos." <br> " ; 
         }

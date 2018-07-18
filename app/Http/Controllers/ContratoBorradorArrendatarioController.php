@@ -247,7 +247,7 @@ class ContratoBorradorArrendatarioController extends Controller
             $idTipoPago = 21;
          } elseif($capSimulacion->tipopropuesta == 2)
          {
-            $idTipoPago = 32;
+            $idTipoPago = 35;
          } 
 
          $simulacion = DB::table('cap_simulapagoarrendatarios as b')
@@ -426,7 +426,7 @@ class ContratoBorradorArrendatarioController extends Controller
             $idTipoPago = 21;
          } elseif($capSimulacion->tipopropuesta == 2)
          {
-            $idTipoPago = 32;
+            $idTipoPago = 35;
          } 
 
          $simulacion = DB::table('cap_simulapagoarrendatarios as b')

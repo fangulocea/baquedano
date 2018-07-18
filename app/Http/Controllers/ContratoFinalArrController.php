@@ -110,7 +110,7 @@ class ContratoFinalArrController extends Controller
                     "ruta"        => "uploads/pdfarrfinal/",
                     "id_creador"  => $request->id_creadorfinal,
                 ])->toArray();
-        return redirect()->route('finalContratoArr.edit', [$ContratoBorradorArrendatario->id_cap_arr,$idCbA,$idCbA,1])
+        return redirect()->route('finalContratoArr.edit', [$ContratoBorradorArrendatario->id_cap_arr,0,0,1])
          ->with('status', 'Contrato Final guardado con éxito');
     }
 
