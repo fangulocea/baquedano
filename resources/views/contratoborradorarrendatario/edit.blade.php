@@ -41,34 +41,41 @@
             <input type="hidden" name="id_creador" value="{{ Auth::user()->id }}">
             <div class="form-body">
                 <div class="row">
-                    <div class="col-md-2">
+                    <div class="col-md-3">
                         <div class="form-group">
                             <label for="input-file-now-custom-1">Mes</label>
                             <select name="mes" class="form-control">
-                                <option value="Enero">Enero</option>
-                                <option value="Febrero">Febrero</option>
-                                <option value="Marzo">Marzo</option>
-                                <option value="Abril">Abril</option>
-                                <option value="Mayo">Mayo</option>
-                                <option value="Junio">Junio</option>
-                                <option value="Julio">Julio</option>
-                                <option value="Agosto">Agosto</option>
-                                <option value="Septiembre">Septiembre</option>
-                                <option value="Octubre">Octubre</option>
-                                <option value="Noviembre">Noviembre</option>
-                                <option value="Diciembre">Diciembre</option>
+                                <option value="1">Enero</option>
+                                <option value="2">Febrero</option>
+                                <option value="3">Marzo</option>
+                                <option value="4">Abril</option>
+                                <option value="5">Mayo</option>
+                                <option value="6">Junio</option>
+                                <option value="7">Julio</option>
+                                <option value="8">Agosto</option>
+                                <option value="9">Septiembre</option>
+                                <option value="10">Octubre</option>
+                                <option value="11">Noviembre</option>
+                                <option value="12">Diciembre</option>
                             </select>
                         </div>
                     </div>
                     
-                    <div class="col-md-2">
+                    <div class="col-md-3">
                         <div class="form-group">
                             <label for="input-file-now-custom-1">Año</label>
                             <input name='ano' type="number" class="form-control" required="required">
                         </div>
                     </div>
-
-                    <div class="col-md-2">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="input-file-now-custom-1">Valor</label>
+                            <input name='valor' type="number" class="form-control" required="required">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3">
                         <div class="form-group">
                             <label>Banco</label>
                             <select class="form-control" name="banco" id="banco" >
@@ -98,34 +105,31 @@
                         </div>
                     </div>
 
-                    <div class="col-md-2">
+                    <div class="col-md-3">
                         <div class="form-group">
                             <label for="input-file-now-custom-1">N° Cheque/Deposito</label>
-                            <input name='numero' type="number" class="form-control" required="required">
+                            <input name='numero' type="number" class="form-control">
                         </div>
                     </div>
 
-                    <div class="col-md-2">
-                        <div class="form-group">
-                            <label for="input-file-now-custom-1">Valor</label>
-                            <input name='valor' type="number" class="form-control" required="required">
-                        </div>
-                    </div>
 
-                    <div class="col-md-2">
+
+                    <div class="col-md-3">
+                        <label>Fecha de Cobro</label>
                         <div class="input-group">
-                            <label>Fecha de Cobro</label>
-                            <input autocomplete="off" class="form-control datepicker-fecha_contacto1_c" id="datepicker-fecha_contacto1_c" name="fecha_cobro" placeholder="dd/mm/yyyy" required="required" type="text"><span class="input-group-addon"><i class="icon-calender"></i></span></input>
+                            
+                            <input autocomplete="off" class="form-control datepicker-fecha_contacto1_c" id="datepicker-fecha_contacto1_c" name="fecha_cobro" placeholder="dd/mm/yyyy"  type="text"><span class="input-group-addon"><i class="icon-calender"></i></span></input>
                         </div>
                     </div>
 
                 </div>
-                <hr>
+
                 <div class="row">
                     <div class="col-md-2">
                         <button type="submit" class="btn btn-success waves-effect waves-light">Ingresar Garantía</button>
                     </div>
                 </div>
+                                <hr>
             </div>
         </form>
 
@@ -1442,6 +1446,62 @@ jQuery(document).ready(function () {
         });
     });
 
+
+<?php
+if($tab==2){
+    ?>
+    $(function() {
+
+            $("#li_1_c").removeClass("tab-current");
+            $("#li_6_c").addClass("tab-current");
+            $("#section-iconbox-1_c").removeClass("content-current");
+            $("#section-iconbox-6_c").addClass("content-current");
+           }); 
+<?php
+}
+?>
+
+
+<?php
+if($tab==3){
+    ?>
+    $(function() {
+
+            $("#li_1_c").removeClass("tab-current");
+            $("#li_5_c").addClass("tab-current");
+            $("#section-iconbox-1_c").removeClass("content-current");
+            $("#section-iconbox-5_c").addClass("content-current");
+           }); 
+<?php
+}
+?>
+
+$("#li_1_c").click(function (event) {
+             $("#li_1_c").addClass("tab-current");
+            $("#li_6_c").removeClass("tab-current");
+            $("#li_5_c").removeClass("tab-current");
+            $("#section-iconbox-1_c").addClass("content-current");
+            $("#section-iconbox-6_c").removeClass("content-current");
+            $("#section-iconbox-5_c").removeClass("content-current");
+            
+});
+$("#li_6_c").click(function (event) {
+            $("#li_6_c").addClass("tab-current");
+            $("#li_5_c").removeClass("tab-current");
+            $("#li_1_c").removeClass("tab-current");
+             $("#section-iconbox-6_c").addClass("content-current");
+            $("#section-iconbox-5_c").removeClass("content-current");    
+            $("#section-iconbox-1_c").removeClass("content-current");        
+});
+$("#li_5_c").click(function (event) {
+            $("#li_1_c").removeClass("tab-current");
+            $("#li_6_c").removeClass("tab-current");
+            $("#li_5_c").addClass("tab-current");
+            $("#section-iconbox-5_c").addClass("content-current");
+            $("#section-iconbox-6_c").removeClass("content-current");
+            $("#section-iconbox-1_c").removeClass("content-current");      
+            
+});
 
 
 </script>

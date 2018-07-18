@@ -78,7 +78,7 @@ class ContratoBorradorArrendatarioController extends Controller
      * @param  \App\ContratoBorradorArrendatario  $contratoBorradorArrendatario
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($id,$tab)
     {
         $publica = DB::table('arrendatarios as a')
          ->leftjoin('users as pc', 'a.id_creador', 'pc.id')
@@ -170,8 +170,14 @@ class ContratoBorradorArrendatarioController extends Controller
         ->where("id_publicacion","=",$id)
         ->select(DB::raw(" g.id, g.mes, g.ano, g.banco, g.numero, g.valor, DATE_FORMAT(g.fecha_cobro, '%d/%m/%Y') as fecha_cobro"))
         ->get();
+        if ($tab == 2) {
+            if (count($borradoresIndex) > 0) {
+                $tab = 3;
+            }
 
-        return view('contratoborradorarrendatario.edit',compact('garantias','servicio','formasdepago','comision','flexibilidad','multa','contrato','publica','borradoresIndex','id_publicacion','propuestas'));
+           
+        }
+        return view('contratoborradorarrendatario.edit',compact('garantias','servicio','formasdepago','comision','flexibilidad','multa','contrato','publica','borradoresIndex','id_publicacion','propuestas','tab'));
     }
 
     /**
@@ -268,7 +274,7 @@ class ContratoBorradorArrendatarioController extends Controller
                     "id_creador"  => $request->id_creador
                 ])->toArray();
 
-        return redirect()->route('cbararrendatario.edit', $request->id_cap_arr)
+        return redirect()->route('cbararrendatario.edit', [$request->id_cap_arr,1])
         ->with('status', 'Contrato Borrador guardado con éxito');
     }
 
@@ -355,12 +361,12 @@ class ContratoBorradorArrendatarioController extends Controller
             }
         
 
-            return redirect()->route('cbararrendatario.edit', $borradorCorreo->id_cap_arr)
+            return redirect()->route('cbararrendatario.edit',[$borradorCorreo->id_cap_arr,3])
                 ->with('status', 'Correo enviado con éxito');
         }
         else
         {
-            return redirect()->route('cbararrendatario.edit', $borradorCorreo->id_cap_arr)
+            return redirect()->route('cbararrendatario.edit', [$borradorCorreo->id_cap_arr,3])
                 ->with('error', 'No se puede enviar correo a borrador Rechazado');   
         }
 
@@ -440,19 +446,20 @@ class ContratoBorradorArrendatarioController extends Controller
         $pdf->pdfArrendatario($borradorPDF,$simulacion);
         // FIN PARA PDF
 
-        return redirect()->route('cbararrendatario.edit', $request->id_cap_arr)
+        return redirect()->route('cbararrendatario.edit', [$request->id_cap_arr,3])
             ->with('status', 'Borrador actualizado con éxito');
     }
 
     public function garantia(Request $request,$id){
-
-        $fecha_cobro = DateTime::createFromFormat('d-m-Y', $request->fecha_cobro);
-        array_set($request, 'fecha_cobro', $fecha_cobro);
+        if(isset($request->fecha_cobro)){
+            $fecha_cobro = DateTime::createFromFormat('d-m-Y', $request->fecha_cobro);
+            array_set($request, 'fecha_cobro', $fecha_cobro);
+        }
         array_set($request, 'id_publicacion', $id);
 
         $reserva = ArrendatarioGarantia::create(request()->except(['_token']));
 
-        return redirect()->route('cbararrendatario.edit', $id)
+        return redirect()->route('cbararrendatario.edit', [$id,1])
                 ->with('status', 'Garantía ingresada con éxito');
 
     }
@@ -460,7 +467,7 @@ class ContratoBorradorArrendatarioController extends Controller
     public function eliminarGarantia($id,$idp){
         ArrendatarioGarantia::destroy($id);
 
-        return redirect()->route('cbararrendatario.edit', $idp)
+        return redirect()->route('cbararrendatario.edit', [$idp,1])
                 ->with('status', 'Garantía eliminada con éxito');
     }
 

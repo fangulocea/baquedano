@@ -41,7 +41,7 @@
                                 <td>{{ trans_choice('mensajes.arrendatario', $p->id_estado) }}</td>
                                 @can('cbararrendatario.edit')
                                 <td width="10px">
-                                    <a href="{{ route('cbararrendatario.edit', $p->id_cap_arr) }}"><span class="btn btn-warning btn-circle btn-lg"><i class="ti-pencil-alt"></i></span></a>
+                                    <a href="{{ route('cbararrendatario.edit', [$p->id_cap_arr,1]) }}"><span class="btn btn-warning btn-circle btn-lg"><i class="ti-pencil-alt"></i></span></a>
                                 </td>
                                 @endcan
                                 @can('cbararrendatario.destroy')

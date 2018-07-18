@@ -38,7 +38,7 @@ class ArrendatarioController extends Controller
           "id_estado"=>6
         ]);
        
-        return redirect()->route('cbararrendatario.edit', $id)
+        return redirect()->route('cbararrendatario.edit', [$id,1])
             ->with('status', 'Captación en estado Borrador con éxito');
     }
 

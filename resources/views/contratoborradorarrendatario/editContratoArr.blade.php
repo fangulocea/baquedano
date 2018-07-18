@@ -203,7 +203,7 @@
                         </div>
 				<div class="form-actions">
                             <button type="submit" class="btn btn-success"> <i class="fa fa-check"></i> Guardar</button>
-                            <a href="{{ route('cbararrendatario.edit',$gestion->id_cap_arr) }}" class="btn btn-info" style="color:white"><i class="fa fa-times-circle"></i>&nbsp;&nbsp;Calcelar</a>
+                            <a href="{{ route('cbararrendatario.edit',[$gestion->id_cap_arr,3]) }}" class="btn btn-info" style="color:white"><i class="fa fa-times-circle"></i>&nbsp;&nbsp;Calcelar</a>
                 </div>
                     </input>
                 </input>

@@ -864,7 +864,7 @@ Route::get('cbararrendatario/garantia/eliminar/{id}/{pub}','ContratoBorradorArre
 		Route::get('cbararrendatario','ContratoBorradorArrendatarioController@index')->name('cbararrendatario.index')
 		->middleware('permission:cbararrendatario.index');
 
-		Route::get('cbararrendatario/edit/{id}','ContratoBorradorArrendatarioController@edit')->name('cbararrendatario.edit')
+		Route::get('cbararrendatario/edit/{id}/{tab}','ContratoBorradorArrendatarioController@edit')->name('cbararrendatario.edit')
 		->middleware('permission:cbararrendatario.edit');
 
 		Route::post('cbararrendatario/updatepersona','PersonaController@updatePersonaArrendatarioBorrador')->name('cbararrendatario.updatepersona')

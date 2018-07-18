@@ -22,7 +22,7 @@ class CreatePropietarioGarantia extends Migration
             $table->string('mes')->nullable();
             $table->integer('ano')->nullable();
             $table->string('banco')->nullable();
-            $table->integer('numero')->nullable();
+            $table->string('numero')->nullable();
             $table->integer('valor')->nullable();
             $table->date('fecha_cobro')->nullable();
             $table->timestamps();

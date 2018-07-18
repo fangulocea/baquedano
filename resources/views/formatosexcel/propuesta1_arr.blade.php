@@ -45,7 +45,7 @@ $fila1=$propuesta1->where("idtipopago",'=',1);
        <td style="background-color: #F2F4F4;text-align: center">{{  $p->precio_en_pesos }} </td>
 @endforeach
         </tr>
-@for ($i = 2; $i < 10; $i++)
+@for ($i = 2; $i <= 15; $i++)
     @php 
         $fila=$propuesta1->where("idtipopago",'=',$i);
 
