@@ -316,7 +316,6 @@ class ContratoBorradorArrendatarioController extends Controller
 
         return view('contratoborradorarrendatario.editContratoArr',compact('propuestas','servicio','formasdepago','comision','flexibilidad','multa','contrato','gestion','borradoresIndex'));
 
-
     }
 
 

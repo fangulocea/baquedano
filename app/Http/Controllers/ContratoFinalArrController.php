@@ -15,6 +15,7 @@ use Illuminate\Http\Request;
 use DB;
 use Illuminate\Support\Facades\File;
 use Auth;
+use App\ArrendatarioCheques;
 
 class ContratoFinalArrController extends Controller
 {
@@ -52,6 +53,7 @@ class ContratoFinalArrController extends Controller
 
      public function crearContrato(Request $request)
     {
+       
       $ContratoBorradorArrendatario=ContratoBorradorArrendatario::find($request->id_borradorfinal);
 
       $pdfBorradorArrendatario = DB::table('contratoborradorarrendatariospdf as pdf')
@@ -72,7 +74,8 @@ class ContratoFinalArrController extends Controller
             "id_estado"      => 1,
             "id_creador"     => $request->id_creadorfinal,
             "id_borrador"    => $request->id_borradorfinal, //contrato borrador arrendatario
-            "id_borradorpdf" => $pdfBorradorArrendatario->id  //contrato borrador PDF
+            "id_borradorpdf" => $pdfBorradorArrendatario->id,//contrato borrador PDF
+            "id_simulacion"  => $request->id_propuesta
       ]);
       // //PARA PDF
       $borradorPDF = DB::table('contratoborradorarrendatarios as b')
@@ -100,9 +103,49 @@ class ContratoFinalArrController extends Controller
              CONCAT_WS(" ",p1.nombre,p1.apellido_paterno,p1.apellido_materno) as arrendatario ' ))
          ->first();
 
+         $capSimulacion = DB::table('cap_simulaarrendatario as s')
+         ->where('s.id','=',$request->id_propuesta)->first();
+
+         if($capSimulacion->tipopropuesta == 1)
+         {
+            $idTipoPago = 21;
+         } elseif($capSimulacion->tipopropuesta == 2)
+         {
+            $idTipoPago = 35;
+         } 
+
+         $simulacion = DB::table('cap_simulapagoarrendatarios as b')
+         ->where('b.id_simulacion','=',$request->id_propuesta)
+         ->where('b.idtipopago','=',$idTipoPago)
+         ->get();
+
+        $textoContrato = DB::table('contratoborradorarrendatarios as c')
+        ->where('c.id','=',$request->id_borradorfinal)
+        ->first();
+      
+        $cadenaAbuscar   = '{Cheques}';
+        $posicion_coincidencia = strrpos($textoContrato->detalle, $cadenaAbuscar);
+ 
+        $correlativo = 1;
+        if ($posicion_coincidencia != false) {
+            foreach ($simulacion as $s) {
+                 $contratoCh=ArrendatarioCheques::create([
+                        'id_contrato'   => $contratoFinal->id,
+                        'monto'         => $s->precio_en_pesos,
+                        'id_estado'     => 1,
+                        'correlativo'   => $correlativo
+                  ]);
+                  $correlativo++;
+            }
+        } 
+
+        $simulacion = DB::table('arrendatario_cheques as b')
+         ->where('b.id_contrato','=',$contratoFinal->id)
+         ->get();
+
         $pdf = new PdfController();
         $numero=rand();
-        $pdf->pdfArrendatarioFinal($borradorPDF,$numero);
+        $pdf->pdfArrendatarioFinal($borradorPDF,$numero,$simulacion);
         // FIN PARA PDFsss
         $finalpdf=ContratoFinalArrPdf::create([
                     "id_final"    => $contratoFinal->id,
@@ -329,11 +372,14 @@ class ContratoFinalArrController extends Controller
      */
     public function destroy($id,$idpdf)
     {
+        $borrach = ArrendatarioCheques::where('id_contrato','=',$id)->delete();
+
         $pdf=ContratoFinalArrPdf::find($idpdf);
         File::delete($pdf->ruta.'/'.$pdf->nombre);
         $pdf=ContratoFinalArrPdf::find($idpdf)->delete();
         $contrato = ContratoFinalArr::find($id);
         $borrar = ContratoFinalArr::find($id)->delete();
+
 
         $cant = ContratoFinalArr::where("id_publicacion","=",$contrato->id_publicacion)->get();
         if(count($cant)==0){
