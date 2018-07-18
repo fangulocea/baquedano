@@ -114,10 +114,27 @@ class PdfController extends Controller
         $bodymail=str_replace("{Multas}",$data->Multas,$bodymail);
         $bodymail=str_replace("{ValorArriendo}",$data->valorarriendo,$bodymail);
 
-        $simulacionContrato = " ";
+        $simulacionContrato  = "<table cellspacing='0' border='1' class='display nowrap' width='60%'>";
+        $simulacionContrato .= "<thead>";
+        $simulacionContrato .= "<tr>";
+        $simulacionContrato .= "<th>N°</th>";
+        $simulacionContrato .= "<th>Numero Ch</th>";
+        $simulacionContrato .= "<th>Monto</th>";
+        $simulacionContrato .= "</tr>";
+        $simulacionContrato .= "</thead>";
+        $simulacionContrato .= "<tbody>";
+        $correlativo = 1;
         foreach ($simulacion as $s) {
-            $simulacionContrato .= $s->precio_en_pesos." <br> " ; 
+            $simulacionContrato .= "<tr>";
+            $simulacionContrato .= "<td>".$correlativo."</td>";
+            $simulacionContrato .= "<td></td>";
+            $simulacionContrato .= "<td>".$s->precio_en_pesos."</td>";
+            $simulacionContrato .= "</tr>";
+            $correlativo++;
         }
+
+        $simulacionContrato .= "</table>";
+        $simulacionContrato .= "</tbody>";
 
         $bodymail=str_replace("{Cheques}",$simulacionContrato,$bodymail);
 
@@ -230,7 +247,7 @@ class PdfController extends Controller
         return $pdf->stream();
     }
 
-    public function pdfArrendatarioFinal($data,$numero) 
+    public function pdfArrendatarioFinal($data,$numero,$simulacion) 
     {
         $body    = $data->bodyContrato;
         $bodymail=str_replace("{fecha}",$data->fecha,$body);
@@ -255,7 +272,28 @@ class PdfController extends Controller
         $bodymail=str_replace("{Multas}",$data->Multas,$bodymail);
         $bodymail=str_replace("{ValorArriendo}",$data->valorarriendo,$bodymail);
 
+        $simulacionContrato  = "<table cellspacing='0' border='1' class='display nowrap' width='100%'>";
+        $simulacionContrato .= "<thead>";
+        $simulacionContrato .= "<tr>";
+        $simulacionContrato .= "<th>N°</th>";
+        $simulacionContrato .= "<th>Numero Ch</th>";
+        $simulacionContrato .= "<th>Monto</th>";
+        $simulacionContrato .= "</tr>";
+        $simulacionContrato .= "</thead>";
+        $simulacionContrato .= "<tbody>";
 
+        foreach ($simulacion as $s) {
+            $simulacionContrato .= "<tr>";
+            $simulacionContrato .= "<td>".$s->correlativo."</td>";
+            $simulacionContrato .= "<td>".$s->numero."</td>";
+            $simulacionContrato .= "<td>".$s->monto."</td>";
+            $simulacionContrato .= "</tr>";
+        }
+
+        $simulacionContrato .= "</table>";
+        $simulacionContrato .= "</tbody>";
+
+        $bodymail=str_replace("{Cheques}",$simulacionContrato,$bodymail);
 
         $pdf = App::make('dompdf.wrapper');
         $pdf->loadHTML('

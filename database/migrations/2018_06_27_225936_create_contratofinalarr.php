@@ -33,6 +33,8 @@ class CreateContratofinalarr extends Migration
             $table->foreign('id_borrador')->references('id')->on('contratoborradorarrendatarios');
             $table->integer('id_borradorpdf')->unsigned();
             $table->foreign('id_borradorpdf')->references('id')->on('contratoborradorarrendatariospdf');
+            $table->integer('id_simulacion')->unsigned()->nullable();
+            $table->foreign('id_simulacion')->references('id')->on('cap_simulaarrendatario')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
