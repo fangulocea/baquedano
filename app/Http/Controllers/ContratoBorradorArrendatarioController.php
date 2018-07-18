@@ -274,7 +274,7 @@ class ContratoBorradorArrendatarioController extends Controller
                     "id_creador"  => $request->id_creador
                 ])->toArray();
 
-        return redirect()->route('cbararrendatario.edit', [$request->id_cap_arr,1])
+        return redirect()->route('cbararrendatario.edit', [$request->id_cap_arr,3])
         ->with('status', 'Contrato Borrador guardado con éxito');
     }
 

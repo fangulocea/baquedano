@@ -16,7 +16,7 @@
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="form-group">
-                                        <label class="control-label">Servicio</label>
+                                        <label class="control-label">Tabla de Servicios</label>
                                         <input type="text" name="nombre" class="form-control" placeholder="" required="required" > <span class="help-block"> Identificación del Servicio </span> </div>
                                     </div>
 
@@ -34,10 +34,10 @@
 
                                         <div class="col-md-3">
                                             <div class="form-group">
-                                                <label>Valor</label>
+                                                <label></label>
                                                 <div class="input-group"> 
-                                                    <span class="input-group-addon">$</span>
-                                                    <input name='valor' type="number" class="form-control" required="required">
+                                                     <!--  <span class="input-group-addon">$</span>-->
+                                                    <input name='valor' type="hidden" class="form-control" required="required" value="0">
                                                 </div>
                                             </div>
 

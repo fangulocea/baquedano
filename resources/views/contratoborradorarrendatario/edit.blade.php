@@ -385,9 +385,9 @@
                                
                                 <div  class="col-md-3">
                                     <div class="form-group">
-                                        <label class="control-label">Servicio</label>
+                                        <label class="control-label">Tabla de Servicios</label>
                                         <select class="form-control" name="id_servicios" required="required" >
-                                            <option value="">Selecione Servicio</option>
+                                            <option value="">Selecione Servicios</option>
                                             @foreach($servicio as $p)
                                             <option value="{{ $p->id }}">{{ $p->nombre }}</option>
                                             @endforeach   

@@ -467,8 +467,10 @@ public function editargestion2(Request $request)
 
     public function garantia(Request $request,$id){
 
-        $fecha_cobro = DateTime::createFromFormat('d-m-Y', $request->fecha_cobro);
-        array_set($request, 'fecha_cobro', $fecha_cobro);
+        if(isset($request->fecha_cobro)){
+            $fecha_cobro = DateTime::createFromFormat('d-m-Y', $request->fecha_cobro);
+            array_set($request, 'fecha_cobro', $fecha_cobro);
+        }
         array_set($request, 'id_publicacion', $id);
 
         $reserva = PropietarioGarantia::create(request()->except(['_token']));

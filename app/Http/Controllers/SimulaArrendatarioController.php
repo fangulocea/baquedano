@@ -6,6 +6,7 @@ use App\SimulaArrendatario;
 use App\Arrendatario;
 use App\SimulaPagoArrendatario;
 use App\SimulaMensualPropietario;
+use App\Arr_Reservas;
 use App\ArrendatarioGarantia;
 use Illuminate\Http\Request;
 use DB;
@@ -418,6 +419,50 @@ $fecha_ini = date('Y-m-j', strtotime(date("Y", strtotime($fechafirma)) . '-' . d
             
         }
         
+        $fecha_ini = date('Y-m-j', strtotime(date("Y", strtotime($fechafirma)) . '-' . date("m", strtotime($fechafirma)) . '-' . 1));
+                    $dia = date("d", strtotime($fecha_ini));
+            $mes = date("m", strtotime($fecha_ini));
+            $anio = date("Y", strtotime($fecha_ini));
+            $dias_mes = cal_days_in_month(CAL_GREGORIAN, date("m", strtotime($fecha_ini)), date("Y", strtotime($fecha_ini)));
+        $reservas=Arr_Reservas::where("id_arr_ges","=",$idp)->where("id_estado","=",1)->get();
+
+        if (count($reservas) > 0) {
+                foreach ($reservas as $g) {
+                        $dias_mes = cal_days_in_month(CAL_GREGORIAN, $mes, $anio);
+                        $idtipopago = 11;
+                        $precio_proporcional = $g->monto_reserva;
+                        $valor_en_pesos = $g->monto_reserva;
+                        $pago = SimulaPagoArrendatario::create([
+                        'id_simulacion' => $idsimulacion,
+                        'id_publicacion' => $idp,
+                        'id_inmueble' => $idinmueble,
+                        'id_arrendatario' => $idpropietario,
+                        'tipo' => 1,
+                        'tipopago' => "Reserva",
+                        'idtipopago' => $idtipopago,
+                        'meses_contrato' => $meses_contrato,
+                        'fecha_iniciocontrato' => $fechafirma,
+                        'dia' => $dia,
+                        'mes' => $mes,
+                        'anio' => $anio,
+                        'descuento' => $descuento,
+                        'cant_diasmes' => $dias_mes,
+                        'cant_diasproporcional' => $dias_mes,
+                        'moneda' => $tipomoneda,
+                        'valormoneda' => $valormoneda,
+                        'valordia' => 1,
+                        'precio_en_moneda' => $valor_en_pesos,
+                        'precio_en_pesos' => $valor_en_pesos,
+                        'id_creador' => $id_creador,
+                        'id_modificador' => $id_creador,
+                        'id_estado' => 1,
+                        'canondearriendo' => $arriendo
+            ]);
+                        $primer_mes += $valor_en_pesos;
+                }
+            
+        }
+
         if ($pagonotaria != 0) {
                     $fecha_ini = date('Y-m-j', strtotime(date("Y", strtotime($fechafirma)) . '-' . date("m", strtotime($fechafirma)) . '-' . 1));
                                     $dia = date("d", strtotime($fecha_ini));
@@ -540,7 +585,7 @@ $fecha_ini = date('Y-m-j', strtotime(date("Y", strtotime($fechafirma)) . '-' . d
         }
 
         if ($tipopropuesta == 1) {
-            //Pendiente Mes Anterior
+  /*          //Pendiente Mes Anterior
             $fecha_ini = date('Y-m-j', strtotime(date("Y", strtotime($fechafirma)) . '-' . date("m", strtotime($fechafirma)) . '-' . 1));
             $idtipopago = 15;
 
@@ -612,7 +657,7 @@ $fecha_ini = date('Y-m-j', strtotime(date("Y", strtotime($fechafirma)) . '-' . d
                 ]);
             }
 
-
+*/
             $fecha_ini = date('Y-m-j', strtotime(date("Y", strtotime($fechafirma)) . '-' . date("m", strtotime($fechafirma)) . '-' . 1));
             $idtipopago = 20;
 
@@ -623,7 +668,7 @@ $fecha_ini = date('Y-m-j', strtotime(date("Y", strtotime($fechafirma)) . '-' . d
                 $dias_mes = cal_days_in_month(CAL_GREGORIAN, date("m", strtotime($fecha_ini)), date("Y", strtotime($fecha_ini)));
                 $pagomensual = SimulaPagoArrendatario::where("mes", '=', $mes)
                         ->where("anio", '=', $anio)
-                        ->whereIn("idtipopago", [2,3,4,5,6,7,8,10,15])
+                        ->whereIn("idtipopago", [1,2,3,4,5,6,7,8,10,11])
                         ->where("id_simulacion", '=', $idsimulacion)
                         ->sum('precio_en_pesos');
 
@@ -670,12 +715,11 @@ $fecha_ini = date('Y-m-j', strtotime(date("Y", strtotime($fechafirma)) . '-' . d
                 $pagomensual = SimulaPagoArrendatario::where("mes", '=', $mes)
                         ->where("anio", '=', $anio)
                         ->where("tipo", '=', 1)
-                        ->whereIn("idtipopago", [2,3,4,5,6,7,8,10,15])
+                        ->whereIn("idtipopago", [1,2,3,4,5,6,7,8,10,11])
                         ->where("id_simulacion", '=', $idsimulacion)
                         ->sum('precio_en_pesos');
                 if ($i == 0) {
                     $saldo = $valor_en_pesos_proporcional - $pagomensual;
-                    // dd("valor_en_pesos_proporcional: ".$valor_en_pesos_proporcional."     pagomensual : ".$pagomensual."    saldo ".$saldo);
                 } else {
                     $saldo = $arriendo - $pagomensual;
                 }
@@ -698,8 +742,8 @@ $fecha_ini = date('Y-m-j', strtotime(date("Y", strtotime($fechafirma)) . '-' . d
                             'moneda' => $tipomoneda,
                             'valormoneda' => $valormoneda,
                             'valordia' => $valor_diario,
-                            'precio_en_moneda' => $saldo,
-                            'precio_en_pesos' => $saldo,
+                            'precio_en_moneda' => $pagomensual,
+                            'precio_en_pesos' => $pagomensual,
                             'id_creador' => $id_creador,
                             'id_modificador' => $id_creador,
                             'id_estado' => 1,
@@ -825,7 +869,7 @@ $fecha_ini = date('Y-m-j', strtotime(date("Y", strtotime($fechafirma)) . '-' . d
             }
 
 
-
+/*
 
             //Pendiente Mes Anterior
                 $fecha_ini = date('Y-m-j', strtotime(date("Y", strtotime($fechafirma)) . '-' . date("m", strtotime($fechafirma)) . '-' . 1));
@@ -911,6 +955,7 @@ $fecha_ini = date('Y-m-j', strtotime(date("Y", strtotime($fechafirma)) . '-' . d
                             'canondearriendo' => $arriendo
                 ]);
             }
+        */
         }
 
         
@@ -924,7 +969,7 @@ $fecha_ini = date('Y-m-j', strtotime(date("Y", strtotime($fechafirma)) . '-' . d
           $dias_mes = cal_days_in_month(CAL_GREGORIAN, date("m", strtotime($fecha_ini)), date("Y", strtotime($fecha_ini)));
           $pagomensual=SimulaPagoArrendatario::where("mes",'=',$mes)
           ->where("anio",'=',$anio)
-          ->whereIn("idtipopago", [2,3,4,5,6,7,8,10,31,32,33])
+          ->whereIn("idtipopago", [1,2,3,4,5,6,7,8,10,11,31,32,33])
           ->where("id_simulacion",'=',$idsimulacion)
           ->sum('precio_en_pesos');
           $pago = SimulaPagoArrendatario::create([
@@ -972,10 +1017,10 @@ $fecha_ini = date('Y-m-j', strtotime(date("Y", strtotime($fechafirma)) . '-' . d
                         ->sum('precio_en_pesos');
           $pagomensual=SimulaPagoArrendatario::where("mes",'=',$mes)
           ->where("anio",'=',$anio)
-          ->whereIn("idtipopago", [2,3,4,5,6,7,8,10,31,32,33])
+          ->whereIn("idtipopago", [1,2,3,4,5,6,7,8,10,11,31,32,33])
           ->where("id_simulacion",'=',$idsimulacion)
           ->sum('precio_en_pesos');
-          $saldo=$valor_en_pesos_proporcional-$pagomensual;
+
           $pago = SimulaPagoArrendatario::create([
           'id_simulacion' => $idsimulacion,
           'id_publicacion' => $idp,
@@ -995,8 +1040,8 @@ $fecha_ini = date('Y-m-j', strtotime(date("Y", strtotime($fechafirma)) . '-' . d
           'moneda' => $tipomoneda,
           'valormoneda' => $valormoneda,
           'valordia' => $valor_diario,
-          'precio_en_moneda' => $saldo,
-          'precio_en_pesos' => $saldo,
+          'precio_en_moneda' => $pagomensual,
+          'precio_en_pesos' => $pagomensual,
           'id_creador' => $id_creador,
           'id_modificador' => $id_creador,
           'id_estado' => 1,
@@ -1027,7 +1072,7 @@ $fecha_ini = date('Y-m-j', strtotime(date("Y", strtotime($fechafirma)) . '-' . d
         if ($header->tipopropuesta == 1) {
             $propuesta1 = DB::table('cap_simulapagoarrendatarios as c')
                             ->where("id_simulacion", '=', $id)
-                            ->whereIn("idtipopago", [1, 2, 3, 4, 5, 6, 7, 8, 15, 10, 20, 21])->get();
+                            ->whereIn("idtipopago", [1, 2, 3, 4, 5, 6, 7, 8, 15, 10, 11, 20, 21])->get();
             return Excel::create('Propuesta de Pago', function ($excel) use ($header, $propuesta1, $meses) {
                         $excel->sheet('Propuesta', function ($sheet) use ($header, $propuesta1, $meses) {
                             $sheet->setBorder('A8:M20', 'thin');
@@ -1038,7 +1083,7 @@ $fecha_ini = date('Y-m-j', strtotime(date("Y", strtotime($fechafirma)) . '-' . d
         } else {
             $propuesta2 = DB::table('cap_simulapagoarrendatarios as c')
                             ->where("id_simulacion", '=', $id)
-                            ->whereIn("idtipopago", [1, 2, 5, 6, 7, 10, 31, 32, 33, 34, 35])->get();
+                            ->whereIn("idtipopago", [1, 2, 5, 6, 7, 10, 11 , 31, 32, 33, 34, 35])->get();
             return Excel::create('Propuesta de Pago', function ($excel) use ($header, $propuesta2, $meses) {
                         $excel->sheet('Propuesta', function ($sheet) use ($header, $propuesta2, $meses) {
                             $sheet->loadView('formatosexcel.propuesta2_arr', compact('header', 'meses', 'propuesta2'));

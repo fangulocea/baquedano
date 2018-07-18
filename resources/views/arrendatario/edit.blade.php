@@ -358,7 +358,7 @@
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label>Monto Reserva</label>
-                                <input class="form-control" value="{{ $reserva->monto_reserva or null }}" name="monto_reserva" placeholder="" type="number"></input>
+                                <input class="form-control" value="{{ $reserva->monto_reserva or null }}" name="monto_reserva" placeholder="" type="number" required="required"></input>
                             </div>
                         </div>
                         <div class='row'>

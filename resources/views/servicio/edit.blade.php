@@ -34,10 +34,10 @@
 
                                         <div class="col-md-3">
                                             <div class="form-group">
-                                                <label>Valor</label>
+                                                <label></label>
                                                 <div class="input-group"> 
-                                                    <span class="input-group-addon">$</span>
-                                                    <input name='valor' type="number" class="form-control" required="required" value="{{ $servicio->valor }}" >
+                                                  <!--  <span class="input-group-addon">$</span>-->
+                                                    <input name='valor' type="hidden" class="form-control" required="required" value="{{ $servicio->valor or 0 }}" >
                                                 </div>
                                             </div>
 
