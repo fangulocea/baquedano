@@ -407,7 +407,7 @@
                                     <label class="control-label">
                                                 Propuesta
                                             </label>
-                                            <select class="form-control" name="id_propuesta" required="required">
+                                            <select class="form-control" name="id_simulacion" required="required">
                                                 <option value="">
                                                     Selecione Propuesta
                                                 </option>
@@ -558,7 +558,7 @@
                                     <td>{{ trans_choice('mensajes.borradorArrendatatio', $p->id_estado) }}</td>
                                     @can('revisioncomercial.edit')
                                     <td>
-                                        <a href="{{ route('cbararrendatario.mostrarGestion', $p->id_cap_arr) }}"><span class="btn btn-success btn-circle btn-lg"><i class="fa fa-check"></i></span></a>
+                                        <a href="{{ route('cbararrendatario.mostrarGestion', $p->id) }}"><span class="btn btn-success btn-circle btn-lg"><i class="fa fa-check"></i></span></a>
 
                                     </td>
                                     @endcan

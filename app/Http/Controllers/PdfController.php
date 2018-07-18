@@ -90,7 +90,7 @@ class PdfController extends Controller
     }
 
 
-    public function pdfArrendatario($data) 
+    public function pdfArrendatario($data,$simulacion) 
     {
         $body    = $data->bodyContrato;
         $bodymail=str_replace("{fecha}",$data->fecha,$body);
@@ -115,7 +115,12 @@ class PdfController extends Controller
         $bodymail=str_replace("{Multas}",$data->Multas,$bodymail);
         $bodymail=str_replace("{ValorArriendo}",$data->valorarriendo,$bodymail);
 
+            $simulacionContrato = " ";
+        foreach ($simulacion as $s) {
+            $simulacionContrato .= $s->precio_en_pesos." <br> " ; 
+        }
 
+        $bodymail=str_replace("{Cheques}",$simulacionContrato,$bodymail);
 
         $pdf = App::make('dompdf.wrapper');
         $pdf->loadHTML('

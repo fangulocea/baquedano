@@ -239,10 +239,26 @@ class ContratoBorradorArrendatarioController extends Controller
              CONCAT_WS(" ",p1.nombre,p1.apellido_paterno,p1.apellido_materno) as arrendatario ' ))
          ->first();
 
+         $capSimulacion = DB::table('cap_simulaarrendatario as s')
+         ->where('s.id','=',$request->id_simulacion)->first();
+
+         if($capSimulacion->tipopropuesta == 1)
+         {
+            $idTipoPago = 21;
+         } elseif($capSimulacion->tipopropuesta == 2)
+         {
+            $idTipoPago = 32;
+         } 
+
+         $simulacion = DB::table('cap_simulapagoarrendatarios as b')
+         ->where('b.id_simulacion','=',$request->id_simulacion)
+         ->where('b.idtipopago','=',$idTipoPago)
+         ->get();
+
         $nombre_pdf = $borradorPDF->id.$borradorPDF->direccion_i.".pdf";
 
         $pdf = new PdfController();
-        $pdf->pdfArrendatario($borradorPDF);
+        $pdf->pdfArrendatario($borradorPDF,$simulacion);
         // FIN PARA PDFsss
 
         $borrpdf=ContratoBorradorArrendatarioPdf::create([
@@ -260,7 +276,7 @@ class ContratoBorradorArrendatarioController extends Controller
 
     public function mostrarGestion(Request $request, $idg){
 
-        $gestion=ContratoBorradorArrendatario::where('id_cap_arr','=',$idg)->first();
+        $gestion=ContratoBorradorArrendatario::where('id','=',$idg)->first();
           
          $servicio = DB::table('servicios as s')
          ->where("s.estado","<>",0)
@@ -292,9 +308,13 @@ class ContratoBorradorArrendatarioController extends Controller
          ->select(DB::raw('c.id as id,c.nombre as nombre'))
          ->get();  
 
+         $propuestas = DB::table('cap_simulaarrendatario')
+         ->where("id","=",$gestion->id_simulacion)
+         ->select(DB::raw(" id, (CASE  WHEN tipopropuesta=1 THEN '1 Cuota' WHEN tipopropuesta=2 THEN'Pie + Cuota' ELSE 'Renovación' END) as tipopropuesta, proporcional, fecha_iniciocontrato, meses_contrato, iva,descuento, pie, cobromensual, nrocuotas,canondearriendo" ))
+         ->get(); 
     
 
-        return view('contratoborradorarrendatario.editContratoArr',compact('servicio','formasdepago','comision','flexibilidad','multa','contrato','gestion','borradoresIndex'));
+        return view('contratoborradorarrendatario.editContratoArr',compact('propuestas','servicio','formasdepago','comision','flexibilidad','multa','contrato','gestion','borradoresIndex'));
 
 
     }
@@ -398,9 +418,26 @@ class ContratoBorradorArrendatarioController extends Controller
              CONCAT_WS(" ",p1.nombre,p1.apellido_paterno,p1.apellido_materno) as arrendatario ' ))
          ->first();
 
+        $capSimulacion = DB::table('cap_simulaarrendatario as s')
+         ->where('s.id','=',$request->id_simulacion)->first();
+
+         if($capSimulacion->tipopropuesta == 1)
+         {
+            $idTipoPago = 21;
+         } elseif($capSimulacion->tipopropuesta == 2)
+         {
+            $idTipoPago = 32;
+         } 
+
+         $simulacion = DB::table('cap_simulapagoarrendatarios as b')
+         ->where('b.id_simulacion','=',$request->id_simulacion)
+         ->where('b.idtipopago','=',$idTipoPago)
+         ->get();
+
+
         $pdf = new PdfController();
 
-        $pdf->pdfArrendatario($borradorPDF);
+        $pdf->pdfArrendatario($borradorPDF,$simulacion);
         // FIN PARA PDF
 
         return redirect()->route('cbararrendatario.edit', $request->id_cap_arr)

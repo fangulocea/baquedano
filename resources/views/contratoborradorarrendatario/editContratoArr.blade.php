@@ -151,6 +151,25 @@
 											{{ Form::select('dia_pago',['1'=>'1','2'=>'2','3'=>'3','4'=>'4','5'=>'5','6'=>'6','7'=>'7','8'=>'8','9'=>'9','10'=>'10'], $gestion->dia_pago ,array('class'=>'form-control','style'=>'','id'=>'estado','placeholder'=>'Selecciona Día','required'=>'required')) }}
                                     </div>
                                 </div>
+
+                                <div  class="col-lg-3 col-sm-3 col-xs-12">
+                                    <label class="control-label">
+                                                Propuesta
+                                            </label>
+                                            <select class="form-control" name="id_simulacion" required="required">
+                                                <option value="">
+                                                    Selecione Propuesta
+                                                </option>
+                                                @foreach($propuestas as $p)
+                                                    @if($gestion->id_simulacion == $p->id)
+                                                    { <option value="{{ $p->id }}" selected="">{{ $p->id }} - {{ $p->tipopropuesta }}</option> }
+                                                    @else
+                                                    { <option value="{{ $p->id }}">{{ $p->id }} - {{ $p->tipopropuesta }}</option> }
+                                                    @endif   
+                                                @endforeach 
+                                            </select>
+                                </div>
+
                             </div>
                             <div class="row">
                                 <div class="col-lg-3 col-sm-3 col-xs-12">
