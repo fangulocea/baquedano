@@ -101,7 +101,7 @@ class ContratoBorradorController extends Controller
      * @param  \App\ContratoBorrador  $contratoBorrador
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($id,$tab)
     {
         $borrador = DB::table('cap_publicaciones as c')
          ->leftjoin('personas as p1', 'c.id_propietario', '=', 'p1.id')
@@ -169,7 +169,7 @@ class ContratoBorradorController extends Controller
         ->select(DB::raw(" g.id, g.mes, g.ano, g.banco, g.numero, g.valor, DATE_FORMAT(g.fecha_cobro, '%d/%m/%Y') as fecha_cobro"))
         ->get();
 
-        return view('contratoBorrador.edit',compact('garantias','borrador','borradoresIndex','gestBorradores','notaria','servicio','comision','flexibilidad','contrato','formasdepago','multa','propuestas'));
+        return view('contratoBorrador.edit',compact('tab','garantias','borrador','borradoresIndex','gestBorradores','notaria','servicio','comision','flexibilidad','contrato','formasdepago','multa','propuestas'));
     }
 
     /**
@@ -264,7 +264,7 @@ class ContratoBorradorController extends Controller
 
 
 
-        return redirect()->route('borradorContrato.edit', $request->id_publicacion)
+        return redirect()->route('borradorContrato.edit', [$request->id_publicacion,3])
          ->with('status', 'Borrador guardado con éxito');
     }
 
@@ -340,7 +340,7 @@ class ContratoBorradorController extends Controller
         // FIN PARA PDF
 
 
-   return redirect()->route('borradorContrato.edit', $request->id_publicacion)
+   return redirect()->route('borradorContrato.edit', [$request->id_publicacion,3])
             ->with('status', 'Borrador actualizado con éxito');
 
     }
@@ -404,7 +404,7 @@ public function editargestion2(Request $request)
         // FIN PARA PDF
 
 
-   return redirect()->route('borradorContrato.edit', $request->id_publicacion)
+   return redirect()->route('borradorContrato.edit', [$request->id_publicacion,3])
             ->with('status', 'Borrador actualizado con éxito');
 
     }
@@ -492,12 +492,12 @@ public function editargestion2(Request $request)
             { ContratoBorrador::find($id)->update(['id_estado' => 3]); }
         
 
-            return redirect()->route('borradorContrato.edit', $borradorCorreo->id_pub)
+            return redirect()->route('borradorContrato.edit', [$borradorCorreo->id_pub,3])
                 ->with('status', 'Correo enviado con éxito');
         }
         else
         {
-            return redirect()->route('borradorContrato.edit', $borradorCorreo->id_pub)
+            return redirect()->route('borradorContrato.edit', [$borradorCorreo->id_pub,3])
                 ->with('error', 'No se puede enviar correo a borrador Rechazado');   
         }
 
@@ -513,7 +513,7 @@ public function editargestion2(Request $request)
 
         $reserva = PropietarioGarantia::create(request()->except(['_token']));
 
-        return redirect()->route('borradorContrato.edit', $id)
+        return redirect()->route('borradorContrato.edit', [$id,2])
                 ->with('status', 'Garantía ingresada con éxito');
 
     }
@@ -521,7 +521,7 @@ public function editargestion2(Request $request)
     public function eliminarGarantia($id,$idp){
         PropietarioGarantia::destroy($id);
 
-        return redirect()->route('borradorContrato.edit', $idp)
+        return redirect()->route('borradorContrato.edit',[ $idp,2])
                 ->with('status', 'Garantía eliminada con éxito');
     }
 

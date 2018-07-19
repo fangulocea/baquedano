@@ -959,7 +959,7 @@ $fecha_ini = date('Y-m-j', strtotime(date("Y", strtotime($fechafirma)) . '-' . d
           $fecha_ini = date("d-m-Y", strtotime("+1 month", strtotime($fecha_ini)));
           }
     
-        return redirect()->route('borradorContrato.edit', $idp)
+        return redirect()->route('borradorContrato.edit', [$idp,2])
          ->with('status', 'Simulación generada con éxito');
         
     }

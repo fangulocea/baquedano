@@ -22,7 +22,7 @@ class CreateArrendatarioCheques extends Migration
             $table->string('banco')->nullable();
             $table->integer('monto')->nullable();
             $table->integer('numero')->nullable();
-            $table->date('fecha_pago')->nullable();
+            $table->string('fecha_pago')->nullable();
             $table->integer('correlativo')->nullable();
             $table->integer('id_estado');
             $table->timestamps();

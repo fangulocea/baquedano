@@ -335,9 +335,9 @@ class ContratoFinalArrController extends Controller
          $finalIndex = DB::table('adm_contratofinalarr  as b')
          ->leftjoin('arrendatarios as cp', 'b.id_publicacion', '=', 'cp.id')
          ->leftjoin('adm_contratofinalarrpdf as bp', 'b.id', '=', 'bp.id_final')
+         ->leftjoin('contratoborradorarrendatarios as cb','b.id_borrador','=','cb.id')
             ->where('b.id_publicacion','=',$idc)
-
-         ->select(DB::raw(' b.id ,b.id_borrador, cp.id as id_publicacion,b.fecha_firma as fecha,b.id_estado,bp.nombre, bp.id as id_pdf,b.id_notaria,b.alias'))
+         ->select(DB::raw('cb.dia_pago, b.id ,b.id_borrador, cp.id as id_publicacion,b.fecha_firma as fecha,b.id_estado,bp.nombre, bp.id as id_pdf,b.id_notaria,b.alias'))
          ->get();
 
               $notaria = DB::table('notarias as n')
@@ -1433,5 +1433,84 @@ $fecha_ini = date('Y-m-j', strtotime(date("Y", strtotime($fechafirma)) . '-' . d
         return redirect()->route('finalContratoArr.edit', [$idp, 0, 0, 4])
                         ->with('status', 'Pagos Generados con éxito '.$texto);
     }
+
+    static function ValidaCh($idc){
+        $chequesPendientes = DB::table('arrendatario_cheques')
+        ->WhereNull('numero')->where('id_contrato','=',$idc)
+        ->count();
+        return $chequesPendientes;
+       
+    }
+
+    public function muestra_cheque($id, $idpdf, $idpago){
+
+        $chPropietario = DB::table('arrendatario_cheques')
+                ->where("id_contrato", "=", $id)
+                ->get();
+
+        return view('finalContratoArr.cheque', compact('chPropietario','idpago','id','idpdf'));
+    }
+
+    public function act_cheque(Request $request,$id){
+
+        for ($i = 0; $i < count($request->banco); $i++)
+        {
+            $actCh = DB::table('arrendatario_cheques')
+                ->where("id_contrato", "=", $id)
+                ->update([
+                    "banco"      => $request->banco[$i],
+                    "numero"     => $request->numero[$i],
+                    "fecha_pago" => $request->fecha_pago[$i]
+                ]);   
+        }
+
+     $contrato = ContratoFinalArr::find($id);
+
+
+      $borradorPDF = DB::table('contratoborradorarrendatarios as b')
+         ->where('b.id','=',$contrato->id_borrador)
+         ->leftjoin('personas as p1','b.id_arrendatario','=','p1.id')
+         ->leftjoin('inmuebles as i','b.id_inmueble','=','i.id')
+         ->leftjoin('comunas as cc','p1.id_comuna','=','cc.comuna_id')
+         ->leftjoin('servicios as s', 'b.id_servicios','=', 's.id')
+         ->leftjoin('regions as rr','p1.id_region','=','rr.region_id')
+         ->leftjoin('formasdepagos as fp','b.id_formadepago','=','fp.id')
+         ->leftjoin('comisiones as c', 'b.id_comisiones', '=', 'c.id')
+         ->leftjoin('flexibilidads as f', 'b.id_flexibilidad', '=', 'f.id')
+         ->leftjoin('multas as m','b.id_multa','=','m.id')
+         ->leftjoin('users as p2','b.id_creador','=','p2.id')
+         ->leftjoin('comunas as cci','i.id_comuna','=','cci.comuna_id')
+         ->leftjoin('contratoborradorarrendatariospdf as bp', 'b.id_arrendatario', '=', 'bp.id_b_arrendatario')
+         ->select(DB::raw('b.id, CONCAT_WS(" ",p1.nombre,p1.apellido_paterno,p1.apellido_materno) as arrendatario, 
+            CONCAT(s.descripcion, "  $",s.valor) as Servicio, 
+            CONCAT(fp.descripcion, " Pie $", fp.pie, "  ", fp.cuotas, " Cuotas") as FormasDePago, 
+            CONCAT(c.descripcion, " ", c.comision, " %") as comision, 
+            f.descripcion as Flexibilidad ,
+            b.valorarriendo ,
+            CONCAT("Multa de ", m.valor ," % Equivalente a ", ROUND((valorarriendo * m.valor)/100,0)) as Multas,
+            DATE_FORMAT(b.fecha_contrato, "%d/%m/%Y") as fecha, b.id_estado, p2.name as creador, b.id_arrendatario,i.id as id_inmueble,  b.detalle as bodyContrato, b.id_contrato as id_contrato, b.dia_pago as dia_pago_p, p1.profesion as profesion_p, p1.rut as rut_p, CONCAT_WS(" ",p1.direccion,p1.numero) as direccion_p, p1.telefono as telefono_p, p1.departamento as depto_p, cc.comuna_nombre as comuna_p, rr.region_nombre as region_p, i.rol as rol, CONCAT_WS(" ",i.direccion, i.numero) as direccion_i, i.departamento as depto_i, cci.comuna_nombre as comuna_i, i.dormitorio as dormitorio, i.bano as bano,
+             CONCAT_WS(" ",p1.nombre,p1.apellido_paterno,p1.apellido_materno) as arrendatario ' ))
+         ->first();
+
+
+        $simulacion = DB::table('arrendatario_cheques as b')
+         ->where('b.id_contrato','=',$contrato->id)
+         ->get();
+
+         
+
+        $pdfnombre = DB::table('adm_contratofinalarrpdf')
+        ->where('id_final','=',$contrato->id)->first();
+
+
+        $pdf = new PdfController();
+        $numero = rand();
+        $pdf->pdfArrendatarioFinalAct($borradorPDF, $pdfnombre->nombre, $simulacion);
+        // FIN PARA PDFsss
+
+        return redirect()->route('finalContratoArr.edit', [$contrato->id_publicacion, $contrato->id_borrador, $request->idpdf, 1])
+                        ->with('status', 'Contrato eliminado con éxito');
+    }
+
 
 }

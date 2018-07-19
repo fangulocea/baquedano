@@ -1,10 +1,11 @@
 @extends('admin.layout')
-
 @section('contenido')
-
 <link href="{{ URL::asset('plugins/bower_components/sweetalert/sweetalert.css')}}" rel="stylesheet" type="text/css">
-
 <link rel="stylesheet" href="{{ URL::asset('plugins/bower_components/dropify/dist/css/dropify.min.css')}}">
+
+@php 
+use App\Http\Controllers\ContratoFinalArrController;
+@endphp
 
 <div class="row">
     <div class="col-md-12"> 
@@ -81,7 +82,11 @@
                                     <input type="date" class="form-control" name="fecha_firma" id="fecha_firma" value='{{ $p->fecha }}' required="required">
                                 </td>
                                 <td>
-                                    <button type="submit" class="btn btn-success"> <i class="fa fa-check"></i> Guardar</button>
+                                    @if(ContratoFinalArrController::ValidaCh($p->id) == 0)
+                                        <button type="submit" class="btn btn-success"> <i class="fa fa-check"></i> Guardar</button>
+                                    @else
+                                        <a href="{{ route('finalContratoArr.muestra_cheque',[$p->id,$p->id_pdf,$p->dia_pago]) }}"> <button type="button" class="btn btn-danger"> <i class="fa fa-check"></i> N° Cheques</button></a>
+                                    @endif
                                 </td>
                                 <td>
                                     <a href="{{ route('finalContratoArr.destroy',[$p->id,$p->id_pdf]) }}"> <button type="button" class="btn btn-danger"> <i class="fa fa-check"></i> Eliminar</button></a>

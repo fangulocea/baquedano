@@ -724,7 +724,7 @@ Route::get('borradorContrato/garantia/eliminar/{id}/{pub}','ContratoBorradorCont
 		Route::post('borradorContrato/updatepersona','PersonaController@updatePersonaContratoBorrador')->name('borradorContrato.updatepersona')
 		->middleware('permission:borradorContrato.edit');
 
-		Route::get('borradorContrato/edit/{id}','ContratoBorradorController@edit')->name('borradorContrato.edit')
+		Route::get('borradorContrato/edit/{id}/{tab}','ContratoBorradorController@edit')->name('borradorContrato.edit')
 		->middleware('permission:borradorContrato.edit');
 
 		Route::post('borradorContrato/updateinmueble','InmuebleController@updateInmuebleContratoBorrador')->name('borradorContrato.updateinmueble')
@@ -852,6 +852,14 @@ Route::get('borradorContrato/garantia/eliminar/{id}/{pub}','ContratoBorradorCont
 		Route::get('finalContrato/ir_al_pago/{id}','PagosMensualesPropietariosController@ir_al_pago')->name('PagosMensualesPropietarios.ir_al_pago')
 		->middleware('permission:finalContrato.edit');
 
+		Route::get('finalContrato/muestra_cheque/{id}/{idpdf}/{idpago}','ContratoFinalController@muestra_cheque')->name('finalContrato.muestra_cheque')
+		->middleware('permission:finalContrato.edit');
+
+		Route::post('finalContrato/act_cheque/{idc}','ContratoFinalController@act_cheque')->name('finalContrato.act_cheque')
+		->middleware('permission:finalContrato.edit');
+
+
+
 
 
 		// COntratos Arrendatario Borrador
@@ -956,4 +964,10 @@ Route::get('cbararrendatario/garantia/eliminar/{id}/{pub}','ContratoBorradorArre
 
 		Route::any('pagosarrendatario/efectuarpago/{id}','PagosMensualesArrendatariosController@efectuarpago')->name('pagosarrendatario.efectuarpago')
 		->middleware('permission:finalContratoArr.edit');
+
+		Route::get('finalContratoArr/muestra_cheque/{id}/{idpdf}/{idpago}','ContratoFinalArrController@muestra_cheque')->name('finalContratoArr.muestra_cheque')
+		->middleware('permission:finalContratoArr.edit');
+
+		Route::post('finalContratoArr/act_cheque/{idc}','ContratoFinalArrController@act_cheque')->name('finalContratoArr.act_cheque')
+		->middleware('permission:finalContratoArr.edit');		
 });

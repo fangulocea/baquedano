@@ -302,8 +302,9 @@ class ContratoFinalController extends Controller {
         $finalIndex = DB::table('adm_contratofinal  as b')
                 ->leftjoin('cap_publicaciones as cp', 'b.id_publicacion', '=', 'cp.id')
                 ->leftjoin('adm_contratofinalpdf as bp', 'b.id', '=', 'bp.id_final')
+                ->leftjoin('borradores as cb','b.id_borrador','=','cb.id')
                 ->where('b.id_publicacion', '=', $idc)
-                ->select(DB::raw(' b.id ,b.id_borrador, cp.id as id_publicacion,b.fecha_firma as fecha,b.id_estado,bp.nombre, bp.id as id_pdf,b.id_notaria,b.alias'))
+                ->select(DB::raw(' b.id ,b.id_borrador, cp.id as id_publicacion,b.fecha_firma as fecha,b.id_estado,bp.nombre, bp.id as id_pdf,b.id_notaria,b.alias, cb.dia_pago'))
                 ->get();
 
         $notaria = DB::table('notarias as n')
@@ -325,7 +326,6 @@ class ContratoFinalController extends Controller {
                 ->where("c.id_publicacion", "=", $idc)
               ->select(DB::raw('c.id, i.id as id_inmueble, CONCAT_WS(" ",i.direccion,"#",i.numero,"Depto.",i.departamento,o.comuna_nombre) as direccion, cf.alias'))
                 ->get();
-
 
         $flag = 0;
 
@@ -403,26 +403,7 @@ class ContratoFinalController extends Controller {
         return redirect()->route('finalContrato.edit', [$idp, 0, 0, 6])
                         ->with('status', 'Contrato actualizado con éxito');
     }
-    public function destroy($id, $idpdf) {
 
-        $borrach = ArrendatarioCheques::where('id_contrato','=',$id)->delete();
-
-        $pdf = ContratoFinalPdf::find($idpdf);
-        File::delete($pdf->ruta . '/' . $pdf->nombre);
-        $pdf = ContratoFinalPdf::find($idpdf)->delete();
-        $contrato = ContratoFinal::find($id);
-        $condir=ContratoInmueblesPropietarios::where('id_contratofinal','=',$id)->delete();
-        $borrar = ContratoFinal::find($id)->delete();
-
-        $cant = ContratoFinal::where("id_publicacion", "=", $contrato->id_publicacion)->get();
-        if (count($cant) == 0) {
-            $captacion = Captacion::find($contrato->id_publicacion)->update([
-                "id_estado" => 6
-            ]);
-        }
-        return redirect()->route('finalContrato.edit', [$contrato->id_publicacion, $contrato->id_borrador, $idpdf, 1])
-                        ->with('status', 'Contrato eliminado con éxito');
-    }
 
     public function savedocs(Request $request, $id) {
         if (!isset($request->foto)) {
@@ -1527,6 +1508,101 @@ $fecha_ini = date('Y-m-j', strtotime(date("Y", strtotime($fechafirma)) . '-' . d
         }
     
         return redirect()->route('finalContrato.edit', [$idp, 0, 0, 4])->with('status', 'Pago generado con éxito');
+    }
+
+
+    public function destroy($id, $idpdf) {
+
+        $borrach = ArrendatarioCheques::where('id_contrato','=',$id)->delete();
+
+        $pdf = ContratoFinalPdf::find($idpdf);
+        File::delete($pdf->ruta . '/' . $pdf->nombre);
+        $pdf = ContratoFinalPdf::find($idpdf)->delete();
+        $contrato = ContratoFinal::find($id);
+        $condir=ContratoInmueblesPropietarios::where('id_contratofinal','=',$id)->delete();
+        $borrar = ContratoFinal::find($id)->delete();
+
+        $cant = ContratoFinal::where("id_publicacion", "=", $contrato->id_publicacion)->get();
+        if (count($cant) == 0) {
+            $captacion = Captacion::find($contrato->id_publicacion)->update([
+                "id_estado" => 6
+            ]);
+        }
+        return redirect()->route('finalContrato.edit', [$contrato->id_publicacion, $contrato->id_borrador, $idpdf, 1])
+                        ->with('status', 'Contrato eliminado con éxito');
+    }
+
+    static function ValidaCh($idc){
+        $chequesPendientes = DB::table('propietario_cheques')
+        ->WhereNull('numero')->where('id_contrato','=',$idc)
+        ->count();
+        return $chequesPendientes;
+       
+    }
+
+    public function muestra_cheque($id, $idpdf, $idpago){
+
+        $chPropietario = DB::table('propietario_cheques')
+                ->where("id_contrato", "=", $id)
+                ->get();
+
+        return view('contratoFinal.cheque', compact('chPropietario','idpago','id','idpdf'));
+    }
+
+    public function act_cheque(Request $request,$id){
+
+        for ($i = 0; $i < count($request->banco); $i++)
+        {
+            $actCh = DB::table('propietario_cheques')
+                ->where("id_contrato", "=", $id)
+                ->update([
+                    "banco"      => $request->banco[$i],
+                    "numero"     => $request->numero[$i],
+                    "fecha_pago" => $request->fecha_pago[$i]
+                ]);   
+        }
+
+        $contrato = ContratoFinal::find($id);
+
+        $borradorPDF = DB::table('borradores as b')
+                                ->leftjoin('notarias as n', 'b.id_notaria', '=', 'n.id')
+                                ->leftjoin('servicios as s', 'b.id_servicios', '=', 's.id')
+                                ->leftjoin('comisiones as c', 'b.id_comisiones', '=', 'c.id')
+                                ->leftjoin('flexibilidads as f', 'b.id_flexibilidad', '=', 'f.id')
+                                ->leftjoin('cap_publicaciones as cp', 'b.id_publicacion', '=', 'cp.id')
+                                ->leftjoin('personas as p1', 'cp.id_propietario', '=', 'p1.id')
+                                ->leftjoin('comunas as c1', 'p1.id_comuna', '=', 'c1.comuna_id')
+                                ->leftjoin('inmuebles as i', 'cp.id_inmueble', '=', 'i.id')
+                                ->leftjoin('comunas as c2', 'i.id_comuna', '=', 'c2.comuna_id')
+                                ->leftjoin('regions as reg', 'p1.id_region', '=', 'reg.region_id')
+                                ->leftjoin('contratos as con', 'b.id_contrato', '=', 'con.id')
+                                ->where('b.id', '=', $contrato->id_borrador)
+                                ->select(DB::raw(' b.id as id, n.razonsocial as n_n, s.nombre as n_s, c.nombre as n_c, f.nombre as n_f , cp.id as id_publicacion,DATE_FORMAT(b.fecha_gestion, "%d/%m/%Y") as fecha,
+                     CONCAT_WS(" ",p1.nombre,p1.apellido_paterno,p1.apellido_materno) as propietario,
+                     p1.rut as rut_p, CONCAT(p1.direccion," ", p1.numero) as direccion_p , c1.comuna_nombre as comuna_p, reg.region_nombre as region_p,
+                     CONCAT(i.direccion," ",i.numero) as direccion_i, i.departamento as depto_i, c2.comuna_nombre as comuna_i,
+                     i.dormitorio as dormitorio, i.bano as bano, i.bodega, i.piscina, i.precio, i.gastosComunes, 
+                     con.nombre, con.nombre as contrato, con.descripcion as deta_contrato,
+                     p1.profesion as profesion_p, p1.telefono as telefono_p, p1.departamento as depto_p,
+                     i.rol as rol, b.detalle_revision as bodyContrato, CONCAT(c.descripcion, " ", c.comision, " %") as comision,f.descripcion as Flexibilidad, CONCAT(s.descripcion, "  $",s.valor) as Servicio'))->first();
+
+
+        $simulacion = DB::table('propietario_cheques as b')
+         ->where('b.id_contrato','=',$contrato->id)
+         ->get();
+
+         
+
+        $pdfnombre = DB::table('adm_contratofinalpdf')
+        ->where('id_final','=',$contrato->id)->first();
+
+        $pdf = new PdfController();
+        $numero = rand();
+        $pdf->crontratoFinalPdfAct($borradorPDF, $pdfnombre->nombre, $simulacion);
+        // FIN PARA PDFsss
+
+        return redirect()->route('finalContrato.edit', [$contrato->id_publicacion, $contrato->id_borrador, $request->idpdf, 1])
+                        ->with('status', 'Contrato eliminado con éxito');
     }
 
 
