@@ -28,7 +28,7 @@ class PersonaController extends Controller
         $id_publicacion=$request->id_publicacion;
         $data = request()->except(['_token','id_publicacion','id_persona']);
         $persona = Persona::whereId($id_persona)->update($data);
-        return redirect()->route('borradorContrato.edit', $id_publicacion)
+        return redirect()->route('borradorContrato.edit', [$id_publicacion,3])
         ->with('status', 'Propietario Actualizado con éxito');
     }
 

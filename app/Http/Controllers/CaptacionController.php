@@ -472,7 +472,7 @@ class CaptacionController extends Controller {
         $captacion = Captacion::where("id", "=", $id)->update([
             "id_estado" => 6
         ]);
-        return redirect()->route('borradorContrato.edit', $id);
+        return redirect()->route('borradorContrato.edit', [$id,1]);
     }
 
     public function editarGestion(Request $request) {

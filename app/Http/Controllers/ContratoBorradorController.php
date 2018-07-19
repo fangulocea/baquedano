@@ -168,8 +168,18 @@ class ContratoBorradorController extends Controller
         ->where("id_publicacion","=",$id)
         ->select(DB::raw(" g.id, g.mes, g.ano, g.banco, g.numero, g.valor, DATE_FORMAT(g.fecha_cobro, '%d/%m/%Y') as fecha_cobro"))
         ->get();
+        if ($tab == 2) {
+            if (count($borradoresIndex) > 0) {
+                $tab = 3;
+            }
 
+<<<<<<< HEAD
         return view('contratoBorrador.edit',compact('tab','garantias','borrador','borradoresIndex','gestBorradores','notaria','servicio','comision','flexibilidad','contrato','formasdepago','multa','propuestas'));
+=======
+           
+        }
+        return view('contratoBorrador.edit',compact('garantias','borrador','borradoresIndex','gestBorradores','notaria','servicio','comision','flexibilidad','contrato','formasdepago','multa','propuestas','tab'));
+>>>>>>> daf1cd3dbd1c5db4a1b290d47a40009b38c43933
     }
 
     /**
@@ -513,7 +523,11 @@ public function editargestion2(Request $request)
 
         $reserva = PropietarioGarantia::create(request()->except(['_token']));
 
+<<<<<<< HEAD
         return redirect()->route('borradorContrato.edit', [$id,2])
+=======
+        return redirect()->route('borradorContrato.edit', [$id,1])
+>>>>>>> daf1cd3dbd1c5db4a1b290d47a40009b38c43933
                 ->with('status', 'Garantía ingresada con éxito');
 
     }
@@ -521,7 +535,11 @@ public function editargestion2(Request $request)
     public function eliminarGarantia($id,$idp){
         PropietarioGarantia::destroy($id);
 
+<<<<<<< HEAD
         return redirect()->route('borradorContrato.edit',[ $idp,2])
+=======
+        return redirect()->route('borradorContrato.edit', [$idp,1])
+>>>>>>> daf1cd3dbd1c5db4a1b290d47a40009b38c43933
                 ->with('status', 'Garantía eliminada con éxito');
     }
 

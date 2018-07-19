@@ -27,7 +27,7 @@ class InmuebleController extends Controller
         $id_publicacion=$request->id_publicacion;
         $data = request()->except(['_token','id_publicacion','id_inmueble']);
         $inmueble = Inmueble::whereId($id_inmueble)->update($data);
-        return redirect()->route('borradorContrato.edit', $id_publicacion)
+        return redirect()->route('borradorContrato.edit', [$id_publicacion,3])
         ->with('status', 'Inmueble Actualizado con éxito');
     }
 

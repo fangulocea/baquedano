@@ -1066,6 +1066,63 @@
 
 <script>
 
+<?php
+if($tab==2){
+    ?>
+    $(function() {
+
+            $("#li_1_c").removeClass("tab-current");
+            $("#li_6_c").addClass("tab-current");
+            $("#section-iconbox-1_c").removeClass("content-current");
+            $("#section-iconbox-6_c").addClass("content-current");
+           }); 
+<?php
+}
+?>
+
+
+<?php
+if($tab==3){
+    ?>
+    $(function() {
+
+            $("#li_1_c").removeClass("tab-current");
+            $("#li_5_c").addClass("tab-current");
+            $("#section-iconbox-1_c").removeClass("content-current");
+            $("#section-iconbox-5_c").addClass("content-current");
+           }); 
+<?php
+}
+?>
+
+$("#li_1_c").click(function (event) {
+             $("#li_1_c").addClass("tab-current");
+            $("#li_6_c").removeClass("tab-current");
+            $("#li_5_c").removeClass("tab-current");
+            $("#section-iconbox-1_c").addClass("content-current");
+            $("#section-iconbox-6_c").removeClass("content-current");
+            $("#section-iconbox-5_c").removeClass("content-current");
+            
+});
+$("#li_6_c").click(function (event) {
+            $("#li_6_c").addClass("tab-current");
+            $("#li_5_c").removeClass("tab-current");
+            $("#li_1_c").removeClass("tab-current");
+             $("#section-iconbox-6_c").addClass("content-current");
+            $("#section-iconbox-5_c").removeClass("content-current");    
+            $("#section-iconbox-1_c").removeClass("content-current");        
+});
+$("#li_5_c").click(function (event) {
+            $("#li_1_c").removeClass("tab-current");
+            $("#li_6_c").removeClass("tab-current");
+            $("#li_5_c").addClass("tab-current");
+            $("#section-iconbox-5_c").addClass("content-current");
+            $("#section-iconbox-6_c").removeClass("content-current");
+            $("#section-iconbox-1_c").removeClass("content-current");      
+            
+});
+
+
 $(function(){
 
 $("#propuesta").change(function (event) {

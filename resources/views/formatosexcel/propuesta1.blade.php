@@ -2,6 +2,26 @@
 
 <h4>Propietario:  {{  $header->Propietario }}</h4>
 <h4>Contacto: {{ $header->Creador }}</h4>
+
+<table >
+    <thead>
+    <tr>
+        <th style="background-color: #F2F4F4;text-align: center">Garantía</th>
+    </tr>
+    </thead>
+    <tbody>
+@php 
+$fila21=$propuesta1->where("idtipopago",'=',11);
+@endphp
+        
+@foreach($fila21 as $p)
+<tr>
+       <td style="background-color: #D5F5E3;text-align: center">{{  $p->precio_en_pesos }} </td>
+</tr>
+@endforeach
+        </tbody>
+    </table>
+
 <table id='headpropuesta1' name='headpropuesta1'>
     <thead>
     <tr>
@@ -45,7 +65,10 @@ $fila1=$propuesta1->where("idtipopago",'=',1);
        <td style="background-color: #F2F4F4;text-align: center">{{  $p->precio_en_pesos }} </td>
 @endforeach
         </tr>
-@for ($i = 2; $i < 10; $i++)
+@for ($i = 2; $i < 20; $i++)
+    @if($i==11)
+        @php $i++; @endphp
+    @endif
     @php 
         $fila=$propuesta1->where("idtipopago",'=',$i);
 
