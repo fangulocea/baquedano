@@ -61,22 +61,24 @@ class ContratoFinalArrController extends Controller
         ->select(DB::raw('pdf.id as id'))
         ->first();  
 
-      $captacionArrendatario=Arrendatario::find($ContratoBorradorArrendatario->id_cap_arr)->update([
-            "id_estado"=> 10
-        ]);
+      // $captacionArrendatario=Arrendatario::find($ContratoBorradorArrendatario->id_cap_arr)->update([
+      //       "id_estado"=> 10
+      //   ]);
 
-      $contratoBorrador = ContratoBorradorArrendatario::find($request->id_borradorfinal)->update([
-            "id_estado"=> 10
-        ]);
+      // $contratoBorrador = ContratoBorradorArrendatario::find($request->id_borradorfinal)->update([
+      //       "id_estado"=> 10
+      //   ]);
 
-      $contratoFinal=ContratoFinalArr::create([
-            "id_publicacion" => $ContratoBorradorArrendatario->id_cap_arr, //arrendatarios
-            "id_estado"      => 1,
-            "id_creador"     => $request->id_creadorfinal,
-            "id_borrador"    => $request->id_borradorfinal, //contrato borrador arrendatario
-            "id_borradorpdf" => $pdfBorradorArrendatario->id,//contrato borrador PDF
-            "id_simulacion"  => $request->id_propuesta
-      ]);
+      // $contratoFinal=ContratoFinalArr::create([
+      //       "id_publicacion" => $ContratoBorradorArrendatario->id_cap_arr, //arrendatarios
+      //       "id_estado"      => 1,
+      //       "id_creador"     => $request->id_creadorfinal,
+      //       "id_borrador"    => $request->id_borradorfinal, //contrato borrador arrendatario
+      //       "id_borradorpdf" => $pdfBorradorArrendatario->id,//contrato borrador PDF
+      //       "id_simulacion"  => $request->id_propuesta
+      // ]);
+
+
       // //PARA PDF
       $borradorPDF = DB::table('contratoborradorarrendatarios as b')
          ->where('b.id','=',$request->id_borradorfinal)
@@ -143,6 +145,8 @@ class ContratoFinalArrController extends Controller
         $simulacion = DB::table('arrendatario_cheques as b')
          ->where('b.id_contrato','=',$contratoFinal->id)
          ->get();
+
+         dd($simulacion);
 
         $pdf = new PdfController();
         $numero=rand();
@@ -1452,16 +1456,20 @@ $fecha_ini = date('Y-m-j', strtotime(date("Y", strtotime($fechafirma)) . '-' . d
 
     public function act_cheque(Request $request,$id){
 
+
         for ($i = 0; $i < count($request->banco); $i++)
         {
+
             $actCh = DB::table('arrendatario_cheques')
-                ->where("id_contrato", "=", $id)
+                ->where("id_contrato", "=", $id)->where("correlativo", "=", $request->correlativo[$i])
                 ->update([
                     "banco"      => $request->banco[$i],
                     "numero"     => $request->numero[$i],
                     "fecha_pago" => $request->fecha_pago[$i]
                 ]);   
         }
+
+       
 
      $contrato = ContratoFinalArr::find($id);
 

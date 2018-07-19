@@ -37,7 +37,8 @@
 								<div class="row">
                                 	<div class="col-md-1">
                                     	<div class="form-group">    
-                                    	     {{ $p->correlativo }}   	
+                                    	     {{ $p->correlativo }}  
+                                             <input type="hidden" name="correlativo[]" value="{{ $p->correlativo }}" class="form-control"  > 	
                                         </div>
                                 	</div>
 									<div class="col-md-2">

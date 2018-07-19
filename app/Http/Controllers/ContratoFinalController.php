@@ -1623,7 +1623,7 @@ $fecha_ini = date('Y-m-j', strtotime(date("Y", strtotime($fechafirma)) . '-' . d
         for ($i = 0; $i < count($request->banco); $i++)
         {
             $actCh = DB::table('propietario_cheques')
-                ->where("id_contrato", "=", $id)
+                ->where("id_contrato", "=", $id)->where("correlativo", "=", $request->correlativo[$i])
                 ->update([
                     "banco"      => $request->banco[$i],
                     "numero"     => $request->numero[$i],
