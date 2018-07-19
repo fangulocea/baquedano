@@ -52,7 +52,7 @@
                                  <td>{{ substr(substr($p->portal, 4),0,10) }}</td>
                                 @can('borradorContrato.edit')
                                 <td width="10px">
-                                    <a href="{{ route('borradorContrato.edit', $p->id_publicacion) }}"><span class="btn btn-warning btn-circle btn-lg"><i class="ti-pencil-alt"></i></span></a>
+                                    <a href="{{ route('borradorContrato.edit', [$p->id_publicacion,1]) }}"><span class="btn btn-warning btn-circle btn-lg"><i class="ti-pencil-alt"></i></span></a>
                                 </td>
                                 @endcan
                                 @can('borradorContrato.destroy')

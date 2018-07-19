@@ -54,7 +54,7 @@ class ArrendatarioController extends Controller
          ->leftjoin('users as p2', 'a.id_creador', '=', 'p2.id')
          ->leftjoin('personas as p3', 'a.id_modificador', '=', 'p3.id')
          ->select(DB::raw('a.id, DATE_FORMAT(a.created_at, "%d/%m/%Y") as fecha_creacion, a.id_estado, CONCAT_WS(" ", p1.nombre, p1.apellido_paterno, p1.apellido_materno) as Arrendador, p2.name as Creador'))->get();
-         
+
          return view('arrendatario.index',compact('arrendador',1));
     }
 
