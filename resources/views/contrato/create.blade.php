@@ -79,10 +79,16 @@
 
                 toolbar4: "diaFirma | mesFirma | anioFirma ",
 
-                toolbar5: "Comisiones | Flexibilidad | Servicio | FormasDePago | Multas",
+                toolbar5: "Comisiones | Flexibilidad | Servicio | FormasDePago | Multas | Cheques",
 
             setup: function (editor) 
             {
+                editor.addButton('Cheques', 
+                    {   text: '{Cheques}',
+                        icon: false,
+                        onclick: function () 
+                        { editor.insertContent('{Cheques}'); }
+                    });
 
                 editor.addButton('Comisiones', 
                     {   text: '{Comisiones}',

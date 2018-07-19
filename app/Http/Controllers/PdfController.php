@@ -11,7 +11,7 @@ use DateTime;
 
 class PdfController extends Controller
 {
-    public function Index($data) 
+    public function Index($data,$simulacion) 
     {
         $meses = array("Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre");
         
@@ -39,6 +39,36 @@ class PdfController extends Controller
         $bodymail=str_replace("{Flexibilidad}",$data->Flexibilidad,$bodymail);
         $bodymail=str_replace("{Servicio}",$data->Servicio,$bodymail);
         // $bodymail=str_replace("{correo}",utf8_decode($_POST['correo']),$bodymail);
+
+        $simulacionContrato  = "<table cellspacing='0' border='1' class='display nowrap' width='60%'>";
+        $simulacionContrato .= "<thead>";
+        $simulacionContrato .= "<tr>";
+        $simulacionContrato .= "<th>N°</th>";
+        $simulacionContrato .= "<th>Mes Arriendo</th>";
+        $simulacionContrato .= "<th>Banco</th>";
+        $simulacionContrato .= "<th>Numero Ch</th>";
+        $simulacionContrato .= "<th>Monto</th>";
+        $simulacionContrato .= "<th>Fecha Pago</th>";
+        $simulacionContrato .= "</tr>";
+        $simulacionContrato .= "</thead>";
+        $simulacionContrato .= "<tbody>";
+        $correlativo = 1;
+        foreach ($simulacion as $s) {
+            $simulacionContrato .= "<tr>";
+            $simulacionContrato .= "<td>".$correlativo."</td>";
+            $simulacionContrato .= "<th>".$s->mes."/".$s->anio."</th>";
+            $simulacionContrato .= "<th> </th>";
+            $simulacionContrato .= "<td> </td>";
+            $simulacionContrato .= "<td>".$s->precio_en_pesos."</td>";
+            $simulacionContrato .= "<th>  </th>";
+            $simulacionContrato .= "</tr>";
+            $correlativo++;
+        }
+
+        $simulacionContrato .= "</table>";
+        $simulacionContrato .= "</tbody>";
+
+        $bodymail=str_replace("{Cheques}",$simulacionContrato,$bodymail);
 
         $pdf = App::make('dompdf.wrapper');
         $pdf->loadHTML('
@@ -118,8 +148,11 @@ class PdfController extends Controller
         $simulacionContrato .= "<thead>";
         $simulacionContrato .= "<tr>";
         $simulacionContrato .= "<th>N°</th>";
+        $simulacionContrato .= "<th>Mes Arriendo</th>";
+        $simulacionContrato .= "<th>Banco</th>";
         $simulacionContrato .= "<th>Numero Ch</th>";
         $simulacionContrato .= "<th>Monto</th>";
+        $simulacionContrato .= "<th>Fecha Pago</th>";
         $simulacionContrato .= "</tr>";
         $simulacionContrato .= "</thead>";
         $simulacionContrato .= "<tbody>";
@@ -127,8 +160,11 @@ class PdfController extends Controller
         foreach ($simulacion as $s) {
             $simulacionContrato .= "<tr>";
             $simulacionContrato .= "<td>".$correlativo."</td>";
-            $simulacionContrato .= "<td></td>";
+            $simulacionContrato .= "<th>".$s->mes."/".$s->anio."</th>";
+            $simulacionContrato .= "<th> </th>";
+            $simulacionContrato .= "<td> </td>";
             $simulacionContrato .= "<td>".$s->precio_en_pesos."</td>";
+            $simulacionContrato .= "<th>  </th>";
             $simulacionContrato .= "</tr>";
             $correlativo++;
         }
@@ -188,7 +224,7 @@ class PdfController extends Controller
 
 
 
-    public function crontratoFinalPdf($data,$numero) 
+    public function crontratoFinalPdf($data,$numero,$simulacion) 
     {
         $body    = $data->bodyContrato;
         $bodymail=str_replace("{fecha}",$data->fecha,$body);
@@ -210,6 +246,36 @@ class PdfController extends Controller
         $bodymail=str_replace("{Flexibilidad}",$data->Flexibilidad,$bodymail);
         $bodymail=str_replace("{Servicio}",$data->Servicio,$bodymail);
         // $bodymail=str_replace("{correo}",utf8_decode($_POST['correo']),$bodymail);
+
+        $simulacionContrato  = "<table cellspacing='0' border='1' class='display nowrap' width='60%'>";
+        $simulacionContrato .= "<thead>";
+        $simulacionContrato .= "<tr>";
+        $simulacionContrato .= "<th>N°</th>";
+        $simulacionContrato .= "<th>Mes Arriendo</th>";
+        $simulacionContrato .= "<th>Banco</th>";
+        $simulacionContrato .= "<th>Numero Ch</th>";
+        $simulacionContrato .= "<th>Monto</th>";
+        $simulacionContrato .= "<th>Fecha Pago</th>";
+        $simulacionContrato .= "</tr>";
+        $simulacionContrato .= "</thead>";
+        $simulacionContrato .= "<tbody>";
+
+        foreach ($simulacion as $s) {
+            $simulacionContrato .= "<tr>";
+            $simulacionContrato .= "<td>".$s->correlativo."</td>";
+            $simulacionContrato .= "<td>".$s->mes_arriendo."</td>";
+            $simulacionContrato .= "<td>".$s->banco."</td>";
+            $simulacionContrato .= "<td>".$s->numero."</td>";
+            $simulacionContrato .= "<td>".$s->monto."</td>";
+            $simulacionContrato .= "<td>".$s->fecha_pago."</td>";
+            $simulacionContrato .= "</tr>";
+        }
+
+        $simulacionContrato .= "</tbody>";
+        $simulacionContrato .= "</table>";
+        
+
+        $bodymail=str_replace("{Cheques}",$simulacionContrato,$bodymail);
 
         $pdf = App::make('dompdf.wrapper');
         $pdf->loadHTML('
@@ -272,12 +338,15 @@ class PdfController extends Controller
         $bodymail=str_replace("{Multas}",$data->Multas,$bodymail);
         $bodymail=str_replace("{ValorArriendo}",$data->valorarriendo,$bodymail);
 
-        $simulacionContrato  = "<table cellspacing='0' border='1' class='display nowrap' width='100%'>";
+        $simulacionContrato  = "<table cellspacing='0' border='1' class='display nowrap' width='60%'>";
         $simulacionContrato .= "<thead>";
         $simulacionContrato .= "<tr>";
         $simulacionContrato .= "<th>N°</th>";
+        $simulacionContrato .= "<th>Mes Arriendo</th>";
+        $simulacionContrato .= "<th>Banco</th>";
         $simulacionContrato .= "<th>Numero Ch</th>";
         $simulacionContrato .= "<th>Monto</th>";
+        $simulacionContrato .= "<th>Fecha Pago</th>";
         $simulacionContrato .= "</tr>";
         $simulacionContrato .= "</thead>";
         $simulacionContrato .= "<tbody>";
@@ -285,13 +354,17 @@ class PdfController extends Controller
         foreach ($simulacion as $s) {
             $simulacionContrato .= "<tr>";
             $simulacionContrato .= "<td>".$s->correlativo."</td>";
+            $simulacionContrato .= "<td>".$s->mes_arriendo."</td>";
+            $simulacionContrato .= "<td>".$s->banco."</td>";
             $simulacionContrato .= "<td>".$s->numero."</td>";
             $simulacionContrato .= "<td>".$s->monto."</td>";
+            $simulacionContrato .= "<td>".$s->fecha_pago."</td>";
             $simulacionContrato .= "</tr>";
         }
 
-        $simulacionContrato .= "</table>";
         $simulacionContrato .= "</tbody>";
+        $simulacionContrato .= "</table>";
+        
 
         $bodymail=str_replace("{Cheques}",$simulacionContrato,$bodymail);
 

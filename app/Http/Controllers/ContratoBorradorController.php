@@ -234,11 +234,27 @@ class ContratoBorradorController extends Controller
              CONCAT(c.descripcion, " ", c.comision, " %") as comision, 
              f.descripcion as Flexibilidad ,
              i.rol as rol, b.detalle_revision as bodyContrato'))->first();
+
+
+         $capSimulacion = DB::table('cap_simulapropietario as s')
+         ->where('s.id','=',$request->id_simulacion)->first();
+
+         if($capSimulacion->tipopropuesta == 1)
+         {
+            $idTipoPago = 21;
+         } elseif($capSimulacion->tipopropuesta == 2)
+         {
+            $idTipoPago = 35;
+         } 
+
+         $simulacion = DB::table('cap_simulapagopropietarios as b')
+         ->where('b.id_simulacion','=',$request->id_simulacion)
+         ->where('b.idtipopago','=',$idTipoPago)
+         ->get();
+
         $pdf = new PdfController();
-
-        $pdf->index($borradorPDF);
+        $pdf->index($borradorPDF,$simulacion);
         // FIN PARA PDFsss
-
         $borrpdf=Contratoborradorpdf::create([
                     "id_borrador" => $borradorPDF->id,
                     "nombre"      => $borradorPDF->id.$borradorPDF->direccion_i.".pdf",
@@ -301,9 +317,26 @@ class ContratoBorradorController extends Controller
              f.descripcion as Flexibilidad ,
              i.rol as rol, b.detalle_revision as bodyContrato'))->first();
 
+         $capSimulacion = DB::table('cap_simulapropietario as s')
+         ->where('s.id','=',$request->id_simulacion)->first();
+
+         if($capSimulacion->tipopropuesta == 1)
+         {
+            $idTipoPago = 21;
+         } elseif($capSimulacion->tipopropuesta == 2)
+         {
+            $idTipoPago = 35;
+         } 
+
+         $simulacion = DB::table('cap_simulapagopropietarios as b')
+         ->where('b.id_simulacion','=',$request->id_simulacion)
+         ->where('b.idtipopago','=',$idTipoPago)
+         ->get();
+
+
         $pdf = new PdfController();
 
-        $pdf->index($borradorPDF);
+        $pdf->index($borradorPDF,$simulacion);
         // FIN PARA PDF
 
 
@@ -414,7 +447,12 @@ public function editargestion2(Request $request)
          ->select(DB::raw('c.id as id,c.nombre as nombre'))
          ->get();
 
-        return view('contratoBorrador.editContrato',compact('borrador','gestion','notaria','servicio','comision','flexibilidad','contrato','multa','formasdepago'));
+         $propuestas = DB::table('cap_simulapropietario')
+         ->where("id","=",$gestion->id_simulacion)
+         ->select(DB::raw(" id, (CASE  WHEN tipopropuesta=1 THEN '1 Cuota' WHEN tipopropuesta=2 THEN'Pie + Cuota' ELSE 'Renovación' END) as tipopropuesta, proporcional, fecha_iniciocontrato, meses_contrato, iva,descuento, pie, cobromensual, nrocuotas,canondearriendo" ))
+         ->get(); 
+
+         return view('contratoBorrador.editContrato',compact('propuestas','borrador','gestion','notaria','servicio','comision','flexibilidad','contrato','multa','formasdepago'));
 
     }
 

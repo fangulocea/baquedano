@@ -387,7 +387,7 @@
                                         Fecha Contrato
                                     </label>
                                     <div class="input-group">
-                                        <input autocomplete="off" class="form-control datepicker-fecha_contacto1_c" id="datepicker-fecha_contacto1_c" name="fecha_gestion" placeholder="dd/mm/yyyy" required="required" type="text">
+                                        <input autocomplete="off" class="form-control datepicker-fecha_contacto1_d" id="datepicker-fecha_contacto1_d" name="fecha_gestion" placeholder="dd/mm/yyyy" required="required" type="text">
                                         <span class="input-group-addon">
                                             <i class="icon-calender">
                                             </i>
@@ -473,6 +473,25 @@
                                     </button>
                                 </div>
 
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label class="control-label">
+                                            Propuesta
+                                        </label>
+                                        <select class="form-control" name="id_simulacion" required="required">
+                                            <option value="">
+                                                Selecione Propuesta
+                                            </option>
+                                            @foreach($propuestas as $p)
+                                            <option value="{{ $p->id }}">
+                                                {{ $p->id }} - {{ $p->tipopropuesta }}
+                                            </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>  
                             </div>
 
                         </form>
@@ -1030,6 +1049,13 @@
     language: "es",
     locale: "es",
 });
+    jQuery('#datepicker-fecha_contacto1_d').datepicker({
+    format: 'dd-mm-yyyy',
+    todayHighlight: true,
+    autoclose: true, 
+    language: "es",
+    locale: "es",
+});
 </script>
 <script src="{{ URL::asset('plugins/bower_components/dropify/dist/js/dropify.min.js') }}"></script>
 <script src="{{ URL::asset('plugins/bower_components/tinymce/tinymce.min.js') }}"></script>
@@ -1264,10 +1290,15 @@ $('#listusers1_c').DataTable({
                 toolbar1: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | l      ink | print preview fullpage | forecolor backcolor  | mybutton",
                 toolbar2: "Persona | Rut | Profesion | Teléfono | Domicilio | Depto | Comuna | Región",
                 toolbar3: "Propiedad | DireccionProp | DeptoProp | RolProp | ComunaProp | DormitorioProp | BanoProp | ValorArriendo ",
-                toolbar4: "Comisiones | Flexibilidad | Servicio | FormasDePago | Multas",
+                toolbar4: "Comisiones | Flexibilidad | Servicio | FormasDePago | Multas | Cheques",
             setup: function (editor) 
             {
-
+                editor.addButton('Cheques', 
+                    {   text: '{Cheques}',
+                        icon: false,
+                        onclick: function () 
+                        { editor.insertContent('{Cheques}'); }
+                    });
 
                 editor.addButton('Comisiones', 
                     {   text: '{Comisiones}',

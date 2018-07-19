@@ -169,6 +169,23 @@
                                         {{ Form::select('id_estado',['0'=>'Rechazdo','1'=>'Vigente','2'=>'Correo Enviado','3'=>'Reenvío Correo'], $gestion->id_estado ,array('class'=>'form-control','style'=>'','id'=>'estado','placeholder'=>'Selecciona estado','required'=>'required')) }}
                                     </div>
                                 </div>
+                                <div  class="col-lg-3 col-sm-3 col-xs-12">
+                                    <label class="control-label">
+                                                Propuesta
+                                            </label>
+                                            <select class="form-control" name="id_simulacion" required="required">
+                                                <option value="">
+                                                    Selecione Propuesta
+                                                </option>
+                                                @foreach($propuestas as $p)
+                                                    @if($gestion->id_simulacion == $p->id)
+                                                    { <option value="{{ $p->id }}" selected="">{{ $p->id }} - {{ $p->tipopropuesta }}</option> }
+                                                    @else
+                                                    { <option value="{{ $p->id }}">{{ $p->id }} - {{ $p->tipopropuesta }}</option> }
+                                                    @endif   
+                                                @endforeach 
+                                            </select>
+                                </div>
 
                             </div>
 

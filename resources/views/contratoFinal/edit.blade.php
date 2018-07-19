@@ -54,7 +54,7 @@
                                 <input type="hidden" name="id_modificador" value="{{ Auth::user()->id }}"">
                                 <input type="hidden" name="id_publicacion" value="{{ $p->id_publicacion }}"">
                                 <input type="hidden" name="id_borrador" value="{{ $p->id_borrador }}"">
-                                <input type="hidden" name="id_pdf" value="{{ $p->id_pdf }}"">
+                                <input type="hidden" name="id_pdf" value="{{ $p->id_pdf }}">
                                 @if($p->id_estado>1)
                                 <?php $flag = 1; ?>
                                 @endif

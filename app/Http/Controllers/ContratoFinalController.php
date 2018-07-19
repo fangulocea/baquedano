@@ -17,6 +17,7 @@ use Illuminate\Http\Request;
 use DB;
 use Illuminate\Support\Facades\File;
 use Auth;
+use App\PropietarioCheques;
 
 class ContratoFinalController extends Controller {
 
@@ -92,9 +93,57 @@ class ContratoFinalController extends Controller {
              con.nombre, con.nombre as contrato, con.descripcion as deta_contrato,
              p1.profesion as profesion_p, p1.telefono as telefono_p, p1.departamento as depto_p,
              i.rol as rol, b.detalle_revision as bodyContrato, CONCAT(c.descripcion, " ", c.comision, " %") as comision,f.descripcion as Flexibilidad, CONCAT(s.descripcion, "  $",s.valor) as Servicio'))->first();
+
+
+         $capSimulacion = DB::table('cap_simulapropietario as s')
+         ->where('s.id','=',$request->id_propuesta)->first();
+
+         if($capSimulacion->tipopropuesta == 1)
+         {
+            $idTipoPago = 21;
+         } elseif($capSimulacion->tipopropuesta == 2)
+         {
+            $idTipoPago = 35;
+         } 
+
+         $simulacion = DB::table('cap_simulapagopropietarios as b')
+         ->where('b.id_simulacion','=',$request->id_propuesta)
+         ->where('b.idtipopago','=',$idTipoPago)
+         ->get();
+
+        $textoContrato = DB::table('borradores as c')
+        ->where('c.id','=',$request->id_borradorfinal)
+        ->first();
+      
+        $cadenaAbuscar   = '{Cheques}';
+        $posicion_coincidencia = strrpos($textoContrato->detalle_revision, $cadenaAbuscar);
+ 
+        $correlativo = 1;
+        if ($posicion_coincidencia != false) {
+            foreach ($simulacion as $s) {
+                 $contratoCh=PropietarioCheques::create([
+                        'id_contrato'   => $contratoFinal->id,
+                        'monto'         => $s->precio_en_pesos,
+                        'id_estado'     => 1,
+                        'correlativo'   => $correlativo,
+                        'mes_arriendo'  => $s->mes.'/'.$s->anio
+                  ]);
+                  $correlativo++;
+            }
+        } 
+
+        $simulacion = DB::table('propietario_cheques as b')
+         ->where('b.id_contrato','=',$contratoFinal->id)
+         ->get();
+
+
+
+
+
+
         $pdf = new PdfController();
         $numero = rand();
-        $pdf->crontratoFinalPdf($borradorPDF, $numero);
+        $pdf->crontratoFinalPdf($borradorPDF, $numero, $simulacion);
         // FIN PARA PDFsss
 
         $finalpdf = ContratoFinalPdf::create([
@@ -355,6 +404,8 @@ class ContratoFinalController extends Controller {
                         ->with('status', 'Contrato actualizado con éxito');
     }
     public function destroy($id, $idpdf) {
+
+        $borrach = ArrendatarioCheques::where('id_contrato','=',$id)->delete();
 
         $pdf = ContratoFinalPdf::find($idpdf);
         File::delete($pdf->ruta . '/' . $pdf->nombre);

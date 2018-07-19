@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateArrendatarioCheques extends Migration
+class CreatePropietarioCheques extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,11 @@ class CreateArrendatarioCheques extends Migration
      */
     public function up()
     {
-        Schema::dropIfExists('arrendatario_cheques');
-        Schema::create('arrendatario_cheques', function (Blueprint $table) {
+        Schema::dropIfExists('propietario_cheques');
+        Schema::create('propietario_cheques', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('id_contrato')->unsigned()->nullable();
-            $table->foreign('id_contrato')->references('id')->on('adm_contratofinalarr')->nullable();
+            $table->foreign('id_contrato')->references('id')->on('adm_contratofinal')->nullable();
             $table->string('mes_arriendo')->nullable();
             $table->string('banco')->nullable();
             $table->integer('monto')->nullable();
@@ -36,6 +36,6 @@ class CreateArrendatarioCheques extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('arrendatario_cheques');
+        Schema::dropIfExists('propietario_cheques');
     }
 }
