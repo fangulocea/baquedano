@@ -1007,7 +1007,7 @@ document.getElementById("tablearea").innerHTML="";
                                         var newArray = response.filter(function (el) {
                                               return el.idtipopago==r;
                                             });
-                                        console.log(newArray);
+
                                      // CONTENIDO
                                          if(newArray.length>0)
                                          {
@@ -1035,13 +1035,18 @@ document.getElementById("tablearea").innerHTML="";
                                                             if(newArray[c].E_S=='e'){
                                                                 a.className="btn btn-block btn-outline btn-success";
                                                             }else{
-                                                                a.className="btn btn-block btn-outline btn-danger";
+                                                                if(newArray[c].idtipopago==11){
+                                                                    a.className="btn btn-block btn-outline btn-info";
+                                                                }else{
+                                                                   a.className="btn btn-block btn-outline btn-danger"; 
+                                                                }
+                                                                
                                                             }
                                                             if(newArray[c].idtipopago==20 || newArray[c].idtipopago==21 || newArray[c].idtipopago==34 || newArray[c].idtipopago==35 )
                                                                 a.className="btn btn-block btn-outline btn-default";
                                                             var id=newArray[c].id;
                                                             a.id=id;
-                                                            if(newArray[c].idtipopago!=20 && newArray[c].idtipopago!=21  && newArray[c].idtipopago!=34 && newArray[c].idtipopago!=35)
+                                                            if(newArray[c].idtipopago!=20 && newArray[c].idtipopago!=21  && newArray[c].idtipopago!=34 && newArray[c].idtipopago!=35 && newArray[c].idtipopago!=11)
                                                             a.addEventListener('click', function(){
                                                                     mostrar_modal(this);
                                                                 });

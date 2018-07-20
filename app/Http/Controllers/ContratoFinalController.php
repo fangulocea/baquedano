@@ -1576,6 +1576,75 @@ $fecha_ini = date('Y-m-j', strtotime(date("Y", strtotime($fechafirma)) . '-' . d
           ]);
           $fecha_ini = date("d-m-Y", strtotime("+1 month", strtotime($fecha_ini)));
           }
+
+ if ($tipopropuesta == 1) {
+    $tipos=[1,2,3,4,5,6,7,8,10,11,15];
+ }elseif($tipopropuesta == 2){
+    $tipos=[1,2,5,6,7,8,10,11,31,32,33];
+
+ }else{
+    $tipos=[1,2,5,6,7,8,10,11,31,32,33];
+ }
+
+
+          $fecha_ini = date('Y-m-j', strtotime(date("Y", strtotime($fechafirma)) . '-' . date("m", strtotime($fechafirma)) . '-' . 1));
+        for ($i = 0; $i < $meses_contrato; $i++) {
+            $mes = date("m", strtotime($fecha_ini));
+            $anio = date("Y", strtotime($fecha_ini));
+            $fecha_ini = date("d-m-Y", strtotime("+1 month", strtotime($fecha_ini)));
+            $pagos_mensuales_e = DB::table('adm_pagospropietarios')
+                    ->where("id_publicacion", "=", $idp)
+                    ->whereIn("idTipoPago", $tipos)
+                    ->where("E_S", "=", "e")
+                    ->where("id_inmueble", "=", $idinmueble)
+                    ->where("mes", "=", $mes)
+                    ->where("anio", "=", $anio)
+                    ->sum('precio_en_pesos');
+            $pagos_mensuales_s = DB::table('adm_pagospropietarios')
+                    ->where("id_publicacion", "=", $idp)
+                    ->whereIn("idTipoPago", $tipos)
+                    ->where("E_S", "=", "s")
+                    ->where("id_inmueble", "=", $idinmueble)
+                    ->where("mes", "=", $mes)
+                    ->where("anio", "=", $anio)
+                    ->sum('precio_en_pesos');
+
+            $pagar_a_propietario=$pagos_mensuales_s-$pagos_mensuales_e;
+            $pagar_a_baquedano=$pagos_mensuales_e-$pagos_mensuales_s;
+
+            if($pagar_a_propietario<0)
+                $pagar_a_propietario=0;
+
+            if($pagar_a_baquedano<0)
+                $pagar_a_baquedano=0;
+//dd($pagar_a_propietario."    ".$pagar_a_baquedano."       e:".$pagos_mensuales_e."        s:".$pagos_mensuales_s );
+            $delete=PagosMensualesPropietarios::where("id_contratofinal","=",$idcontrato)
+                    ->where("id_publicacion","=",$idp)
+                    ->where("id_inmueble","=",$idinmueble)
+                    ->where("E_S","=",'s')
+                    ->where("mes","=",$mes)
+                    ->where("anio","=",$anio)
+                    ->delete();
+
+            $pago_mensual = PagosMensualesPropietarios::create([
+                        'id_contratofinal' => $idcontrato,
+                        'id_publicacion' => $idp,
+                        'id_inmueble' => $idinmueble,
+                        'E_S' => 's',
+                        'fecha_iniciocontrato' => $fechafirma,
+                        'mes' => $mes,
+                        'anio' => $anio,
+                        'subtotal_entrada' => $pagos_mensuales_e,
+                        'subtotal_salida' => $pagos_mensuales_s,
+                        'pago_propietario' => $pagar_a_propietario,
+                        'pago_rentas' => $pagar_a_baquedano,
+                        'id_creador' => Auth::user()->id,
+                        'id_modificador' => Auth::user()->id,
+                        'id_estado' => 1
+            ]);
+
+           
+        }
         return redirect()->route('finalContrato.edit', [$idp, 0, 0, 4])->with('status', 'Pago generado con éxito');
     }
 
