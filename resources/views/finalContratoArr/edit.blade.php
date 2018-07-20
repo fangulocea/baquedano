@@ -7,12 +7,13 @@
 use App\Http\Controllers\ContratoFinalArrController;
 @endphp
 
+
 <div class="row">
     <div class="col-md-12"> 
         @if(isset($borrador->direccion))
-         <center><h3 class="box-title m-b-0">{{ $borrador->direccion or null }}</h3></center>
-         @endif
-          @if( isset($borrador->propietario) )
+        <center><h3 class="box-title m-b-0">{{ $borrador->direccion or null }}</h3></center>
+        @endif
+        @if( isset($borrador->propietario) )
         <center><h3 class="box-title m-b-0">{{ $borrador->propietario or null }} </h3></center>
         <br><br>
         @endif
@@ -28,64 +29,64 @@ use App\Http\Controllers\ContratoFinalArrController;
 
                     </ul>
                 </nav>
-                 <div class="content-wrap">
+                <div class="content-wrap">
                     <section id="section-iconbox-5_c">
 
-			                <table id="listusers1_c" class="display nowrap" cellspacing="0" width="100%">
-			                <thead>
-			                    <tr>
-			                        <th>ID</th>
-			                        <th>Estado</th>
-			                        <th>Ver Pdf</th>
+                        <table id="listusers1_c" class="display nowrap" cellspacing="0" width="100%">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Estado</th>
+                                    <th>Ver Pdf</th>
                                     <th>Alias</th>
                                     <th>Notaria</th>
                                     <th>Fecha Firma</th>
                                     <th>Guardar</th>
                                     <th>Eliminar</th>
-			                    </tr>
-			                </thead>
-			                <tbody>
-                            @foreach($finalIndex as $p)
-                                    <tr>
-                        <form id="form1_a" action="{{ route('finalContratoArr.asignarNotaria',$p->id) }}" method="post">                 
-                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                            <input type="hidden" name="id_modificador" value="{{ Auth::user()->id }}"">
-                            <input type="hidden" name="id_publicacion" value="{{ $p->id_publicacion }}"">
-                            <input type="hidden" name="id_borrador" value="{{ $p->id_borrador }}"">
-                            <input type="hidden" name="id_pdf" value="{{ $p->id_pdf }}"">
-                            @if($p->id_estado>1)
-                                <?php $flag=1; ?>
-                            @endif
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($finalIndex as $p)
+                                <tr>
+                            <form id="form1_a" action="{{ route('finalContratoArr.asignarNotaria',$p->id) }}" method="post">                 
+                                <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                <input type="hidden" name="id_modificador" value="{{ Auth::user()->id }}"">
+                                <input type="hidden" name="id_publicacion" value="{{ $p->id_publicacion }}"">
+                                <input type="hidden" name="id_borrador" value="{{ $p->id_borrador }}"">
+                                <input type="hidden" name="id_pdf" value="{{ $p->id_pdf }}"">
+                                @if($p->id_estado>1)
+                                <?php $flag = 1; ?>
+                                @endif
 
-                             
+
                                 <td>{{ $p->id }}</td>
                                 <td>{{ trans_choice('mensajes.contratofinal', $p->id_estado) }}</td>
-                                   <td>
-                                        <a href="{{asset('uploads/pdfarrfinal/'.$p->nombre)}}" target="_blank"><span class="btn btn-success btn-circle btn-lg"><i class="ti ti-file"></i></span></a>
-                                    </td>  
-                                    <td>
+                                <td>
+                                    <a href="{{asset('uploads/pdfarrfinal/'.$p->nombre)}}" target="_blank"><span class="btn btn-success btn-circle btn-lg"><i class="ti ti-file"></i></span></a>
+                                </td>  
+                                <td>
                                     <input type="text" name="alias" id="alias" value='{{ $p->alias }}' class="form-control" required="required">
                                 </td>
                                 <td>
-                                        <select class="form-control" name="id_notaria" required="required" >
-                                            <option value="">Selecione Notaria</option>
-                                            @foreach($notaria as $n)
-                                                @if($n->id==$p->id_notaria)
-                                                    <option value="{{ $n->id }}" selected>{{ $n->nombre }} </option>
-                                                @else
-                                                    <option value="{{ $n->id }}">{{ $n->nombre }} </option>
-                                                @endif
-                                            @endforeach   
-                                        </select> 
+                                    <select class="form-control" name="id_notaria" required="required" >
+                                        <option value="">Selecione Notaria</option>
+                                        @foreach($notaria as $n)
+                                        @if($n->id==$p->id_notaria)
+                                        <option value="{{ $n->id }}" selected>{{ $n->nombre }} </option>
+                                        @else
+                                        <option value="{{ $n->id }}">{{ $n->nombre }} </option>
+                                        @endif
+                                        @endforeach   
+                                    </select> 
                                 </td>
                                 <td>
                                     <input type="date" class="form-control" name="fecha_firma" id="fecha_firma" value='{{ $p->fecha }}' required="required">
                                 </td>
                                 <td>
                                     @if(ContratoFinalArrController::ValidaCh($p->id) == 0)
-                                        <button type="submit" class="btn btn-success"> <i class="fa fa-check"></i> Guardar</button>
+                                    <button type="submit" class="btn btn-success"> <i class="fa fa-check"></i> Guardar</button>
                                     @else
-                                        <a href="{{ route('finalContratoArr.muestra_cheque',[$p->id,$p->id_pdf,$p->dia_pago]) }}"> <button type="button" class="btn btn-danger"> <i class="fa fa-check"></i> N° Cheques</button></a>
+                                    <a href="{{ route('finalContratoArr.muestra_cheque',[$p->id,$p->id_pdf,$p->dia_pago]) }}"> <button type="button" class="btn btn-danger"> <i class="fa fa-check"></i> N° Cheques</button></a>
                                     @endif
                                 </td>
                                 <td>
@@ -94,88 +95,88 @@ use App\Http\Controllers\ContratoFinalArrController;
                             </form>
                             </tr>
                             @endforeach
-                             
-                </tbody>
-            </table>
-            <input type="hidden" name="verifica_estado" id="verifica_estado" value="{{ $flag }}">
+
+                            </tbody>
+                        </table>
+                        <input type="hidden" name="verifica_estado" id="verifica_estado" value="{{ $flag }}">
                     </section>
-<section id="section-iconbox-6_c">
-     <div class="row">
-                    <div class="col-sm-6">
-                        <div class="white-box"> 
-                           <form action="{{ route('finalContratoArr.savedocs',$borrador->id_cap_arr) }}" method="post" enctype='multipart/form-data'>
+                    <section id="section-iconbox-6_c">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="white-box"> 
+                                    <form action="{{ route('finalContratoArr.savedocs',$borrador->id_cap_arr) }}" method="post" enctype='multipart/form-data'>
                                         {!! csrf_field() !!}
-                                <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                                <input type="hidden" name="tab" value="2">
-                                <h3 class="box-title">Subir Archivo</h3>
-                                <label for="input-file-now-custom-1">Contratos</label>
+                                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                        <input type="hidden" name="tab" value="2">
+                                        <h3 class="box-title">Subir Archivo</h3>
+                                        <label for="input-file-now-custom-1">Contratos</label>
                                         <select class="form-control" name="id_final" required="required" >
                                             <option value="">Selecione ID Contrato</option>
                                             @foreach($finalIndex as $n)
-                                                    @if($n->id_estado>1)
-                                                    <option value="{{ $n->id }}">{{ $n->alias }} </option>
-                                                    @endif
+                                            @if($n->id_estado>1)
+                                            <option value="{{ $n->id }}">{{ $n->alias }} </option>
+                                            @endif
                                             @endforeach  
                                         </select>
-                                <label for="input-file-now-custom-1">Tipo Documento</label>
+                                        <label for="input-file-now-custom-1">Tipo Documento</label>
                                         <select class="form-control" name="tipo" required="required" >
-                                                    <option value="">Selecione Tipo de Documento</option>
-                                                    <option value="Contrato Digitalizado">Contrato Digitalizado </option>
-                                                    <option value="Gastos Notario">Gastos Notario </option>
-                                                    <option value="Documentos Garantías">Documentos Garantías </option>
-                                                    <option value="Comprobantes de Pagos">Comprobantes de Pagos </option>
-                                                    <option value="Otros Documentos">Otros Documentos </option>
+                                            <option value="">Selecione Tipo de Documento</option>
+                                            <option value="Contrato Digitalizado">Contrato Digitalizado </option>
+                                            <option value="Gastos Notario">Gastos Notario </option>
+                                            <option value="Documentos Garantías">Documentos Garantías </option>
+                                            <option value="Comprobantes de Pagos">Comprobantes de Pagos </option>
+                                            <option value="Otros Documentos">Otros Documentos </option>
                                         </select>
-                                <label for="input-file-now-custom-1">Archivo del contrato</label>
-                                <input type="file" id="foto" name="foto"  class="dropify"  /> 
-                                <input type="hidden" id="id_publicacion" name="id_publicacion" value="{{ $borrador->id_cap_arr }}"  /> 
-                                <input type="hidden" id="id_creador" name="id_creador" value="{{ Auth::user()->id_persona }}"  /> 
-                                <button type="submit" class="btn btn-success"> <i class="fa fa-check"></i> Subir Archivo</button>
+                                        <label for="input-file-now-custom-1">Archivo del contrato</label>
+                                        <input type="file" id="foto" name="foto"  class="dropify"  /> 
+                                        <input type="hidden" id="id_publicacion" name="id_publicacion" value="{{ $borrador->id_cap_arr }}"  /> 
+                                        <input type="hidden" id="id_creador" name="id_creador" value="{{ Auth::user()->id_persona }}"  /> 
+                                        <button type="submit" class="btn btn-success"> <i class="fa fa-check"></i> Subir Archivo</button>
 
-                            </form>
+                                    </form>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="white-box"> 
+                                    <table id="ssss"  cellspacing="0" width="100%">
+                                        <thead>
+                                            <tr>
+
+                                                <th><center>Click Ver Documento</center></th>
+                                        <th>Borrar</th>
+                                        </tr>
+                                        </thead>
+
+                                        <tbody>
+                                            @foreach($documentos as $pi)
+                                            <tr>
+                                                <td  width="10px" height="10px">
+
+                                        <center><a href="{{ URL::asset($pi->ruta.'/'.$pi->nombre) }}" target="_blank">BAJAR ARCHIVO<br> {{ $pi->nombre }} </a></center>
+
+
+                                        @can('finalContrato.edit')
+                                        <td width="10px">
+
+                                            <a href="{{ route('finalContratoArr.eliminarfoto', $pi->id) }}" 
+                                               class="btn btn-danger btn-circle btn-lg">
+                                                <i class="fa fa-check"></i>
+                                            </a>
+                                        </td>
+                                        @endcan
+                                        </tr>
+                                        @endforeach
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
                         </div>
-                    </div>
-                     <div class="col-sm-6">
-                        <div class="white-box"> 
-                             <table id="ssss"  cellspacing="0" width="100%">
-                                                    <thead>
-                                                        <tr>
-                                                         
-                                                            <th><center>Click Ver Documento</center></th>
-                                                            <th>Borrar</th>
-                                                        </tr>
-                                                    </thead>
-                                                   
-                                                    <tbody>
-                                                        @foreach($documentos as $pi)
-                                                        <tr>
-                                                            <td  width="10px" height="10px">
-                                                               
-                                                            <center><a href="{{ URL::asset($pi->ruta.'/'.$pi->nombre) }}" target="_blank">BAJAR ARCHIVO<br> {{ $pi->nombre }} </a></center>
+                    </section>
 
-                                                           
-                                                            @can('finalContrato.edit')
-                                                            <td width="10px">
-
-                                                                <a href="{{ route('finalContratoArr.eliminarfoto', $pi->id) }}" 
-                                                                   class="btn btn-danger btn-circle btn-lg">
-                                                                    <i class="fa fa-check"></i>
-                                                                </a>
-                                                            </td>
-                                                            @endcan
-                                                        </tr>
-                                                        @endforeach
-
-                                                    </tbody>
-                                                </table>
-                        </div>
-                    </div>
-
-                </div>
-            </section>
-
-         <section id="section-iconbox-7_c">
-                    <div class="panel panel-info">
+                    <section id="section-iconbox-7_c">
+                        <div class="panel panel-info">
                             <div class="panel-heading"> Gestión de pagos del Contrato</div>
                             <div class="panel-wrapper collapse in" aria-expanded="true">
                                 <div class="panel-body">
@@ -188,394 +189,387 @@ use App\Http\Controllers\ContratoFinalArrController;
                                                 <div class="col-md-6">
                                                     <h3 class="box-title m-b-0">Complete Campos generales para generar pago</h3><br/>
                                                     <div class="row">
-                                                <div class="col-md-6">
-                                                    <div class="form-group">
-                                                        <label for="input-file-now-custom-1">Contrato</label>
-                                                        <input type="hidden" name="tab" value="3">
-                                                        <select class="form-control" name="id_final_pagos" id="id_final_pagos"  required="required" >
-                                                            <option value="">Selecione Contrato</option>
-                                                            @foreach($finalIndex as $n)
+                                                        <input type="hidden" name="tipopropuesta" id="tipopropuesta">
+                                                        <input type="hidden" name="id_inmueble_pago" id="id_inmueble_pago">
+                                                        <div class="col-md-12">
+                                                            <div class="form-group">
+                                                                <label class="control-label">
+                                                                    Propuesta
+                                                                </label>
+                                                                <select class="form-control" name="id_propuesta" id="id_propuesta"required="required">
+                                                                    <option value="">
+                                                                        Selecione Propuesta
+                                                                    </option>
+                                                                    @foreach($propuestas as $p)
+                                                                    <option value="{{ $p->id }}">
+                                                                        {{ $p->id }} - {{ $p->tipopropuesta }}
+                                                                    </option>
+                                                                    @endforeach
+                                                                </select>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-md-6">
+                                                            <div class="form-group">
+                                                                <label for="input-file-now-custom-1">Contrato</label>
+                                                                <input type="hidden" name="tab" value="3">
+                                                                <select class="form-control" name="id_final_pagos" id="id_final_pagos"  required="required" >
+                                                                    <option value="">Selecione Contrato</option>
+                                                                    @foreach($finalIndex as $n)
                                                                     @if($n->id_estado>1)
                                                                     <option value="{{ $n->id }}">{{ $n->alias }} </option>
                                                                     @endif
-                                                            @endforeach  
-                                                        </select>
+                                                                    @endforeach  
+                                                                </select>
+                                                            </div>
+
+
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <div class="form-group">
+                                                                <label for="input-file-now-custom-1">Meses</label>
+                                                                <input type="number" name="cant_meses" id="cant_meses" value="12" class="form-control">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-6">                                       
+                                                            <div class="form-group">
+                                                                <label for="input-file-now-custom-1">Proporcional</label>
+                                                                <select name="proporcional" class="form-control">
+                                                                    <option value="NO">NO</option>
+                                                                    <option value="SI">SI</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+
+                                                        <div class="col-md-6">
+                                                            <label for="input-file-now-custom-1">Nro. Cuotas</label> 
+                                                            <div class="input-group"> 
+                                                                <span class="input-group-addon">#</span>
+                                                                <input name='cuotas' id='cuotas' type="number" class="form-control" >
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-md-6">
+                                                            <label for="input-file-now-custom-1">IVA</label>
+                                                            <div class="input-group"> 
+                                                                <span class="input-group-addon">%</span>
+                                                                <input name='iva' id='iva' type="number" step="any" class="form-control"   value=''>
+                                                            </div>
+                                                        </div>
+
+                                                    </div><br>
+                                                    <div class="row">
+                                                        <div class="col-md-6">
+                                                            <div class="form-group">
+                                                                <label for="input-file-now-custom-1">Fecha Inicio Contrato</label>
+                                                                <input type="date" name="fecha_firmapago" id="fecha_firmapago" class="form-control">
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            <div class="form-group">
+                                                                <label for="input-file-now-custom-1">Moneda</label>
+                                                                <select class="form-control" name="moneda" required="required" >
+                                                                    <option value="CLP">CLP</option>
+                                                                    <option value="UF">UF</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            <div class="form-group">
+                                                                <label for="input-file-now-custom-1">Valor Moneda</label>
+                                                                <input name='valormoneda' id='valormoneda' type="number" class="form-control" required="required" value='1'>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+                                                            <table id="listusers1_c" class="display compact" cellspacing="0" width="100%">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th>Propuesta</th>
+                                                                        <th>Inicio</th>
+                                                                        <th>% Desc</th>
+                                                                        <th></th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    @foreach($propuestas as $p)
+                                                                    <tr>
+                                                                        <td>{{ $p->tipopropuesta }}</td>
+                                                                        <td>{{ $p->fecha_iniciocontrato }}</td>
+                                                                        <td>{{ $p->descuento }}</td>
+                                                                        <td><a href="{{ route('cbararrendatario.excelsimulacion',$p->id) }}"><span class="ti-export"></span></span></a></td>
+                                                                    </tr>
+                                                                    @endforeach
+                                                                </tbody>
+                                                            </table>
+                                                        </div>     
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
-                                                    <div class="form-group">
-                                                        <label for="input-file-now-custom-1">Meses</label>
-                                                        <input type="number" name="cant_meses" id="cant_meses" value="12" class="form-control">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-md-6">
-                                                    <div class="form-group">
-                                                        <label for="input-file-now-custom-1">Fecha Inicio Contrato</label>
-                                                        <input type="date" name="fecha_firmapago" id="fecha_firmapago" class="form-control">
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-3">
-                                                        <div class="form-group">
-                                                        <label for="input-file-now-custom-1">Moneda</label>
-                                                       <select class="form-control" name="moneda" required="required" >
-                                                            <option value="CLP">CLP</option>
-                                                            <option value="UF">UF</option>
-                                                       </select>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-3">
-                                                        <div class="form-group">
-                                                        <label for="input-file-now-custom-1">Valor Moneda</label>
-                                                       <input name='valormoneda' id='valormoneda' type="number" class="form-control" required="required" value='1'>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <h3 class="box-title m-b-0">Generar pagos por Item</h3><br/>
-                                             <div class="row">
-                                                <div class="col-md-3"><label for="input-file-now-custom-1">Reserva</label> </div>
-                                                <div class="col-md-7">
-                                                     
-                                                  <div class="input-group"> 
-                                                            <span class="input-group-addon">$</span>
-                                                            <input name='reserva' id='reserva' type="number" class="form-control"   step="any" value='{{ $borrador->gastosComunes or '' }}'>
+                                                    <h3 class="box-title m-b-0">Generar pagos por Item</h3><br/>
+                                                    <div class="row">
+                                                        <div class="col-md-3"><label for="input-file-now-custom-1">% Descuento</label> </div>
+                                                        <div class="col-md-5">
+                                                            <div class="input-group"> 
+                                                                <span class="input-group-addon">%</span>
+                                                                <input name='descuento' id='descuento' type="number" class="form-control">
+                                                            </div>
                                                         </div>
-                                                </div>
-                                            <div class="col-md-1">
-                                                     <div class="radio radio-success">
-                                                        <input type="radio" name="re_radio" id="re_radio" value="e" checked="">
-                                                        <label for="radio14"> E </label>
                                                     </div>
-                                            </div>
-                                            <div class="col-md-1">
-                                                    <div class="radio radio-danger">
-                                                         <input type="radio" name="re_radio" id="gc_radio" value="s" >
-                                                         <label for="radio14"> S </label>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-md-3"><label for="input-file-now-custom-1">Arriendo</label> </div>
-                                                <div class="col-md-7">
-                                                        <div class="input-group"> 
-                                                            <span class="input-group-addon">$</span>
-                                                            <input name='precio' id='precio' step="any" type="number" class="form-control"   value='{{ $borrador->precio or '' }}'>
-                                                        </div>
-                                                </div>
-                                            <div class="col-md-1">
-                                                     <div class="radio radio-success">
-                                                        <input type="radio" name="ar_radio" id="ar_radio" value="e" checked="">
-                                                        <label for="radio14"> E </label>
-                                                    </div>
-                                            </div>
-                                            <div class="col-md-1">
-                                                    <div class="radio radio-danger">
-                                                         <input type="radio" name="ar_radio" id="ar_radio" value="s">
-                                                         <label for="radio14"> S </label>
-                                                    </div>
-                                            </div>
-                                        </div>
-                                            <div class="row">
-                                                <div class="col-md-3"><label for="input-file-now-custom-1">IVA</label> </div>
-                                                <div class="col-md-4">
-                                                        <div class="input-group"> 
-                                                            <span class="input-group-addon">$</span>
-                                                            <input name='iva' id='iva' type="number" step="any" class="form-control"   value=''>
-                                            </div>
-                                                </div>
-                                                <div class="col-md-3">
-                                                        <div class="input-group"> 
-                                                            <input name='mes_iva' id='mes_iva' type="number" class="form-control"   placeholder="C/Mes">
-                                                        </div>
-                                                </div>
-                                            <div class="col-md-1">
-                                                     <div class="radio radio-success">
-                                                        <input type="radio" name="iva_radio" id="iva_radio" value="e" checked="">
-                                                        <label for="radio14"> E </label>
-                                                    </div>
-                                            </div>
-                                            <div class="col-md-1">
-                                                    <div class="radio radio-danger">
-                                                         <input type="radio" name="iva_radio" id="iva_radio" value="s">
-                                                         <label for="radio14"> S </label>
-                                                    </div>
-                                            </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-md-3"><label for="input-file-now-custom-1">Garantía</label> </div>
-                                                <div class="col-md-4">
-                                                        <div class="input-group"> 
-                                                            <span class="input-group-addon">$</span>
-                                                            <input name='garantia' id='garantia' type="number" step="any" class="form-control"   value=''>
-                                                        </div>
-                                                </div>
-                                                <div class="col-md-3">
-                                                        <div class="input-group"> 
-                                                            <input name='mes_garantia' id='mes_garantia' type="number" class="form-control"   placeholder="C/Mes">
-                                                        </div>
-                                                </div>
-                                            <div class="col-md-1">
-                                                     <div class="radio radio-success">
-                                                        <input type="radio" name="gar_radio" id="gar_radio" value="e" checked="">
-                                                        <label for="radio14"> E </label>
-                                                    </div>
-                                            </div>
-                                            <div class="col-md-1">
-                                                    <div class="radio radio-danger">
-                                                         <input type="radio" name="gar_radio" id="gar_radio" value="s">
-                                                         <label for="radio14"> S </label>
-                                                    </div>
-                                            </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-md-3"><label for="input-file-now-custom-1">Pie Comisión</label> </div>
-                                                <div class="col-md-7">
-                                                        <div class="input-group"> 
-                                                            <span class="input-group-addon">$</span>
-                                                            <input name='pie' id='pie' type="number" step="any" class="form-control"  >
-                                                        </div>
-                                                </div>
-                                            <div class="col-md-1">
-                                                     <div class="radio radio-success">
-                                                        <input type="radio" name="pie_radio" id="pie_radio" value="e" checked="">
-                                                        <label for="radio14"> E </label>
-                                                    </div>
-                                            </div>
-                                            <div class="col-md-1">
-                                                    <div class="radio radio-danger">
-                                                         <input type="radio" name="pie_radio" id="pie_radio" value="s" >
-                                                         <label for="radio14"> S </label>
-                                                    </div>
-                                            </div>
-                                            </div>
-                                        <div class="row">
-                                                <div class="col-md-3"><label for="input-file-now-custom-1">Comisión Mensual</label> </div>
-                                                <div class="col-md-4">
-                                                        <div class="input-group"> 
-                                                            <span class="input-group-addon">$</span>
-                                                            <input name='comisionmensual' step="any" id='comisionmensual' type="number" class="form-control"   placeholder="$">
-                                                        </div>
-                                                </div>
-                                                <div class="col-md-3">
-                                                        <div class="input-group"> 
-                                                            <input name='mes_comisionmensual' id='mes_comisionmensual' type="number" class="form-control"   placeholder="C/Mes">
-                                                        </div>
-                                                </div>
-                                            <div class="col-md-1">
-                                                     <div class="radio radio-success">
-                                                        <input type="radio" name="cm_radio" id="cm_radio" value="e" checked="">
-                                                        <label for="radio14"> E </label>
-                                                    </div>
-                                            </div>
-                                            <div class="col-md-1">
-                                                    <div class="radio radio-danger">
-                                                         <input type="radio" name="cm_radio" id="cm_radio" value="s" >
-                                                         <label for="radio14"> S </label>
-                                                    </div>
-                                            </div>
-                                            </div>
 
-                                            <div class="row">
-                                                <div class="col-md-3"><label for="input-file-now-custom-1">Comisión Total</label> </div>
-                                                <div class="col-md-7">
-                                                        <div class="input-group"> 
-                                                            <span class="input-group-addon">$</span>
-                                                            <input name='comision' id='comision' step="any" type="number" class="form-control"   value=''>
+                                                    <div class="row">
+                                                        <div class="col-md-3"><label for="input-file-now-custom-1">Canon de Arriendo</label> </div>
+                                                        <div class="col-md-5">
+                                                            <div class="input-group"> 
+                                                                <span class="input-group-addon">$</span>
+                                                                <input name='precio' id='precio' step="any" type="number" class="form-control" value="0" required="required">
+                                                            </div>
                                                         </div>
-                                                </div>
-                                            <div class="col-md-1">
-                                                     <div class="radio radio-success">
-                                                        <input type="radio" name="co_radio" id="co_radio" value="e" checked="">
-                                                        <label for="radio14"> E </label>
-                                                    </div>
-                                            </div>
-                                            <div class="col-md-1">
-                                                    <div class="radio radio-danger">
-                                                         <input type="radio" name="co_radio" id="co_radio" value="s" >
-                                                         <label for="radio14"> S </label>
-                                                    </div>
-                                            </div>
-                                            </div>
+                                                        <div class="col-md-1">
+                                                            <div class="radio radio-success">
+                                                                <input type="radio" name="ca_radio" id="ca_radio" value="e" checked="">
+                                                                <label for="radio14"> E </label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-1">
+                                                            <div class="radio radio-danger">
+                                                                <input type="radio" name="ca_radio" id="ca_radio" value="s" checked="">
+                                                                <label for="radio14"> S </label>
+                                                            </div>
+                                                        </div>
 
-                                        <div class="row">
-                                                <div class="col-md-3"><label for="input-file-now-custom-1">Pago por Notaría</label> </div>
-                                                <div class="col-md-7">
-                                                        <div class="input-group"> 
-                                                            <span class="input-group-addon">$</span>
-                                                            <input name='pagonotaria' id='pagonotaria' type="number" class="form-control"  placeholder="$">
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-3"><label for="input-file-now-custom-1">Gasto Común</label> </div>
+                                                        <div class="col-md-5">
+
+                                                            <div class="input-group"> 
+                                                                <span class="input-group-addon">$</span>
+                                                                <input name='gastocomun' id='gastocomun' type="number" class="form-control"   step="any" value="0" required="required">
+                                                            </div>
+
                                                         </div>
-                                                </div>
-                                              <div class="col-md-1">
-                                                     <div class="radio radio-success">
-                                                        <input type="radio" name="no_radio" id="no_radio" value="e" checked="">
-                                                        <label for="radio14"> E </label>
-                                                    </div>
-                                            </div>
-                                            <div class="col-md-1">
-                                                    <div class="radio radio-danger">
-                                                         <input type="radio" name="no_radio" id="no_radio" value="s" >
-                                                         <label for="radio14"> S </label>
-                                                    </div>
-                                            </div>
-                                            </div>
-                                   <div class="row">
-                                                <div class="col-md-3"><input name='nombre_otropago1' id='nombre_otropago1' type="text" class="form-control"   placeholder="Otro Pago"> </div>
-                                                <div class="col-md-4">
-                                                        <div class="input-group"> 
-                                                            <span class="input-group-addon">$</span>
-                                                            <input name='pagootro1' step="any" id='pagootro1' type="number" class="form-control"   placeholder="$">
+
+                                                        <div class="col-md-1">
+                                                            <div class="radio radio-success">
+                                                                <input type="radio" name="gc_radio" id="gc_radio" value="e" checked="">
+                                                                <label for="radio14"> E </label>
+                                                            </div>
                                                         </div>
-                                                </div>
-                                                <div class="col-md-3">
-                                                        <div class="input-group"> 
-                                                            <input name='mes_otro1' id='mes_otro1' type="number" class="form-control"   placeholder="C/Mes">
+                                                        <div class="col-md-1">
+                                                            <div class="radio radio-danger">
+                                                                <input type="radio" name="gc_radio" id="gc_radio" value="s" checked="">
+                                                                <label for="radio14"> S </label>
+                                                            </div>
                                                         </div>
-                                                </div>
-                                               <div class="col-md-1">
-                                                     <div class="radio radio-success">
-                                                        <input type="radio" name="o1_radio" id="o1_radio" value="e" checked="">
-                                                        <label for="radio14"> E </label>
                                                     </div>
-                                            </div>
-                                            <div class="col-md-1">
-                                                    <div class="radio radio-danger">
-                                                         <input type="radio" name="o1_radio" id="o1_radio" value="s" checked="">
-                                                         <label for="radio14"> S </label>
-                                                    </div>
-                                            </div>
-                                            </div>
-                                   <div class="row">
-                                                <div class="col-md-3"><input name='nombre_otropago2' id='nombre_otropago2' type="text" class="form-control"   placeholder="Otro Pago"> </div>
-                                                <div class="col-md-4">
-                                                        <div class="input-group"> 
-                                                            <span class="input-group-addon">$</span>
-                                                            <input name='pagootro2' step="any" id='pagootro2' type="number" class="form-control"   placeholder="$">
+
+                                                    <div class="row">
+                                                        <div class="col-md-3"><label for="input-file-now-custom-1">Gastos Notariales</label> </div>
+                                                        <div class="col-md-5">
+                                                            <div class="input-group"> 
+                                                                <span class="input-group-addon">$</span>
+                                                                <input name='pagonotaria' id='pagonotaria' type="number" class="form-control" value="0" required="required" >
+                                                            </div>
                                                         </div>
-                                                </div>
-                                                <div class="col-md-3">
-                                                        <div class="input-group"> 
-                                                            <input name='mes_otro2' id='mes_otro2' type="number" class="form-control"   placeholder="C/Mes">
+                                                        <div class="col-md-1">
+                                                            <div class="radio radio-success">
+                                                                <input type="radio" name="no_radio" id="no_radio" value="e" checked="">
+                                                                <label for="radio14"> E </label>
+                                                            </div>
                                                         </div>
-                                                </div>
-                                                <div class="col-md-1">
-                                                     <div class="radio radio-success">
-                                                        <input type="radio" name="o2_radio" id="o2_radio" value="e" checked="">
-                                                        <label for="radio14"> E </label>
-                                                    </div>
-                                            </div>
-                                            <div class="col-md-1">
-                                                    <div class="radio radio-danger">
-                                                         <input type="radio" name="o2_radio" id="o2_radio" value="s" checked="">
-                                                         <label for="radio14"> S </label>
-                                                    </div>
-                                            </div>
-                                            </div>
-                                   <div class="row">
-                                                <div class="col-md-3"><input name='nombre_otropago3' id='nombre_otropago3' type="text" class="form-control"   placeholder="Otro Pago"> </div>
-                                                <div class="col-md-4">
-                                                        <div class="input-group"> 
-                                                            <span class="input-group-addon">$</span>
-                                                            <input name='pagootro3' step="any" id='pagootro3' type="number" class="form-control"   placeholder="$">
+                                                        <div class="col-md-1">
+                                                            <div class="radio radio-danger">
+                                                                <input type="radio" name="no_radio" id="no_radio" value="s" >
+                                                                <label for="radio14"> S </label>
+                                                            </div>
                                                         </div>
-                                                </div>
-                                                <div class="col-md-3">
-                                                        <div class="input-group"> 
-                                                            <input name='mes_otro3' id='mes_otro3' type="number" class="form-control"   placeholder="C/Mes">
+                                                    </div>
+
+
+                                                    <div class="row">
+                                                        <div class="col-md-3"><label for="input-file-now-custom-1">Pie Comisión</label> </div>
+                                                        <div class="col-md-5">
+                                                            <div class="input-group"> 
+                                                                <span class="input-group-addon">%</span>
+                                                                <input name='pie' id='pie' type="number" step="any" class="form-control" value="0" required="required"  >
+                                                            </div>
                                                         </div>
-                                                </div>
-                                                <div class="col-md-1">
-                                                     <div class="radio radio-success">
-                                                        <input type="radio" name="o3_radio" id="o3_radio" value="e" checked="">
-                                                        <label for="radio14"> E </label>
+                                                        <div class="col-md-1">
+                                                            <div class="radio radio-success">
+                                                                <input type="radio" name="pie_radio" id="pie_radio" value="e" checked="">
+                                                                <label for="radio14"> E </label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-1">
+                                                            <div class="radio radio-danger">
+                                                                <input type="radio" name="pie_radio" id="pie_radio" value="s" >
+                                                                <label for="radio14"> S </label>
+                                                            </div>
+                                                        </div>
                                                     </div>
-                                            </div>
-                                            <div class="col-md-1">
-                                                    <div class="radio radio-danger">
-                                                         <input type="radio" name="o3_radio" id="o3_radio" value="s" checked="">
-                                                         <label for="radio14"> S </label>
+                                                    <div class="row">
+                                                        <div class="col-md-3"><label for="input-file-now-custom-1">Cobro Mensual</label> </div>
+                                                        <div class="col-md-5">
+                                                            <div class="input-group"> 
+                                                                <span class="input-group-addon">%</span>
+                                                                <input name='cobromensual' step="any" id='cobromensual' type="number" class="form-control" value="0" required="required" >
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-md-1">
+                                                            <div class="radio radio-success">
+                                                                <input type="radio" name="pj_radio" id="pj_radio" value="e" checked="">
+                                                                <label for="radio14"> E </label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-1">
+                                                            <div class="radio radio-danger">
+                                                                <input type="radio" name="pj_radio" id="pj_radio" value="s" >
+                                                                <label for="radio14"> S </label>
+                                                            </div>
+                                                        </div>
                                                     </div>
-                                            </div>
-                                            </div>
-                                   <div class="row">
-                                                <br>
-                                                <div class="col-md-12">
-                                                    <button type="submit" class="btn btn-success waves-effect waves-light">Generar Pagos</button>
+
+
+
+
+                                                    <div class="row">
+                                                        <div class="col-md-3"><input name='nombre_otropago1' id='nombre_otropago1' type="text" class="form-control"   placeholder="Otro Pago"> </div>
+                                                        <div class="col-md-5">
+                                                            <div class="input-group"> 
+                                                                <span class="input-group-addon">$</span>
+                                                                <input name='pagootro1' step="any" id='pagootro1' type="number" class="form-control"   >
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-1">
+                                                            <div class="radio radio-success">
+                                                                <input type="radio" name="o1_radio" id="o1_radio" value="e" checked="">
+                                                                <label for="radio14"> E </label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-1">
+                                                            <div class="radio radio-danger">
+                                                                <input type="radio" name="o1_radio" id="o1_radio" value="s" checked="">
+                                                                <label for="radio14"> S </label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-3"><input name='nombre_otropago2' id='nombre_otropago2' type="text" class="form-control" placeholder="Otro Pago"> </div>
+                                                        <div class="col-md-5">
+                                                            <div class="input-group"> 
+                                                                <span class="input-group-addon">$</span>
+                                                                <input name='pagootro2' step="any" id='pagootro2' type="number" class="form-control" >
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-1">
+                                                            <div class="radio radio-success">
+                                                                <input type="radio" name="o2_radio" id="o2_radio" value="e" checked="">
+                                                                <label for="radio14"> E </label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-1">
+                                                            <div class="radio radio-danger">
+                                                                <input type="radio" name="o2_radio" id="o2_radio" value="s" checked="">
+                                                                <label for="radio14"> S </label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="row">
+                                                        <br>
+                                                        <div class="col-md-12">
+                                                            <button type="submit" class="btn btn-success waves-effect waves-light">Generar Pagos</button>
+                                                        </div>
+
+                                                    </div>
                                                 </div>
- 
-                                            </div>
-                                        </div>
                                             </div>
                                             <hr>
+                                        </div>
+                                    </form>
                                 </div>
-                            </form>
+                            </div>
+                    </section>
+                    <section id="section-iconbox-8_c">
+
+
+                        <div id="tabla" >
+                            <div class="white-box">
+                                <div class="form-body">
+                                    <div class="row">
+                                         <form action="{{ route('finalContratoArr.eliminartipopago') }}" method="post">
+                                            {!! csrf_field() !!}
+                                        <div class="col-md-6">
+                                            <label for="input-file-now-custom-1">Contrato</label>
+                                            <input type="hidden" name="tab" value="3">
+                                            <select class="form-control" name="id_final_detalle" id="id_final_detalle"  required="required" >
+                                                <option value="0">Selecione Contrato</option>
+                                                @foreach($finalIndex as $n)
+                                                @if($n->id_estado>1)
+                                                <option value="{{ $n->id }}">{{ $n->alias }} </option>
+                                                @endif
+                                                @endforeach  
+                                            </select>
+                                        </div>
+                                         <div class="col-md-4">
+                                                <label>&nbsp;</label>
+                                                <div class="form-group">
+                                                <input type="hidden" name="id_pub_borrar" value="{{ $borrador->id_cap_arr }}">
+                                                <button type="submit" class="btn btn-success waves-effect waves-light">Eliminar Pagos Generados</button>
+                                            </div>
+                                            </div>
+
+                                    </div>
+                                    </form>
+                                    <div class="table-responsive" id="tablearea">
+
+
+                                    </div>
+                                </div>
                             </div>
                         </div>
-        </section>
-        <section id="section-iconbox-8_c">
+                    </section>
+                    <section id="section-iconbox-9_c">
+                        <div id="tabla" >
+                            <div class="white-box">
+                                <div class="form-body">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <label for="input-file-now-custom-1">Contrato</label>
+                                            <input type="hidden" name="tab" value="3">
+                                            <select class="form-control" name="id_final_pagar" id="id_final_pagar"  required="required" >
+                                                <option value="0">Selecione Contrato</option>
+                                                @foreach($finalIndex as $n)
+                                                @if($n->id_estado>1)
+                                                <option value="{{ $n->id }}">{{ $n->alias }} </option>
+                                                @endif
+                                                @endforeach  
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="table-responsive" id="pagoarea">
 
 
-<div id="tabla" >
-    <div class="white-box">
- <div class="form-body">
-                                            <div class="row">
-                                                <div class="col-md-6">
-                  <label for="input-file-now-custom-1">Contrato</label>
-                                                        <input type="hidden" name="tab" value="3">
-                                                        <select class="form-control" name="id_final_detalle" id="id_final_detalle"  required="required" >
-                                                            <option value="0">Selecione Contrato</option>
-                                                            @foreach($finalIndex as $n)
-                                                                    @if($n->id_estado>1)
-                                                                    <option value="{{ $n->id }}">{{ $n->alias }} </option>
-                                                                    @endif
-                                                            @endforeach  
-                                                        </select>
-                                                    </div>
+                                            </div>
+                                        </div>
 
-                                                </div>
-        <div class="table-responsive" id="tablearea">
-   
-                            
-        </div>
-    </div>
-    </div>
-</div>
-        </section>
-        <section id="section-iconbox-9_c">
-    <div id="tabla" >
-    <div class="white-box">
- <div class="form-body">
-                                            <div class="row">
-                                                <div class="col-md-6">
-                  <label for="input-file-now-custom-1">Contrato</label>
-                                                        <input type="hidden" name="tab" value="3">
-                                                        <select class="form-control" name="id_final_pagar" id="id_final_pagar"  required="required" >
-                                                            <option value="0">Selecione Contrato</option>
-                                                            @foreach($finalIndex as $n)
-                                                                    @if($n->id_estado>1)
-                                                                    <option value="{{ $n->id }}">{{ $n->alias }} </option>
-                                                                    @endif
-                                                            @endforeach  
-                                                        </select>
-                                                    </div>
-                                                </div>
-<div class="row">
-         <div class="col-md-12">
-            <div class="table-responsive" id="pagoarea">
-       
-                                
-            </div>
-        </div>
-
-</div>
+                                    </div>
 
 
-    </div>
-    </div>
-</div>
-        </section>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
 
                 </div>
                 <!-- /content -->
@@ -585,48 +579,50 @@ use App\Http\Controllers\ContratoFinalArrController;
 
     </div>
 </div>
-  <a href="{{ route('finalContrato.index') }}" class="btn btn-info" style="color:white"><i class="fa fa-times-circle"></i>&nbsp;&nbsp;Volver</a>
+<a href="{{ route('finalContrato.index') }}" class="btn btn-info" style="color:white"><i class="fa fa-times-circle"></i>&nbsp;&nbsp;Volver</a>
 
 
 
 <div id="modal-contacto1" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
-                                            <div class="modal-dialog modal-sm">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
 
-                                                    <div class="modal-body">
+                <div class="modal-body">
 
-                                                          <div class="row">
-                                                            <div class="col-md-12">
-                                                                            <form action="{{ route('finalContratoArr.updatepago') }}" method="post">
-                                                                                {!! csrf_field() !!}
-                                                                                <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                                                                                <div class="form-body">
-                                                                                    <div class="row">
-                                                                                        <div class="col-md-12">
-                                                                                            <div class="form-group">
-                                                                                              <label id="nom_pago"></label>
-                                                                                              <input type="text" name="pago_update" id="pago_update"class="form-control" placeholder="" required="required" > 
-                                                                                          <input type="hidden" name="id_pago_update" id="id_pago_update"  class="form-control" placeholder="" required="required" >
-                                                                                          <input type="hidden" name="id_publicacion_update" id="id_publicacion_update"  class="form-control" placeholder="" required="required" >
-                                                                                           <input type="hidden" name="id_contrato_update" id="id_contrato_update"  class="form-control" placeholder="" required="required" >
-    
-                                                                                         </div>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                </div>
-                                                        </div>
-                                                        
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                        <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">Cerrar</button>
-                                                        <button type="submit" class="btn btn-success waves-effect waves-light">Guardar</button>
-                                                    </div>
-                                                </form>
-                                                </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <form action="{{ route('finalContratoArr.updatepago') }}" method="post">
+                                {!! csrf_field() !!}
+                                <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                <div class="form-body">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label id="nom_pago"></label>
+                                                <input type="text" name="pago_update" id="pago_update"class="form-control" placeholder="" required="required" > 
+                                                <input type="hidden" name="id_pago_update" id="id_pago_update"  class="form-control" placeholder="" required="required" >
+                                                <input type="hidden" name="id_publicacion_update" id="id_publicacion_update"  class="form-control" placeholder="" required="required" >
+                                                <input type="hidden" name="id_contrato_update" id="id_contrato_update"  class="form-control" placeholder="" required="required" >
+
                                             </div>
-                                    </div> 
+                                        </div>
+                                    </div>
+                                </div>
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">Cerrar</button>
+                        <button type="submit" class="btn btn-success waves-effect waves-light">Guardar</button>
+                    </div>
+                    </form>
+                </div>
+            </div>
+        </div> 
+    </div>
+</div>
 <script src="{{ URL::asset('plugins/bower_components/jquery/dist/jquery.min.js') }}"></script>
 <!-- Bootstrap Core JavaScript -->
 <script src="{{ URL::asset('bootstrap/dist/js/bootstrap.min.js') }}"></script>
@@ -637,6 +633,28 @@ use App\Http\Controllers\ContratoFinalArrController;
 
 <script>
     
+
+$("#id_propuesta").change(function (event) {
+    $.get("/finalContratoArr/mostrarsimulacion/" + event.target.value + "", function (response, state) {
+        $("#precio").val(response.canondearriendo!=''?response.canondearriendo:0);
+        $("#gastocomun").val(response.gastocomun!=null?response.gastocomun:0);
+        $("#pagonotaria").val(response.notaria!=null?response.notaria:0);
+        $("#cuotas").val(response.nrocuotas!=null?response.nrocuotas:0);
+        $("#cobromensual").val(response.cobromensual!=null?response.cobromensual:0);
+        $("#pie").val(response.pie!=null?response.pie:0);
+        $("#descuento").val(response.descuento!=null?response.descuento:0);
+        $("#iva").val(response.iva!=null?response.iva:0);
+        $("#tipopropuesta").val(response.tipopropuesta!=null?response.tipopropuesta:0);
+        $("#fecha_firmapago").val(response.fecha_iniciocontrato!=null?response.fecha_iniciocontrato:'');
+        $("#cant_meses").val(response.meses_contrato!=null?response.meses_contrato:0);
+         $("#nombre_otropago1").val(response.nomotro1!=null?response.nomotro1:'');
+          $("#nombre_otropago2").val(response.nomotro2!=null?response.nomotro2:'');
+           $("#pagootro1").val(response.otro1!=null?response.otro1:0);
+           $("#pagootro2").val(response.otro2!=null?response.otro2:0);
+           $("#id_inmueble_pago").val(response.id_inmueble!=null?response.id_inmueble:0);
+    });
+
+});
             // Basic
         $('.dropify').dropify();
         // Translated
@@ -742,7 +760,7 @@ document.getElementById("tablearea").innerHTML="";
         }
 
         $.get("/contratofinalarr/consultapagos/"+$("#id_final_detalle").val()+"/"+ event.target.value +"",function(response,state){
-                        var meses = ["","Ene","Feb","Mar","Abr","May","Jun","Jul","Ago","Sep","Oct","Nov","Dic"];
+                        var meses = ["Ene","Feb","Mar","Abr","May","Jun","Jul","Ago","Sep","Oct","Nov","Dic"];
 
                         document.getElementById("tablearea").innerHTML="";
                         if(response.length>0){
@@ -758,12 +776,12 @@ document.getElementById("tablearea").innerHTML="";
            
 
                             var rowheader = header.insertRow(0);
-                            var fecha_iniciocontrato=new Date(response[0].fecha_iniciocontrato);
-                            var meses_contrato=new Date(response[0].meses_contrato);
+                            var fecha_iniciocontrato=new Date(response[0].fecha_iniciocontrato+'T00:00:00');
+                            var meses_contrato=response[0].meses_contrato;
+                           
                                     //HEAD
                                     var head_fecha=fecha_iniciocontrato;
-                                    head_fecha.setMonth(head_fecha.getMonth()+1);
-
+                                  
                                         head_fecha.setDate(1);
                                         var cell = document.createElement("th");
                                         cell.style.border="1px solid black";
@@ -776,7 +794,8 @@ document.getElementById("tablearea").innerHTML="";
                                         cell.style.border="1px solid black";
                                         cell.style.padding="8px";
 
-                                        cell.innerHTML = '<b>'+meses[head_fecha.getMonth()]+"/"+head_fecha.getFullYear()+'</b>';
+                                         cell.innerHTML = '<b>'+meses[head_fecha.getMonth()]+"/"+head_fecha.getFullYear()+'</b>';
+
                                         head_fecha.setMonth(head_fecha.getMonth()+1);
                                         rowheader.appendChild(cell);
 
@@ -784,11 +803,12 @@ document.getElementById("tablearea").innerHTML="";
                                      tbl.appendChild(rowheader);
 
                                     // LINEAS
-                                    for (var r = 0; r < meses_contrato; r++) {
+                                    for (var r = 0; r < 50; r++) {
                                         var row = document.createElement("tr");
                                         var newArray = response.filter(function (el) {
                                               return el.idtipopago==r;
                                             });
+                                        console.log(newArray);
                                      // CONTENIDO
                                          if(newArray.length>0)
                                          {
@@ -808,6 +828,7 @@ document.getElementById("tablearea").innerHTML="";
                                                 $subtotal=0;
                                                  for (var c = 0; c < meses_contrato; c++) {
                                                     if (!$.isEmptyObject(newArray[c])) {
+                                                            var idtp=newArray[c].idtipopago;
                                                             $subtotal+=newArray[c].precio_en_pesos;
                                                             var a = document.createElement("button");
                                                             var linkText = document.createTextNode(newArray[c].precio_en_pesos);
@@ -817,8 +838,11 @@ document.getElementById("tablearea").innerHTML="";
                                                             }else{
                                                                 a.className="btn btn-block btn-outline btn-danger";
                                                             }
+                                                            if(newArray[c].idtipopago==20 || newArray[c].idtipopago==21 || newArray[c].idtipopago==34 || newArray[c].idtipopago==35 )
+                                                                a.className="btn btn-block btn-outline btn-default";
                                                             var id=newArray[c].id;
                                                             a.id=id;
+                                                            if(newArray[c].idtipopago!=20 && newArray[c].idtipopago!=21  && newArray[c].idtipopago!=34 && newArray[c].idtipopago!=35)
                                                             a.addEventListener('click', function(){
                                                                     mostrar_modal(this);
                                                                 });
@@ -830,28 +854,11 @@ document.getElementById("tablearea").innerHTML="";
                                                             cell.style.padding="8px"
                                                             cell.style.textAlign="center"
                                                             row.appendChild(cell);
+                                                            
                                                     }
                                               
                                                 }           
-                                                            var a = document.createElement("button");
-                                                            var linkText1 = document.createTextNode("Borrar ");
-                                                            var linkText2 = document.createTextNode(newArray[0].tipopago);
-                                                            a.className="btn btn-block btn-danger btn-rounded";
-                                                            a.id=newArray[0].idtipopago;
-                                                            a.name=newArray[0].id_contratofinal;
-                                                            a.addEventListener('click', function(){
-                                                                    eliminar_pago(this);
-                                                                });
-                                                            a.appendChild(linkText1);
-                                                            a.appendChild(document.createElement("br"));
-                                                            a.appendChild(linkText2);
-                                                            a.style="font-size:small"
-                                                            var cell = document.createElement("td");
-                                                            cell.appendChild(a);
-                                                            cell.style.border="1px solid black";
-                                                            cell.style.padding="8px"
-                                                            cell.style.textAlign="center"
-                                                            row.appendChild(cell);
+                                                           
                                                 tbl.appendChild(row); // AGREGA EL PAGO
                                         }
                                     }

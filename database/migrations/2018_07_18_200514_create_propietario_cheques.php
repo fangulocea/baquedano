@@ -21,7 +21,7 @@ class CreatePropietarioCheques extends Migration
             $table->string('mes_arriendo')->nullable();
             $table->string('banco')->nullable();
             $table->integer('monto')->nullable();
-            $table->integer('numero')->nullable();
+            $table->string('numero')->nullable();
             $table->string('fecha_pago')->nullable();
             $table->integer('correlativo')->nullable();
             $table->integer('id_estado');

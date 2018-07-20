@@ -33,6 +33,7 @@ class ContratoBorradorArrendatarioController extends Controller
          ->leftjoin('comunas as c', 'i.id_comuna', '=', 'c.comuna_id')
          ->where('a.id_estado','=',2)
          ->OrWhere('a.id_estado','=',10)
+         ->OrWhere('a.id_estado','=',11)
          ->OrWhere('a.id_estado','=',6)
          ->select(DB::raw('a.id as id_cap_arr, CONCAT_WS(" ",pa .nombre,pa.apellido_paterno,pa.apellido_materno) as arrendatario,i.direccion,i.numero,c.comuna_nombre as comuna,a.id_estado, a.id_arrendatario as id_arrendatario'))
          ->get();

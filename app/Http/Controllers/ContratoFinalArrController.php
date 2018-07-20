@@ -10,8 +10,12 @@ use App\ContratoFinalArrPdf;
 use App\ContratoFinalArrDocs;
 use App\Arrendatario;
 use App\PagosArrendatarios;
+use App\ArrendatarioGarantia;
 use App\PagosMensualesArrendatarios;
+    use App\Arr_Reservas;
+use App\SimulaArrendatario;
 use Illuminate\Http\Request;
+use App\GenerarPagoArrendatario;
 use DB;
 use Illuminate\Support\Facades\File;
 use Auth;
@@ -19,6 +23,16 @@ use App\ArrendatarioCheques;
 
 class ContratoFinalArrController extends Controller
 {
+
+
+
+    public function eliminartipopago(Request $request) {
+        $eliminamensual=PagosMensualesArrendatarios::where("id_contratofinal","=",$request->id_final_detalle)
+        ->delete();
+        $eliminapagos=PagosArrendatarios::where("id_contratofinal","=",$request->id_final_detalle)
+        ->delete();
+        return redirect()->route('finalContratoArr.edit', [$request->id_pub_borrar, 0, 0, 4])->with('status', 'Pagos Eliminados con éxito');
+    }
 
     public function getContrato($id) {
         $contrato = DB::table('adm_contratofinalarr  as b')
@@ -49,6 +63,11 @@ class ContratoFinalArrController extends Controller
                 ->orderBy('c.id', 'asc')
                 ->get();
         return response()->json($contrato);
+    }
+
+    public function mostrarsimulacion($id) {
+        $simulacion=SimulaArrendatario::find($id);
+        return response()->json($simulacion);
     }
 
      public function crearContrato(Request $request)
@@ -194,7 +213,7 @@ $meses=$meses[0];
                 ->where('c.id_estado', '=', "7")
                 ->Orwhere('c.id_estado', '=', "10")
                 ->Orwhere('c.id_estado', '=', "11")
-                ->select(DB::raw('cb.dia_pago, c.id as id_publicacion, DATE_FORMAT(c.created_at, "%d/%m/%Y") as fecha_creacion, c.id_estado as id_estado, CONCAT_WS(" ",p1.nombre,p1.apellido_paterno,p1.apellido_materno) as Propietario, p2.name as Creador,
+                ->select(DB::raw('cb.dia_pago, c.id as id_publicacion, DATE_FORMAT(c.created_at, "%d/%m/%Y") as fecha_creacion, c.id_estado as id_estado, CONCAT_WS(" ",p1.nombre,p1.apellido_paterno,p1.apellido_materno) as Arrendatario, p2.name as Creador,
 
                   (select pago_a_rentas from adm_pagosmensualesarrendatarios where mes=MONTH(DATE_ADD(now(), INTERVAL -6 MONTH)) and anio=YEAR(DATE_ADD(now(), INTERVAL -6 MONTH)) and id_publicacion=c.id and id_inmueble=i.id ) as valoranterior6,
 
@@ -347,9 +366,15 @@ $meses=$meses[0];
    $documentos = DB::table('adm_contratofinalarrdocs as n')
          ->where("n.id_publicacion","=",$idc)
          ->get();
+
+       $propuestas = DB::table('cap_simulaarrendatario as s')
+             ->join("adm_contratofinalarr as cf","cf.id_simulacion","s.id")
+         ->where("s.id_publicacion","=",$idc)
+         ->select(DB::raw(" s.id, (CASE  WHEN s.tipopropuesta=1 THEN '1 Cuota' WHEN s.tipopropuesta=2 THEN'Pie + Cuota' ELSE 'Renovación' END) as tipopropuesta, s.proporcional, s.fecha_iniciocontrato, s.meses_contrato, s.iva,descuento, s.pie, cobromensual, s.nrocuotas,s.canondearriendo" ))
+         ->get();  
  $flag=0;
 
-         return view('finalContratoArr.edit',compact('borrador','finalIndex','notaria','documentos','flag','tab'));
+         return view('finalContratoArr.edit',compact('borrador','finalIndex','notaria','documentos','flag','tab','propuestas'));
     }
 
     /**
@@ -445,59 +470,7 @@ $meses=$meses[0];
         return redirect()->route('finalContratoArr.edit', [$imagen->id_publicacion,0,0,2])->with('status', 'Documento eliminado con éxito');
     }
 
-public function eliminartipopago($idc, $idt) {
-        $p1 = PagosArrendatarios::where("id_contratofinal", "=", $idc)
-                ->first();
-        $idinmueble=$p1->id_inmueble;
-        $PagosArrendatarios = PagosArrendatarios::where("id_contratofinal", "=", $idc)
-                ->where("idtipopago", "=", $idt)
-                ->delete();
-        $p = PagosArrendatarios::where("id_contratofinal", "=", $idc)
-                ->first();
-        if (isset($p)) {
-            $fecha_ini = date('Y-m-j', strtotime(date("Y", strtotime($p->fecha_iniciocontrato)) . '-' . date("m", strtotime($p->fecha_iniciocontrato)) . '-' . 1));
-            for ($i = 0; $i < $p->meses_contrato; $i++) {
-                $mes = date("m", strtotime($fecha_ini));
-                $anio = date("Y", strtotime($fecha_ini));
-                $fecha_ini = date("d-m-Y", strtotime("+1 month", strtotime($fecha_ini)));
-                $pagos_mensuales_e = PagosArrendatarios::where("id_contratofinal", "=", $idc)
-                        ->where("E_S", "=", "e")
-                        ->where("mes", "=", $mes)
-                        ->where("anio", "=", $anio)
-                        ->sum('precio_en_pesos');
-                $pagos_mensuales_s = PagosArrendatarios::where("id_contratofinal", "=", $idc)
-                        ->where("E_S", "=", "s")
-                        ->where("mes", "=", $mes)
-                        ->where("anio", "=", $anio)
-                        ->sum('precio_en_pesos');
 
-            $pagar_a_arrendatario=$pagos_mensuales_s-$pagos_mensuales_e;
-            $pagar_a_baquedano=$pagos_mensuales_e-$pagos_mensuales_s;
-
-            if($pagar_a_arrendatario<0)
-                $pagar_a_arrendatario=0;
-
-            if($pagar_a_baquedano<0)
-                $pagar_a_baquedano=0;
-
-            $pago_mensual = PagosMensualesArrendatarios::
-                    where("id_contratofinal", "=", $idc)
-                    ->where("mes", "=", $mes)
-                    ->where("anio", "=", $anio)
-                    ->update([
-                'valor_a_pagar' => $pagos_mensuales_e,
-                'id_modificador' => Auth::user()->id,
-                'subtotal_entrada' => $pagos_mensuales_e,
-                'subtotal_salida' => $pagos_mensuales_s,
-                'pago_a_arrendatario' => $pagar_a_arrendatario,
-                'pago_a_rentas' => $pagar_a_baquedano
-            ]);
-            }
-        }else{
-            $pago_mensual = PagosMensualesArrendatarios::where("id_contratofinal", "=", $idc)->delete();
-        }
-        return redirect()->route('finalContratoArr.edit', [$p1->id_publicacion, 0, 0, 4])->with('status', 'Tipo Pago eliminado con éxito');
-    }
 
     public function updatepago(Request $request) {
 
@@ -566,133 +539,244 @@ public function eliminartipopago($idc, $idt) {
 
     public function generarpagos(Request $request, $idp) {
 
-        //general
-        $arrend=Arrendatario::find($idp);
-        $idinmueble=$arrend->id_inmueble;
-        $idcontrato = $request->id_final_pagos;
+        $canMPagos=PagosMensualesArrendatarios::where("id_contratofinal","=",$request->id_final_pagos)
+        ->where("id_inmueble","=",$request->id_inmueble_pago)->get();
+        $canPagos=PagosArrendatarios::where("id_contratofinal","=",$request->id_final_pagos)
+        ->where("id_inmueble","=",$request->id_inmueble_pago)->get();
 
-        $contrato = ContratoFinalArr::where('id', '=', $idcontrato)->update([
-            "meses_contrato" => $request->cant_meses
-        ]);
+
+        if(count($canMPagos)>0 || count($canPagos)>0){
+            return redirect()->route('finalContratoArr.edit', [$idp, 0, 0, 4])->with('error', 'Debe eliminar pagos antes de volver a crear');
+        }
+
+
+        $captacion = Arrendatario::find($idp);
+        $idcontrato=$request->id_final_pagos;
+        $idinmueble = $request->id_inmueble_pago;
+        $idarrendatario = $captacion->id_arrendatario;
         $cant_meses = $request->cant_meses;
         $meses_contrato = $request->cant_meses;
         $fechafirma = $request->fecha_firmapago;
         $tipomoneda = $request->moneda;
         $valormoneda = $request->valormoneda;
+        $iva = $request->iva;
+        $nrocuotas = $request->cuotas;
+        $cobromensual = $request->cobromensual;
+        $id_propuesta = $request->id_propuesta;
+        $tipopropuesta = $request->tipopropuesta;
+
+        //pagos
+        $gastocomun = $request->gastocomun;
         $fecha_ini = date('Y-m-j', strtotime(date("Y", strtotime($fechafirma)) . '-' . date("m", strtotime($fechafirma)) . '-' . 1));
         $fecha_ini2 = $fechafirma;
         $dia_original = date("d", strtotime($fechafirma));
         $arriendo = $request->precio;
-        $reserva=$request->reserva;
-        $comision = $request->comision;
-        $mes_comision = $request->mes_comision;
-        $comisionmensual = $request->comisionmensual;
-        $mes_comisionmensual = $request->mes_comisionmensual;
         $pagonotaria = $request->pagonotaria;
         $nombre_otropago1 = $request->nombre_otropago1;
         $nombre_otropago2 = $request->nombre_otropago2;
-        $nombre_otropago3 = $request->nombre_otropago3;
         $pagootro1 = $request->pagootro1;
         $pagootro2 = $request->pagootro2;
-        $pagootro3 = $request->pagootro3;
-        $mes_otro1 = $request->mes_otro1;
-        $mes_otro2 = $request->mes_otro2;
-        $mes_otro3 = $request->mes_otro3;
-        $garantia = $request->garantia;
-        $mes_garantia=$request->mes_garantia;
         $pie = $request->pie;
-        $iva = $request->iva;
-        if (isset($request->mes_iva)) {
-            $mes_iva = $request->mes_iva;
-        } else {
-            $mes_iva = 1;
-        }
-        if (isset($request->mes_otro1)) {
-            $mes_otro1 = $request->mes_otro1;
-        } else {
-            $mes_otro1 = 1;
-        }
-        if (isset($request->mes_otro2)) {
-            $mes_otro2 = $request->mes_otro2;
-        } else {
-            $mes_otro2 = 1;
-        }
-        if (isset($request->mes_otro3)) {
-            $mes_otro3 = $request->mes_otro3;
-        } else {
-            $mes_otro3 = 1;
-        }
-        $id_creador = $request->id_creador;
-        $now = new \DateTime();
-        $fecha_creacion = $now->format('Y-m-d H:i:s');
+        $descuento = $request->descuento;
+        $proporcional = $request->proporcional;
 
-        $reserva_reg = PagosArrendatarios::where("id_publicacion", "=", $idp)->where("idtipopago", "=", 1)
-        ->get();
-        $arriendo_reg = PagosArrendatarios::where("id_publicacion", "=", $idp)->where("idtipopago", "=", 2)       
-        ->get();
-        $garantia_reg = PagosArrendatarios::where("id_publicacion", "=", $idp)->where("idtipopago", "=", 4)                   
-        ->get();
-        $iva_reg = PagosArrendatarios::where("id_publicacion", "=", $idp)->where("idtipopago", "=", 3)
-        ->get();
-        $pie_reg = PagosArrendatarios::where("id_publicacion", "=", $idp)->where("idtipopago", "=", 5)
-        ->get();
-        $comisionmensual_reg = PagosArrendatarios::where("id_publicacion", "=", $idp)->where("idtipopago", "=", 6)
-        ->get();
-        $comision_reg = PagosArrendatarios::where("id_publicacion", "=", $idp)->where("idtipopago", "=", 7)
-        ->get();
-        $notaria_reg = PagosArrendatarios::where("id_publicacion", "=", $idp)->where("idtipopago", "=", 8)
-        ->get();
-        $otro1_reg = PagosArrendatarios::where("id_publicacion", "=", $idp)->where("idtipopago", "=", 9)
-        ->get();
-        $otro2_reg = PagosArrendatarios::where("id_publicacion", "=", $idp)->where("idtipopago", "=", 10)
-        ->get();
-        $otro3_reg = PagosArrendatarios::where("id_publicacion", "=", $idp)->where("idtipopago", "=", 11)
-        ->get();
+        $id_creador = Auth::user()->id;
+        $dia = date("d", strtotime($fecha_ini));
+        $mes = date("m", strtotime($fecha_ini));
+        $anio = date("Y", strtotime($fecha_ini));
 
-        //gasto comun
+        $simula = GenerarPagoArrendatario::create([
+                    'meses_contrato' => $meses_contrato,
+                    'id_publicacion' => $idp,
+                    'id_propuesta' => $id_propuesta,
+                    'id_inmueble' => $idinmueble,
+                    'id_arrendatario' => $idarrendatario,
+                    'fecha_iniciocontrato' => $fechafirma,
+                    'proporcional' => $proporcional,
+                    'dia' => $dia,
+                    'mes' => $mes,
+                    'anio' => $anio,
+                    'iva' => $iva,
+                    'descuento' => $descuento,
+                    'pie' => $pie,
+                    'cobromensual' => $cobromensual,
+                    'tipopropuesta' => $tipopropuesta,
+                    'nrocuotas' => $nrocuotas,
+                    'moneda' => $tipomoneda,
+                    'gastocomun' => $gastocomun,
+                    'notaria' => $pagonotaria,
+                    'otro1' => $pagootro1,
+                    'otro2' => $pagootro2,
+                    'nomotro1' => $nombre_otropago1,
+                    'nomotro2' => $nombre_otropago2,
+                    'valormoneda' => $valormoneda,
+                    'id_creador' => $id_creador,
+                    'id_modificador' => $id_creador,
+                    'id_estado' => 1,
+                    'gastocomun' => $gastocomun,
+                    'canondearriendo' => $arriendo
+        ]);
 
-        $texto=", Pero No se han generado los siguientes items, ya que se encuentran ingresados en el sistema : ";
-        if(count($reserva_reg)>0){
-            $texto.=" Reserva, ";
-        }
-        if(count($arriendo_reg)>0){
-             $texto.=" Canon de Arriendo, ";
-        }
-        if(count($iva_reg)>0){
-             $texto.=" Iva, ";
-        }
-        if(count($garantia_reg)>0){
-                 $texto.=" Garantía, ";
-        }
-        if(count($pie_reg)>0){
-             $texto.=" Pie, ";
-        }
-        if(count($comision_reg)>0){
-             $texto.=" Comisión total, ";
-        }
-        if(count($comisionmensual_reg)>0){
-             $texto.=" Comisión Mensual, ";
-        }
-        if(count($notaria_reg)>0){
-             $texto.=" Notaria, ";
-        }
-        if(count($otro1_reg)>0){
-             $texto.=" Pago Personalizado 1, ";
-        }
-        if(count($otro2_reg)>0){
-             $texto.=" Pago Personalizado 2, ";
-        }
-        if(count($otro3_reg)>0){
-             $texto.=" Pago Personalizado 3 ";
+        $idsimulacion = $simula->id;
+        $primer_mes = 0;
+
+        $fecha_ini = date('Y-m-j', strtotime(date("Y", strtotime($fechafirma)) . '-' . date("m", strtotime($fechafirma)) . '-' . 1));
+
+        //arriendo
+        $idtipopago = 1;
+        if ($proporcional == 'SI') {
+            $dias_mes = cal_days_in_month(CAL_GREGORIAN, date("m", strtotime($fecha_ini)), date("Y", strtotime($fecha_ini)));
+            $valor_diario = $arriendo / $dias_mes;
+            $dias_proporcionales = cal_days_in_month(CAL_GREGORIAN, date("m", strtotime($fechafirma)), date("Y", strtotime($fechafirma))) - date("d", strtotime($fechafirma)) + 1;
+            $precio_proporcional = $dias_proporcionales * $valor_diario;
+            $valor_en_pesos = $precio_proporcional * $valormoneda;
+            $valor_en_pesos_proporcional = $valor_en_pesos + $arriendo;
+
+            $fecha_ini = date("d-m-Y", strtotime("+1 month", strtotime($fecha_ini)));
+            $fecha_ini = date('Y-m-j', strtotime(date("Y", strtotime($fecha_ini)) . '-' . date("m", strtotime($fecha_ini)) . '-' . 1));
+            $fechafirma = date('Y-m-j', strtotime(date("Y", strtotime($fecha_ini)) . '-' . date("m", strtotime($fecha_ini)) . '-' . 1));
+            $dia = 1;
+            $mes = date("m", strtotime($fecha_ini));
+            $anio = date("Y", strtotime($fecha_ini));
+            $dias_mes = cal_days_in_month(CAL_GREGORIAN, date("m", strtotime($fecha_ini)), date("Y", strtotime($fecha_ini)));
+            $pago = PagosArrendatarios::create([
+                        'id_contratofinal' => $idcontrato,
+                        'gastocomun' => $gastocomun,
+                        'E_S' => 's',
+                        'id_publicacion' => $idp,
+                        'id_inmueble' => $idinmueble,
+                        'tipopago' => "Valor días proporcionales",
+                        'idtipopago' => 8,
+                        'meses_contrato' => $meses_contrato,
+                        'tipopropuesta' => $tipopropuesta,
+                        'fecha_iniciocontrato' => $fechafirma,
+                        'dia' => $dia,
+                        'mes' => $mes,
+                        'anio' => $anio,
+                        'descuento' => $descuento,
+                        'cant_diasmes' => $dias_mes,
+                        'cant_diasproporcional' => $dias_proporcionales,
+                        'moneda' => $tipomoneda,
+                        'valormoneda' => $valormoneda,
+                        'valordia' => $valor_diario,
+                        'precio_en_moneda' => $precio_proporcional,
+                        'precio_en_pesos' => $valor_en_pesos,
+                        'id_creador' => $id_creador,
+                        'id_modificador' => $id_creador,
+                        'gastocomun' => $gastocomun,
+                        'canondearriendo' => $arriendo
+            ]);
+             $dias_mes = cal_days_in_month(CAL_GREGORIAN, date("m", strtotime($fecha_ini)), date("Y", strtotime($fecha_ini)));
+            $valor_diario = $arriendo / $dias_mes;
+            $dias_proporcionales = cal_days_in_month(CAL_GREGORIAN, date("m", strtotime($fechafirma)), date("Y", strtotime($fechafirma))) - date("d", strtotime($fechafirma)) + 1;
+            $precio_proporcional = $dias_proporcionales * $valor_diario;
+            $valor_en_pesos = $precio_proporcional * $valormoneda;
+
+        } else {
+            $dias_mes = cal_days_in_month(CAL_GREGORIAN, date("m", strtotime($fecha_ini)), date("Y", strtotime($fecha_ini)));
+            $valor_diario = $arriendo / $dias_mes;
+            $dias_proporcionales = cal_days_in_month(CAL_GREGORIAN, date("m", strtotime($fechafirma)), date("Y", strtotime($fechafirma))) - date("d", strtotime($fechafirma)) + 1;
+            $precio_proporcional = $dias_proporcionales * $valor_diario;
+            $valor_en_pesos = $precio_proporcional * $valormoneda;
+             $valor_en_pesos_proporcional = $valor_en_pesos;
         }
 
-//RESERVA
-        if (isset($reserva) && count($reserva_reg) == 0) {
-            $idtipopago = 1;
-            $dias_mes = cal_days_in_month(CAL_GREGORIAN, date("m", strtotime($fecha_ini2)), date("Y", strtotime($fecha_ini2)));
-            $valor_en_pesos = $reserva * $valormoneda;
+
+
+        $ini = 0;
+        if ($dias_proporcionales > 0) {
+            $ini = 1;
+            $dia = date("d", strtotime($fecha_ini));
+            $mes = date("m", strtotime($fecha_ini));
+            $anio = date("Y", strtotime($fecha_ini));
+            $dias_mes = cal_days_in_month(CAL_GREGORIAN, date("m", strtotime($fecha_ini)), date("Y", strtotime($fecha_ini)));
+            $fecha_ini = date("d-m-Y", strtotime("+1 month", strtotime($fecha_ini)));
+
+            $pago = PagosArrendatarios::create([
+                        'id_contratofinal' => $idcontrato,
+                        'id_publicacion' => $idp,
+                        'id_inmueble' => $idinmueble,
+                        'tipopago' => "Canon de Arriendo",
+                        'idtipopago' => $idtipopago,
+                        'meses_contrato' => $meses_contrato,
+                        'fecha_iniciocontrato' => $fechafirma,
+                        'E_S' => 'e',
+                        'dia' => $dia,
+                        'mes' => $mes,
+                        'anio' => $anio,
+                        'descuento' => $descuento,
+                        'tipopropuesta' => $tipopropuesta,
+                        'cant_diasmes' => $dias_mes,
+                        'cant_diasproporcional' => $dias_proporcionales,
+                        'moneda' => $tipomoneda,
+                        'valormoneda' => $valormoneda,
+                        'valordia' => $valor_diario,
+                        'precio_en_moneda' => $precio_proporcional,
+                        'precio_en_pesos' => $valor_en_pesos,
+                        'id_creador' => $id_creador,
+                        'id_modificador' => $id_creador,
+                        'id_estado' => 1,
+                        'gastocomun' => $gastocomun,
+                        'canondearriendo' => $arriendo
+            ]);
+        }
+
+        $dias_mes = cal_days_in_month(CAL_GREGORIAN, date("m", strtotime($fecha_ini)), date("Y", strtotime($fecha_ini)));
+        $valor_diario = $arriendo / $dias_mes;
+        for ($i = $ini; $i < $cant_meses; $i++) {
+
+            $dia = date("d", strtotime($fecha_ini));
+            $mes = date("m", strtotime($fecha_ini));
+            $anio = date("Y", strtotime($fecha_ini));
+
+            $dias_mes = cal_days_in_month(CAL_GREGORIAN, date("m", strtotime($fecha_ini)), date("Y", strtotime($fecha_ini)));
+            $dias_proporcionales = cal_days_in_month(CAL_GREGORIAN, date("m", strtotime($fecha_ini)), date("Y", strtotime($fecha_ini)));
+            $fecha_ini = date("d-m-Y", strtotime("+1 month", strtotime($fecha_ini)));
+            $pago = PagosArrendatarios::create([
+                        'id_contratofinal' => $idcontrato,
+                        'gastocomun' => $gastocomun,
+                        'id_publicacion' => $idp,
+                        'id_inmueble' => $idinmueble,
+                        'tipopropuesta' => $tipopropuesta,
+                        'E_S' => 'e',
+                        'tipopago' => "Canon de Arriendo",
+                        'idtipopago' => $idtipopago,
+                        'meses_contrato' => $meses_contrato,
+                        'fecha_iniciocontrato' => $fechafirma,
+                        'dia' => $dia,
+                        'mes' => $mes,
+                        'anio' => $anio,
+                        'descuento' => $descuento,
+                        'cant_diasmes' => $dias_mes,
+                        'cant_diasproporcional' => $dias_proporcionales,
+                        'moneda' => $tipomoneda,
+                        'valormoneda' => $valormoneda,
+                        'valordia' => $valor_diario,
+                        'precio_en_moneda' => $arriendo,
+                        'precio_en_pesos' => $arriendo * $valormoneda,
+                        'id_creador' => $id_creador,
+                        'id_modificador' => $id_creador,
+                        'gastocomun' => $gastocomun,
+                        'id_estado' => 1,
+                        'canondearriendo' => $arriendo
+            ]);
+        }
+
+
+
+        if ($gastocomun != 0) {
+$fecha_ini = date('Y-m-j', strtotime(date("Y", strtotime($fechafirma)) . '-' . date("m", strtotime($fechafirma)) . '-' . 1));
+            $idtipopago = 2;
+            $dias_mes = cal_days_in_month(CAL_GREGORIAN, date("m", strtotime($fecha_ini)), date("Y", strtotime($fecha_ini)));
+            $valor_diario = $gastocomun / $dias_mes;
+            $dias_proporcionales = cal_days_in_month(CAL_GREGORIAN, date("m", strtotime($fecha_ini)), date("Y", strtotime($fecha_ini))) - date("d", strtotime($fecha_ini)) + 1;
+
+            $precio_proporcional = $dias_proporcionales * $valor_diario;
+            $valor_en_pesos = $precio_proporcional * $valormoneda;
             $ini = 0;
 
+            if ($dias_proporcionales > 0) {
+                $ini = 1;
                 $dia = date("d", strtotime($fecha_ini));
                 $mes = date("m", strtotime($fecha_ini));
                 $anio = date("Y", strtotime($fecha_ini));
@@ -700,737 +784,850 @@ public function eliminartipopago($idc, $idt) {
                 $fecha_ini = date("d-m-Y", strtotime("+1 month", strtotime($fecha_ini)));
 
                 $pago = PagosArrendatarios::create([
-                            'id_contratofinal' => $idcontrato,
-                            'meses_contrato' => $meses_contrato,
+                        'id_contratofinal' => $idcontrato,
+                        'gastocomun' => $gastocomun,
                             'id_publicacion' => $idp,
-                            'tipopago' => "Reserva",
-                            'idtipopago' => $idtipopago,
-                            'E_S' => $request->re_radio,
                             'id_inmueble' => $idinmueble,
+                            'tipopago' => "Gasto Común",
+                            'E_S' => 'e',
+                            'idtipopago' => $idtipopago,
+                            'tipopropuesta' => $tipopropuesta,
+                            'meses_contrato' => $meses_contrato,
                             'fecha_iniciocontrato' => $fechafirma,
                             'dia' => $dia,
                             'mes' => $mes,
                             'anio' => $anio,
+                            'descuento' => $descuento,
+                            'cant_diasmes' => $dias_mes,
+                            'cant_diasproporcional' => $dias_proporcionales,
+                            'moneda' => $tipomoneda,
+                            'valormoneda' => $valormoneda,
+                            'valordia' => $valor_diario,
+                            'precio_en_moneda' => $precio_proporcional,
+                            'precio_en_pesos' => $valor_en_pesos,
+                            'id_creador' => $id_creador,
+                            'id_modificador' => $id_creador,
+                            'gastocomun' => $gastocomun,
+                            'id_estado' => 1,
+                            'canondearriendo' => $arriendo
+                ]);
+                $primer_mes += $valor_en_pesos;
+            }
+            for ($i = $ini; $i < $cant_meses; $i++) {
+                $dia = date("d", strtotime($fecha_ini));
+                $mes = date("m", strtotime($fecha_ini));
+                $anio = date("Y", strtotime($fecha_ini));
+                $dias_mes = cal_days_in_month(CAL_GREGORIAN, date("m", strtotime($fecha_ini)), date("Y", strtotime($fecha_ini)));
+                $fecha_ini = date("d-m-Y", strtotime("+1 month", strtotime($fecha_ini)));
+
+                $pago = PagosArrendatarios::create([
+                        'id_contratofinal' => $idcontrato,
+                        'gastocomun' => $gastocomun,
+                            'id_publicacion' => $idp,
+                            'id_inmueble' => $idinmueble,
+                            'E_S' => 'e',
+                            'tipopago' => "Gasto Común",
+                            'tipopropuesta' => $tipopropuesta,
+                            'idtipopago' => $idtipopago,
+                            'meses_contrato' => $meses_contrato,
+                            'fecha_iniciocontrato' => $fechafirma,
+                            'dia' => $dia,
+                            'mes' => $mes,
+                            'anio' => $anio,
+                            'descuento' => $descuento,
+                            'cant_diasmes' => $dias_mes,
+                            'cant_diasproporcional' => $dias_proporcionales,
+                            'moneda' => $tipomoneda,
+                            'valormoneda' => $valormoneda,
+                            'valordia' => $valor_diario,
+                            'precio_en_moneda' => $gastocomun,
+                            'precio_en_pesos' => $gastocomun * $valormoneda,
+                            'id_creador' => $id_creador,
+                            'id_modificador' => $id_creador,
+                            'gastocomun' => $gastocomun,
+                            'id_estado' => 1,
+                            'canondearriendo' => $arriendo
+                ]);
+            }
+        }
+        if ($tipopropuesta == 1) {
+            $fecha_ini = date('Y-m-j', strtotime(date("Y", strtotime($fechafirma)) . '-' . date("m", strtotime($fechafirma)) . '-' . 1));
+            //pago 1 cuota
+
+            $idtipopago = 3;
+            $dias_mes = cal_days_in_month(CAL_GREGORIAN, date("m", strtotime($fecha_ini)), date("Y", strtotime($fecha_ini)));
+            $valor_en_pesos = ($arriendo - ($arriendo * ($descuento / 100)));
+            $dia = date("d", strtotime($fecha_ini));
+            $mes = date("m", strtotime($fecha_ini));
+            $anio = date("Y", strtotime($fecha_ini));
+            $dias_mes = cal_days_in_month(CAL_GREGORIAN, date("m", strtotime($fecha_ini)), date("Y", strtotime($fecha_ini)));
+            $valor_en_pesos_con_desc = $valor_en_pesos;
+            $pago = PagosArrendatarios::create([
+                        'id_contratofinal' => $idcontrato,
+                        'gastocomun' => $gastocomun,
+                        'id_publicacion' => $idp,
+                        'id_inmueble' => $idinmueble,
+                        'E_S' => 'e',
+                        'tipopago' => "Cuota",
+                        'idtipopago' => $idtipopago,
+                        'tipopropuesta' => $tipopropuesta,
+                        'meses_contrato' => $meses_contrato,
+                        'fecha_iniciocontrato' => $fechafirma,
+                        'dia' => $dia,
+                        'mes' => $mes,
+                        'anio' => $anio,
+                        'descuento' => $descuento,
+                        'cant_diasmes' => $dias_mes,
+                        'cant_diasproporcional' => $dias_mes,
+                        'moneda' => $tipomoneda,
+                        'valormoneda' => $valormoneda,
+                        'valordia' => 1,
+                        'precio_en_moneda' => $valor_en_pesos,
+                        'precio_en_pesos' => $valor_en_pesos,
+                        'id_creador' => $id_creador,
+                        'id_modificador' => $id_creador,
+                        'id_estado' => 1,
+                        'gastocomun' => $gastocomun,
+                        'canondearriendo' => $arriendo
+            ]);
+            $primer_mes += $valor_en_pesos;
+        }
+
+        //pago iva
+        if ($tipopropuesta == 1) {
+            $idtipopago = 4;
+
+            $pago = PagosArrendatarios::create([
+                        'id_contratofinal' => $idcontrato,
+                        'gastocomun' => $gastocomun,
+                        'id_publicacion' => $idp,
+                        'id_inmueble' => $idinmueble,
+                        'E_S' => 'e',
+                        'tipopago' => "Iva",
+                        'idtipopago' => $idtipopago,
+                        'tipopropuesta' => $tipopropuesta,
+                        'meses_contrato' => $meses_contrato,  
+                        'fecha_iniciocontrato' => $fechafirma,
+                        'dia' => $dia,
+                        'mes' => $mes,
+                        'anio' => $anio,
+                        'descuento' => $descuento,
+                        'cant_diasmes' => $dias_mes,
+                        'cant_diasproporcional' => $dias_mes,
+                        'moneda' => $tipomoneda,
+                        'valormoneda' => $valormoneda,
+                        'valordia' => 1,
+                        'precio_en_moneda' => $valor_en_pesos_con_desc * ($iva / 100),
+                        'precio_en_pesos' => $valor_en_pesos_con_desc * ($iva / 100),
+                        'id_creador' => $id_creador,
+                        'id_modificador' => $id_creador,
+                        'id_estado' => 1,
+                        'gastocomun' => $gastocomun,
+                        'canondearriendo' => $arriendo
+            ]);
+            $primer_mes += $valor_en_pesos_con_desc * ($iva / 100);
+        }
+
+        $garantias=ArrendatarioGarantia::where("id_publicacion","=",$idp)->get();
+
+        if (count($garantias) > 0) {
+                foreach ($garantias as $g) {
+                        $mes = $g->mes;
+                        $anio = $g->ano;
+                        $dias_mes = cal_days_in_month(CAL_GREGORIAN, $mes, $anio);
+                        $idtipopago = 11;
+                        $precio_proporcional = $g->valor;
+                        $valor_en_pesos = $g->valor;
+                        $pago = PagosArrendatarios::create([
+                        'id_contratofinal' => $idcontrato,
+                        'id_publicacion' => $idp,
+                        'id_inmueble' => $idinmueble,
+                        'tipopropuesta' => $tipopropuesta,
+                        'tipopago' => "Garantía",
+                        'idtipopago' => $idtipopago,
+                        'meses_contrato' => $meses_contrato,
+                        'fecha_iniciocontrato' => $fechafirma,
+                        'dia' => $dia,
+                        'mes' => $mes,
+                        'anio' => $anio,
+                        'E_S' => 'e',
+                        'descuento' => $descuento,
+                        'cant_diasmes' => $dias_mes,
+                        'cant_diasproporcional' => $dias_mes,
+                        'moneda' => $tipomoneda,
+                        'valormoneda' => $valormoneda,
+                        'valordia' => 1,
+                        'precio_en_moneda' => $valor_en_pesos,
+                        'precio_en_pesos' => $valor_en_pesos,
+                        'id_creador' => $id_creador,
+                        'id_modificador' => $id_creador,
+                        'id_estado' => 1,
+                        'gastocomun' => $gastocomun,
+                        'canondearriendo' => $arriendo
+            ]);
+                       // $primer_mes += $valor_en_pesos;
+                }
+            
+        }
+
+        $reservas=Arr_Reservas::where("id_arr_ges","=",$idp)->get();
+$fecha_ini = date('Y-m-j', strtotime(date("Y", strtotime($fechafirma)) . '-' . date("m", strtotime($fechafirma)) . '-' . 1));
+        if (count($reservas) > 0) {
+            $monto_reserva=0;
+                foreach ($reservas as $g) {
+                        $monto_reserva+=$g->monto_reserva;
+                }
+                        $idtipopago = 10;
+                        $precio_proporcional = $monto_reserva;
+                        $valor_en_pesos = $monto_reserva;
+                        $pago = PagosArrendatarios::create([
+                        'id_contratofinal' => $idcontrato,
+                        'id_publicacion' => $idp,
+                        'id_inmueble' => $idinmueble,
+                        'tipopropuesta' => $tipopropuesta,
+                        'tipopago' => "Reserva",
+                        'idtipopago' => $idtipopago,
+                        'meses_contrato' => $meses_contrato,
+                        'fecha_iniciocontrato' => $fechafirma,
+                        'dia' => $dia,
+                        'mes' => $mes,
+                        'anio' => $anio,
+                        'E_S' => 's',
+                        'descuento' => $descuento,
+                        'cant_diasmes' => $dias_mes,
+                        'cant_diasproporcional' => $dias_mes,
+                        'moneda' => $tipomoneda,
+                        'valormoneda' => $valormoneda,
+                        'valordia' => 1,
+                        'precio_en_moneda' => $valor_en_pesos,
+                        'precio_en_pesos' => $valor_en_pesos,
+                        'id_creador' => $id_creador,
+                        'id_modificador' => $id_creador,
+                        'id_estado' => 1,
+                        'gastocomun' => $gastocomun,
+                        'canondearriendo' => $arriendo
+            ]);
+                      $fecha_ini = date("d-m-Y", strtotime("+1 month", strtotime($fecha_ini)));
+                
+            
+        }
+        if ($pagonotaria != 0) {
+                    $fecha_ini = date('Y-m-j', strtotime(date("Y", strtotime($fechafirma)) . '-' . date("m", strtotime($fechafirma)) . '-' . 1));
+                                    $dia = date("d", strtotime($fecha_ini));
+                $mes = date("m", strtotime($fecha_ini));
+                $anio = date("Y", strtotime($fecha_ini));
+                $dias_mes = cal_days_in_month(CAL_GREGORIAN, date("m", strtotime($fecha_ini)), date("Y", strtotime($fecha_ini)));
+            //Notaria
+            $idtipopago = 5;
+            $precio_proporcional = $pagonotaria;
+            $valor_en_pesos = $pagonotaria;
+
+            $pago = PagosArrendatarios::create([
+                        'id_contratofinal' => $idcontrato,
+                        'gastocomun' => $gastocomun,
+                        'id_publicacion' => $idp,
+                        'id_inmueble' => $idinmueble,
+                        'tipopago' => "Notaria",
+                        'E_S' => $request->no_radio,
+                        'tipopropuesta' => $tipopropuesta,
+                        'idtipopago' => $idtipopago,
+                        'meses_contrato' => $meses_contrato,
+                        'fecha_iniciocontrato' => $fechafirma,
+                        'dia' => $dia,
+                        'mes' => $mes,
+                        'anio' => $anio,
+                        'descuento' => $descuento,
+                        'cant_diasmes' => $dias_mes,
+                        'cant_diasproporcional' => $dias_mes,
+                        'moneda' => $tipomoneda,
+                        'valormoneda' => $valormoneda,
+                        'valordia' => 1,
+                        'precio_en_moneda' => $valor_en_pesos,
+                        'precio_en_pesos' => $valor_en_pesos,
+                        'id_creador' => $id_creador,
+                        'id_modificador' => $id_creador,
+                        'id_estado' => 1,
+                        'gastocomun' => $gastocomun,
+                        'canondearriendo' => $arriendo
+            ]);
+
+            $primer_mes += $valor_en_pesos;
+        }
+
+        if ($nombre_otropago1 != null && $nombre_otropago1 != "" && $pagootro1 != 0) {
+            //Otro Pago 1
+                        $fecha_ini = date('Y-m-j', strtotime(date("Y", strtotime($fechafirma)) . '-' . date("m", strtotime($fechafirma)) . '-' . 1));
+                                    $dia = date("d", strtotime($fecha_ini));
+                $mes = date("m", strtotime($fecha_ini));
+                $anio = date("Y", strtotime($fecha_ini));
+                $dias_mes = cal_days_in_month(CAL_GREGORIAN, date("m", strtotime($fecha_ini)), date("Y", strtotime($fecha_ini)));
+            $idtipopago = 6;
+            $precio_proporcional = $pagootro1;
+            $valor_en_pesos = $pagootro1;
+
+            $pago = PagosArrendatarios::create([
+                        'id_contratofinal' => $idcontrato,
+                        'gastocomun' => $gastocomun,
+                        'id_publicacion' => $idp,
+                        'id_inmueble' => $idinmueble,
+                        'tipopago' => $nombre_otropago1,
+                        'idtipopago' => $idtipopago,
+                        'meses_contrato' => $meses_contrato,
+                        'tipopropuesta' => $tipopropuesta,
+                        'fecha_iniciocontrato' => $fechafirma,
+                        'dia' => $dia,
+                        'mes' => $mes,
+                        'anio' => $anio,
+                        'E_S' => $request->o1_radio,
+                        'descuento' => $descuento,
+                        'cant_diasmes' => $dias_mes,
+                        'cant_diasproporcional' => $dias_mes,
+                        'moneda' => $tipomoneda,
+                        'valormoneda' => $valormoneda,
+                        'valordia' => 1,
+                        'precio_en_moneda' => $valor_en_pesos,
+                        'precio_en_pesos' => $valor_en_pesos,
+                        'id_creador' => $id_creador,
+                        'id_modificador' => $id_creador,
+                        'id_estado' => 1,
+                        'gastocomun' => $gastocomun,
+                        'canondearriendo' => $arriendo
+            ]);
+            $primer_mes += $valor_en_pesos;
+        }
+        if ($nombre_otropago2 != null && $nombre_otropago2 != "" && $pagootro2 != 0) {
+            //Otro Pago 2
+                        $fecha_ini = date('Y-m-j', strtotime(date("Y", strtotime($fechafirma)) . '-' . date("m", strtotime($fechafirma)) . '-' . 1));
+                                    $dia = date("d", strtotime($fecha_ini));
+                $mes = date("m", strtotime($fecha_ini));
+                $anio = date("Y", strtotime($fecha_ini));
+                $dias_mes = cal_days_in_month(CAL_GREGORIAN, date("m", strtotime($fecha_ini)), date("Y", strtotime($fecha_ini)));
+            $idtipopago = 7;
+            $precio_proporcional = $pagootro2;
+            $valor_en_pesos = $pagootro2;
+
+            $pago = PagosArrendatarios::create([
+                        'id_contratofinal' => $idcontrato,
+                        'gastocomun' => $gastocomun,
+                        'id_publicacion' => $idp,
+                        'id_inmueble' => $idinmueble,
+                        'tipopago' => $nombre_otropago2,
+                        'idtipopago' => $idtipopago,
+                        'E_S' => $request->o2_radio,
+                        'meses_contrato' => $meses_contrato,
+                        'tipopropuesta' => $tipopropuesta,
+                        'fecha_iniciocontrato' => $fechafirma,
+                        'dia' => $dia,
+                        'mes' => $mes,
+                        'anio' => $anio,
+                        'descuento' => $descuento,
+                        'cant_diasmes' => $dias_mes,
+                        'cant_diasproporcional' => $dias_mes,
+                        'moneda' => $tipomoneda,
+                        'valormoneda' => $valormoneda,
+                        'valordia' => 1,
+                        'precio_en_moneda' => $valor_en_pesos,
+                        'precio_en_pesos' => $valor_en_pesos,
+                        'id_creador' => $id_creador,
+                        'id_modificador' => $id_creador,
+                        'id_estado' => 1,
+                        'gastocomun' => $gastocomun,
+                        'canondearriendo' => $arriendo
+            ]);
+
+            $primer_mes += $valor_en_pesos;
+        }
+
+        if ($tipopropuesta == 1) {
+            //Pendiente Mes Anterior
+            $fecha_ini = date('Y-m-j', strtotime(date("Y", strtotime($fechafirma)) . '-' . date("m", strtotime($fechafirma)) . '-' . 1));
+            $idtipopago = 15;
+
+
+            $pendiente = $valor_en_pesos_proporcional - $primer_mes;
+
+            if (($arriendo - $primer_mes) < 0) {
+                $dia = date("d", strtotime($fecha_ini));
+                $mes = date("m", strtotime($fecha_ini));
+                $anio = date("Y", strtotime($fecha_ini));
+                $dias_mes = cal_days_in_month(CAL_GREGORIAN, date("m", strtotime($fecha_ini)), date("Y", strtotime($fecha_ini)));
+                $pago = PagosArrendatarios::create([
+                        'id_contratofinal' => $idcontrato,
+                        'gastocomun' => $gastocomun,
+                            'id_publicacion' => $idp,
+                            'id_inmueble' => $idinmueble,
+                            'tipopago' => "Pago Pendiente",
+                            'E_S' => 'e',
+                            'idtipopago' => $idtipopago,
+                            'meses_contrato' => $meses_contrato,
+                            'tipopropuesta' => $tipopropuesta,
+                            'fecha_iniciocontrato' => $fechafirma,
+                            'dia' => $dia,
+                            'mes' => $mes,
+                            'anio' => $anio,
+                            'descuento' => $descuento,
                             'cant_diasmes' => $dias_mes,
                             'cant_diasproporcional' => $dias_mes,
                             'moneda' => $tipomoneda,
                             'valormoneda' => $valormoneda,
                             'valordia' => 1,
-                            'precio_en_moneda' => $reserva,
-                            'precio_en_pesos' => ceil($reserva * $valormoneda),
+                            'precio_en_moneda' => 0,
+                            'precio_en_pesos' => 0,
                             'id_creador' => $id_creador,
                             'id_modificador' => $id_creador,
                             'id_estado' => 1,
+                            'gastocomun' => $gastocomun,
                             'canondearriendo' => $arriendo
                 ]);
-            
-        }
-
-        $fecha_ini = date('Y-m-j', strtotime(date("Y", strtotime($fechafirma)) . '-' . date("m", strtotime($fechafirma)) . '-' . 1));
-        //arriendo
-        if (isset($arriendo) && count($arriendo_reg) == 0) {
-            $idtipopago = 2;
-            $dias_mes = cal_days_in_month(CAL_GREGORIAN, date("m", strtotime($fecha_ini)), date("Y", strtotime($fecha_ini)));
-            $valor_diario = $arriendo / $dias_mes;
-            $dias_proporcionales = cal_days_in_month(CAL_GREGORIAN, date("m", strtotime($fecha_ini2)), date("Y", strtotime($fecha_ini2))) - date("d", strtotime($fecha_ini2)) + 1;
-            $precio_proporcional = $dias_proporcionales * $valor_diario;
-            $valor_en_pesos = $precio_proporcional * $valormoneda;
-            $ini = 0;
-            if ($dias_proporcionales > 0) {
-                $ini = 1;
+                $pendiente = ($valor_en_pesos_proporcional - $primer_mes) * -1;
+                $fecha_ini = date("d-m-Y", strtotime("+1 month", strtotime($fecha_ini)));
+                $dias_mes = cal_days_in_month(CAL_GREGORIAN, date("m", strtotime($fecha_ini)), date("Y", strtotime($fecha_ini)));
                 $dia = date("d", strtotime($fecha_ini));
                 $mes = date("m", strtotime($fecha_ini));
                 $anio = date("Y", strtotime($fecha_ini));
-                $dias_mes = cal_days_in_month(CAL_GREGORIAN, date("m", strtotime($fecha_ini)), date("Y", strtotime($fecha_ini)));
-                $fecha_ini = date("d-m-Y", strtotime("+1 month", strtotime($fecha_ini)));
-
                 $pago = PagosArrendatarios::create([
-                            'id_contratofinal' => $idcontrato,
-                            'meses_contrato' => $meses_contrato,
+                        'id_contratofinal' => $idcontrato,
+                        'gastocomun' => $gastocomun,
                             'id_publicacion' => $idp,
-                            'tipopago' => "Canon de Arriendo",
-                            'idtipopago' => $idtipopago,
-                            'E_S' => $request->ar_radio,
                             'id_inmueble' => $idinmueble,
+                            'tipopago' => "Pago Pendiente",
+                            'idtipopago' => $idtipopago,
+                            'meses_contrato' => $meses_contrato,
                             'fecha_iniciocontrato' => $fechafirma,
                             'dia' => $dia,
                             'mes' => $mes,
                             'anio' => $anio,
-                            'cant_diasmes' => $dias_mes,
-                            'cant_diasproporcional' => $dias_proporcionales,
-                            'moneda' => $tipomoneda,
-                            'valormoneda' => $valormoneda,
-                            'valordia' => $valor_diario,
-                            'precio_en_moneda' => $precio_proporcional,
-                            'precio_en_pesos' => ceil($valor_en_pesos),
-                            'id_creador' => $id_creador,
-                            'id_modificador' => $id_creador,
-                            'id_estado' => 1,
-                            'canondearriendo' => $arriendo
-                ]);
-            }
-
-            for ($i = $ini; $i < $cant_meses; $i++) {
-
-                $dia = date("d", strtotime($fecha_ini));
-                $mes = date("m", strtotime($fecha_ini));
-                $anio = date("Y", strtotime($fecha_ini));
-
-                $dias_mes = cal_days_in_month(CAL_GREGORIAN, date("m", strtotime($fecha_ini)), date("Y", strtotime($fecha_ini)));
-                $dias_proporcionales = cal_days_in_month(CAL_GREGORIAN, date("m", strtotime($fecha_ini)), date("Y", strtotime($fecha_ini)));
-                $fecha_ini = date("d-m-Y", strtotime("+1 month", strtotime($fecha_ini)));
-                $pago = PagosArrendatarios::create([
-                            'id_contratofinal' => $idcontrato,
-                            'meses_contrato' => $meses_contrato,
-                            'id_publicacion' => $idp,
-                            'tipopago' => "Canon de Arriendo",
-                            'E_S' => $request->ar_radio,
-                            'id_inmueble' => $idinmueble,
-                            'idtipopago' => $idtipopago,
-                            'fecha_iniciocontrato' => $fechafirma,
-                            'dia' => $dia,
-                            'mes' => $mes,
-                            'anio' => $anio,
-                            'cant_diasmes' => $dias_mes,
-                            'cant_diasproporcional' => $dias_proporcionales,
-                            'moneda' => $tipomoneda,
-                            'valormoneda' => $valormoneda,
-                            'valordia' => $valor_diario,
-                            'precio_en_moneda' => $arriendo,
-                            'precio_en_pesos' => ceil($arriendo * $valormoneda),
-                            'id_creador' => $id_creador,
-                            'id_modificador' => $id_creador,
-                            'id_estado' => 1,
-                            'canondearriendo' => $arriendo
-                ]);
-            }
-        }
-
-
-$fecha_ini = date('Y-m-j', strtotime(date("Y", strtotime($fechafirma)) . '-' . date("m", strtotime($fechafirma)) . '-' . 1));
-        //IVA
-        if (isset($iva) && count($iva_reg) == 0) {
-            $idtipopago = 3;
-            $dias_mes = cal_days_in_month(CAL_GREGORIAN, date("m", strtotime($fecha_ini)), date("Y", strtotime($fecha_ini)));
-            $valor_diario = 1;
-            $dias_proporcionales = cal_days_in_month(CAL_GREGORIAN, date("m", strtotime($fecha_ini)), date("Y", strtotime($fecha_ini))) - date("d", strtotime($fecha_ini)) + 1;
-            $precio_proporcional = $iva;
-            $valor_en_pesos = $iva;
-            $ini = 0;
-            if ($dias_proporcionales > 0) {
-                $ini = 1;
-                $dia = date("d", strtotime($fecha_ini));
-                $mes = date("m", strtotime($fecha_ini));
-                $anio = date("Y", strtotime($fecha_ini));
-                $dias_mes = cal_days_in_month(CAL_GREGORIAN, date("m", strtotime($fecha_ini)), date("Y", strtotime($fecha_ini)));
-                $fecha_ini = date("d-m-Y", strtotime("+1 month", strtotime($fecha_ini)));
-
-                $pago = PagosArrendatarios::create([
-                            'id_contratofinal' => $idcontrato,
-                            'meses_contrato' => $meses_contrato,
-                            'id_publicacion' => $idp,
-                            'tipopago' => "IVA",
-                            'id_inmueble' => $idinmueble,
-                            'idtipopago' => $idtipopago,
-                            'fecha_iniciocontrato' => $fechafirma,
-                            'dia' => $dia,
-                            'mes' => $mes,
-                            'anio' => $anio,
-                            'E_S' => $request->iva_radio,
-                            'cant_diasmes' => $dias_mes,
-                            'cant_diasproporcional' => $dias_proporcionales,
-                            'moneda' => 'CLP',
-                            'valormoneda' => 1,
-                            'valordia' => $valor_diario,
-                            'precio_en_moneda' => $precio_proporcional,
-                            'precio_en_pesos' => ceil($valor_en_pesos),
-                            'id_creador' => $id_creador,
-                            'id_modificador' => $id_creador,
-                            'id_estado' => 1,
-                            'canondearriendo' => $arriendo
-                ]);
-            }
-            for ($i = $ini; $i < $mes_iva; $i++) {
-
-                $dia = date("d", strtotime($fecha_ini));
-                $mes = date("m", strtotime($fecha_ini));
-                $anio = date("Y", strtotime($fecha_ini));
-                $dias_mes = cal_days_in_month(CAL_GREGORIAN, date("m", strtotime($fecha_ini)), date("Y", strtotime($fecha_ini)));
-                $fecha_ini = date("d-m-Y", strtotime("+1 month", strtotime($fecha_ini)));
-
-                $pago = PagosArrendatarios::create([
-                            'id_contratofinal' => $idcontrato,
-                            'meses_contrato' => $meses_contrato,
-                            'id_publicacion' => $idp,
-                            'tipopago' => "IVA",
-                            'E_S' => $request->iva_radio,
-                            'idtipopago' => $idtipopago,
-                            'fecha_iniciocontrato' => $fechafirma,
-                            'id_inmueble' => $idinmueble,
-                            'dia' => $dia,
-                            'mes' => $mes,
-                            'anio' => $anio,
+                            'E_S' => 'e',
+                            'descuento' => $descuento,
+                            'tipopropuesta' => $tipopropuesta,
                             'cant_diasmes' => $dias_mes,
                             'cant_diasproporcional' => $dias_mes,
-                            'moneda' => 'CLP',
-                            'valormoneda' => 1,
-                            'valordia' => $valor_diario,
-                            'precio_en_moneda' => $iva,
-                            'precio_en_pesos' => ceil($iva * $valormoneda),
+                            'moneda' => $tipomoneda,
+                            'valormoneda' => $valormoneda,
+                            'valordia' => 1,
+                            'precio_en_moneda' => $pendiente,
+                            'precio_en_pesos' => $pendiente,
                             'id_creador' => $id_creador,
                             'id_modificador' => $id_creador,
                             'id_estado' => 1,
+                            'gastocomun' => $gastocomun,
                             'canondearriendo' => $arriendo
                 ]);
             }
-        }
 
-        $fecha_ini = date('Y-m-j', strtotime(date("Y", strtotime($fechafirma)) . '-' . date("m", strtotime($fechafirma)) . '-' . 1));
-        //GARANTIA
-        if (isset($garantia) && count($garantia_reg) == 0) {
-            $idtipopago = 4;
-            $dias_mes = cal_days_in_month(CAL_GREGORIAN, date("m", strtotime($fecha_ini)), date("Y", strtotime($fecha_ini)));
-            $valor_diario = 1;
-            $dias_proporcionales = cal_days_in_month(CAL_GREGORIAN, date("m", strtotime($fecha_ini)), date("Y", strtotime($fecha_ini))) - date("d", strtotime($fecha_ini)) + 1;
-            $precio_proporcional = $iva;
-            $valor_en_pesos = $garantia;
-            $ini = 0;
-            if ($dias_proporcionales > 0) {
-                $ini = 1;
+
+            $fecha_ini = date('Y-m-j', strtotime(date("Y", strtotime($fechafirma)) . '-' . date("m", strtotime($fechafirma)) . '-' . 1));
+            $idtipopago = 20;
+
+            for ($i = 0; $i < $cant_meses; $i++) {
                 $dia = date("d", strtotime($fecha_ini));
                 $mes = date("m", strtotime($fecha_ini));
                 $anio = date("Y", strtotime($fecha_ini));
                 $dias_mes = cal_days_in_month(CAL_GREGORIAN, date("m", strtotime($fecha_ini)), date("Y", strtotime($fecha_ini)));
-                $fecha_ini = date("d-m-Y", strtotime("+1 month", strtotime($fecha_ini)));
+                $pagomensual = PagosArrendatarios::where("mes", '=', $mes)
+                        ->where("anio", '=', $anio)
+                        ->whereIn("idtipopago", [1,2,3,4,5,6,7,8,9,11,15])
+                        ->where("id_contratofinal", '=', $idcontrato)
+                        ->where("id_inmueble", '=', $idinmueble)
+                        ->sum('precio_en_pesos');
 
                 $pago = PagosArrendatarios::create([
-                            'id_contratofinal' => $idcontrato,
-                            'meses_contrato' => $meses_contrato,
+                        'id_contratofinal' => $idcontrato,
+                        'gastocomun' => $gastocomun,
                             'id_publicacion' => $idp,
-                            'tipopago' => "GARANTÍA",
-                            'idtipopago' => $idtipopago,
                             'id_inmueble' => $idinmueble,
+                            'tipopago' => "Total Costos Arrendatario",
+                            'E_S' => 's',
+                            'idtipopago' => $idtipopago,
+                            'tipopropuesta' => $tipopropuesta,
+                            'meses_contrato' => $meses_contrato,
                             'fecha_iniciocontrato' => $fechafirma,
                             'dia' => $dia,
                             'mes' => $mes,
                             'anio' => $anio,
-                            'E_S' => $request->gar_radio,
+                            'descuento' => $descuento,
                             'cant_diasmes' => $dias_mes,
                             'cant_diasproporcional' => $dias_proporcionales,
-                            'moneda' => 'CLP',
-                            'valormoneda' => 1,
+                            'moneda' => $tipomoneda,
+                            'valormoneda' => $valormoneda,
                             'valordia' => $valor_diario,
-                            'precio_en_moneda' => $precio_proporcional,
-                            'precio_en_pesos' => ceil($valor_en_pesos),
+                            'precio_en_moneda' => $pagomensual,
+                            'precio_en_pesos' => $pagomensual,
+                            'id_creador' => $id_creador,
+                            'id_modificador' => $id_creador,
+                            'id_estado' => 1,
+                            'gastocomun' => $gastocomun,
+                            'canondearriendo' => $arriendo
+                ]);
+                $fecha_ini = date("d-m-Y", strtotime("+1 month", strtotime($fecha_ini)));
+            }
+
+
+            $fecha_ini = date('Y-m-j', strtotime(date("Y", strtotime($fechafirma)) . '-' . date("m", strtotime($fechafirma)) . '-' . 1));
+            $idtipopago = 21;
+
+
+            for ($i = 0; $i < $cant_meses; $i++) {
+                $dia = date("d", strtotime($fecha_ini));
+                $mes = date("m", strtotime($fecha_ini));
+                $anio = date("Y", strtotime($fecha_ini));
+                $dias_mes = cal_days_in_month(CAL_GREGORIAN, date("m", strtotime($fecha_ini)), date("Y", strtotime($fecha_ini)));
+                $pagomensual = PagosArrendatarios::where("mes", '=', $mes)
+                        ->where("anio", '=', $anio)
+                        ->whereIn("idtipopago", [1,2,3,4,5,6,7,8,11,15])
+                        ->where("id_contratofinal", '=', $idcontrato)
+                        ->where("id_inmueble", '=', $idinmueble)
+                        ->sum('precio_en_pesos');
+                        $saldo = $pagomensual - $monto_reserva;
+         
+
+                $pago = PagosArrendatarios::create([
+                        'id_contratofinal' => $idcontrato,
+                        'gastocomun' => $gastocomun,
+                            'id_publicacion' => $idp,
+                            'id_inmueble' => $idinmueble,
+                            'tipopago' => "Saldo a Depositar",
+                            'idtipopago' => $idtipopago,
+                            'tipopropuesta' => $tipopropuesta,
+                            'meses_contrato' => $meses_contrato,
+                            'fecha_iniciocontrato' => $fechafirma,
+                            'dia' => $dia,
+                            'mes' => $mes,
+                            'anio' => $anio,
+                            'E_S' => 's',
+                            'descuento' => $descuento,
+                            'cant_diasmes' => $dias_mes,
+                            'cant_diasproporcional' => $dias_proporcionales,
+                            'moneda' => $tipomoneda,
+                            'valormoneda' => $valormoneda,
+                            'valordia' => $valor_diario,
+                            'precio_en_moneda' => $saldo,
+                            'precio_en_pesos' => $saldo,
+                            'id_creador' => $id_creador,
+                            'id_modificador' => $id_creador,
+                            'id_estado' => 1,
+                            'gastocomun' => $gastocomun,
+                            'canondearriendo' => $arriendo
+                ]);
+                $fecha_ini = date("d-m-Y", strtotime("+1 month", strtotime($fecha_ini)));
+            }
+        }
+
+
+        //general para pago 11 cuotas
+
+        if ($tipopropuesta == 2) {
+            $primer_mes = 0;
+
+            $fecha_ini = date('Y-m-j', strtotime(date("Y", strtotime($fechafirma)) . '-' . date("m", strtotime($fechafirma)) . '-' . 1));
+            //pago pie
+
+            $idtipopago = 31;
+            $dias_mes = cal_days_in_month(CAL_GREGORIAN, date("m", strtotime($fecha_ini)), date("Y", strtotime($fecha_ini)));
+            $valor_en_pesos = ($arriendo - ($arriendo * ($descuento / 100)));
+            $pie_valor = $valor_en_pesos * ($pie / 100);
+            $dia = date("d", strtotime($fecha_ini));
+            $mes = date("m", strtotime($fecha_ini));
+            $anio = date("Y", strtotime($fecha_ini));
+            $dias_mes = cal_days_in_month(CAL_GREGORIAN, date("m", strtotime($fecha_ini)), date("Y", strtotime($fecha_ini)));
+            $valor_en_pesos_con_desc = $valor_en_pesos;
+            $pago = PagosArrendatarios::create([
+                        'id_contratofinal' => $idcontrato,
+                        'gastocomun' => $gastocomun,
+                        'id_publicacion' => $idp,
+                        'id_inmueble' => $idinmueble,
+                        'tipopago' => "Pie",
+                        'E_S' => 'e',
+                        'idtipopago' => $idtipopago,
+                        'meses_contrato' => $meses_contrato,
+                        'fecha_iniciocontrato' => $fechafirma,
+                        'dia' => $dia,
+                        'mes' => $mes,
+                        'tipopropuesta' => '2',
+                        'anio' => $anio,
+                        'descuento' => $descuento,
+                        'cant_diasmes' => $dias_mes,
+                        'cant_diasproporcional' => $dias_mes,
+                        'moneda' => $tipomoneda,
+                        'valormoneda' => $valormoneda,
+                        'valordia' => 1,
+                        'precio_en_moneda' => $pie_valor,
+                        'precio_en_pesos' => $pie_valor,
+                        'id_creador' => $id_creador,
+                        'id_modificador' => $id_creador,
+                        'id_estado' => 1,
+                        'canondearriendo' => $arriendo
+            ]);
+            $primer_mes += $pie_valor;
+
+            $idtipopago = 32;
+
+            $dia = date("d", strtotime($fecha_ini));
+            $mes = date("m", strtotime($fecha_ini));
+            $anio = date("Y", strtotime($fecha_ini));
+            $dias_mes = cal_days_in_month(CAL_GREGORIAN, date("m", strtotime($fecha_ini)), date("Y", strtotime($fecha_ini)));
+            $valor_cuota = $arriendo * ($cobromensual / 100);
+
+            $pago = PagosArrendatarios::create([
+                        'id_contratofinal' => $idcontrato,
+                        'gastocomun' => $gastocomun,
+                        'id_publicacion' => $idp,
+                        'id_inmueble' => $idinmueble,
+                        'tipopago' => $nrocuotas . " Cuotas " . $cobromensual . "%",
+                        'idtipopago' => $idtipopago,
+                        'meses_contrato' => $meses_contrato,
+                        'fecha_iniciocontrato' => $fechafirma,
+                        'dia' => $dia,
+                        'mes' => $mes,
+                        'anio' => $anio,
+                        'tipopropuesta' => '2',
+                        'E_S' => 'e',
+                        'descuento' => $descuento,
+                        'cant_diasmes' => $dias_mes,
+                        'cant_diasproporcional' => $dias_proporcionales,
+                        'moneda' => $tipomoneda,
+                        'valormoneda' => $valormoneda,
+                        'valordia' => $valor_diario,
+                        'precio_en_moneda' => 0,
+                        'precio_en_pesos' => 0,
+                        'id_creador' => $id_creador,
+                        'id_modificador' => $id_creador,
+                        'id_estado' => 1,
+                        'canondearriendo' => $arriendo
+            ]);
+            for ($i = 0; $i < $nrocuotas; $i++) {
+                $fecha_ini = date("d-m-Y", strtotime("+1 month", strtotime($fecha_ini)));
+                $dia = date("d", strtotime($fecha_ini));
+                $mes = date("m", strtotime($fecha_ini));
+                $anio = date("Y", strtotime($fecha_ini));
+                $dias_mes = cal_days_in_month(CAL_GREGORIAN, date("m", strtotime($fecha_ini)), date("Y", strtotime($fecha_ini)));
+                $valor_cuota = $arriendo * ($cobromensual / 100);
+               $pago = PagosArrendatarios::create([
+                           'id_contratofinal' => $idcontrato,
+                            'gastocomun' => $gastocomun,
+                            'id_publicacion' => $idp,
+                            'id_inmueble' => $idinmueble,
+                            'tipopago' => $nrocuotas . " Cuotas " . $cobromensual . "%",
+                            'idtipopago' => $idtipopago,
+                            'meses_contrato' => $meses_contrato,
+                            'fecha_iniciocontrato' => $fechafirma,
+                            'dia' => $dia,
+                            'mes' => $mes,
+                            'tipopropuesta' => $tipopropuesta,
+                            'anio' => $anio,
+                            'E_S' => 'e',
+                            'descuento' => $descuento,
+                            'cant_diasmes' => $dias_mes,
+                            'cant_diasproporcional' => $dias_proporcionales,
+                            'moneda' => $tipomoneda,
+                            'valormoneda' => $valormoneda,
+                            'valordia' => $valor_diario,
+                            'precio_en_moneda' => $valor_cuota,
+                            'precio_en_pesos' => $valor_cuota,
                             'id_creador' => $id_creador,
                             'id_modificador' => $id_creador,
                             'id_estado' => 1,
                             'canondearriendo' => $arriendo
                 ]);
             }
-            
-        }
 
+
+
+
+            //Pendiente Mes Anterior
+                $fecha_ini = date('Y-m-j', strtotime(date("Y", strtotime($fechafirma)) . '-' . date("m", strtotime($fechafirma)) . '-' . 1));
+                $idtipopago = 33;
+                $dia = date("d", strtotime($fecha_ini));
+                $mes = date("m", strtotime($fecha_ini));
+                $anio = date("Y", strtotime($fecha_ini));
+
+           $primer_mes=  PagosArrendatarios::where("mes", '=', $mes)
+                        ->where("anio", '=', $anio)
+                        ->whereIn("idtipopago", [2,3,4,5,6,7,31,32])
+                        ->where("id_contratofinal", '=', $idcontrato)
+                        ->where("id_inmueble", '=', $idinmueble)
+                        ->sum('precio_en_pesos');
+                $valor_en_pesos_proporcional=  PagosArrendatarios::where("mes", '=', $mes)
+                        ->where("anio", '=', $anio)
+                        ->whereIn("idtipopago", [1])
+                        ->where("id_contratofinal", '=', $idcontrato)
+                        ->where("id_inmueble", '=', $idinmueble)
+                        ->sum('precio_en_pesos');
+
+            $pendiente = $valor_en_pesos_proporcional - $primer_mes;
+//dd(" pendiente : $pendiente valor_en_pesos_proporcional : $valor_en_pesos_proporcional primer_mes : $primer_mes");
+            if (($valor_en_pesos_proporcional - $primer_mes) < 0) {
+                $dia = date("d", strtotime($fecha_ini));
+                $mes = date("m", strtotime($fecha_ini));
+                $anio = date("Y", strtotime($fecha_ini));
+                $dias_mes = cal_days_in_month(CAL_GREGORIAN, date("m", strtotime($fecha_ini)), date("Y", strtotime($fecha_ini)));
+                $pago = PagosArrendatarios::create([
+                        'id_contratofinal' => $idcontrato,
+                        'gastocomun' => $gastocomun,
+                            'id_publicacion' => $idp,
+                            'id_inmueble' => $idinmueble,
+                            'tipopago' => "Pago Pendiente",
+                            'idtipopago' => $idtipopago,
+                            'meses_contrato' => $meses_contrato,
+                            'fecha_iniciocontrato' => $fechafirma,
+                            'dia' => $dia,
+                            'E_S' => 'e',
+                            'mes' => $mes,
+                            'anio' => $anio,
+                            'tipopropuesta' => '2',
+                            'descuento' => $descuento,
+                            'cant_diasmes' => $dias_mes,
+                            'cant_diasproporcional' => $dias_mes,
+                            'moneda' => $tipomoneda,
+                            'valormoneda' => $valormoneda,
+                            'valordia' => 1,
+                            'precio_en_moneda' => 0,
+                            'precio_en_pesos' => 0,
+                            'id_creador' => $id_creador,
+                            'id_modificador' => $id_creador,
+                            'id_estado' => 1,
+                            'canondearriendo' => $arriendo
+                ]);
+                $pendiente = ($valor_en_pesos_proporcional - $primer_mes) * -1;
+                $fecha_ini = date("d-m-Y", strtotime("+1 month", strtotime($fecha_ini)));
+                $dias_mes = cal_days_in_month(CAL_GREGORIAN, date("m", strtotime($fecha_ini)), date("Y", strtotime($fecha_ini)));
+                $dia = date("d", strtotime($fecha_ini));
+                $mes = date("m", strtotime($fecha_ini));
+                $anio = date("Y", strtotime($fecha_ini));
+                $pago = PagosArrendatarios::create([
+                        'id_contratofinal' => $idcontrato,
+                        'gastocomun' => $gastocomun,
+                            'id_publicacion' => $idp,
+                            'id_inmueble' => $idinmueble,
+                            'tipopago' => "Pago Pendiente",
+                            'idtipopago' => $idtipopago,
+                            'meses_contrato' => $meses_contrato,
+                            'fecha_iniciocontrato' => $fechafirma,
+                            'dia' => $dia,
+                            'mes' => $mes,
+                            'anio' => $anio,
+                            'tipopropuesta' => $tipopropuesta,
+                            'E_S' => 'e',
+                            'descuento' => $descuento,
+                            'cant_diasmes' => $dias_mes,
+                            'cant_diasproporcional' => $dias_mes,
+                            'moneda' => $tipomoneda,
+                            'valormoneda' => $valormoneda,
+                            'valordia' => 1,
+                            'precio_en_moneda' => $pendiente,
+                            'precio_en_pesos' => $pendiente,
+                            'id_creador' => $id_creador,
+                            'id_modificador' => $id_creador,
+                            'id_estado' => 1,
+                            'canondearriendo' => $arriendo
+                ]);
+            }
+        }
 
         
+          $fecha_ini = date('Y-m-j', strtotime(date("Y", strtotime($fechafirma)) . '-' . date("m", strtotime($fechafirma)) . '-' . 1));
+          $idtipopago = 34;
 
-        $fecha_ini = date('Y-m-j', strtotime(date("Y", strtotime($fechafirma)) . '-' . date("m", strtotime($fechafirma)) . '-' . 1));
-        //pie comision
-        if (isset($pie) && count($pie_reg) == 0) {
-            $idtipopago = 5;
-            $dias_mes = cal_days_in_month(CAL_GREGORIAN, date("m", strtotime($fecha_ini)), date("Y", strtotime($fecha_ini)));
-            $precio_proporcional = $pie;
-            $valor_en_pesos = $pie;
-            $ini = 1;
-            $dia = date("d", strtotime($fecha_ini));
-            $mes = date("m", strtotime($fecha_ini));
-            $anio = date("Y", strtotime($fecha_ini));
-            $dias_mes = cal_days_in_month(CAL_GREGORIAN, date("m", strtotime($fecha_ini)), date("Y", strtotime($fecha_ini)));
-            $fecha_ini = date("d-m-Y", strtotime("+1 month", strtotime($fecha_ini)));
-
-            $pago = PagosArrendatarios::create([
+          for ($i = 0; $i < $cant_meses; $i++) {
+          $dia = date("d", strtotime($fecha_ini));
+          $mes = date("m", strtotime($fecha_ini));
+          $anio = date("Y", strtotime($fecha_ini));
+          $dias_mes = cal_days_in_month(CAL_GREGORIAN, date("m", strtotime($fecha_ini)), date("Y", strtotime($fecha_ini)));
+           $pagomensual=PagosArrendatarios::where("mes",'=',$mes)
+          ->where("anio",'=',$anio)
+          ->whereIn("idtipopago", [1,2,3,4,5,6,7,8,11,31,32,33])
+                        ->where("id_contratofinal", '=', $idcontrato)
+                        ->where("id_inmueble", '=', $idinmueble)
+          ->sum('precio_en_pesos');
+          $pago = PagosArrendatarios::create([
                         'id_contratofinal' => $idcontrato,
-                        'meses_contrato' => $meses_contrato,
-                        'id_publicacion' => $idp,
-                        'tipopago' => "Pie Comisión",
-                        'id_inmueble' => $idinmueble,
-                        'E_S' => $request->pie_radio,
-                        'idtipopago' => $idtipopago,
-                        'fecha_iniciocontrato' => $fechafirma,
-                        'dia' => $dia,
-                        'mes' => $mes,
-                        'anio' => $anio,
-                        'cant_diasmes' => $dias_mes,
-                        'cant_diasproporcional' => $dias_mes,
-                        'moneda' => 'CLP',
-                        'valormoneda' => 1,
-                        'valordia' => 1,
-                        'precio_en_moneda' => $pie,
-                        'precio_en_pesos' => ceil($pie),
-                        'id_creador' => $id_creador,
-                        'id_modificador' => $id_creador,
-                        'id_estado' => 1,
-                        'canondearriendo' => $arriendo
-            ]);
-        }
-
-        $fecha_ini = date('Y-m-j', strtotime(date("Y", strtotime($fechafirma)) . '-' . date("m", strtotime($fechafirma)) . '-' . 1));
-        //Comisión mensual
-        if (isset($comisionmensual) && count($comisionmensual_reg) == 0) {
-            $idtipopago = 6;
-            $dias_mes = cal_days_in_month(CAL_GREGORIAN, date("m", strtotime($fecha_ini)), date("Y", strtotime($fecha_ini)));
-            $valor_diario = 1;
-            $dias_proporcionales = cal_days_in_month(CAL_GREGORIAN, date("m", strtotime($fecha_ini)), date("Y", strtotime($fecha_ini))) - date("d", strtotime($fecha_ini)) + 1;
-            $precio_proporcional = $comisionmensual;
-            $valor_en_pesos = $comisionmensual;
-            $ini = 0;
-            $fecha_ini = date("d-m-Y", strtotime("+1 month", strtotime($fecha_ini)));
-            if ($dias_proporcionales > 0) {
-                $ini = 1;
-                $dia = date("d", strtotime($fecha_ini));
-                $mes = date("m", strtotime($fecha_ini));
-                $anio = date("Y", strtotime($fecha_ini));
-                $dias_mes = cal_days_in_month(CAL_GREGORIAN, date("m", strtotime($fecha_ini)), date("Y", strtotime($fecha_ini)));
-                $fecha_ini = date("d-m-Y", strtotime("+1 month", strtotime($fecha_ini)));
-
-                $pago = PagosArrendatarios::create([
-                            'id_contratofinal' => $idcontrato,
-                            'meses_contrato' => $meses_contrato,
-                            'id_publicacion' => $idp,
-                            'tipopago' => "Comisión Mensual",
-                            'E_S' => $request->cm_radio,
-                            'id_inmueble' => $idinmueble,
-                            'idtipopago' => $idtipopago,
-                            'fecha_iniciocontrato' => $fechafirma,
-                            'dia' => $dia,
-                            'mes' => $mes,
-                            'anio' => $anio,
-                            'cant_diasmes' => $dias_mes,
-                            'cant_diasproporcional' => $dias_mes,
-                            'moneda' => 'CLP',
-                            'valormoneda' => 1,
-                            'valordia' => $valor_diario,
-                            'precio_en_moneda' => $precio_proporcional,
-                            'precio_en_pesos' => ceil($valor_en_pesos),
-                            'id_creador' => $id_creador,
-                            'id_modificador' => $id_creador,
-                            'id_estado' => 1,
-                            'canondearriendo' => $arriendo
-                ]);
-            }
-            for ($i = $ini; $i < $mes_comisionmensual; $i++) {
-
-                $dia = date("d", strtotime($fecha_ini));
-                $mes = date("m", strtotime($fecha_ini));
-                $anio = date("Y", strtotime($fecha_ini));
-                $dias_mes = cal_days_in_month(CAL_GREGORIAN, date("m", strtotime($fecha_ini)), date("Y", strtotime($fecha_ini)));
-                $fecha_ini = date("d-m-Y", strtotime("+1 month", strtotime($fecha_ini)));
-
-                $pago = PagosArrendatarios::create([
-                            'id_contratofinal' => $idcontrato,
-                            'meses_contrato' => $meses_contrato,
-                            'id_publicacion' => $idp,
-                            'tipopago' => "Comisión Mensual",
-                            'idtipopago' => $idtipopago,
-                            'id_inmueble' => $idinmueble,
-                            'fecha_iniciocontrato' => $fechafirma,
-                            'E_S' => $request->cm_radio,
-                            'dia' => $dia,
-                            'mes' => $mes,
-                            'anio' => $anio,
-                            'cant_diasmes' => $dias_mes,
-                            'cant_diasproporcional' => $dias_mes,
-                            'moneda' => 'CLP',
-                            'valormoneda' => 1,
-                            'valordia' => $valor_diario,
-                            'precio_en_moneda' => $comisionmensual,
-                            'precio_en_pesos' => ceil($comisionmensual * $valormoneda),
-                            'id_creador' => $id_creador,
-                            'id_modificador' => $id_creador,
-                            'id_estado' => 1,
-                            'canondearriendo' => $arriendo
-                ]);
-            }
-        }
+                        'gastocomun' => $gastocomun,
+          'id_publicacion' => $idp,
+          'id_inmueble' => $idinmueble,
+          'tipopago' => "Total Costos Arrendatario",
+          'E_S' => 's',
+          'idtipopago' => $idtipopago,
+          'meses_contrato' => $meses_contrato,
+          'fecha_iniciocontrato' => $fechafirma,
+          'dia' => $dia,
+          'mes' => $mes,
+          'anio' => $anio,
+          'descuento' => $descuento,
+          'tipopropuesta' => '2',
+          'cant_diasmes' => $dias_mes,
+          'cant_diasproporcional' => $dias_proporcionales,
+          'moneda' => $tipomoneda,
+          'valormoneda' => $valormoneda,
+          'valordia' => $valor_diario,
+          'precio_en_moneda' => $pagomensual,
+          'precio_en_pesos' => $pagomensual,
+          'id_creador' => $id_creador,
+          'id_modificador' => $id_creador,
+          'id_estado' => 1,
+          'canondearriendo' => $arriendo
+          ]);
+          $fecha_ini = date("d-m-Y", strtotime("+1 month", strtotime($fecha_ini)));
+          }
 
 
-        $fecha_ini = date('Y-m-j', strtotime(date("Y", strtotime($fechafirma)) . '-' . date("m", strtotime($fechafirma)) . '-' . 1));
-        //Comisión Total
-        if (isset($comision) && count($comision_reg) == 0) {
-            $idtipopago = 7;
-            $dias_mes = cal_days_in_month(CAL_GREGORIAN, date("m", strtotime($fecha_ini)), date("Y", strtotime($fecha_ini)));
-            $precio_proporcional = $comision;
-            $valor_en_pesos = $comision;
-            $ini = 1;
-            $dia = date("d", strtotime($fecha_ini));
-            $mes = date("m", strtotime($fecha_ini));
-            $anio = date("Y", strtotime($fecha_ini));
-            $dias_mes = cal_days_in_month(CAL_GREGORIAN, date("m", strtotime($fecha_ini)), date("Y", strtotime($fecha_ini)));
-            $fecha_ini = date("d-m-Y", strtotime("+1 month", strtotime($fecha_ini)));
+         $fecha_ini = date('Y-m-j', strtotime(date("Y", strtotime($fechafirma)) . '-' . date("m", strtotime($fechafirma)) . '-' . 1));
+          $idtipopago = 35;
 
-            $pago = PagosArrendatarios::create([
+          for ($i = 0; $i < $cant_meses; $i++) {
+          $dia = date("d", strtotime($fecha_ini));
+          $mes = date("m", strtotime($fecha_ini));
+          $anio = date("Y", strtotime($fecha_ini));
+          $dias_mes = cal_days_in_month(CAL_GREGORIAN, date("m", strtotime($fecha_ini)), date("Y", strtotime($fecha_ini)));
+        $valor_en_pesos_proporcional=  PagosArrendatarios::where("mes", '=', $mes)
+                        ->where("anio", '=', $anio)
+                        ->whereIn("idtipopago", [1])
+                        ->where("id_contratofinal", '=', $idcontrato)
+                        ->where("id_inmueble", '=', $idinmueble)
+                        ->sum('precio_en_pesos');
+          $pagomensual=PagosArrendatarios::where("mes",'=',$mes)
+          ->where("anio",'=',$anio)
+          ->whereIn("idtipopago", [1,2,3,4,5,6,7,8,11,31,32,33])
+                        ->where("id_contratofinal", '=', $idcontrato)
+                        ->where("id_inmueble", '=', $idinmueble)
+          ->sum('precio_en_pesos');
+          if($i==0){
+            $saldo=$pagomensual-$monto_reserva;
+          }else{
+            $saldo=$pagomensual ;
+          }
+          
+          $pago = PagosArrendatarios::create([
                         'id_contratofinal' => $idcontrato,
-                        'meses_contrato' => $meses_contrato,
-                        'id_publicacion' => $idp,
-                        'tipopago' => "Comisión Total",
-                        'idtipopago' => $idtipopago,
-                        'E_S' => $request->co_radio,
-                        'id_inmueble' => $idinmueble,
-                        'fecha_iniciocontrato' => $fechafirma,
-                        'dia' => $dia,
-                        'mes' => $mes,
-                        'anio' => $anio,
-                        'cant_diasmes' => $dias_mes,
-                        'cant_diasproporcional' => $dias_mes,
-                        'moneda' => 'CLP',
-                        'valormoneda' => 1,
-                        'valordia' => 1,
-                        'precio_en_moneda' => $comision,
-                        'precio_en_pesos' => ceil($comision),
-                        'id_creador' => $id_creador,
-                        'id_modificador' => $id_creador,
-                        'id_estado' => 1,
-                        'canondearriendo' => $arriendo
-            ]);
-        }
-
-        $fecha_ini = date('Y-m-j', strtotime(date("Y", strtotime($fechafirma)) . '-' . date("m", strtotime($fechafirma)) . '-' . 1));
-        //Notaria
-        if (isset($pagonotaria) && count($notaria_reg) == 0) {
-            $idtipopago = 8;
-            $dias_mes = cal_days_in_month(CAL_GREGORIAN, date("m", strtotime($fecha_ini)), date("Y", strtotime($fecha_ini)));
-            $precio_proporcional = $pagonotaria;
-            $valor_en_pesos = $pagonotaria;
-            $ini = 1;
-            $dia = date("d", strtotime($fecha_ini));
-            $mes = date("m", strtotime($fecha_ini));
-            $anio = date("Y", strtotime($fecha_ini));
-            $dias_mes = cal_days_in_month(CAL_GREGORIAN, date("m", strtotime($fecha_ini)), date("Y", strtotime($fecha_ini)));
-            $fecha_ini = date("d-m-Y", strtotime("+1 month", strtotime($fecha_ini)));
-
-            $pago = PagosArrendatarios::create([
-                        'id_contratofinal' => $idcontrato,
-                        'meses_contrato' => $meses_contrato,
-                        'id_publicacion' => $idp,
-                        'tipopago' => "Notaría",
-                        'idtipopago' => $idtipopago,
-                        'E_S' => $request->no_radio,
-                        'id_inmueble' => $idinmueble,
-                        'fecha_iniciocontrato' => $fechafirma,
-                        'dia' => $dia,
-                        'mes' => $mes,
-                        'anio' => $anio,
-                        'cant_diasmes' => $dias_mes,
-                        'cant_diasproporcional' => $dias_mes,
-                        'moneda' => 'CLP',
-                        'valormoneda' => 1,
-                        'valordia' => 1,
-                        'precio_en_moneda' => $pagonotaria,
-                        'precio_en_pesos' => ceil($pagonotaria),
-                        'id_creador' => $id_creador,
-                        'id_modificador' => $id_creador,
-                        'id_estado' => 1,
-                        'canondearriendo' => $arriendo
-            ]);
-        }
-
-
-        $fecha_ini = date('Y-m-j', strtotime(date("Y", strtotime($fechafirma)) . '-' . date("m", strtotime($fechafirma)) . '-' . 1));
-        //Otro Pago 1
-        if (isset($pagootro1) && count($otro1_reg) == 0) {
-            $idtipopago = 9;
-            $dias_mes = cal_days_in_month(CAL_GREGORIAN, date("m", strtotime($fecha_ini)), date("Y", strtotime($fecha_ini)));
-            $valor_diario = 1;
-            $dias_proporcionales = cal_days_in_month(CAL_GREGORIAN, date("m", strtotime($fecha_ini)), date("Y", strtotime($fecha_ini))) - date("d", strtotime($fecha_ini)) + 1;
-            $precio_proporcional = $pagootro1;
-            $valor_en_pesos = $pagootro1;
-            $ini = 0;
-            $fecha_ini = date("d-m-Y", strtotime("+1 month", strtotime($fecha_ini)));
-            if ($dias_proporcionales > 0) {
-                $ini = 1;
-                $dia = date("d", strtotime($fecha_ini));
-                $mes = date("m", strtotime($fecha_ini));
-                $anio = date("Y", strtotime($fecha_ini));
-                $dias_mes = cal_days_in_month(CAL_GREGORIAN, date("m", strtotime($fecha_ini)), date("Y", strtotime($fecha_ini)));
-                $fecha_ini = date("d-m-Y", strtotime("+1 month", strtotime($fecha_ini)));
-
-                $pago = PagosArrendatarios::create([
-                            'id_contratofinal' => $idcontrato,
-                            'meses_contrato' => $meses_contrato,
-                            'id_publicacion' => $idp,
-                            'tipopago' => $nombre_otropago1,
-                            'E_S' => $request->o1_radio,
-                            'id_inmueble' => $idinmueble,
-                            'idtipopago' => $idtipopago,
-                            'fecha_iniciocontrato' => $fechafirma,
-                            'dia' => $dia,
-                            'mes' => $mes,
-                            'anio' => $anio,
-                            'cant_diasmes' => $dias_mes,
-                            'cant_diasproporcional' => $dias_proporcionales,
-                            'moneda' => 'CLP',
-                            'valormoneda' => 1,
-                            'valordia' => $valor_diario,
-                            'precio_en_moneda' => $precio_proporcional,
-                            'precio_en_pesos' => ceil($valor_en_pesos),
-                            'id_creador' => $id_creador,
-                            'id_modificador' => $id_creador,
-                            'id_estado' => 1,
-                            'canondearriendo' => $arriendo
-                ]);
-            }
-            for ($i = $ini; $i < $mes_otro1; $i++) {
-
-                $dia = date("d", strtotime($fecha_ini));
-                $mes = date("m", strtotime($fecha_ini));
-                $anio = date("Y", strtotime($fecha_ini));
-                $dias_mes = cal_days_in_month(CAL_GREGORIAN, date("m", strtotime($fecha_ini)), date("Y", strtotime($fecha_ini)));
-                $fecha_ini = date("d-m-Y", strtotime("+1 month", strtotime($fecha_ini)));
-
-                $pago = PagosArrendatarios::create([
-                            'id_contratofinal' => $idcontrato,
-                            'meses_contrato' => $meses_contrato,
-                            'id_publicacion' => $idp,
-                            'tipopago' => $nombre_otropago1,
-                            'idtipopago' => $idtipopago,
-                            'fecha_iniciocontrato' => $fechafirma,
-                            'E_S' => $request->o1_radio,
-                            'id_inmueble' => $idinmueble,
-                            'dia' => $dia,
-                            'mes' => $mes,
-                            'anio' => $anio,
-                            'cant_diasmes' => $dias_mes,
-                            'cant_diasproporcional' => $dias_mes,
-                            'moneda' => 'CLP',
-                            'valormoneda' => 1,
-                            'valordia' => $valor_diario,
-                            'precio_en_moneda' => $porcentaje,
-                            'precio_en_pesos' => ceil($porcentaje * $valormoneda),
-                            'id_creador' => $id_creador,
-                            'id_modificador' => $id_creador,
-                            'id_estado' => 1,
-                            'canondearriendo' => $arriendo
-                ]);
-            }
-        }
-
-        $fecha_ini = date('Y-m-j', strtotime(date("Y", strtotime($fechafirma)) . '-' . date("m", strtotime($fechafirma)) . '-' . 1));
-        //Otro Pago 2
-        if (isset($pagootro2) && count($otro2_reg) == 0) {
-            $idtipopago = 10;
-            $dias_mes = cal_days_in_month(CAL_GREGORIAN, date("m", strtotime($fecha_ini)), date("Y", strtotime($fecha_ini)));
-            $valor_diario = 1;
-            $dias_proporcionales = cal_days_in_month(CAL_GREGORIAN, date("m", strtotime($fecha_ini)), date("Y", strtotime($fecha_ini))) - date("d", strtotime($fecha_ini)) + 1;
-            $precio_proporcional = $pagootro2;
-            $valor_en_pesos = $pagootro2;
-            $ini = 0;
-            $fecha_ini = date("d-m-Y", strtotime("+1 month", strtotime($fecha_ini)));
-            if ($dias_proporcionales > 0) {
-                $ini = 1;
-                $dia = date("d", strtotime($fecha_ini));
-                $mes = date("m", strtotime($fecha_ini));
-                $anio = date("Y", strtotime($fecha_ini));
-                $dias_mes = cal_days_in_month(CAL_GREGORIAN, date("m", strtotime($fecha_ini)), date("Y", strtotime($fecha_ini)));
-                $fecha_ini = date("d-m-Y", strtotime("+1 month", strtotime($fecha_ini)));
-
-                $pago = PagosArrendatarios::create([
-                            'id_contratofinal' => $idcontrato,
-                            'meses_contrato' => $meses_contrato,
-                            'id_publicacion' => $idp,
-                            'tipopago' => $nombre_otropago2,
-                            'id_inmueble' => $idinmueble,
-                            'E_S' => $request->o2_radio,
-                            'idtipopago' => $idtipopago,
-                            'fecha_iniciocontrato' => $fechafirma,
-                            'dia' => $dia,
-                            'mes' => $mes,
-                            'anio' => $anio,
-                            'cant_diasmes' => $dias_mes,
-                            'cant_diasproporcional' => $dias_proporcionales,
-                            'moneda' => 'CLP',
-                            'valormoneda' => 1,
-                            'valordia' => $valor_diario,
-                            'precio_en_moneda' => $precio_proporcional,
-                            'precio_en_pesos' => ceil($valor_en_pesos),
-                            'id_creador' => $id_creador,
-                            'id_modificador' => $id_creador,
-                            'id_estado' => 1,
-                            'canondearriendo' => $arriendo
-                ]);
-            }
-            for ($i = $ini; $i < $mes_otro1; $i++) {
-
-                $dia = date("d", strtotime($fecha_ini));
-                $mes = date("m", strtotime($fecha_ini));
-                $anio = date("Y", strtotime($fecha_ini));
-                $dias_mes = cal_days_in_month(CAL_GREGORIAN, date("m", strtotime($fecha_ini)), date("Y", strtotime($fecha_ini)));
-                $fecha_ini = date("d-m-Y", strtotime("+1 month", strtotime($fecha_ini)));
-
-                $pago = PagosArrendatarios::create([
-                            'id_contratofinal' => $idcontrato,
-                            'meses_contrato' => $meses_contrato,
-                            'id_publicacion' => $idp,
-                            'id_inmueble' => $idinmueble,
-                            'tipopago' => $nombre_otropago2,
-                            'idtipopago' => $idtipopago,
-                            'fecha_iniciocontrato' => $fechafirma,
-                            'E_S' => $request->o2_radio,
-                            'dia' => $dia,
-                            'mes' => $mes,
-                            'anio' => $anio,
-                            'cant_diasmes' => $dias_mes,
-                            'cant_diasproporcional' => $dias_mes,
-                            'moneda' => 'CLP',
-                            'valormoneda' => 1,
-                            'valordia' => $valor_diario,
-                            'precio_en_moneda' => $porcentaje,
-                            'precio_en_pesos' => ceil($porcentaje * $valormoneda),
-                            'id_creador' => $id_creador,
-                            'id_modificador' => $id_creador,
-                            'id_estado' => 1,
-                            'canondearriendo' => $arriendo
-                ]);
-            }
-        }
-
-
-        $fecha_ini = date('Y-m-j', strtotime(date("Y", strtotime($fechafirma)) . '-' . date("m", strtotime($fechafirma)) . '-' . 1));
-        //Otro Pago 3
-        if (isset($pagootro3) && count($otro3_reg) == 0) {
-            $idtipopago = 11;
-            $dias_mes = cal_days_in_month(CAL_GREGORIAN, date("m", strtotime($fecha_ini)), date("Y", strtotime($fecha_ini)));
-            $valor_diario = 1;
-            $dias_proporcionales = cal_days_in_month(CAL_GREGORIAN, date("m", strtotime($fecha_ini)), date("Y", strtotime($fecha_ini))) - date("d", strtotime($fecha_ini)) + 1;
-            $precio_proporcional = $pagootro3;
-            $valor_en_pesos = $pagootro3;
-            $ini = 0;
-            $fecha_ini = date("d-m-Y", strtotime("+1 month", strtotime($fecha_ini)));
-            if ($dias_proporcionales > 0) {
-                $ini = 1;
-                $dia = date("d", strtotime($fecha_ini));
-                $mes = date("m", strtotime($fecha_ini));
-                $anio = date("Y", strtotime($fecha_ini));
-                $dias_mes = cal_days_in_month(CAL_GREGORIAN, date("m", strtotime($fecha_ini)), date("Y", strtotime($fecha_ini)));
-                $fecha_ini = date("d-m-Y", strtotime("+1 month", strtotime($fecha_ini)));
-
-                $pago = PagosArrendatarios::create([
-                            'id_contratofinal' => $idcontrato,
-                            'meses_contrato' => $meses_contrato,
-                            'id_publicacion' => $idp,
-                            'id_inmueble' => $idinmueble,
-                            'tipopago' => $nombre_otropago3,
-                            'E_S' => $request->o3_radio,
-                            'idtipopago' => $idtipopago,
-                            'fecha_iniciocontrato' => $fechafirma,
-                            'dia' => $dia,
-                            'mes' => $mes,
-                            'anio' => $anio,
-                            'cant_diasmes' => $dias_mes,
-                            'cant_diasproporcional' => $dias_proporcionales,
-                            'moneda' => 'CLP',
-                            'valormoneda' => 1,
-                            'valordia' => $valor_diario,
-                            'precio_en_moneda' => $precio_proporcional,
-                            'precio_en_pesos' => ceil($valor_en_pesos),
-                            'id_creador' => $id_creador,
-                            'id_modificador' => $id_creador,
-                            'id_estado' => 1,
-                            'canondearriendo' => $arriendo
-                ]);
-            }
-            for ($i = $ini; $i < $mes_otro1; $i++) {
-
-                $dia = date("d", strtotime($fecha_ini));
-                $mes = date("m", strtotime($fecha_ini));
-                $anio = date("Y", strtotime($fecha_ini));
-                $dias_mes = cal_days_in_month(CAL_GREGORIAN, date("m", strtotime($fecha_ini)), date("Y", strtotime($fecha_ini)));
-                $fecha_ini = date("d-m-Y", strtotime("+1 month", strtotime($fecha_ini)));
-
-                $pago = PagosArrendatarios::create([
-                            'id_contratofinal' => $idcontrato,
-                            'meses_contrato' => $meses_contrato,
-                            'id_publicacion' => $idp,
-                            'tipopago' => $nombre_otropago3,
-                            'id_inmueble' => $idinmueble,
-                            'idtipopago' => $idtipopago,
-                            'fecha_iniciocontrato' => $fechafirma,
-                            'E_S' => $request->o3_radio,
-                            'dia' => $dia,
-                            'mes' => $mes,
-                            'anio' => $anio,
-                            'cant_diasmes' => $dias_mes,
-                            'cant_diasproporcional' => $dias_mes,
-                            'moneda' => 'CLP',
-                            'valormoneda' => 1,
-                            'valordia' => $valor_diario,
-                            'precio_en_moneda' => $porcentaje,
-                            'precio_en_pesos' => ceil($porcentaje * $valormoneda),
-                            'id_creador' => $id_creador,
-                            'id_modificador' => $id_creador,
-                            'id_estado' => 1,
-                            'canondearriendo' => $arriendo
-                ]);
-            }
-        }
-
-        $fecha_ini = date('Y-m-j', strtotime(date("Y", strtotime($fechafirma)) . '-' . date("m", strtotime($fechafirma)) . '-' . 1));
-        for ($i = 0; $i < $meses_contrato; $i++) {
-            $mes = date("m", strtotime($fecha_ini));
-            $anio = date("Y", strtotime($fecha_ini));
-            $fecha_ini = date("d-m-Y", strtotime("+1 month", strtotime($fecha_ini)));
-            $pagos_mensuales_e = DB::table('adm_pagosarrendatarios')
-                    ->where("id_publicacion", "=", $idp)
-                    ->where("id_inmueble","=", $idinmueble)
-                    ->where("E_S", "=", "e")
-                    ->where("mes", "=", $mes)
-                    ->where("anio", "=", $anio)
-                    ->sum('precio_en_pesos');
-            $pagos_mensuales_s = DB::table('adm_pagosarrendatarios')
-                    ->where("id_publicacion", "=", $idp)
-                    ->where("id_inmueble","=", $idinmueble)
-                    ->where("E_S", "=", "s")
-                    ->where("mes", "=", $mes)
-                    ->where("anio", "=", $anio)
-                    ->sum('precio_en_pesos');
-
-            $pagar_a_arrendatario=$pagos_mensuales_s-$pagos_mensuales_e;
-            $pagar_a_baquedano=$pagos_mensuales_e-$pagos_mensuales_s;
-
-            if($pagar_a_arrendatario<0)
-                $pagar_a_arrendatario=0;
-
-            if($pagar_a_baquedano<0)
-                $pagar_a_baquedano=0;
-//dd($pagar_a_arrendatario."    ".$pagar_a_baquedano."       e:".$pagos_mensuales_e."        s:".$pagos_mensuales_s );
-            $delete=PagosMensualesArrendatarios::where("id_contratofinal","=",$idcontrato)
-                    ->where("id_publicacion","=",$idp)
-                    ->where("mes","=",$mes)
-                    ->where("anio","=",$anio)
-                    ->delete();
-
-            $pago_mensual = PagosMensualesArrendatarios::create([
-                        'id_contratofinal' => $idcontrato,
-                        'id_publicacion' => $idp,
-                        'id_inmueble' => $idinmueble,
-                        'fecha_iniciocontrato' => $fechafirma,
-                        'mes' => $mes,
-                        'anio' => $anio,
-                        'subtotal_entrada' => $pagos_mensuales_e,
-                        'subtotal_salida' => $pagos_mensuales_s,
-                        'pago_a_arrendatario' => $pagar_a_arrendatario,
-                        'pago_a_rentas' => $pagar_a_baquedano,
-                        'id_creador' => Auth::user()->id,
-                        'id_modificador' => Auth::user()->id,
-                        'id_estado' => 1
-            ]);
-
-           
-        }
-        if($texto=="Pero no fue posible generar nuevamente los siguientes items, ya que deben ser borrados primero : "){
-            $texto="";
-        }
+                        'gastocomun' => $gastocomun,
+          'id_publicacion' => $idp,
+          'id_inmueble' => $idinmueble,
+          'tipopago' => "Saldo a Depositar",
+          'E_S' => 's',
+          'idtipopago' => $idtipopago,
+          'meses_contrato' => $meses_contrato,
+          'fecha_iniciocontrato' => $fechafirma,
+          'dia' => $dia,
+          'mes' => $mes,
+          'anio' => $anio,
+          'descuento' => $descuento,
+          'tipopropuesta' => '2',
+          'cant_diasmes' => $dias_mes,
+          'cant_diasproporcional' => $dias_proporcionales,
+          'moneda' => $tipomoneda,
+          'valormoneda' => $valormoneda,
+          'valordia' => $valor_diario,
+          'precio_en_moneda' => $saldo,
+          'precio_en_pesos' => $saldo,
+          'id_creador' => $id_creador,
+          'id_modificador' => $id_creador,
+          'id_estado' => 1,
+          'canondearriendo' => $arriendo
+          ]);
+          $fecha_ini = date("d-m-Y", strtotime("+1 month", strtotime($fecha_ini)));
+          }
+        
         return redirect()->route('finalContratoArr.edit', [$idp, 0, 0, 4])
-                        ->with('status', 'Pagos Generados con éxito '.$texto);
+                        ->with('status', 'Pagos Generados con éxito ');
     }
 
     static function ValidaCh($idc){

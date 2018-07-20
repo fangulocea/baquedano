@@ -915,6 +915,13 @@ Route::get('cbararrendatario/garantia/eliminar/{id}/{pub}','ContratoBorradorArre
 
 
 // COntratos final Arrendatario
+
+		Route::post('finalContratoArr/eliminarpagos','ContratoFinalArrController@eliminartipopago')->name('finalContratoArr.eliminartipopago')
+		->middleware('permission:finalContratoArr.update');
+
+		Route::get('finalContratoArr/mostrarsimulacion/{id}','ContratoFinalArrController@mostrarsimulacion')->name('finalContratoArr.mostrarsimulacion')
+		->middleware('permission:finalContrato.edit');
+		
 		Route::post('finalContratoArr/store','ContratoFinalArrController@store')->name('finalContratoArr.store')
 		->middleware('permission:finalContratoArr.create');
 
@@ -949,9 +956,6 @@ Route::get('cbararrendatario/garantia/eliminar/{id}/{pub}','ContratoBorradorArre
 
 		Route::post('finalContratoArr/generarpagos/{idp}','ContratoFinalArrController@generarpagos')->name('finalContratoArr.generarpagos')
 		->middleware('permission:finalContratoArr.edit');	
-
-		Route::get('pagosarrendatario/eliminar/{idp}/{idt}','ContratoFinalArrController@eliminartipopago')->name('finalContratoArr.eliminartipopago')
-		->middleware('permission:finalContratoArr.update');
 
 		Route::get('pagosarrendatario/mostrarpago/{id}','ContratoFinalArrController@mostrar_un_pago')->name('finalContratoArr.mostrarpago')
 		->middleware('permission:finalContratoArr.update');

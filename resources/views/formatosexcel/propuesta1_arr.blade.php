@@ -1,6 +1,6 @@
 
 
-<h4>Propietario:  {{  $header->Arrendatario }}</h4>
+<h4>Arrendatario:  {{  $header->Arrendatario }}</h4>
 <h4>Contacto: {{ $header->Creador }}</h4>
 <table id='headpropuesta1' name='headpropuesta1'>
     <thead>
@@ -75,7 +75,7 @@ $fila1=$propuesta1->where("idtipopago",'=',1);
 $fila20=$propuesta1->where("idtipopago",'=',20);
 @endphp
         <tr>
-            <td style="background-color: #F6DDCC;text-align: center"><strong>Total Costos Propietario</strong></td>
+            <td style="background-color: #F6DDCC;text-align: center"><strong>Total Costos Arrendatario</strong></td>
 @foreach($fila20 as $p)
        <td style="background-color: #F6DDCC;text-align: center">{{  $p->precio_en_pesos }} </td>
 @endforeach

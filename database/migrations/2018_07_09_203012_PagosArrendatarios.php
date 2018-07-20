@@ -25,6 +25,7 @@ class PagosArrendatarios extends Migration
             $table->string('tipopago');
             $table->string('E_S');
             $table->string('idtipopago');
+             $table->string('tipopropuesta');
             $table->integer('meses_contrato');
             $table->date('fecha_iniciocontrato');
             $table->integer('dia');
