@@ -84,10 +84,7 @@
                                     <a href="{{ route('finalContratoArr.edit', [$p->id_cap_arr,0,0,1]) }}"><span class="btn btn-warning btn-circle btn-lg"><i class="ti-pencil-alt"></i></span></a>
                                 </td>
                                 @endcan
-                                @can('cbararrendatario.destroy')
-                                <td width="10px">
-                                </td>
-                                @endcan
+
                             </tr>
                             @endforeach
 
@@ -110,7 +107,7 @@
 <script src="{{ URL::asset('plugins/DataTables/pdfmake-0.1.32/pdfmake.min.js') }}"></script>
 <script src="{{ URL::asset('plugins/DataTables/pdfmake-0.1.32/vfs_fonts.js') }}"></script>
 <script src="{{ URL::asset('plugins/DataTables/Buttons-1.5.1/js/buttons.html5.min.js') }}"></script>
-<script src="{{ URL::asset('plugins/DataTables/Buttons-1.5.1/js/buttons.print.min.js') }}"></script>
+
 <!-- end - This is for export functionality only -->
 <script>
 $('.sorting_desc').hide();
@@ -119,14 +116,8 @@ var table = $('#listusers').DataTable({
 
     dom: 'Bfrtip',
     buttons: [
-        'copy', 'csv', 'excel', 'pdf', 'print',
+'excel'
     ],
-    columnDefs: [
-        {
-            "targets": [8, 9],
-            "orderable": false,
-        },
-        ],
    
     language: {
         "sProcessing": "Procesando...",
@@ -164,7 +155,7 @@ var table = $('#listusers').DataTable({
     $('#listusers thead th').each( function () {
         var title = $(this).text();
         if(title!='ID' && title!= "")
-        $(this).html( '<input type="text" style="width:100px" placeholder="'+title+'" />' );
+        $(this).html( title+'<br/><input type="text" style="width:100px" placeholder="Buscar" />' );
     } );
  
 

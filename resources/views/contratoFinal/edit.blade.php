@@ -1265,7 +1265,7 @@ function mostrar_modal(obj){
                     
                 
             });
-     $('#modal-contacto1').modal('show');
+    // $('#modal-contacto1').modal('show');
 }
 
 function eliminar_pago(obj){

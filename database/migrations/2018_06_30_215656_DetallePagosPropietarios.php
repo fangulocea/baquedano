@@ -22,6 +22,8 @@ class DetallePagosPropietarios extends Migration
             $table->foreign('id_publicacion')->references('id')->on('cap_publicaciones');
             $table->integer('id_inmueble')->unsigned()->nullable();
             $table->foreign('id_inmueble')->references('id')->on('inmuebles');
+            $table->integer('id_cheque')->nullable();
+            $table->string('detalle')->nullable();
             $table->string('E_S');
             $table->integer('valor_original');
             $table->integer('valor_pagado');

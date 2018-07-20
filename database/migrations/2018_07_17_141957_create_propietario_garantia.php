@@ -25,6 +25,7 @@ class CreatePropietarioGarantia extends Migration
             $table->string('numero')->nullable();
             $table->integer('valor')->nullable();
             $table->date('fecha_cobro')->nullable();
+            $table->string('id_estado')->nullable();
             $table->timestamps();
         });
     }

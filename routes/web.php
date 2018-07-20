@@ -44,6 +44,12 @@ Route::get('contratofinal/consulta/{id}','ContratoFinalController@getContrato');
 
 Route::get('contratofinalarr/consulta/{id}','ContratoFinalArrController@getContrato');
 
+Route::get('contratofinal/cheque/{id}','PagosMensualesPropietariosController@getCheque');
+
+Route::get('contratofinal/garantia/{id}','PagosMensualesPropietariosController@getGarantia');
+
+Route::get('contratofinalarr/garantia/{id}','PagosMensualesArrendatariosController@getGarantia');
+
 Route::get('contratofinal/consultapagos/{id}/{id2}','ContratoFinalController@getpagos');
 
 Route::get('contratofinalarr/consultapagos/{id}/{id2}','ContratoFinalArrController@getpagos');

@@ -33,6 +33,19 @@
     <div class="col-md-6">
         <form action="{{ route('pagosarrendatario.efectuarpago',$pago->id) }}"  method="post" enctype='multipart/form-data' >
             <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                        <div class="row">
+                    <div class="col-md-12">
+                        <label>Seleccione garantía, si desea cancelar</label>
+                                <select class="form-control" name="id_garantia" id="id_garantia" >
+                                        <option value="">Seleccione garantía</option>
+                                        @foreach($garantias as $n)
+                                        <option value="{{ $n->id }}">{{ $n->mes }}/{{ $n->ano }} - ${{ $n->valor }}</option>
+                                        @endforeach   
+                                    </select> 
+
+                    </div>
+            </div>
+            <hr>
             <div class="row">
                     <div class="col-md-6">
                         <label>Monto a Pagar</label>
@@ -120,6 +133,13 @@
 <script src="{{ URL::asset('plugins/bower_components/dropify/dist/js/dropify.min.js') }}"></script>
 
 <script>
+     $("#id_garantia").change(function (event) {
+        $.get("/contratofinalarr/garantia/"+this.value+"",function(response,state){
+                    $("#monto").val(response.valor);
+            });
+        
+
+    });
     
             // Basic
         $('.dropify').dropify({

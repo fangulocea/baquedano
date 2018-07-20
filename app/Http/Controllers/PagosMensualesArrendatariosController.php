@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\PagosMensualesArrendatarios;
 use App\Arrendatario;
+use App\ArrendatarioGarantia;
 use App\Persona;
 use DB;
 use App\DetallePagosArrendatarios;
@@ -20,7 +21,10 @@ public function volver_pago($id)
                         ->with('status', 'Contrato Final guardado con éxito'); 
     }
 
-
+ public function getGarantia($id) {
+        $garantia = ArrendatarioGarantia::find($id);
+        return response()->json($garantia);
+    }
 
     public function ir_al_pago($id)
     {
@@ -41,7 +45,10 @@ public function volver_pago($id)
 
         $documentos=DetallePagosArrendatarios::where("id_pagomensual","=",$id)->get();
 
-        return view('finalContratoArr.gestion',compact('pago','persona','inmueble','mes','saldo','valor_pagado','documentos'));
+         $garantias=ArrendatarioGarantia::where("id_publicacion","=",$pago->id_publicacion)
+        ->where("id_estado","=",null)->get();
+
+        return view('finalContratoArr.gestion',compact('pago','persona','inmueble','mes','saldo','valor_pagado','documentos','garantias'));
     }
 
 
@@ -63,7 +70,21 @@ public function volver_pago($id)
         $saldo_actual=$pago->pago_a_rentas-$valor_pagado;
         $saldo=$saldo_actual-$request->monto;
 
-//dd("valor pagado:".$valor_pagado."  valor_original:".$valor_original."    saldo_actual:".$saldo_actual."     saldo: ".$saldo);
+$detalle="";
+
+if(isset($request->id_garantia)){
+    $detalle="Garantía";
+    $pagogarantias=DetallePagosArrendatarios::where("id_pagomensual","=",$id)->where("detalle","=","Garantía")->sum("valor_pagado");
+    $garantia=ArrendatarioGarantia::find($request->id_garantia);
+    if($garantia->valor<=$pagogarantias || $garantia->valor<=$request->monto){
+       $garantia=ArrendatarioGarantia::find($request->id_garantia)->update(["id_estado"=>2]); 
+   }else{
+        $garantia=ArrendatarioGarantia::find($request->id_garantia)->update(["id_estado"=>null]);
+   }
+    
+}else{
+    $detalle="Pago Normal";
+}
         $detalle=DetallePagosArrendatarios::create([
             "id_pagomensual" => $id,
             "fecha_pago"=>$request->fecha_pago,
@@ -72,6 +93,7 @@ public function volver_pago($id)
             "valor_original" => $pago->pago_a_rentas,
             "valor_pagado" => $request->monto,
             "saldo_actual" => $saldo_actual,
+            "detalle" => $detalle,
             "saldo" => $saldo,
             "E_S" => "",
             "id_modificador"=> Auth::user()->id,

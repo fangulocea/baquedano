@@ -34,6 +34,32 @@
         <form action="{{ route('pagospropietario.efectuarpago',$pago->id) }}"  method="post" enctype='multipart/form-data' >
             <input type="hidden" name="_token" value="{{ csrf_token() }}">
             <div class="row">
+                    <div class="col-md-12">
+                        <label>Seleccione garantía, si desea cancelar</label>
+                                <select class="form-control" name="id_garantia" id="id_garantia" >
+                                        <option value="">Seleccione garantía</option>
+                                        @foreach($garantias as $n)
+                                        <option value="{{ $n->id }}">{{ $n->mes }}/{{ $n->ano }} - ${{ $n->valor }}</option>
+                                        @endforeach   
+                                    </select> 
+
+                    </div>
+            </div>
+            <hr>
+            <div class="row">
+                    <div class="col-md-12">
+                        <label>Seleccione el cheque, si fue ingresado en el contrato</label>
+                                <select class="form-control" name="id_cheque" id="id_cheque" >
+                                        <option value="">Seleccione cheque</option>
+                                        @foreach($cheques as $n)
+                                        <option value="{{ $n->id }}">{{ $n->fecha_pago }} - {{ $n->numero }}</option>
+                                        @endforeach   
+                                    </select> 
+
+                    </div>
+            </div>
+            <hr>
+            <div class="row">
                     <div class="col-md-6">
                         <label>Monto a Pagar</label>
                                                         <div class="input-group"> 
@@ -74,8 +100,9 @@
     <div class="col-md-6">
              <table id="listusers1" class="display nowrap" cellspacing="0" width="100%">
                         <thead>
-                            <tr>
-                                <th style="border: 1px solid black;text-align: center">Fecha Pago</th>
+                            <tr><th style="border: 1px solid black;text-align: center">Fecha Pago</th>
+                                <th style="border: 1px solid black;text-align: center">Cheque</th>
+                                <th style="border: 1px solid black;text-align: center">Detalle</th>
                                 <th style="border: 1px solid black;text-align: center">Valor Pagado</th>
                                 <th style="border: 1px solid black;text-align: center">Saldo</th>
                                 <th style="border: 1px solid black;text-align: center">Comprobante</th>
@@ -86,6 +113,12 @@
                                                         <tr>
                                                             <td  width="10px" height="10px" style="border: 1px solid black; text-align: center" >
                                                                 {{ $pi->fecha_pago }}
+                                                            </td>
+                                                             <td  width="10px" height="10px" style="border: 1px solid black; text-align: center" >
+                                                                {{ $pi->numero }}
+                                                            </td>
+                                                                 <td  width="10px" height="10px" style="border: 1px solid black; text-align: center" >
+                                                                {{ $pi->detalle }}
                                                             </td>
                                                             <td  width="10px" height="10px" style="border: 1px solid black;text-align: center" >
                                                                 $ {{ number_format($pi->valor_pagado) }}
@@ -120,7 +153,20 @@
 <script src="{{ URL::asset('plugins/bower_components/dropify/dist/js/dropify.min.js') }}"></script>
 
 <script>
-    
+     $("#id_cheque").change(function (event) {
+        $.get("/contratofinal/cheque/"+this.value+"",function(response,state){
+                    $("#monto").val(response.monto);
+            });
+        
+
+    });
+          $("#id_garantia").change(function (event) {
+        $.get("/contratofinal/garantia/"+this.value+"",function(response,state){
+                    $("#monto").val(response.valor);
+            });
+        
+
+    });
             // Basic
         $('.dropify').dropify({
             messages: {
