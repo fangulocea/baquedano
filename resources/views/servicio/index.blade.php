@@ -12,7 +12,6 @@
                     <tr>
                         <th>ID</th>
                         <th>Servicio</th>
-                        <th>Valor</th>
                         <th>Estado</th>
                         <th ></th>
                         <th></th>
@@ -23,7 +22,6 @@
                     <tr>
                         <th>ID</th>
                         <th>Servicio</th>
-                        <th>Valor</th>
                         <th>Estado</th>
                         <th></th>
                         <th></th>
@@ -35,7 +33,6 @@
                     <tr>
                         <td>{{ $ser->id }}</td>
                         <td>{{ $ser->nombre }}</td>
-                        <td>{{ $ser->valor }}</td>
                         <td>{{ trans_choice('mensajes.vigencia', $ser->estado ) }}</td>
                         @can('servicio.show')
                         <td width="10px">
@@ -100,7 +97,7 @@
        ],
 
        columnDefs: [{
-        "targets": [4 , 5, 6],
+        "targets": [3, 4 , 5,],
         "orderable": false
     }],
 

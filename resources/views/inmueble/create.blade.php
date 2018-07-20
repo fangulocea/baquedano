@@ -66,7 +66,7 @@
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label>Región</label>
-                                        {{ Form::select('id_region',$regiones, null,array('class'=>'form-control','style'=>'','id'=>'regiones','placeholder'=>'Selecciona región')) }}
+                                        {{ Form::select('id_region',$regiones, null,array('class'=>'form-control','style'=>'','id'=>'regiones','placeholder'=>'Selecciona región', 'required'=>'required')) }}
                                     </div>
                                 </div>
 
@@ -74,13 +74,13 @@
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label>Provincia</label>
-                                        {{ Form::select('id_provincia',['placeholder'=>'Seleccione provinvia'], null, array('class'=>'form-control','style'=>'','id'=>'provincias')) }} </div>
+                                        {{ Form::select('id_provincia',['placeholder'=>'Seleccione provinvia'], null, array('class'=>'form-control','style'=>'','id'=>'provincias', 'required'=>'required')) }} </div>
                                 </div>
                                 <!--/span-->
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label>Comuna</label>
-                                        {{ Form::select('id_comuna',['placeholder'=>'Seleccione comuna'], null, array('class'=>'form-control','style'=>'','id'=>'comunas')) }}
+                                        {{ Form::select('id_comuna',['placeholder'=>'Seleccione comuna'], null, array('class'=>'form-control','style'=>'','id'=>'comunas', 'required'=>'required')) }}
                                     </div>
                                 </div>
                             </div>

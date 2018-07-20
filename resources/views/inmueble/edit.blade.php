@@ -64,7 +64,7 @@
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label>Región</label>
-                                        {{ Form::select('id_region',$regiones, $inmueble->id_region,array('class'=>'form-control','style'=>'','id'=>'regiones','placeholder'=>'Seleccione región')) }}
+                                        {{ Form::select('id_region',$regiones, $inmueble->id_region,array('class'=>'form-control','style'=>'','id'=>'regiones','placeholder'=>'Seleccione región', 'required'=>'required')) }}
                                     </div>
                                 </div>
 
@@ -72,13 +72,13 @@
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label>Provincia</label>
-                                        {{ Form::select('id_provincia',['placeholder'=>'Selecciona provincia'], null, array('class'=>'form-control','style'=>'','id'=>'provincias')) }} </div>
+                                        {{ Form::select('id_provincia',['placeholder'=>'Selecciona provincia'], null, array('class'=>'form-control','style'=>'','id'=>'provincias', 'required'=>'required')) }} </div>
                                     </div>
                                     <!--/span-->
                                     <div class="col-md-4">
                                         <div class="form-group">
                                             <label>Comuna</label>
-                                            {{ Form::select('id_comuna',['placeholder'=>'Selecciona comuna'], null, array('class'=>'form-control','style'=>'','id'=>'comunas')) }}
+                                            {{ Form::select('id_comuna',['placeholder'=>'Selecciona comuna'], null, array('class'=>'form-control','style'=>'','id'=>'comunas', 'required'=>'required')) }}
                                         </div>
                                     </div>
                                 </div>
