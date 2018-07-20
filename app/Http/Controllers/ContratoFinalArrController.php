@@ -80,6 +80,7 @@ class ContratoFinalArrController extends Controller
         ->select(DB::raw('pdf.id as id'))
         ->first();  
 
+<<<<<<< HEAD
       $captacionArrendatario=Arrendatario::find($ContratoBorradorArrendatario->id_cap_arr)->update([
             "id_estado"=> 10
         ]);
@@ -96,6 +97,24 @@ class ContratoFinalArrController extends Controller
             "id_borradorpdf" => $pdfBorradorArrendatario->id,//contrato borrador PDF
             "id_simulacion"  => $request->id_propuesta
       ]);
+=======
+       $captacionArrendatario=Arrendatario::find($ContratoBorradorArrendatario->id_cap_arr)->update([
+             "id_estado"=> 10
+         ]);
+
+      $contratoBorrador = ContratoBorradorArrendatario::find($request->id_borradorfinal)->update([
+             "id_estado"=> 10
+         ]);
+
+       $contratoFinal=ContratoFinalArr::create([
+             "id_publicacion" => $ContratoBorradorArrendatario->id_cap_arr, //arrendatarios
+             "id_estado"      => 1,
+             "id_creador"     => $request->id_creadorfinal,
+             "id_borrador"    => $request->id_borradorfinal, //contrato borrador arrendatario
+             "id_borradorpdf" => $pdfBorradorArrendatario->id,//contrato borrador PDF
+             "id_simulacion"  => $request->id_propuesta
+       ]);
+>>>>>>> 0dedb36bf2a55829afcd76a9d565e68f40556110
 
 
       // //PARA PDF
@@ -146,7 +165,7 @@ class ContratoFinalArrController extends Controller
       
         $cadenaAbuscar   = '{Cheques}';
         $posicion_coincidencia = strrpos($textoContrato->detalle, $cadenaAbuscar);
- 
+
         $correlativo = 1;
         if ($posicion_coincidencia != false) {
             foreach ($simulacion as $s) {
@@ -165,6 +184,10 @@ class ContratoFinalArrController extends Controller
          ->where('b.id_contrato','=',$contratoFinal->id)
          ->get();
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 0dedb36bf2a55829afcd76a9d565e68f40556110
         $pdf = new PdfController();
         $numero=rand();
         $pdf->pdfArrendatarioFinal($borradorPDF,$numero,$simulacion);
@@ -493,6 +516,7 @@ $meses=$meses[0];
             $pagos_mensuales_e = DB::table('adm_pagosarrendatarios')
                     ->where("id_publicacion", "=", $idp)
                     ->where("id_inmueble", "=", $idinmueble)
+                    ->where("id_contratofinal", '=', $idcontrato)
                     ->where("E_S", "=", "e")
                     ->where("mes", "=", $mes)
                     ->where("anio", "=", $anio)
@@ -500,6 +524,7 @@ $meses=$meses[0];
             $pagos_mensuales_s = DB::table('adm_pagosarrendatarios')
                     ->where("id_publicacion", "=", $idp)
                     ->where("id_inmueble", "=", $idinmueble)
+                    ->where("id_contratofinal", '=', $idcontrato)
                     ->where("E_S", "=", "s")
                     ->where("mes", "=", $mes)
                     ->where("anio", "=", $anio)
@@ -1628,6 +1653,76 @@ $fecha_ini = date('Y-m-j', strtotime(date("Y", strtotime($fechafirma)) . '-' . d
           $fecha_ini = date("d-m-Y", strtotime("+1 month", strtotime($fecha_ini)));
           }
         
+
+ if ($tipopropuesta == 1) {
+    $tipos=[1,2,3,4,5,6,7,8,10,11,15];
+ }elseif($tipopropuesta == 2){
+    $tipos=[1,2,5,6,7,8,10,11,31,32,33];
+
+ }else{
+    $tipos=[1,2,5,6,7,8,10,11,31,32,33];
+ }
+
+
+          $fecha_ini = date('Y-m-j', strtotime(date("Y", strtotime($fechafirma)) . '-' . date("m", strtotime($fechafirma)) . '-' . 1));
+        for ($i = 0; $i < $meses_contrato; $i++) {
+            $mes = date("m", strtotime($fecha_ini));
+            $anio = date("Y", strtotime($fecha_ini));
+            $fecha_ini = date("d-m-Y", strtotime("+1 month", strtotime($fecha_ini)));
+            $pagos_mensuales_e = DB::table('adm_pagosarrendatarios')
+                    ->where("id_publicacion", "=", $idp)
+                    ->whereIn("idTipoPago", $tipos)
+                    ->where("E_S", "=", "e")
+                    ->where("id_contratofinal", '=', $idcontrato)
+                    ->where("id_inmueble", "=", $idinmueble)
+                    ->where("mes", "=", $mes)
+                    ->where("anio", "=", $anio)
+                    ->sum('precio_en_pesos');
+            $pagos_mensuales_s = DB::table('adm_pagosarrendatarios')
+                    ->where("id_publicacion", "=", $idp)
+                    ->whereIn("idTipoPago", $tipos)
+                    ->where("id_contratofinal", '=', $idcontrato)
+                    ->where("E_S", "=", "s")
+                    ->where("id_inmueble", "=", $idinmueble)
+                    ->where("mes", "=", $mes)
+                    ->where("anio", "=", $anio)
+                    ->sum('precio_en_pesos');
+
+            $pagar_a_propietario=$pagos_mensuales_s-$pagos_mensuales_e;
+            $pagar_a_baquedano=$pagos_mensuales_e-$pagos_mensuales_s;
+
+            if($pagar_a_propietario<0)
+                $pagar_a_propietario=0;
+
+            if($pagar_a_baquedano<0)
+                $pagar_a_baquedano=0;
+//dd($pagar_a_propietario."    ".$pagar_a_baquedano."       e:".$pagos_mensuales_e."        s:".$pagos_mensuales_s );
+            $delete=PagosMensualesArrendatarios::where("id_contratofinal","=",$idcontrato)
+                    ->where("id_publicacion","=",$idp)
+                    ->where("id_inmueble","=",$idinmueble)
+                    ->where("mes","=",$mes)
+                    ->where("anio","=",$anio)
+                    ->delete();
+
+            $pago_mensual = PagosMensualesArrendatarios::create([
+                        'id_contratofinal' => $idcontrato,
+                        'id_publicacion' => $idp,
+                        'id_inmueble' => $idinmueble,
+                        'fecha_iniciocontrato' => $fechafirma,
+                        'mes' => $mes,
+                        'anio' => $anio,
+                        'subtotal_entrada' => $pagos_mensuales_e,
+                        'subtotal_salida' => $pagos_mensuales_s,
+                        'pago_a_arrendatario' => $pagar_a_propietario,
+                        'pago_a_rentas' => $pagar_a_baquedano,
+                        'id_creador' => Auth::user()->id,
+                        'id_modificador' => Auth::user()->id,
+                        'id_estado' => 1
+            ]);
+
+           
+        }
+
         return redirect()->route('finalContratoArr.edit', [$idp, 0, 0, 4])
                         ->with('status', 'Pagos Generados con éxito ');
     }

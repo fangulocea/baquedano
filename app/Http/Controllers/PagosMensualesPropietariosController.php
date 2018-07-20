@@ -7,6 +7,8 @@ use App\Persona;
 use App\Inmueble;
 use App\Captacion;
 use App\DetallePagosPropietarios;
+use App\PropietarioCheques;
+use App\PropietarioGarantia;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use DB;
@@ -22,6 +24,15 @@ class PagosMensualesPropietariosController extends Controller
                         ->with('status', 'Contrato Final guardado con éxito'); 
     }
 
+ public function getCheque($id) {
+        $cheque = PropietarioCheques::find($id);
+        return response()->json($cheque);
+    }
+
+ public function getGarantia($id) {
+        $garantia = PropietarioGarantia::find($id);
+        return response()->json($garantia);
+    }
 
 
     public function ir_al_pago($id)
@@ -40,9 +51,19 @@ class PagosMensualesPropietariosController extends Controller
 
         $saldo=$pago->pago_propietario-$valor_pagado;
 
-        $documentos=DetallePagosPropietarios::where("id_pagomensual","=",$id)->get();
+        $documentos=DB::table('adm_detallepagospropietarios as dp')
+        ->leftjoin('propietario_cheques as c', 'c.id', '=', 'dp.id_cheque')
+        ->where("dp.id_pagomensual","=",$id)
+        ->select(DB::raw('dp.*,c.fecha_pago as fc, c.numero'))
+        ->get();
 
-        return view('contratoFinal.gestion',compact('pago','persona','inmueble','mes','saldo','valor_pagado','documentos'));
+        $garantias=PropietarioGarantia::where("id_publicacion","=",$pago->id_publicacion)
+        ->where("id_estado","=",null)->get();
+
+
+        $cheques=PropietarioCheques::where("id_contrato","=",$pago->id_contratofinal)->get();
+
+        return view('contratoFinal.gestion',compact('pago','persona','inmueble','mes','saldo','valor_pagado','documentos','cheques','garantias'));
     }
 
 
@@ -63,7 +84,24 @@ class PagosMensualesPropietariosController extends Controller
         $valor_original=$pago->pago_propietario;
         $saldo_actual=$pago->pago_propietario-$valor_pagado;
         $saldo=$saldo_actual-$request->monto;
-//dd("valor pagado:".$valor_pagado."  valor_original:".$valor_original."    saldo_actual:".$saldo_actual."     saldo: ".$saldo);
+$detalle="";
+
+if(isset($request->id_cheque)){
+    $detalle="Cheque";
+}elseif(isset($request->id_garantia)){
+    $detalle="Garantía";
+    $pagogarantias=DetallePagosPropietarios::where("id_pagomensual","=",$id)->where("detalle","=","Garantía")->sum("valor_pagado");
+    $garantia=PropietarioGarantia::find($request->id_garantia);
+    if($garantia->valor<=$pagogarantias || $garantia->valor<=$request->monto){
+       $garantia=PropietarioGarantia::find($request->id_garantia)->update(["id_estado"=>2]); 
+   }else{
+        $garantia=PropietarioGarantia::find($request->id_garantia)->update(["id_estado"=>null]);
+   }
+    
+}else{
+    $detalle="Pago Normal";
+}
+
         $detalle=DetallePagosPropietarios::create([
             "id_pagomensual" => $id,
             "fecha_pago"=>$request->fecha_pago,
@@ -72,6 +110,8 @@ class PagosMensualesPropietariosController extends Controller
             "valor_original" => $pago->pago_propietario,
             "valor_pagado" => $request->monto,
             "saldo_actual" => $saldo_actual,
+            "id_cheque" => $request->id_cheque,
+            "detalle" => $detalle,
             "saldo" => $saldo,
             "E_S" => "",
             "id_modificador"=> Auth::user()->id,

@@ -25,6 +25,7 @@ class CreateArrendatarioGarantia extends Migration
             $table->string('banco')->nullable();
             $table->string('numero')->nullable();
             $table->integer('valor')->nullable();
+            $table->string('id_estado')->nullable();
             $table->date('fecha_cobro')->nullable();
             $table->timestamps();
         });

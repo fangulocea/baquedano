@@ -31,7 +31,6 @@
                         <th>{{ $meses->messiguiente5 }}</th>
                         <th>{{ $meses->messiguiente6 }}</th>
                         <th></th>
-
                     </tr>
                 </thead>
                 <tfoot>
@@ -56,16 +55,13 @@
                         <th>{{ $meses->messiguiente5 }}</th>
                         <th>{{ $meses->messiguiente6 }}</th>
                         <th></th>
-
                     </tr>
                 </tfoot>
                 <tbody>
                     @foreach($publica as $p)
                             <tr>
                                 <td>{{ $p->id_publicacion }}</td>
-                                
                                 <td >{{ $p->direccion }} #{{ $p->numero }} , Dpto {{ $p->departamento }}</td>
-                                
                                 <td>{{ $p->comuna_nombre }}</td>
                                 <td>{{ $p->nom_p }} {{ $p->apep_p }} {{ $p->apem_p }}</td>
                                 <td>{{ $p->dia_pago }}</td>

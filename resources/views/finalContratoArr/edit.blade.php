@@ -880,7 +880,7 @@ function mostrar_modal(obj){
                     
                 
             });
-     $('#modal-contacto1').modal('show');
+     //$('#modal-contacto1').modal('show');
 }
 
 function eliminar_pago(obj){
@@ -1032,7 +1032,7 @@ document.getElementById("pagoarea").innerHTML="";
 
                 $.get("/contratofinalarr/consultapagosmensuales/"+$("#id_final_pagar").val()+"/" + event.target.value + "",function(response,state){
                         var meses = ["", "Ene","Feb","Mar","Abr","May","Jun","Jul","Ago","Sep","Oct","Nov","Dic"];
-console.log(response);
+
                         document.getElementById("pagoarea").innerHTML="";
                         if(response.length>0){
                             var tablearea = document.getElementById('pagoarea'),
@@ -1045,7 +1045,7 @@ console.log(response);
 
                             var header = tbl.createTHead();
                             var rowheader = header.insertRow(0);
-                            var fecha_iniciocontrato=new Date(response[0].fecha_iniciocontrato);
+                            var fecha_iniciocontrato=new Date(response[0].fecha_iniciocontrato+'T00:00:00');
                             var meses_contrato=response[0].meses_contrato;
                             var mes_inicio=response[0].mes;
 
@@ -1062,26 +1062,15 @@ console.log(response);
                                     var cell = document.createElement("th");
                                         cell.style.border="1px solid black";
                                         cell.style.padding="8px";
-                                        cell.innerHTML = 'Total Entrada';
-                                        rowheader.appendChild(cell);
-
-                                    var cell = document.createElement("th");
-                                        cell.style.border="1px solid black";
-                                        cell.style.padding="8px";
                                         cell.innerHTML = 'Total Salida';
                                         rowheader.appendChild(cell);
 
                                     var cell = document.createElement("th");
                                         cell.style.border="1px solid black";
                                         cell.style.padding="8px";
-                                        cell.innerHTML = 'Pagar a Arrendatario';
+                                        cell.innerHTML = 'Pago a Baquedano';
                                         rowheader.appendChild(cell);
 
-                                    var cell = document.createElement("th");
-                                        cell.style.border="1px solid black";
-                                        cell.style.padding="8px";
-                                        cell.innerHTML = 'Pago a Rentas';
-                                        rowheader.appendChild(cell);
 
                                     var cell = document.createElement("th");
                                         cell.style.border="1px solid black";
@@ -1115,14 +1104,7 @@ console.log(response);
                                                             cell.style.textAlign="center"
                                                             row.appendChild(cell);
    
-                                                            var cell = document.createElement("td");
-                                                            var cellText = document.createTextNode("$ "+response[r].subtotal_entrada);
-                                                            cell.appendChild(cellText);
-                                                            cell.style.border="1px solid black";
-                                                            cell.style.padding="8px"
-                                                            cell.style.textAlign="center"
-                                                            row.appendChild(cell);
-
+           
                                                             var a = document.createElement("button");
                                                             var cell = document.createElement("td");
                                                             var cellText = document.createTextNode("$ "+response[r].subtotal_salida);
@@ -1134,21 +1116,13 @@ console.log(response);
 
                
                                                             var cell = document.createElement("td");
-                                                            var cellText = document.createTextNode("$ "+response[r].pago_a_arrendatario);
-                                                            cell.appendChild(cellText);
-                                                            cell.style.border="1px solid black";
-                                                            cell.style.padding="8px"
-                                                            cell.style.textAlign="center"
-                                                            row.appendChild(cell);
-
-
-                                                            var cell = document.createElement("td");
                                                             var cellText = document.createTextNode("$ "+response[r].pago_a_rentas);
                                                             cell.appendChild(cellText);
                                                             cell.style.border="1px solid black";
                                                             cell.style.padding="8px"
                                                             cell.style.textAlign="center"
                                                             row.appendChild(cell);
+
                                                             var estado="";
                                                             if(response[r].id_estado==1){
                                                                 estado='No Pagado';
