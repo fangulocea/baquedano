@@ -80,24 +80,6 @@ class ContratoFinalArrController extends Controller
         ->select(DB::raw('pdf.id as id'))
         ->first();  
 
-<<<<<<< HEAD
-      $captacionArrendatario=Arrendatario::find($ContratoBorradorArrendatario->id_cap_arr)->update([
-            "id_estado"=> 10
-        ]);
-
-      $contratoBorrador = ContratoBorradorArrendatario::find($request->id_borradorfinal)->update([
-            "id_estado"=> 10
-        ]);
-
-      $contratoFinal=ContratoFinalArr::create([
-            "id_publicacion" => $ContratoBorradorArrendatario->id_cap_arr, //arrendatarios
-            "id_estado"      => 1,
-            "id_creador"     => $request->id_creadorfinal,
-            "id_borrador"    => $request->id_borradorfinal, //contrato borrador arrendatario
-            "id_borradorpdf" => $pdfBorradorArrendatario->id,//contrato borrador PDF
-            "id_simulacion"  => $request->id_propuesta
-      ]);
-=======
        $captacionArrendatario=Arrendatario::find($ContratoBorradorArrendatario->id_cap_arr)->update([
              "id_estado"=> 10
          ]);
@@ -114,7 +96,7 @@ class ContratoFinalArrController extends Controller
              "id_borradorpdf" => $pdfBorradorArrendatario->id,//contrato borrador PDF
              "id_simulacion"  => $request->id_propuesta
        ]);
->>>>>>> 0dedb36bf2a55829afcd76a9d565e68f40556110
+
 
 
       // //PARA PDF
@@ -184,10 +166,7 @@ class ContratoFinalArrController extends Controller
          ->where('b.id_contrato','=',$contratoFinal->id)
          ->get();
 
-<<<<<<< HEAD
-=======
 
->>>>>>> 0dedb36bf2a55829afcd76a9d565e68f40556110
         $pdf = new PdfController();
         $numero=rand();
         $pdf->pdfArrendatarioFinal($borradorPDF,$numero,$simulacion);
@@ -997,7 +976,7 @@ $fecha_ini = date('Y-m-j', strtotime(date("Y", strtotime($fechafirma)) . '-' . d
             
         }
 
-        $reservas=Arr_Reservas::where("id_arr_ges","=",$idp)->get();
+        $reservas=Arr_Reservas::where("id_arr_ges","=",$idp)->where("id_estado","=",1)->get();
 $fecha_ini = date('Y-m-j', strtotime(date("Y", strtotime($fechafirma)) . '-' . date("m", strtotime($fechafirma)) . '-' . 1));
         if (count($reservas) > 0) {
             $monto_reserva=0;

@@ -579,7 +579,7 @@ use App\Http\Controllers\ContratoFinalArrController;
 
     </div>
 </div>
-<a href="{{ route('finalContrato.index') }}" class="btn btn-info" style="color:white"><i class="fa fa-times-circle"></i>&nbsp;&nbsp;Volver</a>
+<a href="{{ route('finalContratoArr.index') }}" class="btn btn-info" style="color:white"><i class="fa fa-times-circle"></i>&nbsp;&nbsp;Volver</a>
 
 
 
