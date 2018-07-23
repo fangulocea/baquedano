@@ -161,7 +161,7 @@
                                         <label>Precio</label>
                                         <div class="input-group"> 
                                             <span class="input-group-addon">$</span>
-                                            <input name='precio' type="number" class="form-control" required="required">
+                                            <input name='precio' type="number" step="any" class="form-control" required="required">
                                         </div>
                                     </div>
                                 </div>

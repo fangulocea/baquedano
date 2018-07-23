@@ -13,6 +13,7 @@ use App\Contratoborradorpdf;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\File;    
 use Illuminate\Support\Facades\Mail;
+use Carbon\Carbon;
 use URL;
 use App\PropietarioGarantia;
 
@@ -159,6 +160,12 @@ class ContratoBorradorController extends Controller
          ->select(DB::raw('c.id as id,c.nombre as nombre'))
          ->get();  
 
+
+        $uf = DB::table('adm_uf')
+         ->where("fecha","=",Carbon::now()->format('Y/m/d'))
+         ->first();  
+
+
         $propuestas = DB::table('cap_simulapropietario')
          ->where("id_publicacion","=",$id)
          ->select(DB::raw(" id, (CASE  WHEN tipopropuesta=1 THEN '1 Cuota' WHEN tipopropuesta=2 THEN'Pie + Cuota' ELSE 'Renovación' END) as tipopropuesta, proporcional, fecha_iniciocontrato, meses_contrato, iva,descuento, pie, cobromensual, nrocuotas,canondearriendo" ))
@@ -175,7 +182,7 @@ class ContratoBorradorController extends Controller
 
            
         }
-        return view('contratoBorrador.edit',compact('garantias','borrador','borradoresIndex','gestBorradores','notaria','servicio','comision','flexibilidad','contrato','formasdepago','multa','propuestas','tab'));
+        return view('contratoBorrador.edit',compact('garantias','borrador','borradoresIndex','gestBorradores','notaria','servicio','comision','flexibilidad','contrato','formasdepago','multa','propuestas','tab','uf'));
 
     }
 
@@ -204,7 +211,7 @@ class ContratoBorradorController extends Controller
 
     public function crearBorrador(Request $request)
     {
-        $fecha_gestion = DateTime::createFromFormat('d-m-Y', $request->fecha_gestion);
+        $fecha_gestion = DateTime::createFromFormat('Y-m-d', $request->fecha_gestion);
 
          $contratoTipo = DB::table('contratos as c')
          ->where("c.id","=",$request->id_contrato)

@@ -298,7 +298,7 @@
                                                         <label>Precio</label>
                                                         <div class="input-group"> 
                                                             <span class="input-group-addon">$</span>
-                                                            <input name='i_precio' id='i_precio' type="number" class="form-control" required="required" value='{{ $inmueble->precio or '' }}'>
+                                                            <input name='i_precio' id='i_precio' type="number" class="form-control" required="required"  step="any" value='{{ $inmueble->precio or '' }}'>
                                                         </div>
                                                     </div>
                                                 </div>

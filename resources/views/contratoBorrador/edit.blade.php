@@ -219,7 +219,7 @@
                                                     <div class="col-md-2">
                                                         <div class="form-group">
                                                             <label for="input-file-now-custom-1">Moneda</label>
-                                                            <select class="form-control" name="moneda" required="required" >
+                                                            <select class="form-control" name="moneda" id="moneda"  required="required" >
                                                                 <option value="CLP">CLP</option>
                                                                 <option value="UF">UF</option>
                                                             </select>
@@ -228,7 +228,7 @@
                                                     <div class="col-md-2">
                                                         <div class="form-group">
                                                             <label for="input-file-now-custom-1">Valor</label>
-                                                            <input name='valormoneda' id='valormoneda' type="number" class="form-control" required="required" value='1'>
+                                                            <input name='valormoneda' id='valormoneda' type="number" class="form-control" required="required" step="any" value="1" >
                                                         </div>
                                                     </div>
                                                 </div>
@@ -383,34 +383,55 @@
 
                         <form id="form1_a" action="{{ route('borradorContrato.crearBorrador') }}" method="post">                 
                             <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                            <input type="hidden" name="id_creador" value="{{ Auth::user()->id }}"">
+                            <input type="hidden" name="id_creador" value="{{ Auth::user()->id }}">
                             <input type="hidden" name="id_publicacion" value="{{ $borrador->id_publicacion }}">
                             {!! csrf_field() !!}     
 
+                           
                             <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label class="control-label">
+                                            Propuesta
+                                        </label>
+                                        <select class="form-control" name="id_simulacion" id="id_simulacion" required="required">
+                                            <option value="">
+                                                Selecione Propuesta
+                                            </option>
+                                            @foreach($propuestas as $p)
+                                            <option value="{{ $p->id }}">
+                                                {{ $p->id }} - {{ $p->tipopropuesta }}
+                                            </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>  
+                                 <div class="col-lg-2 col-sm-3 col-xs-12">
+                                    <label>
+                                        Valor Arriendo
+                                    </label>
+                                    <input class="form-control" name="valorarriendo" id="valorarriendo" required="required" type="number" disabled="disabled">
+                                </div>
+                                 <div class="col-lg-2 col-sm-3 col-xs-12">
+                                    <label>
+                                        Moneda
+                                    </label>
+                                    <input class="form-control" name="monedaborrador" id="monedaborrador" required="required" type="text" disabled="disabled">
+                                </div>
+                            </div>
+ <div class="row">
 
-                                <div class="col-lg-2 col-sm-3 col-xs-12">
+                                <div class="col-md-3">
                                     <label>
                                         Fecha Contrato
                                     </label>
                                     <div class="input-group">
-                                        <input autocomplete="off" class="form-control datepicker-fecha_contacto1_d" id="datepicker-fecha_contacto1_d" name="fecha_gestion" placeholder="dd/mm/yyyy" required="required" type="text">
-                                        <span class="input-group-addon">
-                                            <i class="icon-calender">
-                                            </i>
-                                        </span>
-                                        </input>
+                                        <input autocomplete="off" class="form-control" id="datepicker-fecha_contacto1_d" name="fecha_gestion" placeholder="dd/mm/yyyy" required="required" type="date">
                                     </div>
                                 </div>
-                                <div class="col-lg-2 col-sm-3 col-xs-12">
-                                    <label>
-                                        Valor Arriendo
-                                    </label>
-                                    <input class="form-control" name="valorarriendo" required="required" type="number">
-                                    </input>
-                                </div>
+   
 
-                                <div class="col-lg-3 col-sm-3 col-xs-12">
+                                <div class="col-md-3">
                                     <div class="form-group">
                                         <label class="control-label">
                                             Contrato
@@ -481,26 +502,6 @@
                                 </div>
 
                             </div>
-                            <div class="row">
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label class="control-label">
-                                            Propuesta
-                                        </label>
-                                        <select class="form-control" name="id_simulacion" required="required">
-                                            <option value="">
-                                                Selecione Propuesta
-                                            </option>
-                                            @foreach($propuestas as $p)
-                                            <option value="{{ $p->id }}">
-                                                {{ $p->id }} - {{ $p->tipopropuesta }}
-                                            </option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                </div>  
-                            </div>
-
                         </form>
                         <hr>
                         <div class="row">
@@ -1056,13 +1057,7 @@
     language: "es",
     locale: "es",
 });
-    jQuery('#datepicker-fecha_contacto1_d').datepicker({
-    format: 'dd-mm-yyyy',
-    todayHighlight: true,
-    autoclose: true, 
-    language: "es",
-    locale: "es",
-});
+
 </script>
 <script src="{{ URL::asset('plugins/bower_components/dropify/dist/js/dropify.min.js') }}"></script>
 <script src="{{ URL::asset('plugins/bower_components/tinymce/tinymce.min.js') }}"></script>
@@ -1568,11 +1563,27 @@ $("#li_5_c").click(function (event) {
 
 
 $("#calculapie").keyup(function (event) {
-
-
     $("#pie").val(this.value*100/$("#arriendo_sim").val());
-
 });
 
+$("#moneda").keyup(function (event) {
+    if(this.value=="UF"){
+        $("#valormoneda").val({{ $uf->valor }});
+    }else{
+        $("#valormoneda").val(1);
+    }
+    
+});
+
+
+$("#id_simulacion").change(function (event) {
+    $.get("/pagospropietario/mostrarsimulacion/" + event.target.value + "", function (response, state) {
+        $("#valorarriendo").val(response.canondearriendo!=''?response.canondearriendo:0);
+        $("#monedaborrador").val(response.moneda!=null?response.moneda:0);
+        $("#datepicker-fecha_contacto1_d").val(response.fecha_iniciocontrato!=null?response.fecha_iniciocontrato:0);
+        
+    });
+
+});
 </script>
 @endsection
