@@ -36,16 +36,6 @@ class ContratoRenovacionArrendatarioController extends Controller
                     JOIN contratoborradorarrendatarios cba ON a.id = cba.id_cap_arr
                     where a.id_estado = 11
                     and date_add(DATE_ADD(cba.fecha_contrato, INTERVAL 1 YEAR), INTERVAL -60 DAY) < now()");
-        // $publica = DB::table('arrendatarios as a')
-        //  ->leftjoin('users as pc', 'a.id_creador', 'pc.id')
-        //  ->leftjoin('personas as pm', 'a.id_modificador', 'pm.id')
-        //  ->leftjoin('personas as pa', 'a.id_arrendatario','pa.id')
-        //  ->leftjoin('inmuebles as i','a.id_inmueble','i.id')
-        //  ->leftjoin('comunas as c', 'i.id_comuna', '=', 'c.comuna_id')
-        //  ->leftjoin('contratoborradorarrendatarios as cba','a.id','=','cba.id_cap_arr')
-        //  ->where('a.id_estado','=',11)
-        //  ->select(DB::raw('a.id as id_cap_arr, CONCAT_WS(" ",pa .nombre,pa.apellido_paterno,pa.apellido_materno) as arrendatario,i.direccion,i.numero,c.comuna_nombre as comuna,a.id_estado, a.id_arrendatario as id_arrendatario'))
-        //  ->get();
 
         return view('contratorenovacionarrendatario.index',compact('publica'));
 
