@@ -159,7 +159,7 @@
                                             <label>Precio</label>
                                             <div class="input-group"> 
                                                 <span class="input-group-addon">$</span>
-                                                <input name='precio' type="number" class="form-control"
+                                                <input name='precio' type="number" step="any" class="form-control"
                                                 value='{{ $inmueble->precio }}' required="required" min="1" >
                                             </div>
                                         </div>
