@@ -979,64 +979,18 @@ Route::get('cbararrendatario/garantia/eliminar/{id}/{pub}','ContratoBorradorArre
 		->middleware('permission:finalContratoArr.edit');
 
 		Route::post('finalContratoArr/act_cheque/{idc}','ContratoFinalArrController@act_cheque')->name('finalContratoArr.act_cheque')
-<<<<<<< HEAD
 		->middleware('permission:finalContratoArr.edit');		
 
 
 
 // Contrato Renovacion Arrendatario
-Route::post('contratorenovacionarrendatario/garantia/{id}','ContratoRenovacionArrendatarioController@garantia')->name('contratorenovacionarrendatario.garantia')->middleware('permission:contratorenovacionarrendatario.edit');
-
-Route::get('contratorenovacionarrendatario/garantia/eliminar/{id}/{pub}','ContratoRenovacionArrendatarioController@eliminarGarantia')->name('contratorenovacionarrendatario.eliminarGarantia')
-->middleware('permission:contratorenovacionarrendatario.edit');
-
 Route::get('contratorenovacionarrendatario','ContratoRenovacionArrendatarioController@index')->name('contratorenovacionarrendatario.index')
 ->middleware('permission:contratorenovacionarrendatario.index');
 
-Route::get('contratorenovacionarrendatario/edit/{id}/{tab}','ContratoRenovacionArrendatarioController@edit')->name('contratorenovacionarrendatario.edit')
-->middleware('permission:contratorenovacionarrendatario.edit');
 
-Route::post('contratorenovacionarrendatario/updatepersona','PersonaController@updatePersonaArrendatarioBorrador')->name('contratorenovacionarrendatario.updatepersona')
-->middleware('permission:contratorenovacionarrendatario.edit');
-
-Route::post('contratorenovacionarrendatario/updateinmueble','InmuebleController@updateInmuebleArrendatarioBorrador')->name('contratorenovacionarrendatario.updateinmueble')
-->middleware('permission:contratorenovacionarrendatario.edit');		
-
-Route::post('contratorenovacionarrendatario/crearBorrador','ContratoRenovacionArrendatarioController@crearBorrador')->name('contratorenovacionarrendatario.crearBorrador')
-->middleware('permission:contratorenovacionarrendatario.edit');
-
-Route::post('contratorenovacionarrendatario/store','ContratoRenovacionArrendatarioController@store')->name('contratorenovacionarrendatario.store')
-->middleware('permission:contratorenovacionarrendatario.create');
-
-Route::get('contratorenovacionarrendatario/create','ContratoRenovacionArrendatarioController@create')->name('contratorenovacionarrendatario.create')
-->middleware('permission:contratorenovacionarrendatario.create');
-
-Route::get('contratorenovacionarrendatario/destroy/{id}','ContratoRenovacionArrendatarioController@destroy')->name('contratorenovacionarrendatario.destroy')
-->middleware('permission:contratoborradorarrendatario.destroy');
-
-		//Route::get('cbararrendatario/borradorC/{idg}','ContratoBorradorArrendatarioController@mostrarGestion');
-
-Route::get('contratorenovacionarrendatario/borradorC/{idg}','ContratoRenovacionArrendatarioController@mostrarGestion')->name('contratorenovacionarrendatario.mostrarGestion')
-->middleware('permission:contratorenovacionarrendatario.edit');
-
-Route::post('contratorenovacionarrendatario/{captacionArrendador}','ContratoRenovacionArrendatarioController@update')->name('contratorenovacionarrendatario.update')
-->middleware('permission:contratorenovacionarrendatario.edit');
-
-Route::post('contratorenovacionarrendatario/borrador/update','ContratoRenovacionArrendatarioController@editarGestion')->name('contratorenovacionarrendatario.editarGestion')
-->middleware('permission:contratorenovacionarrendatario.edit');
-
-Route::get('contratorenovacionarrendatario/mail/{id}','ContratoRenovacionArrendatarioController@enviaMail')->name('contratorenovacionarrendatario.mail');		
-
-Route::get('pdf/{data}', 'PdfController@index');
-
-Route::post('contratorenovacionarrendatario/generarpagos/{idp}','SimulaArrendatarioController@generarpagos')->name('contratorenovacionarrendatario.generarpagos')
-->middleware('permission:contratorenovacionarrendatario.edit');
-
-Route::get('contratorenovacionarrendatario/propuesta/{id}','SimulaArrendatarioController@downloadExcel')->name('contratorenovacionarrendatario.excelsimulacion')->middleware('permission:contratorenovacionarrendatario.edit');
-
-
-=======
-		->middleware('permission:finalContratoArr.edit');	
+// Contrato Renovacion Propietario
+Route::get('contratorenovacionpropietario','ContratoRenovacionPropietarioController@index')->name('contratorenovacionpropietario.index')
+->middleware('permission:contratorenovacionpropietario.index');
 
 
 		//UF
@@ -1060,5 +1014,5 @@ Route::get('contratorenovacionarrendatario/propuesta/{id}','SimulaArrendatarioCo
 
 	Route::get('uf/{uf}/edit','UfController@edit')->name('uf.edit')
 		->middleware('permission:uf.edit');	
->>>>>>> a2d882a68cc90dab9273c1daab7f8f38638d5cb7
+
 });
