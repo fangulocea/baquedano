@@ -97,12 +97,20 @@
                                     </div>
                                 </div>
                                 <!--/span-->
+  
+                  
                                 <div class="col-md-2">
                                     <div class="form-group">
-                                        <label>Estacionamiento</label>
-                                        <input name='estacionamiento' type="number" class="form-control" >
+                                        <label>Piscina</label>
+                                        <select class="form-control" name="piscina" >
+                                            <option value="">Sel. Opción</option>
+                                            <option value="SI">SI</option>
+                                            <option value="NO">NO</option>
+                                        </select>
                                     </div>
                                 </div>
+                            </div>
+                            <div class="row">
                                 <div class="col-md-2">
                                     <div class="form-group">
                                         <label>Bodega</label>
@@ -119,14 +127,22 @@
                                         <input name='nro_bodega' type="number" class="form-control" >
                                     </div>
                                 </div>
+                              <div class="col-md-2">
+                                    <div class="form-group">
+                                        <label>Estacionamiento</label>
+                                        <input name='estacionamiento' type="number" class="form-control" >
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label>Nro. Estacionamiento</label>
+                                        <input name='nro_estacionamiento' type="text" class="form-control" >
+                                    </div>
+                                </div>
                                 <div class="col-md-2">
                                     <div class="form-group">
-                                        <label>Piscina</label>
-                                        <select class="form-control" name="piscina" >
-                                            <option value="">Sel. Opción</option>
-                                            <option value="SI">SI</option>
-                                            <option value="NO">NO</option>
-                                        </select>
+                                        <label>Año Antiguedad</label>
+                                        <input name='anio_antiguedad' type="number" class="form-control" >
                                     </div>
                                 </div>
                             </div>

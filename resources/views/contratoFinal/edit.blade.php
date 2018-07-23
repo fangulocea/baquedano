@@ -988,7 +988,7 @@ document.getElementById("tablearea").innerHTML="";
                                         cell.innerHTML = 'Tipo de Pago';
                                         rowheader.appendChild(cell);
 
-                                     for (var r = 0; r < meses_contrato; r++) {
+                                     for (var r = 0; r < meses_contrato+1; r++) {
                                         var cell = document.createElement("th");
                                         cell.style.border="1px solid black";
                                         cell.style.padding="8px";
@@ -1025,7 +1025,7 @@ document.getElementById("tablearea").innerHTML="";
                                                             row.appendChild(cell);
                                                  }
                                                 $subtotal=0;
-                                                 for (var c = 0; c < meses_contrato; c++) {
+                                                 for (var c = 0; c < meses_contrato+1; c++) {
                                                     if (!$.isEmptyObject(newArray[c])) {
                                                             var idtp=newArray[c].idtipopago;
                                                             $subtotal+=newArray[c].precio_en_pesos;

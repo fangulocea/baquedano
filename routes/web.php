@@ -979,5 +979,28 @@ Route::get('cbararrendatario/garantia/eliminar/{id}/{pub}','ContratoBorradorArre
 		->middleware('permission:finalContratoArr.edit');
 
 		Route::post('finalContratoArr/act_cheque/{idc}','ContratoFinalArrController@act_cheque')->name('finalContratoArr.act_cheque')
-		->middleware('permission:finalContratoArr.edit');		
+		->middleware('permission:finalContratoArr.edit');	
+
+
+		//UF
+	Route::post('uf/store','UfController@store')->name('uf.store')
+		->middleware('permission:uf.create');
+
+	Route::get('uf','UfController@index')->name('uf.index')
+		->middleware('permission:uf.index');
+
+	Route::get('uf/create','UfController@create')->name('uf.create')
+		->middleware('permission:uf.create');
+
+	Route::post('uf/{uf}','UfController@update')->name('uf.update')
+		->middleware('permission:uf.edit');
+
+	Route::get('uf/{uf}','UfController@show')->name('uf.show')
+		->middleware('permission:uf.show');
+
+	Route::delete('uf/{uf}','UfController@destroy')->name('uf.destroy')
+		->middleware('permission:uf.destroy');
+
+	Route::get('uf/{uf}/edit','UfController@edit')->name('uf.edit')
+		->middleware('permission:uf.edit');	
 });

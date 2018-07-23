@@ -190,7 +190,7 @@
                                                             <input type="number" name="cant_meses" id="cant_meses" value="12" class="form-control" required="required">
                                                         </div>
                                                     </div>
-                                                    <div class="col-md-2">
+                                                <!--    <div class="col-md-2">
                                                         <div class="form-group">
                                                             <label for="input-file-now-custom-1">Proporcional</label>
                                                             <select name="proporcional" class="form-control">
@@ -198,7 +198,7 @@
                                                                 <option value="SI">SI</option>
                                                             </select>
                                                         </div>
-                                                    </div>
+                                                    </div>-->
                                                     <div class="col-md-3">
                                                         <div class="form-group">
                                                             <label for="input-file-now-custom-1">Tipo Propuesta</label>
@@ -225,7 +225,7 @@
                                                             </select>
                                                         </div>
                                                     </div>
-                                                    <div class="col-md-1">
+                                                    <div class="col-md-2">
                                                         <div class="form-group">
                                                             <label for="input-file-now-custom-1">Valor</label>
                                                             <input name='valormoneda' id='valormoneda' type="number" class="form-control" required="required" value='1'>
@@ -237,17 +237,17 @@
                                             <div class="row">
                                                 <h3 class="box-title m-b-0">INFORMACIÓN PARA GENERAR PROPUESTA 1 CUOTA Y PIE + 11 CUOTAS</h3>
                                                 <hr>
-                                                <div class="col-md-2">
+                                                <div class="col-md-3">
                                                     <label >Canon de Arriendo</label>
                                                     <div class="input-group"> 
-                                                        <span class="input-group-addon">$</span>
+                                                        <span class="input-group-addon">$/UF</span>
                                                         <input name='arriendo_sim' id='arriendo_sim' step="any" type="number" class="form-control" required="required" value="{{ $borrador->precio }}" >
                                                     </div>
                                                 </div>
-                                                <div class="col-md-2"> 
+                                                <div class="col-md-3"> 
                                                     <label >Gasto común</label>
                                                     <div class="input-group"> 
-                                                        <span class="input-group-addon">$</span>
+                                                        <span class="input-group-addon">$/UF</span>
                                                         <input name='gastocomun_sim' id='gastocomun_sim' type="number" class="form-control" required="required"  step="any" value="{{ $borrador->gastosComunes }}">
                                                     </div>
                                                 </div>
@@ -294,6 +294,13 @@
                                                     <div class="input-group"> 
                                                         <span class="input-group-addon">%</span>
                                                         <input name='cobromensual' id='cobromensual' type="number" class="form-control"   step="any" value="0" required="required">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <label>Calcula Pie</label>
+                                                    <div class="input-group"> 
+                                                        <span class="input-group-addon">$</span>
+                                                        <input name='calculapie' id='calculapie' type="number" class="form-control"   step="any" value="0" required="required">
                                                     </div>
                                                 </div>
                                             </div>
@@ -1559,6 +1566,13 @@ $("#li_5_c").click(function (event) {
             
 });
 
+
+$("#calculapie").keyup(function (event) {
+
+
+    $("#pie").val(this.value*100/$("#arriendo_sim").val());
+
+});
 
 </script>
 @endsection

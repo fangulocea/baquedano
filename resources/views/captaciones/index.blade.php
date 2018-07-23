@@ -20,8 +20,8 @@
                         <th>Mail</th>
                         <th>Teléfono</th>
                         <th>Fecha/P</th>
-                        <!-- <th>Fecha/M</th>
-                        <th>Modificador</th>-->
+                        <th>Gestión/ Ultima</th>
+                        <th>Gestión/ Creador</th>
                         <th>Estado</th>
                         <th>Portal</th>
                         <th>Creador</th>
@@ -41,8 +41,8 @@
                         <th>Mail</th>
                         <th>Teléfono</th>
                         <th>Fecha/P</th>
-                       <!-- <th>Fecha/M</th>
-                        <th>Modificador</th> -->
+                        <th>Gestión/ Ultima</th>
+                        <th>Gestión/ Creador</th>
                         <th>Estado</th>
                         <th>Portal</th>
                         <th>Creador</th>
@@ -67,6 +67,8 @@
                                 <td style="font-size: x-small;">{{ $p->email }}</td>
                                 <td>{{ $p->telefono }}</td>
                                 <td style="font-size: small;">{{ $p->fecha_publicacion }}</td>
+                                <td style="font-size: small;">{{ $p->tipo_contacto }}</td>
+                                <td style="font-size: small;">{{ $p->creador_gestion }}</td>
                                 
                               <!--   <td style="font-size: small;">{{ $p->fecha_modificacion }}</td>
                                 <td>{{ $p->nom_m }}</td>-->
@@ -121,6 +123,7 @@ var table = $('#listusers').DataTable({
 
     dom: 'Bfrtip',
     "ordering": false,
+    pageLength: 20,
     buttons: [
          'excel', 'pdf', 'print',{
             text: 'Ingresar Captación',

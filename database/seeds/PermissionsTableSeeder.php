@@ -642,6 +642,32 @@ class PermissionsTableSeeder extends Seeder
         ]);
 
 
+//Contrato Final Arrendatario
+        Permission::create([
+            'name'          =>  'Listado de UFs',
+            'slug'          =>  'uf.index',
+            'description'   =>  'Despliega UF',
+        ]);
+        Permission::create([
+            'name'          =>  'Ver detalle de UF',
+            'slug'          =>  'uf.show',
+            'description'   =>  'Despliega el detalle del UF ',
+        ]);
+        Permission::create([
+            'name'          =>  'Crea UF',
+            'slug'          =>  'uf.create',
+            'description'   =>  'Crear UF del sistema',
+        ]);
+        Permission::create([
+            'name'          =>  'Edición de UF',
+            'slug'          =>  'uf.edit',
+            'description'   =>  'Editar UF del sistema',
+        ]);
+        Permission::create([
+            'name'          =>  'Desactiva UF',
+            'slug'          =>  'uf.destroy',
+            'description'   =>  'Desactiva UF del sistema',
+        ]);
 
 
 

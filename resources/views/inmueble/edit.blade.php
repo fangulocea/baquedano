@@ -94,29 +94,9 @@
                                           <input name='bano' type="number" class="form-control" value='{{ $inmueble->bano }}' required="required"> </div>
                                       </div>
                                       <!--/span-->
-                                      <div class="col-md-2">
-                                        <div class="form-group">
-                                            <label>Estacionamiento</label>
-                                            <input name='estacionamiento' type="number" class="form-control" value='{{ $inmueble->estacionamiento }}' required="required">
-                                        </div>
-                                    </div>
-                            <div class="col-md-2">
-                                    <div class="form-group">
-                                        @if(!isset($inmueble->bodega))
-                                                        <?php $idpi = null; ?>
-                                                        @else
-                                                        <?php $idpi = $inmueble->bodega; ?>
-                                                        @endif
-                                        <label>Bodega</label>
-                                            {{ Form::select('bodega',['1'=> 'SI', '0'=>'NO'], $idpi ,array('class'=>'form-control','style'=>'','id'=>'bodega','placeholder'=>'Seleccione','required'=>'required')) }}
-                                    </div>
-                                </div>
-                                <div class="col-md-2">
-                                    <div class="form-group">
-                                        <label>Número de Bodega</label>
-                                        <input name='nro_bodega' type="text" class="form-control" value='{{ $inmueble->nro_bodega or '' }}' >
-                                    </div>
-                                </div>
+                                
+      
+        
                                     <div class="col-md-2">
                                         <div class="form-group">
                                             <label>Piscina</label>
@@ -125,6 +105,45 @@
                                     </div>
 
                                 </div>
+
+
+                             <div class="row">
+                                <div class="col-md-2">
+                                    <div class="form-group">
+                                    @if(!isset($inmueble->bodega))
+                                                        <?php $idpi = null; ?>
+                                                        @else
+                                                        <?php $idpi = $inmueble->bodega; ?>
+                                                        @endif
+                                        <label>Bodega</label>
+                                            {{ Form::select('bodega',['1'=> 'SI', '0'=>'NO'], $idpi ,array('class'=>'form-control','style'=>'','id'=>'bodega','placeholder'=>'Seleccione','required'=>'required')) }}
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="form-group">
+                                        <label>Número de Bodega</label>
+                                         <input name='nro_bodega' type="text" class="form-control" value='{{ $inmueble->nro_bodega or '' }}' >
+                                    </div>
+                                </div>
+                                  <div class="col-md-2">
+                                        <div class="form-group">
+                                            <label>Estacionamiento</label>
+                                            <input name='estacionamiento' type="number" class="form-control" value='{{ $inmueble->estacionamiento }}' required="required">
+                                        </div>
+                                    </div>                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label>Nro. Estacionamiento</label>
+                                        <input name='nro_estacionamiento' type="text" class="form-control" value='{{ $inmueble->nro_estacionamiento or '' }}'>
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="form-group">
+                                        <label>Año Antiguedad</label>
+                                        <input name='anio_antiguedad' type="number" class="form-control" value='{{ $inmueble->anio_antiguedad or '' }}'>
+                                    </div>
+                                </div>
+                            </div>
                                 <div class="row"> 
                                     <div class="col-md-3">
                                         <div class="form-group">

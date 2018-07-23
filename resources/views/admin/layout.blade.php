@@ -208,7 +208,9 @@
                                 @can('servicio.index')
                                 <li> <a href="{{ route('servicio.index') }}"><i class=" fa-fw">S</i><span class="hide-menu">Servicios</span></a> </li>
                                 @endcan
-
+                                @can('uf.index')
+                                <li> <a href="{{ route('uf.index') }}"><i class=" fa-fw">S</i><span class="hide-menu">UF</span></a> </li>
+                                @endcan
                             </ul>
                         </li>
                         <li> <a href="#" class="waves-effect"><i class="mdi mdi-settings fa-fw" data-icon="v"></i> <span class="hide-menu"> Captaciones <span class="fa arrow"></span> <span class="label label-rouded label-primary pull-right">6</span></span></a>

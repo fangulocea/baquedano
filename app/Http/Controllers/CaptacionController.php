@@ -108,10 +108,9 @@ class CaptacionController extends Controller {
                 $now = new \DateTime();
                 $fecha_creacion = $now->format('Y-m-d H:i:s');
                 if (!empty($data) && $data->count()) {
+
                     foreach ($data as $key => $value) {
-                        if ($value->captador == '' || $value->captador == null) {
-                            break;
-                        }
+
 
                         $insert[] = [
                             'captador' => Auth::user()->id
@@ -139,7 +138,9 @@ class CaptacionController extends Controller {
                             , 'id_creador' => $request->idusuario
                             , 'created_at' => $fecha_creacion
                         ];
+                        
                     }
+
                     if (!empty($insert)) {
                         DB::table('cap_import')->insert($insert);
                         return back()->with('status', 'Registros subidos a memoria exitosamente');
@@ -148,6 +149,7 @@ class CaptacionController extends Controller {
             }
             return back()->with('error', 'No fue posible subir la información a memoria');
         } catch (\Exception $e) {
+            
             return back()->with('error', 'No fue posible subir la información a memoria, problemas de formato del archivo');
         }
     }
@@ -436,6 +438,7 @@ class CaptacionController extends Controller {
                 ->leftjoin('comunas as o', 'i.id_comuna', '=', 'o.comuna_id')
                 ->leftjoin('portales as po', 'c.portal', '=', 'po.id')
                 ->select(DB::raw('c.id as id_publicacion, DATE_FORMAT(c.created_at, "%d/%m/%Y %T") as fecha_creacion,DATE_FORMAT(c.updated_at, "%d/%m/%Y") as fecha_modificacion, c.id_estado as id_estado, CONCAT_WS(" ",p1.nombre,p1.apellido_paterno,p1.apellido_materno) as Propietario, CONCAT_WS(" ",p4.nombre,p4.apellido_paterno,p4.apellido_materno) as Externo,
+                    (select tipo_contacto from cap_gestion where id_captacion_gestion=c.id order by created_at asc limit 1) as tipo_contacto, (select (select name from users where id=id_creador_gestion limit 1)  from cap_gestion where id_captacion_gestion=c.id order by created_at asc limit 1) as creador_gestion, 
          c.tipo, p2.name as Creador, CONCAT_WS(" ",p3.nombre,p3.apellido_paterno,p3.apellido_materno) as Modificador,p1.email,p1.telefono,c.fecha_publicacion'), 'i.id as id_inmueble', 'i.direccion', 'i.numero', 'i.departamento', 'o.comuna_nombre', 'po.nombre as portal', 'p1.nombre as nom_p', 'p1.apellido_paterno as apep_p', 'p1.apellido_materno as apem_p', 'p3.nombre as nom_m', 'p3.apellido_paterno as apep_m', 'p3.apellido_materno as apem_m')
                 ->get();
 
@@ -476,9 +479,10 @@ class CaptacionController extends Controller {
     }
 
     public function editarGestion(Request $request) {
+
         $fecha_gestion = DateTime::createFromFormat('d-m-Y', $request->fecha_gestion);
         array_set($request, 'fecha_gestion', $fecha_gestion);
-        $captacion = CaptacionGestion::where('id', '=', $request->id_captacion_gestion)
+        $captacion = CaptacionGestion::where('id', '=', $request->id_gestion)
                 ->update([
             'dir' => $request->dir,
             'detalle_contacto' => $request->detalle_contacto,
@@ -619,9 +623,9 @@ class CaptacionController extends Controller {
         $idr = null;
 
         $gestion = DB::table('cap_gestion as g')
-                ->leftjoin('personas as p2', 'g.id_creador_gestion', '=', 'p2.id')
+                ->leftjoin('users as p2', 'g.id_creador_gestion', '=', 'p2.id')
                 ->where("g.id_captacion_gestion", "=", $id)
-                ->select(DB::raw('g.id, DATE_FORMAT(g.fecha_gestion, "%d/%m/%Y") as fecha_gestion,  CONCAT(p2.nombre," ",p2.apellido_paterno," ",p2.apellido_materno) as Creador'), 'g.dir', 'g.tipo_contacto', 'g.hora_gestion')
+                ->select(DB::raw('g.id, DATE_FORMAT(g.fecha_gestion, "%d/%m/%Y") as fecha_gestion,  p2.name as Creador'), 'g.dir', 'g.tipo_contacto', 'g.hora_gestion')
                 ->get();
 
 

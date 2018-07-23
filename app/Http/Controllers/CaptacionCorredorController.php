@@ -163,6 +163,8 @@ class CaptacionCorredorController extends Controller
          ->select(DB::raw('g.id, DATE_FORMAT(g.fecha_gestion, "%d/%m/%Y") as fecha_gestion,  p2.name as Creador'), 'g.dir','g.tipo_contacto','g.hora_gestion')
          ->get();
 
+         
+
         $imagenes=CaptacionImageCorredor::where('id_capcorredor','=',$id)->get();
         return view('captacionesCorredor.edit',compact('captacion','regiones','persona','inmueble','idr','captaciones_persona','captaciones_inmueble','imagenes','gestion','corredores'));
     }

@@ -132,7 +132,7 @@ class PrimeraGestionController extends Controller
 
             $persona=CaptacionGestion::create([
                 'id_captacion_gestion'  => $BuscaPublicacion->id,
-                'tipo_contacto'         => trans_choice('mensajes.captacion', $request->tipo),
+                'tipo_contacto'         => 'Envío de Correo',
                 'dir'                   => 'Información Enviada',
                 'detalle_contacto'      => $correo->descripcion,
                 'id_creador_gestion'    => $BuscaPublicacion->id_creador,
@@ -188,7 +188,7 @@ class PrimeraGestionController extends Controller
 
             $persona=CaptacionGestion::create([
                 'id_captacion_gestion'  => $BuscaPublicacion->id,
-                'tipo_contacto'         => trans_choice('mensajes.vigencia', 2),
+                'tipo_contacto'         => 'Re-Envío de Correo',
                 'dir'                   => 'Información Enviada',
                 'detalle_contacto'      => $correo->descripcion,
                 'id_creador_gestion'    => $BuscaPublicacion->id_creador,

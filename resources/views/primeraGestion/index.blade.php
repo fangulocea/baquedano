@@ -157,10 +157,6 @@
 
     // ],
     "ordering": false,
-     columnDefs: [{
-             "targets": [8, 9],
-             "orderable": false
-         }],
     language: {
         "sProcessing": "Procesando...",
         "sLengthMenu": "Mostrar _MENU_ registros",
