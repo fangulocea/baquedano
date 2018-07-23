@@ -1,4 +1,0 @@
-CaptacionCOntroller.php
-CaptacionesPro->index.blade.php
-PrimeraGestionController.php
-PrimeraGestion->index.blade.php

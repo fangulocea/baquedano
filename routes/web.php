@@ -988,16 +988,15 @@ Route::get('contratorenovacionarrendatario','ContratoRenovacionArrendatarioContr
 ->middleware('permission:contratorenovacionarrendatario.index');
 
 
-<<<<<<< HEAD
 Route::post('contratorenovacionarrendatario/generarpagos/{idp}','SimulaArrendatarioController@generarpagos')->name('contratorenovacionarrendatario.generarpagos')
 ->middleware('permission:contratorenovacionarrendatario.edit');
 
 Route::get('contratorenovacionarrendatario/propuesta/{id}','SimulaArrendatarioController@downloadExcel')->name('contratorenovacionarrendatario.excelsimulacion')->middleware('permission:contratorenovacionarrendatario.edit');
-=======
+
 // Contrato Renovacion Propietario
 Route::get('contratorenovacionpropietario','ContratoRenovacionPropietarioController@index')->name('contratorenovacionpropietario.index')
 ->middleware('permission:contratorenovacionpropietario.index');
->>>>>>> c8995dc634db1c656c116c8662ea227c1116cdd4
+
 
 
 		//UF
