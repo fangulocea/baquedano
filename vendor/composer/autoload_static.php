@@ -594,6 +594,7 @@ class ComposerStaticInit0178ccda3db7603c96af3e22d130f715
         'CreateContratofinalarr' => __DIR__ . '/../..' . '/database/migrations/2018_06_27_225936_create_contratofinalarr.php',
         'CreateContratofinalarrdocs' => __DIR__ . '/../..' . '/database/migrations/2018_06_27_230007_create_contratofinalarrdocs.php',
         'CreateContratofinalarrpdf' => __DIR__ . '/../..' . '/database/migrations/2018_06_27_230139_create_contratofinalarrpdf.php',
+        'CreateContratorenovacionarrendatario' => __DIR__ . '/../..' . '/database/migrations/2018_07_22_211456_create_contratorenovacionarrendatario.php',
         'CreateContratosTable' => __DIR__ . '/../..' . '/database/migrations/2018_06_13_225341_create_contratos_table.php',
         'CreateCorreosTable' => __DIR__ . '/../..' . '/database/migrations/2018_05_30_140028_create_correos_table.php',
         'CreateFlexibilidadsTable' => __DIR__ . '/../..' . '/database/migrations/2018_05_26_140017_create_flexibilidads_table.php',
