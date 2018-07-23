@@ -10,6 +10,7 @@
                     <form action="{{ route('cargo.store') }}" method="post">
                         {!! csrf_field() !!}
                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
+
                         <div class="form-body">
                             <h3 class="box-title">Información de Cargos para usuarios</h3>
                             <hr>

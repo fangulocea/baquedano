@@ -32,6 +32,9 @@ $fila21=$propuesta1->where("idtipopago",'=',11);
         <th style="background-color: #F2F4F4;text-align: center">Descuento</th>
         <th style="background-color: #F2F4F4;text-align: center">Nro. Cuotas</th>
         <th style="background-color: #F2F4F4;text-align: center">% Cobro Mensual</th>
+                <th style="background-color: #F2F4F4;text-align: center">Canon de Arriendo</th>
+        <th style="background-color: #F2F4F4;text-align: center">Moneda</th>
+        <th style="background-color: #F2F4F4;text-align: center">Valor Moneda</th>
     </tr>
     </thead>
     <tbody>
@@ -43,6 +46,9 @@ $fila21=$propuesta1->where("idtipopago",'=',11);
         <td style="background-color: #F2F4F4;text-align: center">{{ $header->descuento }}%</td>
         <td style="background-color: #F2F4F4;text-align: center">{{ $header->nrocuotas }}</td>
         <td style="background-color: #F2F4F4;text-align: center">{{ $header->cobromensual }}%</td>
+        <td style="background-color: #F2F4F4;text-align: center">{{ $header->canondearriendo }}</td>
+            <td style="background-color: #F2F4F4;text-align: center">{{ $header->moneda }}</td>
+                    <td style="background-color: #F2F4F4;text-align: center">{{ $header->valormoneda }}</td>
     </tr>
     </tbody>
 </table>
@@ -60,11 +66,18 @@ $fila1=$propuesta1->where("idtipopago",'=',1);
     </thead>
     <tbody>
         <tr>
+            <td style="background-color: #F2F4F4;text-align: center"><strong>Días del Mes</strong></td>
+@foreach($fila1 as $p)
+       <td style="background-color: #F2F4F4;text-align: center">{{  $p->cant_diasproporcional }} </td>
+@endforeach
+        </tr>
+        <tr>
             <td style="background-color: #F2F4F4;text-align: center"><strong>Canon de Arriendo</strong></td>
 @foreach($fila1 as $p)
        <td style="background-color: #F2F4F4;text-align: center">{{  $p->precio_en_pesos }} </td>
 @endforeach
         </tr>
+
 @for ($i = 2; $i < 20; $i++)
     @if($i==11)
         @php $i++; @endphp
