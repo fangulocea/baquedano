@@ -357,7 +357,7 @@ use App\Http\Controllers\ContratoFinalController;
                                                         <div class="col-md-3">
                                                             <div class="form-group">
                                                                 <label for="input-file-now-custom-1">Moneda</label>
-                                                                <select class="form-control" name="moneda" required="required" >
+                                                                <select class="form-control" name="moneda" id="moneda" required="required" >
                                                                     <option value="CLP">CLP</option>
                                                                     <option value="UF">UF</option>
                                                                 </select>
@@ -366,7 +366,7 @@ use App\Http\Controllers\ContratoFinalController;
                                                         <div class="col-md-3">
                                                             <div class="form-group">
                                                                 <label for="input-file-now-custom-1">Valor Moneda</label>
-                                                                <input name='valormoneda' id='valormoneda' type="number" class="form-control" required="required" value='1'>
+                                                                <input name='valormoneda' id='valormoneda' type="number" class="form-control" required="required" value='1' step="any">
                                                             </div>
                                                         </div>
                                                     </div>
@@ -1304,6 +1304,9 @@ $("#id_propuesta").change(function (event) {
           $("#nombre_otropago2").val(response.nomotro2!=null?response.nomotro2:'');
            $("#pagootro1").val(response.otro1!=null?response.otro1:0);
            $("#pagootro2").val(response.otro2!=null?response.otro2:0);
+           $("#moneda").val(response.moneda!=null?response.moneda:0);
+           $("#valormoneda").val(response.valormoneda!=null?response.valormoneda:0);
+
     });
 
 });
@@ -1474,6 +1477,15 @@ document.getElementById("pagoarea").innerHTML="";
 function ir_pago(obj){
     window.location.href = '/finalContrato/ir_al_pago/'+obj.id;
 }
+
+$("#moneda").change(function (event) {
+    if(this.value=="UF"){
+        $("#valormoneda").val({{ $uf->valor }});
+    }else{
+        $("#valormoneda").val(1);
+    }
+    
+});
 
 </script>
 @endsection

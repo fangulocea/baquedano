@@ -1566,7 +1566,7 @@ $("#calculapie").keyup(function (event) {
     $("#pie").val(this.value*100/$("#arriendo_sim").val());
 });
 
-$("#moneda").keyup(function (event) {
+$("#moneda").change(function (event) {
     if(this.value=="UF"){
         $("#valormoneda").val({{ $uf->valor }});
     }else{

@@ -15,6 +15,7 @@ use App\GenerarPagoPropietario;
 use App\SimulaPropietario;
 use App\PropietarioGarantia;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 use DB;
 use Illuminate\Support\Facades\File;
 use Auth;
@@ -336,6 +337,10 @@ class ContratoFinalController extends Controller {
               ->select(DB::raw('c.id, i.id as id_inmueble, CONCAT_WS(" ",i.direccion,"#",i.numero,"Depto.",i.departamento,o.comuna_nombre) as direccion, cf.alias'))
                 ->get();
 
+                $uf = DB::table('adm_uf')
+         ->where("fecha","=",Carbon::now()->format('Y/m/d'))
+         ->first();  
+
         $flag = 0;
 
              $propuestas = DB::table('cap_simulapropietario as s')
@@ -344,7 +349,7 @@ class ContratoFinalController extends Controller {
          ->select(DB::raw(" s.id, (CASE  WHEN s.tipopropuesta=1 THEN '1 Cuota' WHEN s.tipopropuesta=2 THEN'Pie + Cuota' ELSE 'Renovación' END) as tipopropuesta, s.proporcional, s.fecha_iniciocontrato, s.meses_contrato, s.iva,descuento, s.pie, cobromensual, s.nrocuotas,s.canondearriendo" ))
          ->get();   
 
-        return view('contratoFinal.edit', compact('borrador', 'finalIndex', 'notaria', 'documentos', 'flag', 'tab','direcciones','propuestas'));
+        return view('contratoFinal.edit', compact('borrador', 'finalIndex', 'notaria', 'documentos', 'flag', 'tab','direcciones','propuestas','uf'));
     }
 
     /**

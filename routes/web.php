@@ -979,7 +979,6 @@ Route::get('cbararrendatario/garantia/eliminar/{id}/{pub}','ContratoBorradorArre
 		->middleware('permission:finalContratoArr.edit');
 
 		Route::post('finalContratoArr/act_cheque/{idc}','ContratoFinalArrController@act_cheque')->name('finalContratoArr.act_cheque')
-<<<<<<< HEAD
 		->middleware('permission:finalContratoArr.edit');		
 
 
@@ -1035,10 +1034,6 @@ Route::post('contratorenovacionarrendatario/generarpagos/{idp}','SimulaArrendata
 Route::get('contratorenovacionarrendatario/propuesta/{id}','SimulaArrendatarioController@downloadExcel')->name('contratorenovacionarrendatario.excelsimulacion')->middleware('permission:contratorenovacionarrendatario.edit');
 
 
-=======
-		->middleware('permission:finalContratoArr.edit');	
-
-
 		//UF
 	Route::post('uf/store','UfController@store')->name('uf.store')
 		->middleware('permission:uf.create');
@@ -1060,5 +1055,5 @@ Route::get('contratorenovacionarrendatario/propuesta/{id}','SimulaArrendatarioCo
 
 	Route::get('uf/{uf}/edit','UfController@edit')->name('uf.edit')
 		->middleware('permission:uf.edit');	
->>>>>>> a2d882a68cc90dab9273c1daab7f8f38638d5cb7
+
 });
