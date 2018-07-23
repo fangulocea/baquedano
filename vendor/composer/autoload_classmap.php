@@ -225,6 +225,7 @@ return array(
     'CreateContratofinalarr' => $baseDir . '/database/migrations/2018_06_27_225936_create_contratofinalarr.php',
     'CreateContratofinalarrdocs' => $baseDir . '/database/migrations/2018_06_27_230007_create_contratofinalarrdocs.php',
     'CreateContratofinalarrpdf' => $baseDir . '/database/migrations/2018_06_27_230139_create_contratofinalarrpdf.php',
+    'CreateContratorenovacionarrendatario' => $baseDir . '/database/migrations/2018_07_22_211456_create_contratorenovacionarrendatario.php',
     'CreateContratosTable' => $baseDir . '/database/migrations/2018_06_13_225341_create_contratos_table.php',
     'CreateCorreosTable' => $baseDir . '/database/migrations/2018_05_30_140028_create_correos_table.php',
     'CreateFlexibilidadsTable' => $baseDir . '/database/migrations/2018_05_26_140017_create_flexibilidads_table.php',
