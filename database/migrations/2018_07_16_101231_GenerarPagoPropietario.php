@@ -40,6 +40,7 @@ class GenerarPagoPropietario extends Migration
             $table->string('nomotro2')->nullable();
             $table->string('moneda')->nullable();
             $table->double('valormoneda', 20, 8)->nullable();
+            $table->date('fecha_moneda')->nullable();
             $table->integer('id_creador')->nullable();
             $table->integer('id_modificador')->nullable();
             $table->integer('id_estado')->nullable();

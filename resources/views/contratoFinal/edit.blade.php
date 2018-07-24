@@ -348,7 +348,7 @@ use App\Http\Controllers\ContratoFinalController;
 
                                                     </div><br>
                                                     <div class="row">
-                                                        <div class="col-md-6">
+                                                        <div class="col-md-5">
                                                             <div class="form-group">
                                                                 <label for="input-file-now-custom-1">Fecha Inicio Contrato</label>
                                                                 <input type="date" name="fecha_firmapago" id="fecha_firmapago" class="form-control">
@@ -363,7 +363,7 @@ use App\Http\Controllers\ContratoFinalController;
                                                                 </select>
                                                             </div>
                                                         </div>
-                                                        <div class="col-md-3">
+                                                        <div class="col-md-4">
                                                             <div class="form-group">
                                                                 <label for="input-file-now-custom-1">Valor Moneda</label>
                                                                 <input name='valormoneda' id='valormoneda' type="number" class="form-control" required="required" value='1' step="any">
@@ -1304,8 +1304,8 @@ $("#id_propuesta").change(function (event) {
           $("#nombre_otropago2").val(response.nomotro2!=null?response.nomotro2:'');
            $("#pagootro1").val(response.otro1!=null?response.otro1:0);
            $("#pagootro2").val(response.otro2!=null?response.otro2:0);
-           $("#moneda").val(response.moneda!=null?response.moneda:0);
-           $("#valormoneda").val(response.valormoneda!=null?response.valormoneda:0);
+           $("#moneda").val("");
+           $("#valormoneda").val("");
 
     });
 
@@ -1409,7 +1409,7 @@ document.getElementById("pagoarea").innerHTML="";
            
                                                             var a = document.createElement("button");
                                                             var cell = document.createElement("td");
-                                                            var cellText = document.createTextNode("$ "+response[r].subtotal_salida);
+                                                            var cellText = document.createTextNode("$ "+response[r].subtotal_salida_moneda);
                                                             cell.appendChild(cellText);
                                                             cell.style.border="1px solid black";
                                                             cell.style.padding="8px"
@@ -1418,7 +1418,7 @@ document.getElementById("pagoarea").innerHTML="";
 
                
                                                             var cell = document.createElement("td");
-                                                            var cellText = document.createTextNode("$ "+response[r].pago_propietario);
+                                                            var cellText = document.createTextNode("$ "+response[r].pago_propietario_moneda);
                                                             cell.appendChild(cellText);
                                                             cell.style.border="1px solid black";
                                                             cell.style.padding="8px"
