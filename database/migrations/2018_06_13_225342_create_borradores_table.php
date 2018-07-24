@@ -43,6 +43,7 @@ class CreateBorradoresTable extends Migration
             $table->foreign('id_contrato')->references('id')->on('contratos');
             $table->integer('id_simulacion')->unsigned();
             $table->foreign('id_simulacion')->references('id')->on('cap_simulapropietario');
+            $table->string('tipo_contrato')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

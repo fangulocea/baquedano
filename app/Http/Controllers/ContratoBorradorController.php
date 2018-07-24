@@ -122,8 +122,9 @@ class ContratoBorradorController extends Controller
          ->leftjoin('flexibilidads as f', 'b.id_flexibilidad', '=', 'f.id')
          ->leftjoin('cap_publicaciones as cp', 'b.id_publicacion', '=', 'cp.id')
          ->leftjoin('borradorespdf as bp', 'b.id', '=', 'bp.id_borrador')
-            ->where('b.id_publicacion','=',$id)
-         ->select(DB::raw(' b.id as id, n.razonsocial as n_n, s.nombre as n_s, c.nombre as n_c, f.nombre as n_f , cp.id as id_publicacion,DATE_FORMAT(b.fecha_gestion, "%d/%m/%Y") as fecha,b.id_servicios as id_servicios,b.id_estado,bp.nombre, bp.id as id_pdfborrador'))
+         ->leftjoin('cap_simulapropietario as csp', 'b.id_simulacion', '=', 'csp.id')
+         ->where('b.id_publicacion','=',$id)
+         ->select(DB::raw(' b.id as id, n.razonsocial as n_n, s.nombre as n_s, c.nombre as n_c, f.nombre as n_f , cp.id as id_publicacion,DATE_FORMAT(b.fecha_gestion, "%d/%m/%Y") as fecha,b.id_servicios as id_servicios,b.id_estado,bp.nombre, bp.id as id_pdfborrador, b.tipo_contrato, csp.tipopropuesta '))
          ->get();
             
         $gestBorradores = DB::table('borradores as g')
@@ -221,8 +222,18 @@ class ContratoBorradorController extends Controller
         array_set($request, 'fecha_gestion', $fecha_gestion);
         array_set($request, 'detalle_revision',$contratoTipo->descripcion);
         array_set($request, 'id_estado', 1);
-        $borrador = ContratoBorrador::create($request->all());
 
+        $tipo_simulacion = DB::table('cap_simulapropietario')
+        ->where("id","=",$request->id_simulacion)->first();
+        if($tipo_simulacion->tipopropuesta == 1 || $tipo_simulacion->tipopropuesta == 2)
+        { $tContrato = "N"; }
+        elseif($tipo_simulacion->tipopropuesta == 3 || $tipo_simulacion->tipopropuesta == 4)
+        { $tContrato = "R"; }
+        else
+        { $tContrato = "X";  }
+
+        array_set($request, 'tipo_contrato', $tContrato);
+        $borrador = ContratoBorrador::create($request->all());
         //PARA PDF
          $borradorPDF = DB::table('borradores as b')
          ->leftjoin('notarias as n', 'b.id_notaria', '=', 'n.id')
@@ -253,13 +264,14 @@ class ContratoBorradorController extends Controller
          $capSimulacion = DB::table('cap_simulapropietario as s')
          ->where('s.id','=',$request->id_simulacion)->first();
 
-         if($capSimulacion->tipopropuesta == 1)
+         if($capSimulacion->tipopropuesta == 1  || $capSimulacion->tipopropuesta == 3)
          {
             $idTipoPago = 21;
-         } elseif($capSimulacion->tipopropuesta == 2)
+         } elseif($capSimulacion->tipopropuesta == 2  || $capSimulacion->tipopropuesta == 4)
          {
             $idTipoPago = 35;
          } 
+         
 
          $simulacion = DB::table('cap_simulapagopropietarios as b')
          ->where('b.id_simulacion','=',$request->id_simulacion)

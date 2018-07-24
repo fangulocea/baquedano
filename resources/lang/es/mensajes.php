@@ -20,4 +20,8 @@ return [
 
 		'reserva' => '{2}No Vigente|{1}Vigente', 
 
+		'Propuesta' => '{1}1 Cuota|{2}Pie + Cuotas|{3}Renovación, 1 Cuota|{4}Renovación, Pie + Cuotas',
+
+		'TipoContrato' => '{N}Nuevo|{A}Anexo|{R}Renovación',
+
 ];

@@ -35,6 +35,7 @@ class SimulaPropietarioController extends Controller {
         $nrocuotas = $request->cuotas;
         $cobromensual = $request->cobromensual;
         $tipopropuesta = $request->propuesta;
+        $ipc = $request->ipc;
 
         //pagos
         

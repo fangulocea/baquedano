@@ -73,13 +73,25 @@ class ContratoFinalController extends Controller {
         $captacion = Captacion::find($ContratoBorrador->id_publicacion)->update([
             "id_estado" => 10
         ]);
+
+        $tipo_simulacion = DB::table('cap_simulapropietario')
+        ->where("id","=",$ContratoBorrador->id_simulacion)->first();
+        if($tipo_simulacion->tipopropuesta == 1 || $tipo_simulacion->tipopropuesta == 2)
+        { $tContrato = "N"; }
+        elseif($tipo_simulacion->tipopropuesta == 3 || $tipo_simulacion->tipopropuesta == 4)
+        { $tContrato = "R"; }
+        else
+        { $tContrato = "X";  }
+        array_set($request, 'tipo_contrato', $tContrato);
+
         $contratoFinal = ContratoFinal::create([
                     "id_publicacion" => $ContratoBorrador->id_publicacion,
-                    "id_propuesta" => $request->id_propuesta,
-                    "id_estado" => 1,
-                    "id_creador" => $request->id_creadorfinal,
-                    "id_borrador" => $request->id_borradorfinal,
-                    "id_borradorpdf" => $ContratoBorradorPDF->id
+                    "id_propuesta"   => $request->id_propuesta,
+                    "id_estado"      => 1,
+                    "id_creador"     => $request->id_creadorfinal,
+                    "id_borrador"    => $request->id_borradorfinal,
+                    "id_borradorpdf" => $ContratoBorradorPDF->id,
+                    "tipo_contrato"  => $request->tipo_contrato
         ]);
 
         //PARA PDF
@@ -109,10 +121,10 @@ class ContratoFinalController extends Controller {
          $capSimulacion = DB::table('cap_simulapropietario as s')
          ->where('s.id','=',$request->id_propuesta)->first();
 
-         if($capSimulacion->tipopropuesta == 1)
+         if($capSimulacion->tipopropuesta == 1 || $capSimulacion->tipopropuesta == 3)
          {
             $idTipoPago = 21;
-         } elseif($capSimulacion->tipopropuesta == 2)
+         } elseif($capSimulacion->tipopropuesta == 2 || $capSimulacion->tipopropuesta == 4)
          {
             $idTipoPago = 35;
          } 
