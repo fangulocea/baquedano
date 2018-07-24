@@ -164,8 +164,8 @@ class ContratoBorradorArrendatarioController extends Controller
 
         $propuestas = DB::table('cap_simulaarrendatario')
          ->where("id_publicacion","=",$id)
-         ->select(DB::raw(" id, (CASE  WHEN tipopropuesta=1 THEN '1 Cuota' WHEN tipopropuesta=2 THEN'Pie + Cuota' ELSE 'Renovación' END) as tipopropuesta, proporcional, fecha_iniciocontrato, meses_contrato, iva,descuento, pie, cobromensual, nrocuotas,canondearriendo" ))
-         ->get();  
+         ->select(DB::raw(" id, (CASE  WHEN tipopropuesta=1 THEN '1 Cuota' WHEN tipopropuesta=2 THEN'Pie + Cuota' WHEN tipopropuesta=3 THEN 'Renovación, 1 Cuota' WHEN tipopropuesta=4 THEN 'Renovación, Pie + Cuotas' ELSE 'Renovación' END) as tipopropuesta, proporcional, fecha_iniciocontrato, meses_contrato, iva,descuento, pie, cobromensual, nrocuotas,canondearriendo" ))
+         ->get(); 
 
          $garantias = DB::table('arrendatario_garantia as g')
         ->where("id_publicacion","=",$id)
@@ -218,6 +218,17 @@ class ContratoBorradorArrendatarioController extends Controller
         array_set($request, 'detalle',$contratoTipo->descripcion);
         array_set($request, 'id_estado', 1);
 
+
+        $tipo_simulacion = DB::table('cap_simulaarrendatario')
+        ->where("id","=",$request->id_simulacion)->first();
+        if($tipo_simulacion->tipopropuesta == 1 || $tipo_simulacion->tipopropuesta == 2)
+        { $tContrato = "N"; }
+        elseif($tipo_simulacion->tipopropuesta == 3 || $tipo_simulacion->tipopropuesta == 4)
+        { $tContrato = "R"; }
+        else
+        { $tContrato = "X";  }
+
+        array_set($request, 'tipo_contrato', $tContrato);
         $borrador = ContratoBorradorArrendatario::create($request->all());
 
         //PARA PDF
@@ -249,10 +260,10 @@ class ContratoBorradorArrendatarioController extends Controller
          $capSimulacion = DB::table('cap_simulaarrendatario as s')
          ->where('s.id','=',$request->id_simulacion)->first();
 
-         if($capSimulacion->tipopropuesta == 1)
+         if($capSimulacion->tipopropuesta == 1  || $capSimulacion->tipopropuesta == 3)
          {
             $idTipoPago = 21;
-         } elseif($capSimulacion->tipopropuesta == 2)
+         } elseif($capSimulacion->tipopropuesta == 2  || $capSimulacion->tipopropuesta == 4)
          {
             $idTipoPago = 35;
          } 
@@ -426,11 +437,11 @@ class ContratoBorradorArrendatarioController extends Controller
 
         $capSimulacion = DB::table('cap_simulaarrendatario as s')
          ->where('s.id','=',$request->id_simulacion)->first();
-
-         if($capSimulacion->tipopropuesta == 1)
+         
+         if($capSimulacion->tipopropuesta == 1  || $capSimulacion->tipopropuesta == 3)
          {
             $idTipoPago = 21;
-         } elseif($capSimulacion->tipopropuesta == 2)
+         } elseif($capSimulacion->tipopropuesta == 2  || $capSimulacion->tipopropuesta == 4)
          {
             $idTipoPago = 35;
          } 

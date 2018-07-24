@@ -11,6 +11,8 @@
         <th style="background-color: #F2F4F4;text-align: center">Descuento</th>
         <th style="background-color: #F2F4F4;text-align: center">Nro. Cuotas</th>
         <th style="background-color: #F2F4F4;text-align: center">% Cobro Mensual</th>
+        <th style="background-color: #F2F4F4;text-align: center">IPC</th>
+
     </tr>
     </thead>
     <tbody>
@@ -22,6 +24,7 @@
         <td style="background-color: #F2F4F4;text-align: center">{{ $header->descuento }}%</td>
         <td style="background-color: #F2F4F4;text-align: center">{{ $header->nrocuotas }}</td>
         <td style="background-color: #F2F4F4;text-align: center">{{ $header->cobromensual }}%</td>
+        <td style="background-color: #F2F4F4;text-align: center">{{ $header->ipc }}</td>
     </tr>
     </tbody>
 </table>

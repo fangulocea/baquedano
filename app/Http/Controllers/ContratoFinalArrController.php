@@ -88,13 +88,27 @@ class ContratoFinalArrController extends Controller
              "id_estado"=> 10
          ]);
 
+
+        $tipo_simulacion = DB::table('cap_simulaarrendatario')
+        ->where("id","=",$ContratoBorradorArrendatario->id_simulacion)->first();
+        if($tipo_simulacion->tipopropuesta == 1 || $tipo_simulacion->tipopropuesta == 2)
+        { $tContrato = "N"; }
+        elseif($tipo_simulacion->tipopropuesta == 3 || $tipo_simulacion->tipopropuesta == 4)
+        { $tContrato = "R"; }
+        else
+        { $tContrato = "X";  }
+        array_set($request, 'tipo_contrato', $tContrato);
+
+        //dd($tipo_simulacion);
+
        $contratoFinal=ContratoFinalArr::create([
              "id_publicacion" => $ContratoBorradorArrendatario->id_cap_arr, //arrendatarios
              "id_estado"      => 1,
              "id_creador"     => $request->id_creadorfinal,
              "id_borrador"    => $request->id_borradorfinal, //contrato borrador arrendatario
              "id_borradorpdf" => $pdfBorradorArrendatario->id,//contrato borrador PDF
-             "id_simulacion"  => $request->id_propuesta
+             "id_simulacion"  => $request->id_propuesta,
+             "tipo_contrato"  => $request->tipo_contrato
        ]);
 
 
@@ -128,10 +142,10 @@ class ContratoFinalArrController extends Controller
          $capSimulacion = DB::table('cap_simulaarrendatario as s')
          ->where('s.id','=',$request->id_propuesta)->first();
 
-         if($capSimulacion->tipopropuesta == 1)
+         if($capSimulacion->tipopropuesta == 1 || $capSimulacion->tipopropuesta == 3)
          {
             $idTipoPago = 21;
-         } elseif($capSimulacion->tipopropuesta == 2)
+         } elseif($capSimulacion->tipopropuesta == 2 || $capSimulacion->tipopropuesta == 4)
          {
             $idTipoPago = 35;
          } 
@@ -856,7 +870,7 @@ $fecha_ini = date('Y-m-j', strtotime(date("Y", strtotime($fechafirma)) . '-' . d
                 ]);
             }
         }
-        if ($tipopropuesta == 1) {
+        if ($tipopropuesta == 1 || $tipopropuesta == 3) {
             $fecha_ini = date('Y-m-j', strtotime(date("Y", strtotime($fechafirma)) . '-' . date("m", strtotime($fechafirma)) . '-' . 1));
             //pago 1 cuota
 
@@ -900,7 +914,7 @@ $fecha_ini = date('Y-m-j', strtotime(date("Y", strtotime($fechafirma)) . '-' . d
         }
 
         //pago iva
-        if ($tipopropuesta == 1) {
+        if ($tipopropuesta == 1 || $tipopropuesta == 3) {
             $idtipopago = 4;
 
             $pago = PagosArrendatarios::create([
@@ -1144,7 +1158,7 @@ $fecha_ini = date('Y-m-j', strtotime(date("Y", strtotime($fechafirma)) . '-' . d
             $primer_mes += $valor_en_pesos;
         }
 
-        if ($tipopropuesta == 1) {
+        if ($tipopropuesta == 1 || $tipopropuesta == 3) {
             //Pendiente Mes Anterior
             $fecha_ini = date('Y-m-j', strtotime(date("Y", strtotime($fechafirma)) . '-' . date("m", strtotime($fechafirma)) . '-' . 1));
             $idtipopago = 15;
@@ -1322,7 +1336,7 @@ $fecha_ini = date('Y-m-j', strtotime(date("Y", strtotime($fechafirma)) . '-' . d
 
         //general para pago 11 cuotas
 
-        if ($tipopropuesta == 2) {
+        if ($tipopropuesta == 2 || $tipopropuesta == 4) {
             $primer_mes = 0;
 
             $fecha_ini = date('Y-m-j', strtotime(date("Y", strtotime($fechafirma)) . '-' . date("m", strtotime($fechafirma)) . '-' . 1));
@@ -1633,9 +1647,9 @@ $fecha_ini = date('Y-m-j', strtotime(date("Y", strtotime($fechafirma)) . '-' . d
           }
         
 
- if ($tipopropuesta == 1) {
+ if ($tipopropuesta == 1 || $tipopropuesta == 3) {
     $tipos=[1,2,3,4,5,6,7,8,10,11,15];
- }elseif($tipopropuesta == 2){
+ }elseif($tipopropuesta == 2 || $tipopropuesta == 4){
     $tipos=[1,2,5,6,7,8,10,11,31,32,33];
 
  }else{

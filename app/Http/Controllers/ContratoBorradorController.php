@@ -169,7 +169,7 @@ class ContratoBorradorController extends Controller
 
         $propuestas = DB::table('cap_simulapropietario')
          ->where("id_publicacion","=",$id)
-         ->select(DB::raw(" id, (CASE  WHEN tipopropuesta=1 THEN '1 Cuota' WHEN tipopropuesta=2 THEN'Pie + Cuota' ELSE 'Renovación' END) as tipopropuesta, proporcional, fecha_iniciocontrato, meses_contrato, iva,descuento, pie, cobromensual, nrocuotas,canondearriendo" ))
+         ->select(DB::raw(" id, (CASE  WHEN tipopropuesta=1 THEN '1 Cuota' WHEN tipopropuesta=2 THEN'Pie + Cuota' WHEN tipopropuesta=3 THEN 'Renovación, 1 Cuota' WHEN tipopropuesta=4 THEN 'Renovación, Pie + Cuotas' ELSE 'Renovación' END) as tipopropuesta, proporcional, fecha_iniciocontrato, meses_contrato, iva,descuento, pie, cobromensual, nrocuotas,canondearriendo" ))
          ->get();     
 
         $garantias = DB::table('propietario_garantia as g')
@@ -346,13 +346,13 @@ class ContratoBorradorController extends Controller
          $capSimulacion = DB::table('cap_simulapropietario as s')
          ->where('s.id','=',$request->id_simulacion)->first();
 
-         if($capSimulacion->tipopropuesta == 1)
+         if($capSimulacion->tipopropuesta == 1  || $capSimulacion->tipopropuesta == 3)
          {
             $idTipoPago = 21;
-         } elseif($capSimulacion->tipopropuesta == 2)
+         } elseif($capSimulacion->tipopropuesta == 2  || $capSimulacion->tipopropuesta == 4)
          {
             $idTipoPago = 35;
-         } 
+         }  
 
          $simulacion = DB::table('cap_simulapagopropietarios as b')
          ->where('b.id_simulacion','=',$request->id_simulacion)

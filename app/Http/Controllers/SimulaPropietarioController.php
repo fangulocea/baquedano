@@ -96,6 +96,7 @@ class SimulaPropietarioController extends Controller {
                     'ipc'         => $ipc
         ]);
 
+        
         $idsimulacion = $simula->id;
         $primer_mes = 0;
 
