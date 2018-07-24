@@ -25,6 +25,14 @@ class PagosMensualesArrendatarios extends Migration
             $table->date('fecha_iniciocontrato');
             $table->integer('mes');
             $table->integer('anio');
+            $table->string('moneda');
+            $table->date('fecha_moneda');
+            $table->double('valormoneda', 20, 8);
+            $table->double('subtotal_entrada', 20, 8)->nullable();;
+            $table->double('subtotal_salida', 20, 8)->nullable();;
+            $table->double('pago_a_arrendatario', 20, 8)->nullable();;
+            $table->double('pago_a_rentas', 20, 8)->nullable();;
+            $table->double('valor_a_pagar', 20, 8)->nullable();;
             $table->integer('subtotal_entrada')->nullable();;
             $table->integer('subtotal_salida')->nullable();;
             $table->integer('pago_a_arrendatario')->nullable();;

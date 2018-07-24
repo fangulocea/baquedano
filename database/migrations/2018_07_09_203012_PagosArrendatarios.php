@@ -34,6 +34,7 @@ class PagosArrendatarios extends Migration
             $table->integer('cant_diasmes');
             $table->integer('cant_diasproporcional');
             $table->string('moneda');
+            $table->date('fecha_moneda');
             $table->double('valormoneda', 20, 8);
             $table->double('valordia', 20, 8);
             $table->double('precio_en_moneda', 20, 8);
