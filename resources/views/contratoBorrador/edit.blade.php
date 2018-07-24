@@ -591,7 +591,7 @@
                                 @foreach($borradoresIndex as $p)
                                 <tr>
                                     {{-- <td style="background: #ff7676; color:white">{{ $p->id_publicacion }                                        }</td> --}}
-                                        <td>{{ $p->id }}</td>
+                                    <td>{{ $p->id }}</td>
                                     <td >{{ $p->fecha }}</td>
                                     <td>{{ trans_choice('mensajes.Propuesta',$p->tipopropuesta) }}</td>
                                     <td>{{ trans_choice('mensajes.TipoContrato',$p->tipo_contrato) }}</td>
