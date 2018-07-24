@@ -1,9 +1,6 @@
 @extends('admin.layout')
 
 @section('contenido')
-
-
-
 <link href="{{ URL::asset('/plugins/bower_components/typeahead.js-master/dist/typehead-min.css') }}" rel="stylesheet">
 <link href="{{ URL::asset('plugins/bower_components/bootstrap-datepicker/bootstrap-datepicker.min.css') }}" rel="stylesheet" type="text/css" />
 <link href="{{ URL::asset('plugins/bower_components/sweetalert/sweetalert.css')}}" rel="stylesheet" type="text/css">
@@ -827,6 +824,7 @@
                                                                     <!--/row-->
 
 
+
                                                                 </div>
                                                                 <div class="form-actions">
                                                                     <button type="submit" class="btn btn-success"> <i class="fa fa-check"></i> Guardar</button>
@@ -1565,8 +1563,7 @@ $("#li_5_c").click(function (event) {
             $("#li_5_c").addClass("tab-current");
             $("#section-iconbox-5_c").addClass("content-current");
             $("#section-iconbox-6_c").removeClass("content-current");
-            $("#section-iconbox-1_c").removeClass("content-current");      
-            
+            $("#section-iconbox-1_c").removeClass("content-current");           
 });
 
 

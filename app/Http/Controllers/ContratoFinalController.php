@@ -59,7 +59,7 @@ class ContratoFinalController extends Controller {
                 ->leftjoin('adm_contratofinal as cp', 'c.id_contratofinal', '=', 'cp.id')
                 ->where('c.id_contratofinal', '=', $id)
                 ->where('c.id_inmueble', '=', $idi)
-                ->select(DB::raw(' c.id, c.E_S, c.fecha_iniciocontrato, c.mes, c.anio, c.valor_a_pagar, cp.meses_contrato,c.subtotal_entrada, c.subtotal_salida, c.pago_propietario, c.pago_rentas, c.id_estado'))
+                ->select(DB::raw(' c.id, c.E_S, c.fecha_iniciocontrato, c.mes, c.anio, c.valor_a_pagar, cp.meses_contrato,c.subtotal_entrada, c.subtotal_salida, c.pago_propietario, c.pago_rentas,c.subtotal_entrada_moneda, c.subtotal_salida_moneda, c.pago_propietario_moneda, c.pago_rentas_moneda, c.id_estado'))
                 ->orderBy('c.id', 'asc')
                 ->get();
         return response()->json($contrato);
@@ -617,6 +617,7 @@ class ContratoFinalController extends Controller {
                     'tipopropuesta' => $tipopropuesta,
                     'nrocuotas' => $nrocuotas,
                     'moneda' => $tipomoneda,
+                    'fecha_moneda' => Carbon::now()->format('Y/m/d'),
                     'gastocomun' => $gastocomun,
                     'notaria' => $pagonotaria,
                     'otro1' => $pagootro1,
@@ -1361,9 +1362,9 @@ $fecha_ini = date('Y-m-j', strtotime(date("Y", strtotime($fechafirma)) . '-' . d
                             'cant_diasmes' => $dias_mes,
                             'cant_diasproporcional' => $dias_proporcionales,
                             'moneda' => $tipomoneda,
-                            'valormoneda' => $valormoneda  / $valormoneda,
+                            'valormoneda' => $valormoneda,
                             'valordia' => $valor_diario,
-                            'precio_en_moneda' => $saldo_a_depositar,
+                            'precio_en_moneda' => $saldo_a_depositar  / $valormoneda,
                             'precio_en_pesos' => $saldo_a_depositar,
                             'id_creador' => $id_creador,
                             'id_modificador' => $id_creador,
@@ -1748,6 +1749,13 @@ $fecha_ini = date('Y-m-j', strtotime(date("Y", strtotime($fechafirma)) . '-' . d
                         'fecha_iniciocontrato' => $fechafirma,
                         'mes' => $mes,
                         'anio' => $anio,
+                        'moneda' => $tipomoneda,
+                        'valor_moneda' => $valormoneda,
+                        'fecha_moneda' => Carbon::now()->format('Y-m-d'),
+                        'subtotal_entrada_moneda' => $pagos_mensuales_e / $valormoneda,
+                        'subtotal_salida_moneda' => $pagos_mensuales_s / $valormoneda,
+                        'pago_propietario_moneda' => $pagar_a_propietario / $valormoneda,
+                        'pago_rentas_moneda' => $pagar_a_baquedano / $valormoneda,
                         'subtotal_entrada' => $pagos_mensuales_e,
                         'subtotal_salida' => $pagos_mensuales_s,
                         'pago_propietario' => $pagar_a_propietario,

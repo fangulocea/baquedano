@@ -7,5 +7,5 @@ use Illuminate\Database\Eloquent\Model;
 class PagosMensualesPropietarios extends Model
 {
     protected $table='adm_pagosmensualespropietarios';
-    protected $fillable = ['id_contratofinal','id_publicacion','E_S','fecha_iniciocontrato','mes','anio','valor_a_pagar','id_creador','id_modificador','id_estado','id_inmueble','subtotal_entrada','subtotal_salida','pago_propietario','pago_rentas'];
+    protected $fillable = ['id_contratofinal','id_publicacion','E_S','fecha_iniciocontrato','mes','anio','valor_a_pagar','id_creador','id_modificador','id_estado','id_inmueble','subtotal_entrada','subtotal_salida','pago_propietario','pago_rentas','moneda','valor_moneda','fecha_moneda','subtotal_entrada_moneda','subtotal_salida_moneda','pago_propietario_moneda','pago_rentas_moneda'];
 }

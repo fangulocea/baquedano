@@ -1,7 +1,6 @@
 @extends('admin.layout')
 
 @section('contenido')
-
 <div id="tabla" >
     <div class="white-box">
         <h3 class="box-title m-b-0">Gestión de Contratos Borrador</h3>
@@ -61,14 +60,11 @@
                                 @endcan
                             </tr>
                             @endforeach
-
                 </tbody>
             </table>
         </div>
     </div>
 </div>
-
-
 <link href = "{{ URL::asset('plugins/bower_components/datatables/jquery.dataTables.min.css')   }}" rel="stylesheet" type="text/css"   />
 <link href = "{{ URL::asset('plugins/DataTables/Buttons-1.5.1/css/buttons.dataTables.min.css') }}" rel="stylesheet" type="text/css"   />
 
