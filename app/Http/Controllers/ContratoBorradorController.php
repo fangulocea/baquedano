@@ -346,13 +346,13 @@ class ContratoBorradorController extends Controller
          $capSimulacion = DB::table('cap_simulapropietario as s')
          ->where('s.id','=',$request->id_simulacion)->first();
 
-         if($capSimulacion->tipopropuesta == 1)
+         if($capSimulacion->tipopropuesta == 1  || $capSimulacion->tipopropuesta == 3)
          {
             $idTipoPago = 21;
-         } elseif($capSimulacion->tipopropuesta == 2)
+         } elseif($capSimulacion->tipopropuesta == 2  || $capSimulacion->tipopropuesta == 4)
          {
             $idTipoPago = 35;
-         } 
+         }  
 
          $simulacion = DB::table('cap_simulapagopropietarios as b')
          ->where('b.id_simulacion','=',$request->id_simulacion)

@@ -44,6 +44,7 @@ class CreateContratoborradorarrendatarioTable extends Migration
             $table->foreign('id_contrato')->references('id')->on('contratos');
             $table->integer('id_simulacion')->unsigned()->nullable();
             $table->foreign('id_simulacion')->references('id')->on('cap_simulaarrendatario')->nullable();
+            $table->string('tipo_contrato')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

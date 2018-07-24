@@ -21,6 +21,18 @@ class SimulaArrendatarioController extends Controller
 
         $captacion = Arrendatario::find($idp);
 
+        if($request->propuesta == 3 || $request->propuesta == 4 )
+        {
+            $arriendo = ($request->arriendo_sim * $request->ipc / 100)+$request->arriendo_sim ;
+            $gastocomun = ($request->gastocomun_sim * $request->ipc / 100)+$request->gastocomun_sim ;
+        } 
+        else
+        {
+            $gastocomun = $request->gastocomun_sim ;
+            $arriendo = $request->arriendo_sim ;
+        }
+
+
         $idinmueble = $captacion->id_inmueble;
         $idpropietario = $captacion->id_arrendatario;
         $cant_meses = $request->cant_meses;
@@ -32,13 +44,12 @@ class SimulaArrendatarioController extends Controller
         $nrocuotas = $request->cuotas;
         $cobromensual = $request->cobromensual;
         $tipopropuesta = $request->propuesta;
+        $ipc = $request->ipc;
 
         //pagos
-        $gastocomun = $request->gastocomun_sim;
         $fecha_ini = date('Y-m-j', strtotime(date("Y", strtotime($fechafirma)) . '-' . date("m", strtotime($fechafirma)) . '-' . 1));
         $fecha_ini2 = $fechafirma;
         $dia_original = date("d", strtotime($fechafirma));
-        $arriendo = $request->arriendo_sim;
         $comision = $request->comision;
         $pagonotaria = $request->pagonotaria;
         $nombre_otropago1 = $request->nombre_otropago1;
@@ -81,7 +92,8 @@ class SimulaArrendatarioController extends Controller
                     'id_creador' => $id_creador,
                     'id_modificador' => $id_creador,
                     'id_estado' => 1,
-                    'canondearriendo' => $arriendo
+                    'canondearriendo' => $arriendo,
+                    'ipc' => $ipc
         ]);
 
         $idsimulacion = $simula->id;
@@ -304,7 +316,7 @@ $fecha_ini = date('Y-m-j', strtotime(date("Y", strtotime($fechafirma)) . '-' . d
                 ]);
             }
         }
-        if ($tipopropuesta == 1) {
+        if ($tipopropuesta == 1 || $tipopropuesta ==3 ) {
             $fecha_ini = date('Y-m-j', strtotime(date("Y", strtotime($fechafirma)) . '-' . date("m", strtotime($fechafirma)) . '-' . 1));
             //pago 1 cuota
 
@@ -346,7 +358,7 @@ $fecha_ini = date('Y-m-j', strtotime(date("Y", strtotime($fechafirma)) . '-' . d
         }
 
         //pago iva
-        if ($tipopropuesta == 1) {
+        if ($tipopropuesta == 1 || $tipopropuesta == 3) {
             $idtipopago = 4;
 
             $pago = SimulaPagoArrendatario::create([
@@ -584,7 +596,7 @@ $fecha_ini = date('Y-m-j', strtotime(date("Y", strtotime($fechafirma)) . '-' . d
             $primer_mes += $valor_en_pesos;
         }
 
-        if ($tipopropuesta == 1) {
+        if ($tipopropuesta == 1 || $tipopropuesta == 3) {
   /*          //Pendiente Mes Anterior
             $fecha_ini = date('Y-m-j', strtotime(date("Y", strtotime($fechafirma)) . '-' . date("m", strtotime($fechafirma)) . '-' . 1));
             $idtipopago = 15;
@@ -756,7 +768,7 @@ $fecha_ini = date('Y-m-j', strtotime(date("Y", strtotime($fechafirma)) . '-' . d
 
         //general para pago 11 cuotas
 
-        if ($tipopropuesta == 2) {
+        if ($tipopropuesta == 2 || $tipopropuesta == 4) {
             $primer_mes = 0;
 
             $fecha_ini = date('Y-m-j', strtotime(date("Y", strtotime($fechafirma)) . '-' . date("m", strtotime($fechafirma)) . '-' . 1));
@@ -1064,7 +1076,7 @@ $fecha_ini = date('Y-m-j', strtotime(date("Y", strtotime($fechafirma)) . '-' . d
                         ->leftjoin('comunas as o', 'i.id_comuna', '=', 'o.comuna_id')
                         ->where("c.id", "=", $id)
                         ->select(DB::raw(' DATE_FORMAT(c.created_at, "%d/%m/%Y") as fecha_creacion, CONCAT_WS(" ",p1.nombre,p1.apellido_paterno,p1.apellido_materno) as Arrendatario,
-         p2.name as Creador,CONCAT_WS(" ",i.direccion,i.numero,i.departamento,o.comuna_nombre) as propiedad,c.meses_contrato,c.fecha_iniciocontrato, c.iva, c.descuento, c.pie, c.cobromensual, c.tipopropuesta, c.nrocuotas'))
+         p2.name as Creador,CONCAT_WS(" ",i.direccion,i.numero,i.departamento,o.comuna_nombre) as propiedad,c.meses_contrato,c.fecha_iniciocontrato, c.iva, c.descuento, c.pie, c.cobromensual, c.tipopropuesta, c.nrocuotas, c.ipc'))
                         ->get()->toArray();
         $header = $header[0];
 
@@ -1076,7 +1088,7 @@ $fecha_ini = date('Y-m-j', strtotime(date("Y", strtotime($fechafirma)) . '-' . d
             return Excel::create('Propuesta de Pago', function ($excel) use ($header, $propuesta1, $meses) {
                         $excel->sheet('Propuesta', function ($sheet) use ($header, $propuesta1, $meses) {
                             $sheet->setBorder('A8:M20', 'thin');
-                            $sheet->setBorder('A5:G6', 'thin');
+                            $sheet->setBorder('A5:H6', 'thin');
                             $sheet->loadView('formatosexcel.propuesta1_arr', compact('header', 'meses', 'propuesta1'));
                         });
                     })->download('xlsx');
@@ -1088,7 +1100,7 @@ $fecha_ini = date('Y-m-j', strtotime(date("Y", strtotime($fechafirma)) . '-' . d
                         $excel->sheet('Propuesta', function ($sheet) use ($header, $propuesta2, $meses) {
                             $sheet->loadView('formatosexcel.propuesta2_arr', compact('header', 'meses', 'propuesta2'));
                             $sheet->setBorder('A8:M20', 'thin');
-                            $sheet->setBorder('A5:G6', 'thin');
+                            $sheet->setBorder('A5:H6', 'thin');
                         });
                     })->download('xlsx');
         }

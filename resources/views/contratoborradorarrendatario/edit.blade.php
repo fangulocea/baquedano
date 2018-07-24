@@ -205,7 +205,8 @@
                                                                 <option value="">Seleccione Propuesta</option>
                                                                 <option value="1">1 Cuota</option>
                                                                 <option value="2">Pie + Cuotas</option>
-                                                                <option value="3">Renovación</option>
+                                                                <option value="3">Renovación, 1 Cuota</option>
+                                                                <option value="4">Renovación, Pie + Cuotas</option>
                                                             </select>
                                                         </div>
                                                     </div>
@@ -293,6 +294,13 @@
                                                     <div class="input-group"> 
                                                         <span class="input-group-addon">%</span>
                                                         <input name='cobromensual' id='cobromensual' type="number" class="form-control"   step="any" value="0" required="required">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <label>IPC</label>
+                                                    <div class="input-group"> 
+                                                        <span class="input-group-addon">%</span>
+                                                        <input name='ipc' id='ipc' type="number" class="form-control"   step="any" value="0"  >
                                                     </div>
                                                 </div>
                                             </div>
@@ -1067,6 +1075,20 @@ $(function(){
         $("#pie").val("");
         $("#cobromensual").val("");
     }
+    if(this.value==3){
+        $("#cuotas").val("");
+        $("#iva").val("");
+        $("#pie").val(0);
+        $("#cobromensual").val(0);
+        $("#ipc").val("");
+    }
+    if(this.value==4){
+        $("#cuotas").val("");
+        $("#iva").val(0);
+        $("#pie").val("");
+        $("#cobromensual").val("");
+        $("#ipc").val("");
+    }    
 });
         $('#modal-contacto1_c').on('hidden.bs.modal', function () {
         $("#form1_c")[0].reset();

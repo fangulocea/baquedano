@@ -43,6 +43,7 @@ class SimulaArrendatario extends Migration
             $table->integer('id_modificador')->nullable();
             $table->integer('id_estado')->nullable();
             $table->double('canondearriendo', 20, 8)->nullable();
+            $table->double('ipc', 20, 8)->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
