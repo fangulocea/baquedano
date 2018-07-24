@@ -630,6 +630,9 @@ class ContratoFinalController extends Controller {
                     'id_estado' => 1,
                     'gastocomun' => $gastocomun,
                     'canondearriendo' => $arriendo
+// agregar ipc
+
+
         ]);
 
         $idsimulacion = $simula->id;
@@ -933,7 +936,7 @@ $fecha_ini = date('Y-m-j', strtotime(date("Y", strtotime($fechafirma)) . '-' . d
                         'canondearriendo' => $arriendo
             ]);
         }
-        if ($tipopropuesta == 1) {
+        if ($tipopropuesta == 1 || $tipopropuesta == 3) {
             $fecha_ini = date('Y-m-j', strtotime(date("Y", strtotime($fechafirma)) . '-' . date("m", strtotime($fechafirma)) . '-' . 1));
             //pago 1 cuota
 
@@ -978,7 +981,7 @@ $fecha_ini = date('Y-m-j', strtotime(date("Y", strtotime($fechafirma)) . '-' . d
         }
 
         //pago iva
-        if ($tipopropuesta == 1) {
+        if ($tipopropuesta == 1 || $tipopropuesta == 3) {
             $idtipopago = 4;
 
             $pago = PagosPropietarios::create([
@@ -1181,7 +1184,7 @@ $fecha_ini = date('Y-m-j', strtotime(date("Y", strtotime($fechafirma)) . '-' . d
             $primer_mes += $valor_en_pesos;
         }
 
-        if ($tipopropuesta == 1) {
+        if ($tipopropuesta == 1 || $tipopropuesta == 3) {
             //Pendiente Mes Anterior
             $fecha_ini = date('Y-m-j', strtotime(date("Y", strtotime($fechafirma)) . '-' . date("m", strtotime($fechafirma)) . '-' . 1));
             $idtipopago = 15;
@@ -1379,7 +1382,7 @@ $fecha_ini = date('Y-m-j', strtotime(date("Y", strtotime($fechafirma)) . '-' . d
 
         //general para pago 11 cuotas
 
-        if ($tipopropuesta == 2) {
+        if ($tipopropuesta == 2 || $tipopropuesta == 4) {
             $primer_mes = 0;
 
             $fecha_ini = date('Y-m-j', strtotime(date("Y", strtotime($fechafirma)) . '-' . date("m", strtotime($fechafirma)) . '-' . 1));
@@ -1690,9 +1693,9 @@ $fecha_ini = date('Y-m-j', strtotime(date("Y", strtotime($fechafirma)) . '-' . d
           $fecha_ini = date("d-m-Y", strtotime("+1 month", strtotime($fecha_ini)));
           }
 
- if ($tipopropuesta == 1) {
+ if ($tipopropuesta == 1 || $tipopropuesta == 3) {
     $tipos=[1,2,3,4,5,6,7,8,10,11,15];
- }elseif($tipopropuesta == 2){
+ }elseif($tipopropuesta == 2 || $tipopropuesta == 4){
     $tipos=[1,2,5,6,7,8,10,11,31,32,33];
 
  }else{

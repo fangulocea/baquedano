@@ -32,6 +32,7 @@ $fila21=$propuesta2->where("idtipopago",'=',11);
         <th style="background-color: #F2F4F4;text-align: center">Canon de Arriendo</th>
         <th style="background-color: #F2F4F4;text-align: center">Moneda</th>
         <th style="background-color: #F2F4F4;text-align: center">Valor Moneda</th>
+        <th style="background-color: #F2F4F4;text-align: center">IPC</th>
     </tr>
     </thead>
     <tbody>
@@ -46,6 +47,7 @@ $fila21=$propuesta2->where("idtipopago",'=',11);
         <td style="background-color: #F2F4F4;text-align: center">{{ $header->canondearriendo }}</td>
         <td style="background-color: #F2F4F4;text-align: center">{{ $header->moneda }}</td>
         <td style="background-color: #F2F4F4;text-align: center">{{ $header->valormoneda }}</td>
+        <td style="background-color: #F2F4F4;text-align: center">{{ $header->ipc }}</td>
     </tr>
     </tbody>
 </table>
