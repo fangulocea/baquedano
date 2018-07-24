@@ -25,6 +25,13 @@ class DetallePagosPropietarios extends Migration
             $table->integer('id_cheque')->nullable();
             $table->string('detalle')->nullable();
             $table->string('E_S');
+            $table->string('moneda');
+            $table->double('valor_moneda', 20, 8)->nullable();
+            $table->date('fecha_moneda');
+            $table->double('valor_original_moneda', 20, 8);
+            $table->double('valor_pagado_moneda', 20, 8);
+            $table->double('saldo_moneda', 20, 8);
+            $table->double('saldo_actual_moneda', 20, 8);
             $table->integer('valor_original');
             $table->integer('valor_pagado');
             $table->integer('saldo');

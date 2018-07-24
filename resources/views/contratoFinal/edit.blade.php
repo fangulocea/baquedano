@@ -1028,9 +1028,9 @@ document.getElementById("tablearea").innerHTML="";
                                                  for (var c = 0; c < meses_contrato+1; c++) {
                                                     if (!$.isEmptyObject(newArray[c])) {
                                                             var idtp=newArray[c].idtipopago;
-                                                            $subtotal+=newArray[c].precio_en_pesos;
+                                                            $subtotal+=newArray[c].precio_en_moneda;
                                                             var a = document.createElement("button");
-                                                            var linkText = document.createTextNode(newArray[c].precio_en_pesos);
+                                                            var linkText = document.createTextNode(newArray[c].precio_en_moneda);
                                                             a.appendChild(linkText);
                                                             if(newArray[c].E_S=='e'){
                                                                 a.className="btn btn-block btn-outline btn-success";
