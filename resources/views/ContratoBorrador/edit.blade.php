@@ -1137,12 +1137,28 @@ $("#propuesta").change(function (event) {
         $("#iva").val("");
         $("#pie").val(0);
         $("#cobromensual").val(0);
+        $("#ipc").val(0);
     }
     if(this.value==2){
         $("#cuotas").val("");
         $("#iva").val(0);
         $("#pie").val("");
         $("#cobromensual").val("");
+        $("#ipc").val(0);
+    }
+    if(this.value==3){
+        $("#cuotas").val("");
+        $("#iva").val("");
+        $("#pie").val(0);
+        $("#cobromensual").val(0);
+        $("#ipc").val("");
+    }
+    if(this.value==4){
+        $("#cuotas").val("");
+        $("#iva").val(0);
+        $("#pie").val("");
+        $("#cobromensual").val("");
+        $("#ipc").val("");
     }
 });
 

@@ -683,7 +683,7 @@ class ContratoFinalController extends Controller {
                         'id_modificador' => $id_creador,
                         'gastocomun' => $gastocomun,
                         'canondearriendo' => $arriendo
-            ]);
+            ]); 
              $dias_mes = cal_days_in_month(CAL_GREGORIAN, date("m", strtotime($fecha_ini)), date("Y", strtotime($fecha_ini)));
             $valor_diario = $arriendo / $dias_mes;
             $dias_proporcionales = cal_days_in_month(CAL_GREGORIAN, date("m", strtotime($fechafirma)), date("Y", strtotime($fechafirma))) - date("d", strtotime($fechafirma)) + 1;
