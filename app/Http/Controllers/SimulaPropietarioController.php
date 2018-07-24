@@ -19,10 +19,16 @@ class SimulaPropietarioController extends Controller {
 
         $captacion = Captacion::find($idp);
 
+        if($request->propuesta == 3 || $request->propuesta == 4 )
+        {
+            $arriendo = ($request->arriendo_sim * $request->ipc / 100)+$request->arriendo_sim ;
+            $gastocomun = ($request->gastocomun_sim * $request->ipc / 100)+$request->gastocomun_sim ;
+        }
+        else
+        {
             $gastocomun = $request->gastocomun_sim ;
             $arriendo = $request->arriendo_sim ;
-
-
+        }
 
         $idinmueble = $captacion->id_inmueble;
         $idpropietario = $captacion->id_propietario;
@@ -86,7 +92,8 @@ class SimulaPropietarioController extends Controller {
                     'id_creador' => $id_creador,
                     'id_modificador' => $id_creador,
                     'id_estado' => 1,
-                    'canondearriendo' => $arriendo
+                    'canondearriendo' => $arriendo,
+                    'ipc'         => $ipc
         ]);
 
         $idsimulacion = $simula->id;
@@ -384,7 +391,7 @@ class SimulaPropietarioController extends Controller {
             ]);
 
         }
-        if ($tipopropuesta == 1) {
+        if ($tipopropuesta == 1 || $tipopropuesta == 3) {
             $fecha_ini = date('Y-m-j', strtotime(date("Y", strtotime($fechafirma)) . '-' . date("m", strtotime($fechafirma)) . '-' . 1));
             //pago 1 cuota
 
@@ -428,7 +435,7 @@ class SimulaPropietarioController extends Controller {
         }
 
         //pago iva
-        if ($tipopropuesta == 1) {
+        if ($tipopropuesta == 1 || $tipopropuesta == 3) {
             $idtipopago = 4;
 
             $pago = SimulaPagoPropietario::create([
@@ -621,7 +628,7 @@ class SimulaPropietarioController extends Controller {
 
         }
 
-        if ($tipopropuesta == 1) {
+        if ($tipopropuesta == 1 || $tipopropuesta == 3) {
             //Pendiente Mes Anterior
             $fecha_ini = date('Y-m-j', strtotime(date("Y", strtotime($fechafirma)) . '-' . date("m", strtotime($fechafirma)) . '-' . 1));
             $idtipopago = 15;
@@ -814,7 +821,7 @@ class SimulaPropietarioController extends Controller {
 
         //general para pago 11 cuotas
 
-        if ($tipopropuesta == 2) {
+        if ($tipopropuesta == 2 || $tipopropuesta == 4) {
             $primer_mes = 0;
 
             $fecha_ini = date('Y-m-j', strtotime(date("Y", strtotime($fechafirma)) . '-' . date("m", strtotime($fechafirma)) . '-' . 1));
@@ -1133,10 +1140,9 @@ class SimulaPropietarioController extends Controller {
                         ->leftjoin('comunas as o', 'i.id_comuna', '=', 'o.comuna_id')
                         ->where("c.id", "=", $id)
                         ->select(DB::raw(' DATE_FORMAT(c.created_at, "%d/%m/%Y") as fecha_creacion, CONCAT_WS(" ",p1.nombre,p1.apellido_paterno,p1.apellido_materno) as Propietario,
-         p2.name as Creador,CONCAT_WS(" ",i.direccion,i.numero,i.departamento,o.comuna_nombre) as propiedad,c.meses_contrato,c.fecha_iniciocontrato, c.iva, c.descuento, c.pie, c.cobromensual, c.tipopropuesta, c.nrocuotas,c.moneda,c.valormoneda,c.canondearriendo'))
+         p2.name as Creador,CONCAT_WS(" ",i.direccion,i.numero,i.departamento,o.comuna_nombre) as propiedad,c.meses_contrato,c.fecha_iniciocontrato, c.iva, c.descuento, c.pie, c.cobromensual, c.tipopropuesta, c.nrocuotas,c.moneda,c.valormoneda,c.ipc,c.canondearriendo'))
                         ->get()->toArray();
         $header = $header[0];
-
 
         if ($header->tipopropuesta == 1) {
             $propuesta1 = DB::table('cap_simulapagopropietarios as c')
