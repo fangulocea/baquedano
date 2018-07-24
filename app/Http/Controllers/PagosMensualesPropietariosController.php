@@ -81,6 +81,14 @@ class PagosMensualesPropietariosController extends Controller {
             return redirect()->route('PagosMensualesPropietarios.ir_al_pago', $id)->with('error', 'Debe seleccionar archivo');
         }
 
+
+        $uf = DB::table('adm_uf')
+                ->where("fecha", "=", Carbon::now()->format('Y/m/d'))
+                ->first();
+
+
+
+
         $destinationPath = 'uploads/docpagospropietarios';
         $archivo = rand() . $request->archivo->getClientOriginalName();
         $file = $request->file('archivo');
@@ -93,6 +101,21 @@ class PagosMensualesPropietariosController extends Controller {
         $saldo_actual = $pago->pago_propietario - $valor_pagado;
         $saldo = $saldo_actual - $request->monto;
         $detalle = "";
+
+
+            $valor_pagado_moneda = DetallePagosPropietarios::where("id_pagomensual", "=", $id)->sum("valor_pagado_moneda");
+            if ($pago->moneda == 'UF') {
+                $pago_realizado_moneda = $request->monto / $uf->valor;
+            } else {
+               $pago_realizado_moneda = $request->monto ;
+            }
+            $valor_original_moneda = $pago->pago_propietario_moneda - $pago_realizado_moneda;
+            $saldo_actual_moneda = $pago->pago_propietario_moneda - $valor_pagado_moneda;
+
+            $saldo_moneda = $saldo_actual_moneda - $pago_realizado_moneda;
+
+
+
 
         if (isset($request->id_cheque)) {
             $detalle = "Cheque";
@@ -109,20 +132,27 @@ class PagosMensualesPropietariosController extends Controller {
             $detalle = "Pago Normal";
         }
 
+
+
+
         $detalle = DetallePagosPropietarios::create([
                     "id_pagomensual" => $id,
                     "fecha_pago" => $request->fecha_pago,
                     "id_publicacion" => $pago->id_publicacion,
                     "id_inmueble" => $pago->id_inmueble,
-                    "moneda" =>$pago->moneda;
-                    "valor_moneda" =>$pago->valor_moneda;
-                    "fecha_moneda" =>$pago->fecha_moneda;
+                    "moneda" =>$pago->moneda,
+                    "valor_moneda" =>$pago->valor_moneda,
+                    "fecha_moneda" =>$pago->fecha_moneda,
+                    "valor_original_moneda" => $pago->pago_propietario_moneda,
+                    "valor_pagado_moneda" => $pago_realizado_moneda,
+                    "saldo_actual_moneda" => $saldo_actual_moneda,
+                    "saldo_moneda" => $saldo_moneda,
                     "valor_original" => $pago->pago_propietario,
                     "valor_pagado" => $request->monto,
                     "saldo_actual" => $saldo_actual,
+                    "saldo" => $saldo,
                     "id_cheque" => $request->id_cheque,
                     "detalle" => $detalle,
-                    "saldo" => $saldo,
                     "E_S" => "",
                     "id_modificador" => Auth::user()->id,
                     'tipo' => "Pago Mensual",

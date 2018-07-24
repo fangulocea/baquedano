@@ -1440,10 +1440,18 @@ document.getElementById("pagoarea").innerHTML="";
                                                             } 
                                                             var cell = document.createElement("td");
                                                             var cellText = document.createTextNode(estado);
-                                                            cell.appendChild(cellText);
+                                                            
                                                             cell.style.border="1px solid black";
                                                             cell.style.padding="8px"
                                                             cell.style.textAlign="center"
+                                                            var a = document.createElement("span");
+                                                            var linkText1 = document.createTextNode(estado);
+                                                            if(estado=='Pagado')
+                                                            {a.className="label label-success label-rouded";}
+                                                            else
+                                                            {a.className="label label-danger label-rouded";}
+                                                            a.appendChild(linkText1);
+                                                            cell.appendChild(a);
                                                             row.appendChild(cell);
 
                                                             var a = document.createElement("button");

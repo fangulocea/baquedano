@@ -14,6 +14,7 @@ use App\Contratoborradorpdf;
 use App\GenerarPagoPropietario;
 use App\SimulaPropietario;
 use App\PropietarioGarantia;
+use App\DetallePagosPropietarios;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use DB;
@@ -467,6 +468,9 @@ class ContratoFinalController extends Controller {
     }
 
     public function eliminartipopago(Request $request) {
+        $eliminamensual=DetallePagosPropietarios::where("id_publicacion","=",$request->id_pub_borrar)
+        ->where("id_inmueble","=",$request->id_inmueble_mensual)
+        ->delete();
         $eliminamensual=PagosMensualesPropietarios::where("id_contratofinal","=",$request->id_final_detalle)
         ->where("id_inmueble","=",$request->id_inmueble_mensual)
         ->delete();
@@ -1191,7 +1195,7 @@ $fecha_ini = date('Y-m-j', strtotime(date("Y", strtotime($fechafirma)) . '-' . d
 
          $saldo_a_favor = PagosPropietarios::where("mes", '=', $mes)
                     ->where("anio", '=', $anio)
-                    ->whereIn("idtipopago", [1, 2, 8])
+                    ->whereIn("idtipopago", [1, 2, 8, 11])
                     ->where("id_contratofinal", '=', $idcontrato)
                     ->where("id_inmueble", '=', $idinmueble)
                     ->sum('precio_en_pesos');
@@ -1333,7 +1337,7 @@ $fecha_ini = date('Y-m-j', strtotime(date("Y", strtotime($fechafirma)) . '-' . d
                 $dias_mes = cal_days_in_month(CAL_GREGORIAN, date("m", strtotime($fecha_ini)), date("Y", strtotime($fecha_ini)));
        $saldo_a_favor = PagosPropietarios::where("mes", '=', $mes)
                         ->where("anio", '=', $anio)
-                        ->whereIn("idtipopago", [1, 2, 8])
+                        ->whereIn("idtipopago", [1, 2, 8, 11])
                         ->where("id_contratofinal", '=', $idcontrato)
                         ->where("id_inmueble", '=', $idinmueble)
                         ->sum('precio_en_pesos');
@@ -1650,7 +1654,7 @@ $fecha_ini = date('Y-m-j', strtotime(date("Y", strtotime($fechafirma)) . '-' . d
           $dias_mes = cal_days_in_month(CAL_GREGORIAN, date("m", strtotime($fecha_ini)), date("Y", strtotime($fecha_ini)));
             $saldo_a_favor = PagosPropietarios::where("mes", '=', $mes)
                     ->where("anio", '=', $anio)
-                    ->whereIn("idtipopago", [1, 2, 8])
+                    ->whereIn("idtipopago", [1, 2, 8, 11])
                     ->where("id_contratofinal", '=', $idcontrato)
                     ->where("id_inmueble", '=', $idinmueble)
                     ->sum('precio_en_pesos');

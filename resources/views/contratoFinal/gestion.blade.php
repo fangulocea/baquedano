@@ -51,7 +51,7 @@
     <div class="col-md-6">
         <form action="{{ route('pagospropietario.efectuarpago',$pago->id) }}"  method="post" enctype='multipart/form-data' >
             <input type="hidden" name="_token" value="{{ csrf_token() }}">
-            <div class="row">
+          <!--  <div class="row">
                     <div class="col-md-12">
                         <label>Seleccione garantía, si desea cancelar</label>
                                 <select class="form-control" name="id_garantia" id="id_garantia" >
@@ -62,8 +62,8 @@
                                     </select> 
 
                     </div>
-            </div>
-            <hr>
+            </div> -->
+
             <div class="row">
                     <div class="col-md-12">
                         <label>Seleccione el cheque, si fue ingresado en el contrato</label>
