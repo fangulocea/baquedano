@@ -303,7 +303,7 @@
                                                     <label>IPC</label>
                                                     <div class="input-group"> 
                                                         <span class="input-group-addon">%</span>
-                                                        <input name='ipc' id='ipc' type="number" class="form-control"   step="any" value="0"  >
+                                                        <input name='ipc' id='ipc' type="number" class="form-control"   step="any" value="0"  required="required">
                                                     </div>
                                                 </div>
                                             </div>
@@ -1587,7 +1587,7 @@ $("#calculapie").keyup(function (event) {
 
 $("#moneda").change(function (event) {
     if(this.value=="UF"){
-        $("#valormoneda").val({{ $uf->valor }});
+        $("#valormoneda").val({{ $uf->valor or 0}});
     }else{
         $("#valormoneda").val(1);
     }

@@ -1415,7 +1415,7 @@ $fecha_ini = date('Y-m-j', strtotime(date("Y", strtotime($fechafirma)) . '-' . d
                         'fecha_iniciocontrato' => $fechafirma,
                         'dia' => $dia,
                         'mes' => $mes,
-                        'tipopropuesta' => '2',
+                        'tipopropuesta' => $tipopropuesta,
                         'anio' => $anio,
                         'descuento' => $descuento,
                         'cant_diasmes' => $dias_mes,
@@ -1453,7 +1453,7 @@ $fecha_ini = date('Y-m-j', strtotime(date("Y", strtotime($fechafirma)) . '-' . d
                         'dia' => $dia,
                         'mes' => $mes,
                         'anio' => $anio,
-                        'tipopropuesta' => '2',
+                        'tipopropuesta' => $tipopropuesta,
                         'E_S' => 'e',
                         'descuento' => $descuento,
                         'cant_diasmes' => $dias_mes,
@@ -1468,6 +1468,8 @@ $fecha_ini = date('Y-m-j', strtotime(date("Y", strtotime($fechafirma)) . '-' . d
                         'id_estado' => 1,
                         'canondearriendo' => $arriendo
             ]);
+
+
             for ($i = 0; $i < $nrocuotas; $i++) {
                 $fecha_ini = date("d-m-Y", strtotime("+1 month", strtotime($fecha_ini)));
                 $dia = date("d", strtotime($fecha_ini));
@@ -1549,7 +1551,7 @@ $fecha_ini = date('Y-m-j', strtotime(date("Y", strtotime($fechafirma)) . '-' . d
                             'E_S' => 'e',
                             'mes' => $mes,
                             'anio' => $anio,
-                            'tipopropuesta' => '2',
+                            'tipopropuesta' => $tipopropuesta,
                             'descuento' => $descuento,
                             'cant_diasmes' => $dias_mes,
                             'cant_diasproporcional' => $dias_mes,
@@ -1627,7 +1629,7 @@ $fecha_ini = date('Y-m-j', strtotime(date("Y", strtotime($fechafirma)) . '-' . d
           'mes' => $mes,
           'anio' => $anio,
           'descuento' => $descuento,
-          'tipopropuesta' => '2',
+          'tipopropuesta' => $tipopropuesta,
           'cant_diasmes' => $dias_mes,
           'cant_diasproporcional' => $dias_proporcionales,
           'moneda' => $tipomoneda,
@@ -1681,7 +1683,7 @@ $fecha_ini = date('Y-m-j', strtotime(date("Y", strtotime($fechafirma)) . '-' . d
           'mes' => $mes,
           'anio' => $anio,
           'descuento' => $descuento,
-          'tipopropuesta' => '2',
+          'tipopropuesta' => $tipopropuesta,
           'cant_diasmes' => $dias_mes,
           'cant_diasproporcional' => $dias_proporcionales,
           'moneda' => $tipomoneda,
@@ -1780,7 +1782,7 @@ $fecha_ini = date('Y-m-j', strtotime(date("Y", strtotime($fechafirma)) . '-' . d
 
     public function destroy($id, $idpdf) {
 
-        $borrach = ArrendatarioCheques::where('id_contrato','=',$id)->delete();
+        $borrach = PropietarioCheques::where('id_contrato','=',$id)->delete();
 
         $pdf = ContratoFinalPdf::find($idpdf);
         File::delete($pdf->ruta . '/' . $pdf->nombre);

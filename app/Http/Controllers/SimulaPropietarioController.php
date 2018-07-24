@@ -19,6 +19,10 @@ class SimulaPropietarioController extends Controller {
 
         $captacion = Captacion::find($idp);
 
+if($request->moneda=='UF' && $request->arriendo_sim>300){
+    return back()->with('error', 'Monto máximo, al parecer esta utilizando valor uf con arriendo en Pesos');
+}
+
         if($request->propuesta == 3 || $request->propuesta == 4 )
         {
             $arriendo = ($request->arriendo_sim * $request->ipc / 100)+$request->arriendo_sim ;
@@ -1145,7 +1149,7 @@ class SimulaPropietarioController extends Controller {
                         ->get()->toArray();
         $header = $header[0];
 
-        if ($header->tipopropuesta == 1) {
+        if ($header->tipopropuesta == 1 || $header->tipopropuesta == 3) {
             $propuesta1 = DB::table('cap_simulapagopropietarios as c')
                             ->where("id_simulacion", '=', $id)
                             ->whereIn("idtipopago", [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 15, 20, 21])

@@ -109,23 +109,21 @@
 <script  src="{{ URL::asset('plugins/DataTables/datatables.min.js') }}"></script>
 <script src="{{ URL::asset('plugins/DataTables/DataTables-1.10.16/js/jquery.dataTables.min.js') }}"></script>
 <script src="{{ URL::asset('plugins/DataTables/Buttons-1.5.1/js/dataTables.buttons.min.js') }}"></script>
-<script src="{{ URL::asset('plugins/DataTables/Buttons-1.5.1/js/buttons.flash.min.js') }}"></script>
-<script src="{{ URL::asset('plugins/DataTables/JSZip-2.5.0/jszip.min.js') }}"></script>
-<script src="{{ URL::asset('plugins/DataTables/pdfmake-0.1.32/pdfmake.min.js') }}"></script>
-<script src="{{ URL::asset('plugins/DataTables/pdfmake-0.1.32/vfs_fonts.js') }}"></script>
+
 <script src="{{ URL::asset('plugins/DataTables/Buttons-1.5.1/js/buttons.html5.min.js') }}"></script>
-<script src="{{ URL::asset('plugins/DataTables/Buttons-1.5.1/js/buttons.print.min.js') }}"></script>
+
 <!-- end - This is for export functionality only -->
 <script>
-$('.sorting_desc').hide();
 
 var table = $('#listusers').DataTable({
 
     dom: 'Bfrtip',
-    "ordering": false,
+    ordering: false,
     pageLength: 20,
+    ServerSide: true,
+    deferRender: true,
     buttons: [
-         'excel', 'pdf', 'print',{
+         'excel', {
             text: 'Ingresar Captación',
             action: function ( e, dt, node, config ) {
                  window.location.href = '{{ route("captacion.create") }}';

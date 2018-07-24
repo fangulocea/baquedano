@@ -1146,11 +1146,11 @@ if($tab==4){
 $("#li_1").click(function (event) {
              $("#li_1").addClass("tab-current");
             $("#li_2").removeClass("tab-current");
-            $("#li_3").removeClass("tab-current");
+            $("#li_5").removeClass("tab-current");
             $("#li_4").removeClass("tab-current");
             $("#section-iconbox-1").addClass("content-current");
             $("#section-iconbox-2").removeClass("content-current");
-            $("#section-iconbox-3").removeClass("content-current");
+            $("#section-iconbox-5").removeClass("content-current");
             $("#section-iconbox-4").removeClass("content-current"); 
 
             
