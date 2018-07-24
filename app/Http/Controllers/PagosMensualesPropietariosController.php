@@ -114,6 +114,9 @@ class PagosMensualesPropietariosController extends Controller {
                     "fecha_pago" => $request->fecha_pago,
                     "id_publicacion" => $pago->id_publicacion,
                     "id_inmueble" => $pago->id_inmueble,
+                    "moneda" =>$pago->moneda;
+                    "valor_moneda" =>$pago->valor_moneda;
+                    "fecha_moneda" =>$pago->fecha_moneda;
                     "valor_original" => $pago->pago_propietario,
                     "valor_pagado" => $request->monto,
                     "saldo_actual" => $saldo_actual,
