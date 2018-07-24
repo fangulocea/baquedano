@@ -79,7 +79,7 @@
                                                         @else
                                                         <?php $idr = $captacion->portal; ?>
                                                         @endif
-                                                        {{ Form::select('portal',$portales, $idr,array('class'=>'form-control','style'=>'','id'=>'portal','placeholder'=>'Seleccione portal','required'=>'required')) }}
+                                                        {{ Form::select('portal',$portales, $idr,array('class'=>'form-control','style'=>'','id'=>'portal','placeholder'=>'Seleccione portal')) }}
                                                      </div>
                                                 </div>
                                                 
