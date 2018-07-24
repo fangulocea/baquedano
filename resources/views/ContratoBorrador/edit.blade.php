@@ -2,8 +2,6 @@
 
 @section('contenido')
 
-
-
 <link href="{{ URL::asset('/plugins/bower_components/typeahead.js-master/dist/typehead-min.css') }}" rel="stylesheet">
 <link href="{{ URL::asset('plugins/bower_components/bootstrap-datepicker/bootstrap-datepicker.min.css') }}" rel="stylesheet" type="text/css" />
 <link href="{{ URL::asset('plugins/bower_components/sweetalert/sweetalert.css')}}" rel="stylesheet" type="text/css">
@@ -1557,10 +1555,8 @@ $("#li_5_c").click(function (event) {
             $("#li_5_c").addClass("tab-current");
             $("#section-iconbox-5_c").addClass("content-current");
             $("#section-iconbox-6_c").removeClass("content-current");
-            $("#section-iconbox-1_c").removeClass("content-current");      
-            
+            $("#section-iconbox-1_c").removeClass("content-current");           
 });
-
 
 $("#calculapie").keyup(function (event) {
     $("#pie").val(this.value*100/$("#arriendo_sim").val());
@@ -1574,7 +1570,6 @@ $("#moneda").change(function (event) {
     }
     
 });
-
 
 $("#id_simulacion").change(function (event) {
     $.get("/pagospropietario/mostrarsimulacion/" + event.target.value + "", function (response, state) {
