@@ -34,6 +34,7 @@ class ContratoFinal extends Migration
             $table->foreign('id_borrador')->references('id')->on('borradores');
             $table->integer('id_borradorpdf')->unsigned();
             $table->foreign('id_borradorpdf')->references('id')->on('borradorespdf');
+            $table->string('tipo_contrato')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

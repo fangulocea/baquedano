@@ -2,6 +2,8 @@
 
 @section('contenido')
 
+
+
 <link href="{{ URL::asset('/plugins/bower_components/typeahead.js-master/dist/typehead-min.css') }}" rel="stylesheet">
 <link href="{{ URL::asset('plugins/bower_components/bootstrap-datepicker/bootstrap-datepicker.min.css') }}" rel="stylesheet" type="text/css" />
 <link href="{{ URL::asset('plugins/bower_components/sweetalert/sweetalert.css')}}" rel="stylesheet" type="text/css">
@@ -204,7 +206,8 @@
                                                                 <option value="">Seleccione Propuesta</option>
                                                                 <option value="1">1 Cuota</option>
                                                                 <option value="2">Pie + Cuotas</option>
-                                                                <option value="3">Renovación</option>
+                                                                <option value="3">Renovación, 1 Cuota</option>
+                                                                <option value="4">Renovación, Pie + Cuotas</option>
                                                             </select>
                                                         </div>
                                                     </div>
@@ -299,6 +302,13 @@
                                                     <div class="input-group"> 
                                                         <span class="input-group-addon">$</span>
                                                         <input name='calculapie' id='calculapie' type="number" class="form-control"   step="any" value="0" required="required">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <label>IPC</label>
+                                                    <div class="input-group"> 
+                                                        <span class="input-group-addon">%</span>
+                                                        <input name='ipc' id='ipc' type="number" class="form-control"   step="any" value="0"  >
                                                     </div>
                                                 </div>
                                             </div>
@@ -569,8 +579,8 @@
                                 <tr>
                                     <th>ID</th>
                                     <th>Fecha</th>
-                                    <th>Comisión</th>
-                                    <th>Flexibilidad</th>
+                                    <th>Propuesta</th>
+                                    <th>Tipo Contrato</th>
                                     <th>Estado</th>
                                     <th>Editar</th>
                                     <th>Correo</th>
@@ -583,8 +593,8 @@
                                     {{-- <td style="background: #ff7676; color:white">{{ $p->id_publicacion }                                        }</td> --}}
                                         <td>{{ $p->id }}</td>
                                     <td >{{ $p->fecha }}</td>
-                                    <td>{{ $p->n_c }}</td>
-                                    <td>{{ $p->n_f }}</td>
+                                    <td>{{ trans_choice('mensajes.Propuesta',$p->tipopropuesta) }}</td>
+                                    <td>{{ trans_choice('mensajes.TipoContrato',$p->tipo_contrato) }}</td>
                                     <td>{{ trans_choice('mensajes.borrador', $p->id_estado) }}</td>
                                     @can('borradorContrato.edit')
                                     <td>
@@ -815,6 +825,7 @@
                                                                         </div>
                                                                     </div>
                                                                     <!--/row-->
+
 
 
                                                                 </div>
@@ -1558,6 +1569,7 @@ $("#li_5_c").click(function (event) {
             $("#section-iconbox-1_c").removeClass("content-current");           
 });
 
+
 $("#calculapie").keyup(function (event) {
     $("#pie").val(this.value*100/$("#arriendo_sim").val());
 });
@@ -1570,6 +1582,7 @@ $("#moneda").change(function (event) {
     }
     
 });
+
 
 $("#id_simulacion").change(function (event) {
     $.get("/pagospropietario/mostrarsimulacion/" + event.target.value + "", function (response, state) {
