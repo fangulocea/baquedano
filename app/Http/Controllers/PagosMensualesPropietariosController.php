@@ -57,13 +57,17 @@ class PagosMensualesPropietariosController extends Controller {
 
         $valor_pagado = DetallePagosPropietarios::where("id_pagomensual", "=", $id)->sum("valor_pagado_moneda");
         
-        $saldo_moneda = number_format($pago->pago_propietario_moneda, 8, ',', ' ') - number_format($valor_pagado, 8, ',', ' ') ;
+       
 
 
    if ($pago->moneda == 'UF') {
-            $saldo_pesos = (number_format($pago->pago_propietario_moneda, 8, ',', ' ') - number_format($valor_pagado, 8, ',', ' ')) * number_format($uf->valor, 8, ',', ' ');
+            $saldo_pesos = (round($pago->pago_propietario_moneda, 8) - round($valor_pagado,8)) * round($uf->valor,8);
+
+             $saldo_moneda = round($pago->pago_propietario_moneda,8) - round($valor_pagado,8);
+
         } else {
-            $saldo_pesos = (number_format($pago->pago_propietario_moneda, 8, ',', ' ') - number_format($valor_pagado, 8, ',', ' '));
+            $saldo_pesos = $pago->pago_propietario_moneda - $valor_pagado;
+             $saldo_moneda =$pago->pago_propietario_moneda - $valor_pagado;
         }
 
 
@@ -106,12 +110,16 @@ public function comprobantedepago($id) {
         ->where("anio","=",$pago->anio)
         ->get();
         $valor_pagado = DetallePagosPropietarios::where("id_pagomensual", "=", $id)->sum("valor_pagado_moneda");
-        $saldo_moneda = number_format($pago->pago_propietario_moneda, 8, ',', ' ') - number_format($valor_pagado, 8, ',', ' ') ;
+        
 
-        if ($pago->moneda == 'UF') {
-            $saldo_pesos = (number_format($pago->pago_propietario_moneda, 8, ',', ' ') - number_format($valor_pagado, 8, ',', ' ')) * number_format($uf->valor, 8, ',', ' ');
+   if ($pago->moneda == 'UF') {
+            $saldo_pesos = (round($pago->pago_propietario_moneda, 8) - round($valor_pagado,8)) * round($uf->valor,8);
+
+             $saldo_moneda = round($pago->pago_propietario_moneda,8) - round($valor_pagado,8);
+
         } else {
-            $saldo_pesos = (number_format($pago->pago_propietario_moneda, 8, ',', ' ') - number_format($valor_pagado, 8, ',', ' '));
+            $saldo_pesos = $pago->pago_propietario_moneda - $valor_pagado;
+             $saldo_moneda =$pago->pago_propietario_moneda - $valor_pagado;
         }
 
 
