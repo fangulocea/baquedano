@@ -1386,6 +1386,11 @@ document.getElementById("pagoarea").innerHTML="";
                                         cell.innerHTML = 'Pagar';
                                         rowheader.appendChild(cell);
 
+                                    var cell = document.createElement("th");
+                                        cell.style.border="1px solid black";
+                                        cell.style.padding="8px";
+                                        cell.innerHTML = 'Comprobante';
+                                        rowheader.appendChild(cell);
                                      tbl.appendChild(rowheader);
 
                                     // LINEAS
@@ -1469,6 +1474,21 @@ document.getElementById("pagoarea").innerHTML="";
                                                             cell.style.padding="8px"
                                                             cell.style.textAlign="center"
                                                             row.appendChild(cell);
+                                                            var a = document.createElement("button");
+                                                            var linkText1 = document.createTextNode("C");
+                                                            a.className="btn btn-success btn-circle btn-lg";
+                                                            a.id=response[r].id;
+                                                            a.addEventListener('click', function(){
+                                                                    comprobante(this);
+                                                                });
+                                                            a.appendChild(linkText1);
+                                                            a.style="font-size:small"
+                                                            var cell = document.createElement("td");
+                                                            cell.appendChild(a);
+                                                            cell.style.border="1px solid black";
+                                                            cell.style.padding="8px"
+                                                            cell.style.textAlign="center"
+                                                            row.appendChild(cell);
                                                     }
                                                  
                                                 tbl.appendChild(row); // AGREGA EL PAGO
@@ -1484,6 +1504,10 @@ document.getElementById("pagoarea").innerHTML="";
 
 function ir_pago(obj){
     window.location.href = '/finalContrato/ir_al_pago/'+obj.id;
+}
+
+function comprobante(obj){
+    window.location.href = '/finalContrato/comprobantedepago/'+obj.id;
 }
 
 $("#moneda").change(function (event) {

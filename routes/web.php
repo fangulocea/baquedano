@@ -858,6 +858,10 @@ Route::get('borradorContrato/garantia/eliminar/{id}/{pub}','ContratoBorradorCont
 		Route::get('finalContrato/ir_al_pago/{id}','PagosMensualesPropietariosController@ir_al_pago')->name('PagosMensualesPropietarios.ir_al_pago')
 		->middleware('permission:finalContrato.edit');
 
+
+		Route::get('finalContrato/comprobantedepago/{id}','PagosMensualesPropietariosController@comprobantedepago')->name('PagosMensualesPropietarios.comprobantedepago')
+		->middleware('permission:finalContrato.edit');
+
 		Route::get('finalContrato/muestra_cheque/{id}/{idpdf}/{idpago}','ContratoFinalController@muestra_cheque')->name('finalContrato.muestra_cheque')
 		->middleware('permission:finalContrato.edit');
 

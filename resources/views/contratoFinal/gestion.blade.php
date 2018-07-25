@@ -37,7 +37,7 @@
                                             <tbody>
                                                 <tr>
                                                     <td>Valor en Pesos   : $ <?= round($saldo_pesos)  ?></td>
-                                                    <td><center>Valor Pagado   : $ <?= round($valor_pagado)  ?></center></td>
+                                                    <td><center>Valor Pagado   : $ <?= $valor_pagado  ?></center></td>
                                                     <td align="right">Saldo a Pagar  : $ <?= $saldo_moneda  ?></td>
                                                 </tr>
                                             </tbody>
@@ -48,6 +48,7 @@
                                 </div>
 
 <div class="row">
+
     <div class="col-md-6">
         <form action="{{ route('pagospropietario.efectuarpago',$pago->id) }}"  method="post" enctype='multipart/form-data' >
             <input type="hidden" name="_token" value="{{ csrf_token() }}">
@@ -116,6 +117,7 @@
     </div>
 
     <div class="col-md-6">
+         <center><a href="{{ route('PagosMensualesPropietarios.comprobantedepago',$pago->id) }}" class="btn btn-info" style="color:white">COMPROBANTE DE PAGO</a></center><br/>
              <table id="listusers1" class="display nowrap" cellspacing="0" width="100%">
                         <thead>
                             <tr><th style="border: 1px solid black;text-align: center">Fecha Pago</th>

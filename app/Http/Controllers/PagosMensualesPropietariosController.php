@@ -9,8 +9,10 @@ use App\Captacion;
 use App\DetallePagosPropietarios;
 use App\PropietarioCheques;
 use App\PropietarioGarantia;
+use App\Pagospropietarios;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
+use Barryvdh\DomPDF\Facade as PDF;
 use Carbon\Carbon;
 use DB;
 use Auth;
@@ -41,7 +43,10 @@ class PagosMensualesPropietariosController extends Controller {
         if (count($uf) == 0) {
             return back()->with('error', 'No hay UF registrada para el día de hoy');
         }
+
         $pago = PagosMensualesPropietarios::find($id);
+    
+        
         $publicacion = Captacion::find($pago->id_publicacion);
         $persona = Persona::find($publicacion->id_propietario);
         $inmueble = DB::table('inmuebles')
@@ -51,12 +56,14 @@ class PagosMensualesPropietariosController extends Controller {
         $mes = $meses[$pago->mes];
 
         $valor_pagado = DetallePagosPropietarios::where("id_pagomensual", "=", $id)->sum("valor_pagado_moneda");
-        $saldo_moneda = ($pago->pago_propietario_moneda - $valor_pagado);
+        
+        $saldo_moneda = number_format($pago->pago_propietario_moneda, 8, ',', ' ') - number_format($valor_pagado, 8, ',', ' ') ;
 
-        if ($pago->moneda == 'UF') {
-            $saldo_pesos = ($pago->pago_propietario_moneda - $valor_pagado) * $uf->valor;
+
+   if ($pago->moneda == 'UF') {
+            $saldo_pesos = (number_format($pago->pago_propietario_moneda, 8, ',', ' ') - number_format($valor_pagado, 8, ',', ' ')) * number_format($uf->valor, 8, ',', ' ');
         } else {
-            $saldo_pesos = ($pago->pago_propietario_moneda - $valor_pagado);
+            $saldo_pesos = (number_format($pago->pago_propietario_moneda, 8, ',', ' ') - number_format($valor_pagado, 8, ',', ' '));
         }
 
 
@@ -73,6 +80,51 @@ class PagosMensualesPropietariosController extends Controller {
         $cheques = PropietarioCheques::where("id_contrato", "=", $pago->id_contratofinal)->get();
 
         return view('contratoFinal.gestion', compact('pago', 'persona', 'inmueble', 'mes', 'valor_pagado', 'documentos', 'cheques', 'garantias', 'uf', 'saldo_pesos', 'saldo_moneda'));
+    }
+
+
+public function comprobantedepago($id) {
+        $meses = array("", "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre");
+        $uf = DB::table('adm_uf')
+                ->where("fecha", "=", Carbon::now()->format('Y/m/d'))
+                ->first();
+        if (count($uf) == 0) {
+            return back()->with('error', 'No hay UF registrada para el día de hoy');
+        }
+        $pago = PagosMensualesPropietarios::find($id);
+        $publicacion = Captacion::find($pago->id_publicacion);
+        $persona = Persona::find($publicacion->id_propietario);
+        $inmueble = DB::table('inmuebles')
+                ->join('comunas', 'inmuebles.id_comuna', '=', 'comunas.comuna_id')
+                ->where("inmuebles.id", "=", $pago->id_inmueble)
+                ->first();
+        $mes = $meses[$pago->mes];
+    $pagospropietarios=Pagospropietarios::where("id_contratofinal","=",$pago->id_contratofinal)
+        ->where("id_inmueble","=",$pago->id_inmueble)
+        ->where("id_publicacion","=",$pago->id_publicacion)
+        ->where("mes","=",$pago->mes)
+        ->where("anio","=",$pago->anio)
+        ->get();
+        $valor_pagado = DetallePagosPropietarios::where("id_pagomensual", "=", $id)->sum("valor_pagado_moneda");
+        $saldo_moneda = number_format($pago->pago_propietario_moneda, 8, ',', ' ') - number_format($valor_pagado, 8, ',', ' ') ;
+
+        if ($pago->moneda == 'UF') {
+            $saldo_pesos = (number_format($pago->pago_propietario_moneda, 8, ',', ' ') - number_format($valor_pagado, 8, ',', ' ')) * number_format($uf->valor, 8, ',', ' ');
+        } else {
+            $saldo_pesos = (number_format($pago->pago_propietario_moneda, 8, ',', ' ') - number_format($valor_pagado, 8, ',', ' '));
+        }
+
+
+        $documentos = DB::table('adm_detallepagospropietarios as dp')
+                ->leftjoin('propietario_cheques as c', 'c.id', '=', 'dp.id_cheque')
+                ->where("dp.id_pagomensual", "=", $id)
+                ->select(DB::raw('dp.*,c.fecha_pago as fc, c.numero'))
+                ->get();
+
+
+       $pdf = PDF::loadView('formatospdf.recibopagopropietario',compact('pago', 'persona', 'inmueble', 'mes', 'valor_pagado', 'documentos', 'uf', 'saldo_pesos', 'saldo_moneda','pagospropietarios'));
+
+        return $pdf->download($inmueble->direccion. ' Nro.'.$inmueble->numero. ' Dpto.'.$inmueble->departamento.', '.$inmueble->comuna_nombre.' - '.$mes.'-'.$pago->anio.' - Comprobante de Pago a Propietario.pdf');
     }
 
     public function efectuarpago(Request $request, $id) {
