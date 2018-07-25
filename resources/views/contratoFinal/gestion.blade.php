@@ -117,7 +117,7 @@
     </div>
 
     <div class="col-md-6">
-         <center><a href="{{ route('PagosMensualesPropietarios.comprobantedepago',$pago->id) }}" class="btn btn-info" style="color:white">COMPROBANTE DE PAGO</a></center><br/>
+         <center><a href="{{ route('PagosMensualesPropietarios.comprobantedepago',$pago->id) }}" class="btn btn-info" style="color:white">GENERAR LIQUIDACIÓN DE PAGO</a></center><br/>
              <table id="listusers1" class="display nowrap" cellspacing="0" width="100%">
                         <thead>
                             <tr><th style="border: 1px solid black;text-align: center">Fecha Pago</th>

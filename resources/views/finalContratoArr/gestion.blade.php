@@ -103,7 +103,7 @@
     </div>
 
     <div class="col-md-6">
-        <center><a href="{{ route('PagosMensualesArrendatarios.comprobantedepago',$pago->id) }}" class="btn btn-info" style="color:white">LIQUIDACIÓN DE PAGO</a></center><br/>
+        <center><a href="{{ route('PagosMensualesArrendatarios.comprobantedepago',$pago->id) }}" class="btn btn-info" style="color:white">GENERAR LIQUIDACIÓN DE PAGO</a></center><br/>
              <table id="listusers1" class="display nowrap" cellspacing="0" width="100%">
                         <thead>
                             <tr>
