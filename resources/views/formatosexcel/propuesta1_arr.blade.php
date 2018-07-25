@@ -12,7 +12,11 @@
         <th style="background-color: #F2F4F4;text-align: center">Descuento</th>
         <th style="background-color: #F2F4F4;text-align: center">Nro. Cuotas</th>
         <th style="background-color: #F2F4F4;text-align: center">% Cobro Mensual</th>
+        <th style="background-color: #F2F4F4;text-align: center">Canon de Arriendo</th>
+        <th style="background-color: #F2F4F4;text-align: center">Moneda</th>
+        <th style="background-color: #F2F4F4;text-align: center">Valor Moneda</th>
         <th style="background-color: #F2F4F4;text-align: center">IPC</th>
+
     </tr>
     </thead>
     <tbody>
@@ -24,6 +28,9 @@
         <td style="background-color: #F2F4F4;text-align: center">{{ $header->descuento }}%</td>
         <td style="background-color: #F2F4F4;text-align: center">{{ $header->nrocuotas }}</td>
         <td style="background-color: #F2F4F4;text-align: center">{{ $header->cobromensual }}%</td>
+        <td style="background-color: #F2F4F4;text-align: center">{{ $header->canondearriendo }}</td>
+        <td style="background-color: #F2F4F4;text-align: center">{{ $header->moneda }}</td>
+        <td style="background-color: #F2F4F4;text-align: center">{{ $header->valormoneda }}</td>
         <td style="background-color: #F2F4F4;text-align: center">{{ $header->ipc }}</td>
     </tr>
     </tbody>
@@ -41,6 +48,12 @@ $fila1=$propuesta1->where("idtipopago",'=',1);
     </tr>
     </thead>
     <tbody>
+         <tr>
+            <td style="background-color: #F2F4F4;text-align: center"><strong>Días del Mes</strong></td>
+@foreach($fila1 as $p)
+       <td style="background-color: #F2F4F4;text-align: center">{{  $p->cant_diasproporcional }} </td>
+@endforeach
+        </tr>
         <tr>
             <td style="background-color: #F2F4F4;text-align: center"><strong>Canon de Arriendo</strong></td>
 @foreach($fila1 as $p)

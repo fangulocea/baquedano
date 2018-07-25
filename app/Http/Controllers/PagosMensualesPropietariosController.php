@@ -129,8 +129,8 @@ public function comprobantedepago($id) {
                 ->select(DB::raw('dp.*,c.fecha_pago as fc, c.numero'))
                 ->get();
 
-
-       $pdf = PDF::loadView('formatospdf.recibopagopropietario',compact('pago', 'persona', 'inmueble', 'mes', 'valor_pagado', 'documentos', 'uf', 'saldo_pesos', 'saldo_moneda','pagospropietarios'));
+        $valor_original=$pago->pago_propietario_moneda;
+       $pdf = PDF::loadView('formatospdf.recibopagopropietario',compact('pago', 'persona', 'inmueble', 'mes', 'valor_pagado', 'documentos', 'uf', 'saldo_pesos', 'saldo_moneda','pagospropietarios','valor_original'));
 
         return $pdf->download($inmueble->direccion. ' Nro.'.$inmueble->numero. ' Dpto.'.$inmueble->departamento.', '.$inmueble->comuna_nombre.' - '.$mes.'-'.$pago->anio.' - Comprobante de Pago a Propietario.pdf');
     }

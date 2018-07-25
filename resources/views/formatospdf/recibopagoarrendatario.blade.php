@@ -101,7 +101,7 @@
 
         <table class="display nowrap" cellspacing="0" width="100%">
         <tr>
-            <td width="33%" style="padding: 5px;text-align: center;border: 1px solid black"><strong>VALOR ORIGINAL</strong> <br>  <?=  $valor_original?></td>
+            <td width="33%" style="padding: 5px;text-align: center;border: 1px solid black"><strong>VALOR ORIGINAL</strong> <br> <?=  $valor_original?></td>
             <td width="33%" style="padding: 5px;text-align: center;border: 1px solid black"><strong>MONEDA</strong><br> {{ $pago->moneda }}</td>
             <td width="33%" style="padding: 5px;text-align: center;border: 1px solid black"><strong>VALOR UF</strong><br> {{ $uf->valor }}</td>
         </tr>
@@ -153,7 +153,6 @@
   margin: 0 auto;">
                             <thead>
                                 <tr><th style="border: 1px solid black;text-align: center">Fecha Pago</th>
-                                    <th style="border: 1px solid black;text-align: center">Cheque</th>
                                     <th style="border: 1px solid black;text-align: center">Detalle</th>
                                     <th style="border: 1px solid black;text-align: center">Valor Pagado</th>
                                     <th style="border: 1px solid black;text-align: center">Saldo</th>
@@ -164,9 +163,6 @@
                                 <tr>
                                     <td height="10px" style="border: 1px solid black; text-align: center" >
                                         {{ $pi->fecha_pago }}
-                                    </td>
-                                    <td   height="10px" style="border: 1px solid black; text-align: center" >
-                                        {{ $pi->numero }}
                                     </td>
                                     <td   height="10px" style="border: 1px solid black; text-align: center" >
                                         {{ $pi->detalle }}

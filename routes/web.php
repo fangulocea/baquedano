@@ -926,6 +926,9 @@ Route::get('cbararrendatario/garantia/eliminar/{id}/{pub}','ContratoBorradorArre
 
 // COntratos final Arrendatario
 
+	Route::get('finalContratoArr/comprobantedepago/{id}','PagosMensualesArrendatariosController@comprobantedepago')->name('PagosMensualesArrendatarios.comprobantedepago')
+		->middleware('permission:finalContratoArr.edit');
+
 		Route::post('finalContratoArr/eliminarpagos','ContratoFinalArrController@eliminartipopago')->name('finalContratoArr.eliminartipopago')
 		->middleware('permission:finalContratoArr.update');
 

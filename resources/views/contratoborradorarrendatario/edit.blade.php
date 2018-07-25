@@ -170,7 +170,7 @@
                     <section id="section-iconbox-6_c">
 
                         <div class="panel panel-info">
-                            <div class="panel-heading"> Simular Pagos</div>
+                            <div class="panel-heading"> Simulación de Pagos</div>
                             <div class="panel-wrapper collapse in" aria-expanded="true">
                                 <div class="panel-body">
                                     <form action="{{ route('cbararrendatario.generarpagos',[$publica->id_cap_arr]) }}" method="post" enctype='multipart/form-data'>
@@ -189,7 +189,7 @@
                                                             <input type="number" name="cant_meses" id="cant_meses" value="12" class="form-control" required="required">
                                                         </div>
                                                     </div>
-                                                    <div class="col-md-2">
+                                                <!--    <div class="col-md-2">
                                                         <div class="form-group">
                                                             <label for="input-file-now-custom-1">Proporcional</label>
                                                             <select name="proporcional" class="form-control">
@@ -197,7 +197,7 @@
                                                                 <option value="SI">SI</option>
                                                             </select>
                                                         </div>
-                                                    </div>
+                                                    </div>-->
                                                     <div class="col-md-3">
                                                         <div class="form-group">
                                                             <label for="input-file-now-custom-1">Tipo Propuesta</label>
@@ -219,16 +219,16 @@
                                                     <div class="col-md-2">
                                                         <div class="form-group">
                                                             <label for="input-file-now-custom-1">Moneda</label>
-                                                            <select class="form-control" name="moneda" required="required" >
+                                                            <select class="form-control" name="moneda" id="moneda"  required="required" >
                                                                 <option value="CLP">CLP</option>
                                                                 <option value="UF">UF</option>
                                                             </select>
                                                         </div>
                                                     </div>
-                                                    <div class="col-md-1">
+                                                    <div class="col-md-2">
                                                         <div class="form-group">
                                                             <label for="input-file-now-custom-1">Valor</label>
-                                                            <input name='valormoneda' id='valormoneda' type="number" class="form-control" required="required" value='1'>
+                                                            <input name='valormoneda' id='valormoneda' type="number" class="form-control" required="required" step="any" value="1" >
                                                         </div>
                                                     </div>
                                                 </div>
@@ -237,17 +237,17 @@
                                             <div class="row">
                                                 <h3 class="box-title m-b-0">INFORMACIÓN PARA GENERAR PROPUESTA 1 CUOTA Y PIE + 11 CUOTAS</h3>
                                                 <hr>
-                                                <div class="col-md-2">
+                                                <div class="col-md-3">
                                                     <label >Canon de Arriendo</label>
                                                     <div class="input-group"> 
-                                                        <span class="input-group-addon">$</span>
+                                                        <span class="input-group-addon">$/UF</span>
                                                         <input name='arriendo_sim' id='arriendo_sim' step="any" type="number" class="form-control" required="required" value="{{ $publica->precio }}" >
                                                     </div>
                                                 </div>
-                                                <div class="col-md-2"> 
+                                                <div class="col-md-3"> 
                                                     <label >Gasto común</label>
                                                     <div class="input-group"> 
-                                                        <span class="input-group-addon">$</span>
+                                                        <span class="input-group-addon">$/UF</span>
                                                         <input name='gastocomun_sim' id='gastocomun_sim' type="number" class="form-control" required="required"  step="any" value="{{ $publica->gastosComunes }}">
                                                     </div>
                                                 </div>
@@ -296,11 +296,18 @@
                                                         <input name='cobromensual' id='cobromensual' type="number" class="form-control"   step="any" value="0" required="required">
                                                     </div>
                                                 </div>
+                                                <div class="col-md-3">
+                                                    <label>Calcula Pie</label>
+                                                    <div class="input-group"> 
+                                                        <span class="input-group-addon">$</span>
+                                                        <input name='calculapie' id='calculapie' type="number" class="form-control"   step="any" value="0" required="required">
+                                                    </div>
+                                                </div>
                                                 <div class="col-md-2">
                                                     <label>IPC</label>
                                                     <div class="input-group"> 
                                                         <span class="input-group-addon">%</span>
-                                                        <input name='ipc' id='ipc' type="number" class="form-control"   step="any" value="0"  >
+                                                        <input name='ipc' id='ipc' type="number" class="form-control"   step="any" value="0"  required="required">
                                                     </div>
                                                 </div>
                                             </div>
@@ -375,7 +382,6 @@
 
                         </div>
 
-
                     </section>
 
 
@@ -388,7 +394,39 @@
                             <input type="hidden" name="id_arrendatario" value="{{ $publica->id_arrendatario }}">
                             <input type="hidden" name="id_inmueble" value="{{ $publica->id_inmueble }}">
                             <input type="hidden" name="id_cap_arr" value="{{ $publica->id_cap_arr }}">
-                            {!! csrf_field() !!}     
+                            {!! csrf_field() !!}   
+
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label class="control-label">
+                                            Propuesta
+                                        </label>
+                                        <select class="form-control" name="id_simulacion" id="id_simulacion" required="required">
+                                            <option value="">
+                                                Selecione Propuesta
+                                            </option>
+                                            @foreach($propuestas as $p)
+                                            <option value="{{ $p->id }}">
+                                                {{ $p->id }} - {{ $p->tipopropuesta }}
+                                            </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>  
+                                 <div class="col-lg-2 col-sm-3 col-xs-12">
+                                    <label>
+                                        Valor Arriendo
+                                    </label>
+                                    <input class="form-control" name="valorarriendo" id="valorarriendo" required="required" type="number" disabled="disabled">
+                                </div>
+                                 <div class="col-lg-2 col-sm-3 col-xs-12">
+                                    <label>
+                                        Moneda
+                                    </label>
+                                    <input class="form-control" name="monedaborrador" id="monedaborrador" required="required" type="text" disabled="disabled">
+                                </div>
+                            </div>
                             <div class="row">
                                
                                 <div  class="col-md-3">
@@ -402,37 +440,7 @@
                                         </select>
                                     </div>
                                 </div> 
-                               <div  class="col-md-3">
-                                    <label>Fecha Contrato</label>
-                                    <div class="input-group">
-                                        <input type="text" autocomplete="off" class="form-control datepicker-fecha_contacto1_d" placeholder="dd/mm/yyyy" id="datepicker-fecha_contacto1_d" name="fecha_contrato" required="required"> <span class="input-group-addon"><i class="icon-calender"></i></span> 
-                                    </div>
 
-                                </div>
-                                <div  class="col-md-3">
-                                    <label>Valor Arriendo</label>
-                                    <input name='valorarriendo' type="number" class="form-control" required="required">
-
-                                </div>
-
-                                <div  class="col-md-3">
-                                    <label class="control-label">
-                                                Propuesta
-                                            </label>
-                                            <select class="form-control" name="id_simulacion" required="required">
-                                                <option value="">
-                                                    Selecione Propuesta
-                                                </option>
-                                                @foreach($propuestas as $p)
-                                                <option value="{{ $p->id }}">
-                                                    {{ $p->id }} - {{ $p->tipopropuesta }}
-                                                </option>
-                                                @endforeach
-                                            </select>
-                                </div>
-
-                            </div>
-                            <div class="row">
                                 <div  class="col-md-3">
                                     <div class="form-group">
                                         <label class="control-label">Multas</label>
@@ -444,53 +452,103 @@
                                         </select>
                                     </div>
                                 </div>
-                                <div  class="col-md-3">
+        
+                            </div>
+                            <div class="row">
+
+                                <div class="col-md-3">
+                                    <label>
+                                        Fecha Contrato
+                                    </label>
+                                    <div class="input-group">
+                                        <input autocomplete="off" class="form-control" id="datepicker-fecha_contacto1_d" name="fecha_gestion" placeholder="dd/mm/yyyy" required="required" type="date">
+                                    </div>
+                                </div>
+   
+
+                                <div class="col-md-3">
                                     <div class="form-group">
-                                        <label class="control-label">Contrato</label>
-                                        <select class="form-control" name="id_contrato" required="required" >
-                                            <option value="">Selecione Contrato</option>
+                                        <label class="control-label">
+                                            Contrato
+                                        </label>
+                                        <select class="form-control" name="id_contrato" required="required">
+                                            <option value="">
+                                                Selecione Contrato
+                                            </option>
                                             @foreach($contrato as $p)
-                                            <option value="{{ $p->id }}">{{ $p->nombre }}</option>
-                                            @endforeach   
+                                            <option value="{{ $p->id }}">
+                                                {{ $p->nombre }}
+                                            </option>
+                                            @endforeach
                                         </select>
                                     </div>
                                 </div>
-                                <div  class="col-md-3">
+                                <div class="col-lg-2 col-sm-3 col-xs-12">
                                     <div class="form-group">
-                                        <label class="control-label">Día de Pago</label>
-                                        <select class="form-control" name="dia_pago" required="required" >
-                                            <option value="">Selecione Día</option>
-                                            <option value="1">1</option>
-                                            <option value="2">2</option>
-                                            <option value="3">3</option>
-                                            <option value="4">4</option>
-                                            <option value="5">5</option>
-                                            <option value="6">6</option>
-                                            <option value="7">7</option>
-                                            <option value="8">8</option>
-                                            <option value="9">9</option>
-                                            <option value="10">10</option>
-
+                                        <label class="control-label">
+                                            Día de Pago
+                                        </label>
+                                        <select class="form-control" name="dia_pago" required="required">
+                                            <option value="">
+                                                Selecione Día
+                                            </option>
+                                            <option value="1">
+                                                1
+                                            </option>
+                                            <option value="2">
+                                                2
+                                            </option>
+                                            <option value="3">
+                                                3
+                                            </option>
+                                            <option value="4">
+                                                4
+                                            </option>
+                                            <option value="5">
+                                                5
+                                            </option>
+                                            <option value="6">
+                                                6
+                                            </option>
+                                            <option value="7">
+                                                7
+                                            </option>
+                                            <option value="8">
+                                                8
+                                            </option>
+                                            <option value="9">
+                                                9
+                                            </option>
+                                            <option value="10">
+                                                10
+                                            </option>
                                         </select>
                                     </div>
                                 </div>
-
-                                <div  class="col-md-3">
-                                    <div class="form-group">
-                                        <br>
-                                        <button type="submit" class="btn btn-success"> <i class="fa fa-check"></i> Crear Borrador</button>
-                                    </div>
+                                <div class="col-lg-2 col-sm-3 col-xs-12">
+                                    <label>
+                                        &nbsp;
+                                    </label>
+                                    <button class="btn btn-success" type="submit">
+                                        <i class="fa fa-check">
+                                        </i>
+                                        Crear Borrador Arrendatario
+                                    </button>
                                 </div>
 
                             </div>
 
                         </form>
-                        <div class="col-lg-4 col-sm-3 col-xs-12">
-                            <button class="btn btn-block btn-info"  id='updatepersona'data-toggle="modal" onclick="mostrar_modalpersona({{ $publica->id_arrendatario }})" >Actualizar Arrendatario</button>
-                        </div>
-                        <div class="col-lg-4 col-sm-3 col-xs-12">
-                            <button class="btn btn-block btn-success" id='updateinmueble' onclick="mostrar_modalinmueble({{ $publica->id_inmueble }})" >Actualizar Inmueble</button>
-                        </div>
+                        <hr>
+                            <div class="row">
+
+                                <div class="col-md-6">
+                                    <button class="btn btn-block btn-info"  id='updatepersona'data-toggle="modal" onclick="mostrar_modalpersona({{ $publica->id_arrendatario }})" >Actualizar Arrendatario</button>
+                                </div>
+                                <div class="col-md-6">
+                                     <button class="btn btn-block btn-success" id='updateinmueble' onclick="mostrar_modalinmueble({{ $publica->id_inmueble }})" >Actualizar Inmueble</button>
+                                </div>
+                            </div>
                         <hr>
                             <div class="row">
                                 <form  action="{{ route('finalContratoArr.crearContrato') }}" method="post"> 
@@ -1040,13 +1098,7 @@
     locale: "es",
 });
 
-    jQuery('#datepicker-fecha_contacto1_d').datepicker({
-    format: 'dd-mm-yyyy',
-    todayHighlight: true,
-    autoclose: true, 
-    language: "es",
-    locale: "es",
-});
+
 
 </script>
 <script src="{{ URL::asset('plugins/bower_components/tinymce/tinymce.min.js') }}"></script>
@@ -1525,6 +1577,29 @@ $("#li_5_c").click(function (event) {
             
 });
 
+$("#calculapie").keyup(function (event) {
+    $("#pie").val(this.value*100/$("#arriendo_sim").val());
+});
+
+$("#moneda").change(function (event) {
+    if(this.value=="UF"){
+        $("#valormoneda").val({{ $uf->valor or 0}});
+    }else{
+        $("#valormoneda").val(1);
+    }
+    
+});
+
+
+$("#id_simulacion").change(function (event) {
+    $.get("/finalContratoArr/mostrarsimulacion/" + event.target.value + "", function (response, state) {
+        $("#valorarriendo").val(response.canondearriendo!=''?response.canondearriendo:0);
+        $("#monedaborrador").val(response.moneda!=null?response.moneda:0);
+        $("#datepicker-fecha_contacto1_d").val(response.fecha_iniciocontrato!=null?response.fecha_iniciocontrato:0);
+        
+    });
+
+});
 
 </script>
 @endsection

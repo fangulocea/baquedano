@@ -318,15 +318,8 @@ use App\Http\Controllers\ContratoFinalController;
                                                                 {{ Form::select('id_inmueble_pago',[''=>'Seleccione dirección'], null, array('class'=>'form-control','style'=>'','id'=>'id_inmueble_pago','required'=>'required')) }} 
                                                             </div>
                                                         </div>
-                                                        <div class="col-md-6">                                       
-                                                            <div class="form-group">
-                                                                <label for="input-file-now-custom-1">Proporcional</label>
-                                                                <select name="proporcional" class="form-control">
-                                                                    <option value="NO">NO</option>
-                                                                    <option value="SI">SI</option>
-                                                                </select>
-                                                            </div>
-                                                        </div>
+                                                        <input type="hidden" value="proporcional" value="NO">
+                                  
                                                     </div>
                                                     <div class="row">
 
@@ -1474,6 +1467,7 @@ document.getElementById("pagoarea").innerHTML="";
                                                             cell.style.padding="8px"
                                                             cell.style.textAlign="center"
                                                             row.appendChild(cell);
+                                                            
                                                             var a = document.createElement("button");
                                                             var linkText1 = document.createTextNode("C");
                                                             a.className="btn btn-success btn-circle btn-lg";
@@ -1512,7 +1506,7 @@ function comprobante(obj){
 
 $("#moneda").change(function (event) {
     if(this.value=="UF"){
-        $("#valormoneda").val({{ $uf->valor }});
+        $("#valormoneda").val({{ $uf->valor or 0}});
     }else{
         $("#valormoneda").val(1);
     }

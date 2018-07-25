@@ -11,16 +11,34 @@
                                     <ul class="list-group">
                                         <li class="list-group-item list-group-item-success"><h3 class="box-title m-b-0">INMUEBLE : {{ $inmueble->direccion or null }} # {{ $inmueble->numero or null}} Dpto {{ $inmueble->departamento or null}}, {{ $inmueble->comuna_nombre or null}}</h3></li>
                                         <li class="list-group-item list-group-item-info"><h3 class="box-title m-b-0">PROPIETARIO : {{ $persona->nombre or null}} {{ $persona->apellido_paterno or null}}, Fono : {{ $persona->telefono or null}}, Email: {{ $persona->email or null}}</h3></li>
-                                        <li class="list-group-item list-group-item-warning"><h3 class="box-title m-b-0">MES : {{ $mes }} / {{ $pago->anio }}</h3></li></h3></li>
-                                        <li class="list-group-item list-group-item-danger"><h3 class="box-title m-b-0">ESTADO : {{ trans_choice('mensajes.pagopropietario', $pago->id_estado) }}
-                                        </h3></li> </li>
+                                        <li class="list-group-item list-group-item-warning">
+                                        <table class="display nowrap" cellspacing="0" width="100%">
+                                            <tbody>
+                                                <tr>
+                                                    <td><h3 class="box-title m-b-0">MES : {{ $mes }} / {{ $pago->anio }}</h3></td>
+                                                    <td><h3 class="box-title m-b-0">ESTADO : {{ trans_choice('mensajes.pagopropietario', $pago->id_estado) }}
+                                        </h3></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+
+                                            </li>
+                                        <li class="list-group-item list-group-item-danger"> <h3 class="box-title m-b-0"><table class="display nowrap" cellspacing="0" width="100%">
+                                            <tbody>
+                                                <tr>
+                                                    <td>Valor Original : $ <?= $pago->pago_a_rentas_moneda  ?></td>
+                                                    <td><center>Moneda  : <?= $pago->moneda ?></center></td>
+                                                    <td align="right">Valor UF HOY : <?= $uf->valor ?></td>
+                                                </tr>
+                                            </tbody>
+                                        </table></h3></li> 
                                        <li class="list-group-item list-group-item-default"><h3 class="box-title m-b-0">
                                         <table class="display nowrap" cellspacing="0" width="100%">
                                             <tbody>
                                                 <tr>
-                                                    <td>Valor Original : $ <?= number_format($pago->pago_a_rentas)  ?></td>
-                                                    <td>Valor Pagado   : $ <?= number_format($valor_pagado)  ?></td>
-                                                    <td>Saldo a Pagar  : $ <?= number_format($saldo)  ?></td>
+                                                    <td>Valor en Pesos   : $ <?= round($saldo_pesos)  ?></td>
+                                                    <td><center>Valor Pagado   : $ <?= $valor_pagado  ?></center></td>
+                                                    <td align="right">Saldo a Pagar  : $ <?= $saldo_moneda  ?></td>
                                                 </tr>
                                             </tbody>
                                         </table>
@@ -52,7 +70,7 @@
                                                         <div class="input-group"> 
                                                             <span class="input-group-addon">$</span>
                                                             <input type="hidden" name="id_pagomensual" id="id_pagomensual" value="{{ $pago->id }}">
-                                                            <input name='monto' id='monto' type="number" class="form-control"   placeholder="$" value="{{ $saldo  }}" required="required"">
+                                                            <input name='monto' id='monto' type="number" class="form-control"   placeholder="$" value="{{ $saldo_pesos  }}" required="required"">
                                                         </div>
                                                 </div>
                     <div class="col-md-6">
@@ -85,6 +103,7 @@
     </div>
 
     <div class="col-md-6">
+        <center><a href="{{ route('PagosMensualesArrendatarios.comprobantedepago',$pago->id) }}" class="btn btn-info" style="color:white">LIQUIDACIÓN DE PAGO</a></center><br/>
              <table id="listusers1" class="display nowrap" cellspacing="0" width="100%">
                         <thead>
                             <tr>

@@ -1157,7 +1157,7 @@ if($request->moneda=='UF' && $request->arriendo_sim>300){
             return Excel::create('Propuesta de Pago', function ($excel) use ($header, $propuesta1, $meses) {
                         $excel->sheet('Propuesta', function ($sheet) use ($header, $propuesta1, $meses) {
                             $sheet->setBorder('A8:N20', 'thin');
-                            $sheet->setBorder('A5:G6', 'thin');
+                            $sheet->setBorder('A5:K6', 'thin');
                             $sheet->loadView('formatosexcel.propuesta1', compact('header', 'meses', 'propuesta1'));
                         });
                     })->download('xlsx');
@@ -1170,7 +1170,7 @@ if($request->moneda=='UF' && $request->arriendo_sim>300){
                         $excel->sheet('Propuesta', function ($sheet) use ($header, $propuesta2, $meses) {
                             $sheet->loadView('formatosexcel.propuesta2', compact('header', 'meses', 'propuesta2'));
                             $sheet->setBorder('A8:N20', 'thin');
-                            $sheet->setBorder('A5:G6', 'thin');
+                            $sheet->setBorder('A5:K6', 'thin');
                         });
                     })->download('xlsx');
         }

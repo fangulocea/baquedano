@@ -176,7 +176,7 @@ use App\Http\Controllers\ContratoFinalArrController;
                     </section>
 
                     <section id="section-iconbox-7_c">
-                        <div class="panel panel-info">
+                         <div class="panel panel-info">
                             <div class="panel-heading"> Gestión de pagos del Contrato</div>
                             <div class="panel-wrapper collapse in" aria-expanded="true">
                                 <div class="panel-body">
@@ -190,7 +190,6 @@ use App\Http\Controllers\ContratoFinalArrController;
                                                     <h3 class="box-title m-b-0">Complete Campos generales para generar pago</h3><br/>
                                                     <div class="row">
                                                         <input type="hidden" name="tipopropuesta" id="tipopropuesta">
-                                                        <input type="hidden" name="id_inmueble_pago" id="id_inmueble_pago">
                                                         <div class="col-md-12">
                                                             <div class="form-group">
                                                                 <label class="control-label">
@@ -232,19 +231,9 @@ use App\Http\Controllers\ContratoFinalArrController;
                                                             </div>
                                                         </div>
                                                     </div>
+                                              
                                                     <div class="row">
-                                                        <div class="col-md-6">                                       
-                                                            <div class="form-group">
-                                                                <label for="input-file-now-custom-1">Proporcional</label>
-                                                                <select name="proporcional" class="form-control">
-                                                                    <option value="NO">NO</option>
-                                                                    <option value="SI">SI</option>
-                                                                </select>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row">
-
+                                                        <input type="hidden" value="proporcional" value="NO">
                                                         <div class="col-md-6">
                                                             <label for="input-file-now-custom-1">Nro. Cuotas</label> 
                                                             <div class="input-group"> 
@@ -263,7 +252,7 @@ use App\Http\Controllers\ContratoFinalArrController;
 
                                                     </div><br>
                                                     <div class="row">
-                                                        <div class="col-md-6">
+                                                        <div class="col-md-5">
                                                             <div class="form-group">
                                                                 <label for="input-file-now-custom-1">Fecha Inicio Contrato</label>
                                                                 <input type="date" name="fecha_firmapago" id="fecha_firmapago" class="form-control">
@@ -272,16 +261,16 @@ use App\Http\Controllers\ContratoFinalArrController;
                                                         <div class="col-md-3">
                                                             <div class="form-group">
                                                                 <label for="input-file-now-custom-1">Moneda</label>
-                                                                <select class="form-control" name="moneda" required="required" >
+                                                                <select class="form-control" name="moneda" id="moneda" required="required" >
                                                                     <option value="CLP">CLP</option>
                                                                     <option value="UF">UF</option>
                                                                 </select>
                                                             </div>
                                                         </div>
-                                                        <div class="col-md-3">
+                                                        <div class="col-md-4">
                                                             <div class="form-group">
                                                                 <label for="input-file-now-custom-1">Valor Moneda</label>
-                                                                <input name='valormoneda' id='valormoneda' type="number" class="form-control" required="required" value='1'>
+                                                                <input name='valormoneda' id='valormoneda' type="number" class="form-control" required="required" value='1' step="any">
                                                             </div>
                                                         </div>
                                                     </div>
@@ -636,6 +625,7 @@ use App\Http\Controllers\ContratoFinalArrController;
 
 $("#id_propuesta").change(function (event) {
     $.get("/finalContratoArr/mostrarsimulacion/" + event.target.value + "", function (response, state) {
+
         $("#precio").val(response.canondearriendo!=''?response.canondearriendo:0);
         $("#gastocomun").val(response.gastocomun!=null?response.gastocomun:0);
         $("#pagonotaria").val(response.notaria!=null?response.notaria:0);
@@ -740,16 +730,6 @@ var table1 =$('#listusers1_c').DataTable({
 
 var table =$('#listpagos').DataTable();
 
- $("#id_final_pagos").change(function (event) {
-
-        $.get("/contratofinalarr/consulta/"+this.value+"",function(response,state){
-                    $("#precio").val(response.valorarriendo);
-                    $("#reserva").val("50000");
-                    $("#fecha_firmapago").val(response.fecha_firma);
-                
-            });
-
-    });
 
   $("#id_final_detalle").change(function (event) {
 document.getElementById("tablearea").innerHTML="";
@@ -789,7 +769,7 @@ document.getElementById("tablearea").innerHTML="";
                                         cell.innerHTML = 'Tipo de Pago';
                                         rowheader.appendChild(cell);
 
-                                     for (var r = 0; r < meses_contrato; r++) {
+                                     for (var r = 0; r < meses_contrato+1; r++) {
                                         var cell = document.createElement("th");
                                         cell.style.border="1px solid black";
                                         cell.style.padding="8px";
@@ -808,7 +788,7 @@ document.getElementById("tablearea").innerHTML="";
                                         var newArray = response.filter(function (el) {
                                               return el.idtipopago==r;
                                             });
-                                        console.log(newArray);
+
                                      // CONTENIDO
                                          if(newArray.length>0)
                                          {
@@ -826,23 +806,28 @@ document.getElementById("tablearea").innerHTML="";
                                                             row.appendChild(cell);
                                                  }
                                                 $subtotal=0;
-                                                 for (var c = 0; c < meses_contrato; c++) {
+                                                 for (var c = 0; c < meses_contrato+1; c++) {
                                                     if (!$.isEmptyObject(newArray[c])) {
                                                             var idtp=newArray[c].idtipopago;
-                                                            $subtotal+=newArray[c].precio_en_pesos;
+                                                            $subtotal+=newArray[c].precio_en_moneda;
                                                             var a = document.createElement("button");
-                                                            var linkText = document.createTextNode(newArray[c].precio_en_pesos);
+                                                            var linkText = document.createTextNode(newArray[c].precio_en_moneda);
                                                             a.appendChild(linkText);
                                                             if(newArray[c].E_S=='e'){
                                                                 a.className="btn btn-block btn-outline btn-success";
                                                             }else{
-                                                                a.className="btn btn-block btn-outline btn-danger";
+                                                                if(newArray[c].idtipopago==11){
+                                                                    a.className="btn btn-block btn-outline btn-info";
+                                                                }else{
+                                                                   a.className="btn btn-block btn-outline btn-danger"; 
+                                                                }
+                                                                
                                                             }
                                                             if(newArray[c].idtipopago==20 || newArray[c].idtipopago==21 || newArray[c].idtipopago==34 || newArray[c].idtipopago==35 )
                                                                 a.className="btn btn-block btn-outline btn-default";
                                                             var id=newArray[c].id;
                                                             a.id=id;
-                                                            if(newArray[c].idtipopago!=20 && newArray[c].idtipopago!=21  && newArray[c].idtipopago!=34 && newArray[c].idtipopago!=35)
+                                                            if(newArray[c].idtipopago!=20 && newArray[c].idtipopago!=21  && newArray[c].idtipopago!=34 && newArray[c].idtipopago!=35 && newArray[c].idtipopago!=11)
                                                             a.addEventListener('click', function(){
                                                                     mostrar_modal(this);
                                                                 });
@@ -1031,6 +1016,7 @@ document.getElementById("pagoarea").innerHTML="";
         }
 
                 $.get("/contratofinalarr/consultapagosmensuales/"+$("#id_final_pagar").val()+"/" + event.target.value + "",function(response,state){
+                    console.log(response);
                         var meses = ["", "Ene","Feb","Mar","Abr","May","Jun","Jul","Ago","Sep","Oct","Nov","Dic"];
 
                         document.getElementById("pagoarea").innerHTML="";
@@ -1062,13 +1048,13 @@ document.getElementById("pagoarea").innerHTML="";
                                     var cell = document.createElement("th");
                                         cell.style.border="1px solid black";
                                         cell.style.padding="8px";
-                                        cell.innerHTML = 'Total Salida';
+                                        cell.innerHTML = 'Total Entrada';
                                         rowheader.appendChild(cell);
 
                                     var cell = document.createElement("th");
                                         cell.style.border="1px solid black";
                                         cell.style.padding="8px";
-                                        cell.innerHTML = 'Pago a Baquedano';
+                                        cell.innerHTML = 'Pago a Rentas';
                                         rowheader.appendChild(cell);
 
 
@@ -1084,6 +1070,11 @@ document.getElementById("pagoarea").innerHTML="";
                                         cell.innerHTML = 'Pagar';
                                         rowheader.appendChild(cell);
 
+                                    var cell = document.createElement("th");
+                                        cell.style.border="1px solid black";
+                                        cell.style.padding="8px";
+                                        cell.innerHTML = 'Comprobante';
+                                        rowheader.appendChild(cell);
                                      tbl.appendChild(rowheader);
 
                                     // LINEAS
@@ -1107,7 +1098,7 @@ document.getElementById("pagoarea").innerHTML="";
            
                                                             var a = document.createElement("button");
                                                             var cell = document.createElement("td");
-                                                            var cellText = document.createTextNode("$ "+response[r].subtotal_salida);
+                                                            var cellText = document.createTextNode("$ "+response[r].subtotal_entrada_moneda);
                                                             cell.appendChild(cellText);
                                                             cell.style.border="1px solid black";
                                                             cell.style.padding="8px"
@@ -1116,7 +1107,7 @@ document.getElementById("pagoarea").innerHTML="";
 
                
                                                             var cell = document.createElement("td");
-                                                            var cellText = document.createTextNode("$ "+response[r].pago_a_rentas);
+                                                            var cellText = document.createTextNode("$ "+response[r].pago_a_rentas_moneda);
                                                             cell.appendChild(cellText);
                                                             cell.style.border="1px solid black";
                                                             cell.style.padding="8px"
@@ -1138,10 +1129,18 @@ document.getElementById("pagoarea").innerHTML="";
                                                             } 
                                                             var cell = document.createElement("td");
                                                             var cellText = document.createTextNode(estado);
-                                                            cell.appendChild(cellText);
+                                                            
                                                             cell.style.border="1px solid black";
                                                             cell.style.padding="8px"
                                                             cell.style.textAlign="center"
+                                                            var a = document.createElement("span");
+                                                            var linkText1 = document.createTextNode(estado);
+                                                            if(estado=='Pagado')
+                                                            {a.className="label label-success label-rouded";}
+                                                            else
+                                                            {a.className="label label-danger label-rouded";}
+                                                            a.appendChild(linkText1);
+                                                            cell.appendChild(a);
                                                             row.appendChild(cell);
 
                                                             var a = document.createElement("button");
@@ -1150,6 +1149,22 @@ document.getElementById("pagoarea").innerHTML="";
                                                             a.id=response[r].id;
                                                             a.addEventListener('click', function(){
                                                                     ir_pago(this);
+                                                                });
+                                                            a.appendChild(linkText1);
+                                                            a.style="font-size:small"
+                                                            var cell = document.createElement("td");
+                                                            cell.appendChild(a);
+                                                            cell.style.border="1px solid black";
+                                                            cell.style.padding="8px"
+                                                            cell.style.textAlign="center"
+                                                            row.appendChild(cell);
+                                                            
+                                                            var a = document.createElement("button");
+                                                            var linkText1 = document.createTextNode("C");
+                                                            a.className="btn btn-success btn-circle btn-lg";
+                                                            a.id=response[r].id;
+                                                            a.addEventListener('click', function(){
+                                                                    comprobante(this);
                                                                 });
                                                             a.appendChild(linkText1);
                                                             a.style="font-size:small"
@@ -1174,6 +1189,42 @@ document.getElementById("pagoarea").innerHTML="";
 
 function ir_pago(obj){
     window.location.href = '/pagosarrendatario/ir_al_pago/'+obj.id;
+}
+
+$("#moneda").change(function (event) {
+    if(this.value=="UF"){
+        $("#valormoneda").val({{ $uf->valor }});
+    }else{
+        $("#valormoneda").val(1);
+    }
+    
+});
+
+$("#id_propuesta").change(function (event) {
+    $.get("/finalContratoArr/mostrarsimulacion/" + event.target.value + "", function (response, state) {
+        $("#precio").val(response.canondearriendo!=''?response.canondearriendo:0);
+        $("#gastocomun").val(response.gastocomun!=null?response.gastocomun:0);
+        $("#pagonotaria").val(response.notaria!=null?response.notaria:0);
+        $("#cuotas").val(response.nrocuotas!=null?response.nrocuotas:0);
+        $("#cobromensual").val(response.cobromensual!=null?response.cobromensual:0);
+        $("#pie").val(response.pie!=null?response.pie:0);
+        $("#descuento").val(response.descuento!=null?response.descuento:0);
+        $("#iva").val(response.iva!=null?response.iva:0);
+        $("#tipopropuesta").val(response.tipopropuesta!=null?response.tipopropuesta:0);
+        $("#fecha_firmapago").val(response.fecha_iniciocontrato!=null?response.fecha_iniciocontrato:'');
+        $("#cant_meses").val(response.meses_contrato!=null?response.meses_contrato:0);
+         $("#nombre_otropago1").val(response.nomotro1!=null?response.nomotro1:'');
+          $("#nombre_otropago2").val(response.nomotro2!=null?response.nomotro2:'');
+           $("#pagootro1").val(response.otro1!=null?response.otro1:0);
+           $("#pagootro2").val(response.otro2!=null?response.otro2:0);
+           $("#moneda").val("");
+           $("#valormoneda").val("");
+
+    });
+
+});
+function comprobante(obj){
+    window.location.href = '/finalContratoArr/comprobantedepago/'+obj.id;
 }
 </script>
 @endsection

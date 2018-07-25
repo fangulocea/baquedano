@@ -422,7 +422,7 @@
                                     <input class="form-control" name="monedaborrador" id="monedaborrador" required="required" type="text" disabled="disabled">
                                 </div>
                             </div>
- <div class="row">
+                             <div class="row">
 
                                 <div class="col-md-3">
                                     <label>

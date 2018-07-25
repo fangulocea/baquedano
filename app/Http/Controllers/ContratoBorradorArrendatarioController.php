@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Mail;
 use App\ContratoBorradorArrendatarioPdf;
 use App\ArrendatarioGarantia;
+use Carbon\Carbon;
 
 
 
@@ -94,20 +95,6 @@ class ContratoBorradorArrendatarioController extends Controller
          $id_publicacion = DB::table('arrendatarios as a')
          ->where('a.id','=',$id)->first();
 
-         // $borradoresIndex = DB::table('contratoborradorarrendatarios as b')
-         // ->leftjoin('personas as p1','b.id_arrendatario','=','p1.id')
-         // ->leftjoin('contratos as con','b.id_contrato','=','con.id')
-         // ->leftjoin('inmuebles as i','b.id_inmueble','=','i.id')
-         // ->leftjoin('servicios as s', 'b.id_servicios','=', 's.id')
-         // ->leftjoin('formasdepagos as fp','b.id_formadepago','=','fp.id')
-         // ->leftjoin('comisiones as c', 'b.id_comisiones', '=', 'c.id')
-         // ->leftjoin('flexibilidads as f', 'b.id_flexibilidad', '=', 'f.id')
-         // ->leftjoin('multas as m','b.id_multa','=','m.id')
-         // ->leftjoin('personas as p2','b.id_creador','=','p2.id')
-         // ->leftjoin('contratoborradorarrendatariospdf as bp', 'b.id', '=', 'bp.id_b_arrendatario')
-         //    ->where('b.id_cap_arr','=',$id)
-         // ->select(DB::raw('b.id as id, b.id_cap_arr as id_cap_arr, CONCAT_WS(" ",p1.nombre,p1.apellido_paterno,p1.apellido_materno) as arrendatario, s.nombre as servicio, fp.nombre as forma, c.nombre as comision, f.nombre as flexibilidad, m.nombre as multa, DATE_FORMAT(b.fecha_contrato, "%d/%m/%Y") as fecha, b.id_estado, CONCAT_WS(" ", p2.nombre,p2.apellido_paterno,p2.apellido_materno) as creador, b.id_arrendatario,i.id as id_inmueble, b.id_contrato, bp.nombre, con.nombre as contrato, bp.id_b_arrendatario as id_pdfborrador' ))
-         // ->get();
 
         $borradoresIndex = DB::select("select 
         b.id as id, b.id_cap_arr as id_cap_arr, CONCAT_WS(' ',p1.nombre,p1.apellido_paterno,p1.apellido_materno) as arrendatario, 
@@ -171,6 +158,11 @@ class ContratoBorradorArrendatarioController extends Controller
         ->where("id_publicacion","=",$id)
         ->select(DB::raw(" g.id, g.mes, g.ano, g.banco, g.numero, g.valor, DATE_FORMAT(g.fecha_cobro, '%d/%m/%Y') as fecha_cobro"))
         ->get();
+
+        $uf = DB::table('adm_uf')
+         ->where("fecha","=",Carbon::now()->format('Y/m/d'))
+         ->first();  
+         
         if ($tab == 2) {
             if (count($borradoresIndex) > 0) {
                 $tab = 3;
@@ -178,7 +170,7 @@ class ContratoBorradorArrendatarioController extends Controller
 
            
         }
-        return view('contratoborradorarrendatario.edit',compact('garantias','servicio','formasdepago','comision','flexibilidad','multa','contrato','publica','borradoresIndex','id_publicacion','propuestas','tab'));
+        return view('contratoborradorarrendatario.edit',compact('garantias','servicio','formasdepago','comision','flexibilidad','multa','contrato','publica','borradoresIndex','id_publicacion','propuestas','tab','uf'));
     }
 
     /**
@@ -207,7 +199,7 @@ class ContratoBorradorArrendatarioController extends Controller
     public function crearBorrador(Request $request)
     {
 
-        $fecha = DateTime::createFromFormat('d-m-Y', $request->fecha_contrato);
+        $fecha = $request->fecha_contrato;
 
         $contratoTipo = DB::table('contratos as c')
         ->where("c.id","=",$request->id_contrato)
