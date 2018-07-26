@@ -24,7 +24,7 @@
                         <li id="li_1" ><a href="#section-iconbox-1" class="sticon ti ti-user"><span>Arrendatario</span></a></li>
                         <li id="li_2"><a  href="#section-iconbox-2" class="sticon ti ti-alarm-clock"><span>Reserva</span></a></li>
                         <li id="li_3"><a  href="#section-iconbox-3" class="sticon ti ti-home"><span>Asignar Inmueble</span></a></li>
-                        <li id="li_4"><a  href="#section-iconbox-4" class="sticon ti-camera"><span>Fotos</span></a></li>
+                        <li id="li_4"><a  href="#section-iconbox-4" class="sticon ti-camera"><span>Documentos</span></a></li>
                         <li id="li_5"><a  href="#section-iconbox-5" class="sticon ti-agenda"><span>Gestiones</span></a></li>
                     </ul>
                 </nav>
@@ -648,50 +648,48 @@
                            <form action="{{ route('arrendatario.savefotos',$arrendatario->id) }}" method="post" enctype='multipart/form-data'>
                                         {!! csrf_field() !!}
                                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                                <h3 class="box-title">Subir imágen</h3>
-                                <label for="input-file-now-custom-1">Imágenes del Arrendatario</label>
+                                <h3 class="box-title">Subir Documentos</h3>
+                                <label for="input-file-now-custom-1">Documentos del Arrendatario</label>
                                 <input type="file" id="foto" name="foto"  class="dropify"  /> 
                                 <input type="hidden" id="id_creador" name="id_creador" value="{{ Auth::user()->id_persona }}"  /> 
-                                <button type="submit" class="btn btn-success"> <i class="fa fa-check"></i> Subir Foto</button>
+                                <button type="submit" class="btn btn-success"> <i class="fa fa-check"></i> Subir Documento</button>
 
                             </form>
                         </div>
                     </div>
-                     <div class="col-sm-6">
-                        <div class="white-box"> 
-                             <table id="ssss"  cellspacing="0" width="100%">
-                                                    <thead>
-                                                        <tr>
-                                                         
-                                                            <th><center>Click Ver Imágen</center></th>
-                                                            <th>Borrar</th>
-                                                        </tr>
-                                                    </thead>
-                                                   
-                                                    <tbody>
-                                                        @foreach($imagenes as $p)
-                                                        <tr>
-                                                            <td  width="10px" height="10px">
-                                                               
-                                                            <center><a data-lightbox="image-1" href="{{ URL::asset($p->ruta.'/'.$p->nombre) }}" ><img src="{{ URL::asset($p->ruta.'/'.$p->nombre) }}" alt="gallery" class="all studio" width="50" height="80" /> </a></center>
 
-                                                           
-                                                            @can('captacion.show')
-                                                            <td width="10px">
+<div class="col-sm-6">
+    <div class="white-box"> 
+     <table id="ssss"  cellspacing="0" width="100%">
+        <thead>
+            <tr>
+                <th><center>Click Ver Documento</center></th>
+                <th><center>Borrar</center></th>
+            </tr>
+        </thead>
+        <tbody>
+@foreach($imagenes as $p)
+<tr>
+    <td  width="10px" height="10px" style="border: 1px solid black;" >
+        <center>
+            <a href="{{ URL::asset($p->ruta.'/'.$p->nombre) }}" target="_blank">DESCARGAR ARCHIVO<br/> {{ $p->nombre }} </a></center>
+            @can('captacion.show')
+            <td width="10px" style="border: 1px solid black;">
+                <center>
+                    <a href="{{ route('arrendatario.eliminarfoto', [$p->id,$p->id_arrendatario]) }}" 
+                     class="btn btn-danger btn-circle btn-lg">
+                     <i class="fa fa-check"></i>
+                 </a>
+             </center>
+         </td>
+         @endcan
+     </tr>
+@endforeach
+           </tbody>
+       </table>
+   </div>
+</div>
 
-                                                                <a href="{{ route('arrendatario.eliminarfoto', [$p->id,$p->id_arrendatario]) }}" 
-                                                                   class="btn btn-danger btn-circle btn-lg">
-                                                                    <i class="fa fa-check"></i>
-                                                                </a>
-                                                            </td>
-                                                            @endcan
-                                                        </tr>
-                                                        @endforeach
-
-                                                    </tbody>
-                                                </table>
-                        </div>
-                    </div>
         </div>
 </section>
 

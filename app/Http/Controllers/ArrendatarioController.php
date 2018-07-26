@@ -20,7 +20,7 @@ use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\File;
 use App\Arr_Reservas;
 use App\Arr_ReservasDocs;
-use Illuminate\Support\Facades\Storage;
+
 use App\ArrReservaGes;
 use App\ArrReservaGesDocs;
 
@@ -444,27 +444,24 @@ class ArrendatarioController extends Controller
          {
             return back()->with('error', 'Imágen supera 1MB');      
          } */
-        if(isset($request->foto))
-        {
-            $path='uploads/arrendatarios';
-            $archivo=rand().$request->foto->getClientOriginalName();
-            $img = Image::make($_FILES['foto']['tmp_name'])->resize(600,400, function ($constraint){ 
-                            $constraint->aspectRatio();
-                        });
-            $img->save($path.'/'.$archivo,72);
 
-            $imagen=ArrendatarioFoto::create([
-                   'id_arrendatario'      => $id,
-                   'descripcion'          => '',
-                   'nombre'               => $archivo,
-                   'ruta'                 => $path,
-                   'id_creador'           => $request->id_creador
-            ]);
-        }
-        else
-        {
+        if (!isset($request->foto)) {
             return redirect()->route('arrendatario.edit', [$id,4])->with('status', 'No se ha actualizado ninguna imágen');
         }
+        $path = 'uploads/arrendatarios';
+        $archivo=rand().$request->foto->getClientOriginalName();
+        $file = $request->file('foto');
+        $file->move($path, $archivo);
+
+        $imagen = ArrendatarioFoto::create([
+                    'id_arrendatario' => $id,
+                    'descripcion' => '',
+                    'nombre' => $archivo,
+                    'ruta' => $path,
+                    'id_creador' => $request->id_creador
+        ]);
+
+
         return redirect()->route('arrendatario.edit', [$id,4])->with('status', 'Foto guardada con éxito');
     }
 

@@ -179,7 +179,7 @@ use App\Http\Controllers\ContratoFinalController;
                                         {!! csrf_field() !!}
                                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                         <input type="hidden" name="tab" value="2">
-                                        <h3 class="box-title">Subir Archivo</h3>
+                                        <h3 class="box-title">Subir Documento</h3>
                                         <label for="input-file-now-custom-1">Contratos</label>
                                         <select class="form-control" name="id_final" id="id_final" required="required" >
                                             <option value="">Selecione Contrato</option>
@@ -207,7 +207,7 @@ use App\Http\Controllers\ContratoFinalController;
                                         <input type="file" id="foto" name="foto"  class="dropify"  /> 
                                         <input type="hidden" id="id_publicacion" name="id_publicacion" value="{{ $borrador->id_publicacion }}"  /> 
                                         <input type="hidden" id="id_creador" name="id_creador" value="{{ Auth::user()->id_persona }}"  /> 
-                                        <button type="submit" class="btn btn-success"> <i class="fa fa-check"></i> Subir Archivo</button>
+                                        <button type="submit" class="btn btn-success"> <i class="fa fa-check"></i> Subir Documento</button>
 
                                     </form>
                                 </div>

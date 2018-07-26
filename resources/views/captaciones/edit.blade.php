@@ -596,11 +596,11 @@
                            <form action="{{ route('captacion.savefotos',$captacion->id) }}" method="post" enctype='multipart/form-data'>
                                         {!! csrf_field() !!}
                                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                                <h3 class="box-title">Subir imágen</h3>
-                                <label for="input-file-now-custom-1">Imágenes de la publicación</label>
+                                <h3 class="box-title">Subir Documentos</h3>
+                                <label for="input-file-now-custom-1">Documentos de la publicación</label>
                                 <input type="file" id="foto" name="foto"  class="dropify"  /> 
                                 <input type="hidden" id="id_creador" name="id_creador" value="{{ Auth::user()->id_persona }}"  /> 
-                                <button type="submit" class="btn btn-success"> <i class="fa fa-check"></i> Subir Foto</button>
+                                <button type="submit" class="btn btn-success"> <i class="fa fa-check"></i> Subir Documento</button>
 
                             </form>
                         </div>
@@ -623,7 +623,7 @@
                                                         <tr>
                                                             <td  width="10px" height="10px" style="border: 1px solid black;" >
                                                             <center>
-                                                            <a href="{{ URL::asset($pi->ruta.'/'.$pi->nombre) }}" target="_blank">BAJAR ARCHIVO<br/> {{ $pi->nombre }} </a></center>
+                                                            <a href="{{ URL::asset($pi->ruta.'/'.$pi->nombre) }}" target="_blank">DESCARGAR ARCHIVO<br/> {{ $pi->nombre }} </a></center>
 
                                                            
                                                             @can('captacion.show')
