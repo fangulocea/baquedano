@@ -1028,4 +1028,34 @@ Route::get('contratorenovacionpropietario','ContratoRenovacionPropietarioControl
 	Route::get('uf/{uf}/edit','UfController@edit')->name('uf.edit')
 		->middleware('permission:uf.edit');	
 
+
+// CHECKLIST MANTENEDOR
+	Route::post('mantenedorchecklist/store','MantenedorChecklistController@store')->name('mantenedorchecklist.store')
+		->middleware('permission:mantenedorchecklist.create');
+
+	Route::get('mantenedorchecklist','MantenedorChecklistController@index')->name('mantenedorchecklist.index')
+		->middleware('permission:mantenedorchecklist.index');
+
+	Route::get('mantenedorchecklist/create','MantenedorChecklistController@create')->name('mantenedorchecklist.create')
+		->middleware('permission:mantenedorchecklist.create');
+
+	Route::post('mantenedorchecklist/{id}','MantenedorChecklistController@update')->name('mantenedorchecklist.update')
+		->middleware('permission:mantenedorchecklist.edit');
+
+	Route::get('mantenedorchecklist/{id}','MantenedorChecklistController@show')->name('mantenedorchecklist.show')
+		->middleware('permission:mantenedorchecklist.show');
+
+	Route::delete('mantenedorchecklist/{id}','MantenedorChecklistController@destroy')->name('mantenedorchecklist.destroy')
+		->middleware('permission:mantenedorchecklist.destroy');
+
+	Route::get('mantenedorchecklist/{id}/edit','MantenedorChecklistController@edit')->name('mantenedorchecklist.edit')
+		->middleware('permission:mantenedorchecklist.edit');
+
+
+// CHECKLIST
+
+	Route::get('checklist/prueba','ChecklistController@index')->name('checklist.index')
+		->middleware('permission:checklist.prueba');		
+
+
 });

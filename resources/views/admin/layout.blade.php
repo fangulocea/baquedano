@@ -211,6 +211,9 @@
                                 @can('uf.index')
                                 <li> <a href="{{ route('uf.index') }}"><i class=" fa-fw">S</i><span class="hide-menu">UF</span></a> </li>
                                 @endcan
+                                @can('mantenedorchecklist.index')
+                                <li> <a href="{{ route('mantenedorchecklist.index') }}"><i class=" fa-fw">C</i><span class="hide-menu">CheckList</span></a> </li>
+                                @endcan
                             </ul>
                         </li>
                         <li> <a href="#" class="waves-effect"><i class="mdi mdi-settings fa-fw" data-icon="v"></i> <span class="hide-menu"> Captaciones <span class="fa arrow"></span> <span class="label label-rouded label-primary pull-right">6</span></span></a>
@@ -290,9 +293,10 @@
                                     @endcan
                                 </ul>
                             </li>
-
-
-
+                            
+                            @can('checklist.index')
+                                <li> <a href="{{ route('checklist.index') }}"><i class=" fa-fw">CHK</i><span class="hide-menu">CheckList Inmueble</span></a> </li>
+                            @endcan
 
                             </ul>
 
