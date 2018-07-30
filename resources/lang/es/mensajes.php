@@ -24,4 +24,6 @@ return [
 
 		'TipoContrato' => '{N}Nuevo|{A}Anexo|{R}Renovación',
 
+		'chk' => '{}Sin CheckList|{1}Con CheckList',
+
 ];

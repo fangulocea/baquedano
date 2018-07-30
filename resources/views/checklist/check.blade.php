@@ -25,63 +25,22 @@
 </div>	
 
 
-<form action="{{ route('checklist.savefotos',$inmueble->id) }}" method="post" enctype='multipart/form-data'>
-	{!! csrf_field() !!}
-	<input type="hidden" name="_token" value="{{ csrf_token() }}">
-	<input type="hidden" name="id_modificador"value="{{ Auth::user()->id_persona }}">
-    <input type="hidden" name="id_creador"value="{{ Auth::user()->id_persona }}">
-    <input type="hidden" name="id_tipo"value="{{ $tipo }}">
-
+@foreach($ListadoCheckList as $p) 
 	<div class="row">
-		<div class="col-sm-6">
-			<div class="white-box"> 
-				<h3 class="box-title">Subir Imágen para: {{ $NombreCheck->nombre }}</h3>
-				<label for="input-file-now-custom-1">Imágen de CheckList</label>
-				<input type="file" id="foto" name="foto"  class="dropify"  />  
-			</div>
+		<div class="col-md-2">
+			<div class="form-group">
+	        	<a href="{{ route('checklist.edit',[$inmueble->id,$p->id]) }}" class="btn btn-success" style="color:white"><i class="ti-check-box"></i>&nbsp;&nbsp;Subir Imágenes : {{ $p->nombre }}</a>
+	        </div>
 		</div>
+	</div>	
+@endforeach
 
-
-		<div class="col-sm-6">
-			<div class="white-box"> 
-				<table id="ssss"  cellspacing="0" width="100%">
-					<thead>
-						<tr>
-							<th><center>Click Ver Documento</center></th>
-							<th>Borrar</th>
-						</tr>
-					</thead>
-					<tbody>
-						@foreach($imgReserva as $p)
-						<tr>
-							<td  width="10px" height="10px">
-								<center><a href="{{ URL::asset($p->ruta.'/'.$p->nombre) }}" target="_blank">BAJAR ARCHIVO<br> {{ $p->nombre }} </a></center>
-								@can('revisioncomercial.edit')
-								<td width="10px">
-									<a href="{{ route('checklist.eliminararchivo', [$p->id,$inmueble->id,$tipo]) }}" class="btn btn-danger btn-circle btn-lg"><i class="fa fa-check"></i></a>
-								</td>
-								@endcan
-							</tr>
-							@endforeach
-						</tbody>
-					</table>
-				</div>
-			</div> 
-	</div>
-	<div class="row"> 
-    	<div class="col-md-6">
-        	<div class="form-group">
-            	<label class="control-label">Descripción Imágen</label>
-                <input type="text" name="descripcion" id="descripcion"  class="form-control" placeholder="" required="required" value='{{ $persona->nombre or '' }}' > 
-            </div>
-        </div>
+<hr>
+<div class="row">
+    <div class="col-md-3">
+        <a href="{{ route('checklist.index') }}" class="btn btn-info" style="color:white"><i class="fa fa-times-circle"></i>&nbsp;&nbsp;Volver</a>
     </div>
-	<div class="form-actions">
-	            <button type="submit" class="btn btn-success"> <i class="fa fa-check"></i> Guardar</button>
-	            <a href="{{ route('checklist.check',$inmueble->id) }}" class="btn btn-info" style="color:white"><i class="fa fa-times-circle"></i>&nbsp;&nbsp;Volver</a>
-	</div>
-</form>
-
+</div>
 
 <script src="{{ URL::asset('plugins/bower_components/jquery/dist/jquery.min.js') }}"></script>
 <!-- Bootstrap Core JavaScript -->

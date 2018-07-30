@@ -598,6 +598,8 @@ class ComposerStaticInit0178ccda3db7603c96af3e22d130f715
         'CreateBorradorespdfTable' => __DIR__ . '/../..' . '/database/migrations/2018_06_17_004355_create_borradorespdf_table.php',
         'CreateCargosTable' => __DIR__ . '/../..' . '/database/migrations/2012_05_19_003554_create_cargos_table.php',
         'CreateChecklistTable' => __DIR__ . '/../..' . '/database/migrations/2018_07_26_224109_create_checklist_table.php',
+        'CreateChkinmuebleTable' => __DIR__ . '/../..' . '/database/migrations/2018_07_29_110520_create_chkinmueble_table.php',
+        'CreateChkinmueblefotoTable' => __DIR__ . '/../..' . '/database/migrations/2018_07_29_110541_create_chkinmueblefoto_table.php',
         'CreateComisionesTable' => __DIR__ . '/../..' . '/database/migrations/2018_05_26_124820_create_comisiones_table.php',
         'CreateCondicionsTable' => __DIR__ . '/../..' . '/database/migrations/2018_05_16_013516_create_condicions_table.php',
         'CreateContratoborradorarrendatarioTable' => __DIR__ . '/../..' . '/database/migrations/2018_06_23_121319_create_contratoborradorarrendatario_table.php',

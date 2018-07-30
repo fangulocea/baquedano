@@ -227,6 +227,8 @@ return array(
     'CreateBorradorespdfTable' => $baseDir . '/database/migrations/2018_06_17_004355_create_borradorespdf_table.php',
     'CreateCargosTable' => $baseDir . '/database/migrations/2012_05_19_003554_create_cargos_table.php',
     'CreateChecklistTable' => $baseDir . '/database/migrations/2018_07_26_224109_create_checklist_table.php',
+    'CreateChkinmuebleTable' => $baseDir . '/database/migrations/2018_07_29_110520_create_chkinmueble_table.php',
+    'CreateChkinmueblefotoTable' => $baseDir . '/database/migrations/2018_07_29_110541_create_chkinmueblefoto_table.php',
     'CreateComisionesTable' => $baseDir . '/database/migrations/2018_05_26_124820_create_comisiones_table.php',
     'CreateCondicionsTable' => $baseDir . '/database/migrations/2018_05_16_013516_create_condicions_table.php',
     'CreateContratoborradorarrendatarioTable' => $baseDir . '/database/migrations/2018_06_23_121319_create_contratoborradorarrendatario_table.php',
