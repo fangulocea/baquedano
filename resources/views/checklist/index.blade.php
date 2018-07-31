@@ -13,6 +13,7 @@
                     <tr>
                         <th>ID</th>
                         <th>Dirección</th>
+                        <th>Tipo CheckList</th>
                         <th>Estado</th>
                         <th></th>
                         <th></th>
@@ -23,6 +24,7 @@
                     <tr>
                         <th>ID</th>
                         <th>Dirección</th>
+                        <th>Tipo CheckList</th>
                         <th>Estado</th>
                         <th></th>
                         <th></th>
@@ -34,6 +36,7 @@
                     <tr>
                         <td>{{ $p->id }}</td>
                         <td>{{ $p->direccion }}, N°{{ $p->numero }}, {{ $p->comuna }}</td>
+                        <td>{{ $p->tipo }}</td>
                         <td>{{ trans_choice('mensajes.chk', $p->id_estado ) }}</td>
                         @can('checklist.show')
                         <td width="10px">
@@ -45,7 +48,7 @@
                         @endcan
                         @can('checklist.edit')
                         <td width="10px">
-                            <a href="{{ route('checklist.check', $p->id) }}"><span class="btn btn-warning btn-circle btn-lg"><i class="ti-pencil-alt"></i></span></a>
+                            <a href="{{ route('checklist.check', [$p->id,$p->tipo]) }}"><span class="btn btn-warning btn-circle btn-lg"><i class="ti-pencil-alt"></i></span></a>
                         </td>
                         @endcan
                         

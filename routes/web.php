@@ -1071,7 +1071,7 @@ Route::get('contratorenovacionpropietario','ContratoRenovacionPropietarioControl
 	Route::get('checklist/prueba','ChecklistController@index')->name('checklist.index')
 		->middleware('permission:checklist.prueba');		
 
-	Route::get('checklist/create/{id}','ChecklistController@create')->name('checklist.check')
+	Route::get('checklist/create/{id}/{tipo}','ChecklistController@create')->name('checklist.check')
 		->middleware('permission:checklist.check');
 
 	Route::get('checklist','ChecklistController@index')->name('checklist.index')

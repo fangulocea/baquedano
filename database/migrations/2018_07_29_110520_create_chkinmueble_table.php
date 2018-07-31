@@ -22,7 +22,9 @@ class CreateChkinmuebleTable extends Migration
             $table->foreign('id_creador')->references('id')->on('personas');  
             $table->integer('id_modificador')->unsigned()->nullable();
             $table->foreign('id_modificador')->references('id')->on('personas');  
-            $table->integer('id_estado');
+            $table->string('id_estado');
+            $table->longText('descripcion')->nullable();
+            $table->string('tipo')->nullable();
             $table->timestamps();
         });
     }

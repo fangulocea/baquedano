@@ -22,6 +22,7 @@ use DB;
 use Illuminate\Support\Facades\File;
 use Auth;
 use App\PropietarioCheques;
+use App\Checklist;
 
 class ContratoFinalController extends Controller {
 
@@ -116,7 +117,7 @@ class ContratoFinalController extends Controller {
              i.dormitorio as dormitorio, i.bano as bano, i.bodega, i.piscina, i.precio, i.gastosComunes, 
              con.nombre, con.nombre as contrato, con.descripcion as deta_contrato,
              p1.profesion as profesion_p, p1.telefono as telefono_p, p1.departamento as depto_p,
-             i.rol as rol, b.detalle_revision as bodyContrato, CONCAT(c.descripcion, " ", c.comision, " %") as comision,f.descripcion as Flexibilidad, CONCAT(s.descripcion, "  $",s.valor) as Servicio'))->first();
+             i.rol as rol, b.detalle_revision as bodyContrato, CONCAT(c.descripcion, " ", c.comision, " %") as comision,f.descripcion as Flexibilidad, CONCAT(s.descripcion, "  $",s.valor) as Servicio, i.id as id_inmueble'))->first();
 
 
         $capSimulacion = DB::table('cap_simulapropietario as s')
@@ -158,11 +159,6 @@ class ContratoFinalController extends Controller {
                 ->where('b.id_contrato', '=', $contratoFinal->id)
                 ->get();
 
-
-
-
-
-
         $pdf = new PdfController();
         $numero = rand();
         $pdf->crontratoFinalPdf($borradorPDF, $numero, $simulacion);
@@ -174,6 +170,15 @@ class ContratoFinalController extends Controller {
                     "ruta" => "uploads/pdf_final/",
                     "id_creador" => $request->id_creadorfinal,
                 ])->toArray();
+
+        $checklist  = Checklist::create([                      
+                    'id_inmueble'       => $borradorPDF->id_inmueble,
+                    'id_creador'        => $request->id_creadorfinal,
+                    'id_modificador'    => $request->id_creadorfinal,
+                    'tipo'              => 'Propietario',
+                    'id_estado'         => '1',
+        ]);
+
         return redirect()->route('finalContrato.edit', [$ContratoBorrador->id_publicacion, $request->id_borradorfinal, $ContratoBorradorPDF->id, 1])
                         ->with('status', 'Contrato Final guardado con éxito');
     }

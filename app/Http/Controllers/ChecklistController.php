@@ -22,10 +22,10 @@ class ChecklistController extends Controller
      */
     public function index()
     {
-        $publica = DB::table('inmuebles as i')
+        $publica = DB::table('chkinmuebles as chk')
+         ->leftjoin('inmuebles as i', 'chk.id_inmueble', '=', 'i.id')
          ->leftjoin('comunas as co', 'i.id_comuna', '=', 'co.comuna_id')
-         ->leftjoin('chkinmuebles as chk', 'i.id', '=', 'chk.id_inmueble')
-         ->select(DB::raw('i.id , i.direccion,i.numero,co.comuna_nombre as comuna,chk.id_estado'))
+         ->select(DB::raw('i.id , i.direccion,i.numero,co.comuna_nombre as comuna,chk.id_estado,chk.tipo'))
          ->get();
 
         return view('checklist.index',compact('publica'));
@@ -36,11 +36,22 @@ class ChecklistController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create($id)
+    public function create($id,$tipo)
     {
         $ListadoCheckList = DB::table('checklist')
         ->Where('checklist.estado','=',1)
         ->get();
+
+        $vacio = "<!DOCTYPE html>  
+                        <html><head></head><body>
+                        <p><strong>CheckList</strong></p><ol>
+                        <li><strong>Cocina</strong><ul>
+                        <li>Item 1</li><li>Item 2</li>
+                        </ul></li>
+                        <li>Ba&ntilde;o<ul>
+                        <li>Item 1</li><li>Item 2</li>
+                        </ul></li></ol></body></html>";
+
 
         $inmueble = DB::table('inmuebles as i')
          ->leftjoin('comunas as co', 'i.id_comuna', '=', 'co.comuna_id')
@@ -50,19 +61,12 @@ class ChecklistController extends Controller
 
         $Checklist = DB::table('chkinmuebles')
         ->Where('id_inmueble','=',$id)
-        ->count();         
+        ->first();         
 
-        if($Checklist < 1)
-        {
-            $checklist  = Checklist::create([                      
-                        'id_inmueble'       => $id,
-                        'id_creador'        => Auth::user()->id_persona,
-                        'id_modificador'    => Auth::user()->id_persona,
-                        'id_estado'         => '1',
-            ]);
-        }
+        $imgReserva = ChkInmuebleFoto::where('id_inmueble','=',$id)->get();
+
         
-        return view('checklist.check',compact('ListadoCheckList','inmueble'));   
+        return view('checklist.check',compact('ListadoCheckList','inmueble','imgReserva','tipo','Checklist','vacio'));   
     }
 
     /**
@@ -118,15 +122,17 @@ class ChecklistController extends Controller
          ->select(DB::raw('i.id , i.direccion,i.numero,co.comuna_nombre as comuna'))
          ->first();
 
-         $checklist = Checklist::where('id_inmueble','=',$id)->first();
+         $Checklist = DB::table('chkinmuebles')
+        ->Where('id_inmueble','=',$id)
+        ->first();  
 
-         $imgReserva = ChkInmuebleFoto::where('id_inmueble','=',$id)->where('id_item','=',$tipo)->get();
+         $imgReserva = ChkInmuebleFoto::where('id_inmueble','=',$id)->where('tipo','=',$tipo)->get();
 
          $NombreCheck = DB::table('checklist')
         ->Where('checklist.id','=',$tipo)
         ->first();
 
-         return view('checklist.edit',compact('inmueble','checklist','imgReserva','tipo','NombreCheck'));
+         return view('checklist.check',compact('inmueble','Checklist','imgReserva','tipo','NombreCheck'));
 
     }
 
@@ -169,13 +175,17 @@ class ChecklistController extends Controller
             $img->save($path.'/'.$archivo,72);
             $imagen=ChkInmuebleFoto::create([
                    'id_chk'               => $checklist->id,
-                   'descripcion'          => $request->descripcion,
                    'id_inmueble'          => $id,
                    'nombre'               => $archivo,
                    'ruta'                 => $path,
-                   'id_item'              => $request->id_tipo,
+                   'tipo'                   => $request->id_tipo,
                    'id_creador'           => $request->id_creador
             ]);
+
+            Checklist::where('id', '=', $checklist->id)->update([
+                        'descripcion'     => $request->descripcion
+                    ]);
+
         }
         else
         { return redirect()->route('checklist.edit', [$id,$request->id_tipo])->with('status', 'No se ha actualizado ninguna imágen'); }
