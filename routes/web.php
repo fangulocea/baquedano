@@ -1042,4 +1042,54 @@ Route::get('contratorenovacionpropietario','ContratoRenovacionPropietarioControl
 	Route::get('uf/{uf}/edit','UfController@edit')->name('uf.edit')
 		->middleware('permission:uf.edit');	
 
+
+// CHECKLIST MANTENEDOR
+	Route::post('mantenedorchecklist/store','MantenedorChecklistController@store')->name('mantenedorchecklist.store')
+		->middleware('permission:mantenedorchecklist.create');
+
+	Route::get('mantenedorchecklist','MantenedorChecklistController@index')->name('mantenedorchecklist.index')
+		->middleware('permission:mantenedorchecklist.index');
+
+	Route::get('mantenedorchecklist/create','MantenedorChecklistController@create')->name('mantenedorchecklist.create')
+		->middleware('permission:mantenedorchecklist.create');
+
+	Route::post('mantenedorchecklist/{id}','MantenedorChecklistController@update')->name('mantenedorchecklist.update')
+		->middleware('permission:mantenedorchecklist.edit');
+
+	Route::get('mantenedorchecklist/{id}','MantenedorChecklistController@show')->name('mantenedorchecklist.show')
+		->middleware('permission:mantenedorchecklist.show');
+
+	Route::delete('mantenedorchecklist/{id}','MantenedorChecklistController@destroy')->name('mantenedorchecklist.destroy')
+		->middleware('permission:mantenedorchecklist.destroy');
+
+	Route::get('mantenedorchecklist/{id}/edit','MantenedorChecklistController@edit')->name('mantenedorchecklist.edit')
+		->middleware('permission:mantenedorchecklist.edit');
+
+
+// CHECKLIST
+
+	Route::get('checklist/prueba','ChecklistController@index')->name('checklist.index')
+		->middleware('permission:checklist.prueba');		
+
+	Route::get('checklist/create/{id}','ChecklistController@create')->name('checklist.check')
+		->middleware('permission:checklist.check');
+
+	Route::get('checklist','ChecklistController@index')->name('checklist.index')
+		->middleware('permission:uf.index');
+
+	Route::get('checklist/{id}','ChecklistController@show')->name('checklist.show')
+		->middleware('permission:uf.show');
+
+	Route::get('checklist/{id}/{tipo}/edit','ChecklistController@edit')->name('checklist.edit')
+		->middleware('permission:uf.edit');	
+
+	Route::delete('checklist/{id}','ChecklistController@destroy')->name('checklist.destroy')
+		->middleware('permission:checklist.destroy');
+
+	Route::post('checklist/foto/{id}','ChecklistController@savefotos')->name('checklist.savefotos')
+		->middleware('permission:checklist.edit');
+
+	Route::get('checklist/eliminararchivo/{idf}/{idi}/{idt}','ChecklistController@eliminararchivo')->name('checklist.eliminararchivo')
+		->middleware('permission:checklist.edit');		
+
 });
