@@ -28,6 +28,8 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 Route::get('inmuebles/{text}','InmuebleController@getInmuebles');
 
+Route::get('test','CargosAbonosArrendatariosController@cargos');
+
 Route::get('personas/{text}','PersonaController@getPersonas');
 
 Route::get('personas/email/{text}','PersonaController@getPersonasEmail');
@@ -797,6 +799,8 @@ Route::get('borradorContrato/garantia/eliminar/{id}/{pub}','ContratoBorradorCont
 		Route::any('pagospropietario/efectuarpago/{id}','PagosMensualesPropietariosController@efectuarpago')->name('pagospropietario.efectuarpago')
 		->middleware('permission:finalContrato.edit');
 
+		Route::any('pagospropietario/operacion/{id}','PagosMensualesPropietariosController@agregarcargo')->name('pagospropietario.agregarcargo')
+		->middleware('permission:finalContrato.edit');
 
 		Route::post('finalContrato/store','ContratoFinalController@store')->name('finalContrato.store')
 		->middleware('permission:finalContrato.create');
@@ -856,6 +860,9 @@ Route::get('borradorContrato/garantia/eliminar/{id}/{pub}','ContratoBorradorCont
 		->middleware('permission:finalContrato.edit');
 
 		Route::get('finalContrato/ir_al_pago/{id}','PagosMensualesPropietariosController@ir_al_pago')->name('PagosMensualesPropietarios.ir_al_pago')
+		->middleware('permission:finalContrato.edit');
+
+		Route::get('finalContrato/cargosabonos/{id}','PagosMensualesPropietariosController@cargosabonos')->name('PagosMensualesPropietarios.cargosabonos')
 		->middleware('permission:finalContrato.edit');
 
 
@@ -928,6 +935,13 @@ Route::get('cbararrendatario/garantia/eliminar/{id}/{pub}','ContratoBorradorArre
 
 	Route::get('finalContratoArr/comprobantedepago/{id}','PagosMensualesArrendatariosController@comprobantedepago')->name('PagosMensualesArrendatarios.comprobantedepago')
 		->middleware('permission:finalContratoArr.edit');
+
+
+		Route::get('finalContratoArr/cargosabonos/{id}','PagosMensualesArrendatariosController@cargosabonos')->name('PagosMensualesArrendatarios.cargosabonos')
+		->middleware('permission:finalContratoArr.edit');
+
+		Route::any('pagosarrendatario/operacion/{id}','PagosMensualesArrendatariosController@agregarcargo')->name('pagosarrendatarios.agregarcargo')
+		->middleware('permission:finalContrato.edit');
 
 		Route::post('finalContratoArr/eliminarpagos','ContratoFinalArrController@eliminartipopago')->name('finalContratoArr.eliminartipopago')
 		->middleware('permission:finalContratoArr.update');

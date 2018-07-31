@@ -221,6 +221,7 @@ class ContratoBorradorArrendatarioController extends Controller
         { $tContrato = "X";  }
 
         array_set($request, 'tipo_contrato', $tContrato);
+        array_set($request, 'valorarriendo', $request->valorarriendo);
         $borrador = ContratoBorradorArrendatario::create($request->all());
 
         //PARA PDF

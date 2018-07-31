@@ -6,6 +6,8 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+    'AdmCargosabonosarrendatarios' => $baseDir . '/database/migrations/2018_07_28_160228_adm_cargosabonosarrendatarios.php',
+    'AdmCargosabonospropietarios' => $baseDir . '/database/migrations/2018_07_28_160104_adm_cargosabonospropietarios.php',
     'App\\ArrReservaGes' => $baseDir . '/app/ArrReservaGes.php',
     'App\\ArrReservaGesDocs' => $baseDir . '/app/ArrReservaGesDocs.php',
     'App\\Arr_Reservas' => $baseDir . '/app/Arr_Reservas.php',
@@ -23,6 +25,7 @@ return array(
     'App\\CaptacionImageCorredor' => $baseDir . '/app/CaptacionImageCorredor.php',
     'App\\CaptacionImport' => $baseDir . '/app/CaptacionImport.php',
     'App\\Cargo' => $baseDir . '/app/Cargo.php',
+    'App\\CargosAbonosPropietarios' => $baseDir . '/app/CargosAbonosPropietarios.php',
     'App\\Comision' => $baseDir . '/app/Comision.php',
     'App\\Comuna' => $baseDir . '/app/Comuna.php',
     'App\\Condicion' => $baseDir . '/app/Condicion.php',
@@ -38,6 +41,8 @@ return array(
     'App\\ContratoFinalPdf' => $baseDir . '/app/ContratoFinalPdf.php',
     'App\\ContratoInmueblesPropietarios' => $baseDir . '/app/ContratoInmueblesPropietarios.php',
     'App\\ContratoMantenedor' => $baseDir . '/app/ContratoMantenedor.php',
+    'App\\ContratoRenovacionArrendatario' => $baseDir . '/app/ContratoRenovacionArrendatario.php',
+    'App\\ContratoRenovacionPropietario' => $baseDir . '/app/ContratoRenovacionPropietario.php',
     'App\\Contratoborradorpdf' => $baseDir . '/app/Contratoborradorpdf.php',
     'App\\Correo' => $baseDir . '/app/Correo.php',
     'App\\DetallePagosArrendatarios' => $baseDir . '/app/DetallePagosArrendatarios.php',
@@ -67,6 +72,7 @@ return array(
     'App\\Http\\Controllers\\CaptacionImageCorredorController' => $baseDir . '/app/Http/Controllers/CaptacionImageCorredorController.php',
     'App\\Http\\Controllers\\CaptacionImportController' => $baseDir . '/app/Http/Controllers/CaptacionImportController.php',
     'App\\Http\\Controllers\\CargoController' => $baseDir . '/app/Http/Controllers/CargoController.php',
+    'App\\Http\\Controllers\\CargosAbonosPropietariosController' => $baseDir . '/app/Http/Controllers/CargosAbonosPropietariosController.php',
     'App\\Http\\Controllers\\ComisionController' => $baseDir . '/app/Http/Controllers/ComisionController.php',
     'App\\Http\\Controllers\\ComunaController' => $baseDir . '/app/Http/Controllers/ComunaController.php',
     'App\\Http\\Controllers\\CondicionController' => $baseDir . '/app/Http/Controllers/CondicionController.php',
@@ -80,6 +86,8 @@ return array(
     'App\\Http\\Controllers\\ContratoFinalPdfController' => $baseDir . '/app/Http/Controllers/ContratoFinalPdfController.php',
     'App\\Http\\Controllers\\ContratoInmueblesPropietariosController' => $baseDir . '/app/Http/Controllers/ContratoInmueblesPropietariosController.php',
     'App\\Http\\Controllers\\ContratoMantenedorController' => $baseDir . '/app/Http/Controllers/ContratoMantenedorController.php',
+    'App\\Http\\Controllers\\ContratoRenovacionArrendatarioController' => $baseDir . '/app/Http/Controllers/ContratoRenovacionArrendatarioController.php',
+    'App\\Http\\Controllers\\ContratoRenovacionPropietarioController' => $baseDir . '/app/Http/Controllers/ContratoRenovacionPropietarioController.php',
     'App\\Http\\Controllers\\Controller' => $baseDir . '/app/Http/Controllers/Controller.php',
     'App\\Http\\Controllers\\CorreoController' => $baseDir . '/app/Http/Controllers/CorreoController.php',
     'App\\Http\\Controllers\\DetallePagosArrendatariosController' => $baseDir . '/app/Http/Controllers/DetallePagosArrendatariosController.php',

@@ -413,7 +413,7 @@
                                     <label>
                                         Valor Arriendo
                                     </label>
-                                    <input class="form-control" name="valorarriendo" id="valorarriendo" required="required" type="number" disabled="disabled">
+                                    <input class="form-control" name="valorarriendo" id="valorarriendo" required="required" type="number" readonly="readonly" >
                                 </div>
                                  <div class="col-lg-2 col-sm-3 col-xs-12">
                                     <label>

@@ -62,6 +62,7 @@
     </center>
 </footer>
 <main>
+    <br>
     <div class="row">
         <div class="col-md-12">
             <div class="white-box">
@@ -84,7 +85,7 @@
             <td width="80%" style="padding: 15px;">{{ $inmueble->direccion or null }} # {{ $inmueble->numero or null}} Dpto {{ $inmueble->departamento or null}}, {{ $inmueble->comuna_nombre or null}}</td>
         </tr>
         <tr>
-            <td width="20%" style="padding: 15px;"><strong>Propietario</strong></td>
+            <td width="20%" style="padding: 15px;"><strong>Arrendatario</strong></td>
             <td width="20%" style="padding: 15px;"> {{ $persona->nombre or null}} {{ $persona->apellido_paterno or null}}, Fono : {{ $persona->telefono or null}}, Email: {{ $persona->email or null}}</td>
         </tr>
     </table>

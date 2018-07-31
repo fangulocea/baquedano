@@ -15,6 +15,7 @@ use App\GenerarPagoPropietario;
 use App\SimulaPropietario;
 use App\PropietarioGarantia;
 use App\DetallePagosPropietarios;
+use App\CargosAbonosPropietarios;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use DB;
@@ -49,8 +50,6 @@ class ContratoFinalController extends Controller {
         $contrato = DB::table('adm_pagospropietarios')
                 ->where('id_contratofinal', '=', $id)
                 ->where('id_inmueble', '=', $idi)
-                ->where('tipopropuesta', '=', $contratofinal->tipopropuesta)
-                ->orderBy('id', 'asc')
                 ->get();
         return response()->json($contrato);
     }
@@ -464,9 +463,19 @@ class ContratoFinalController extends Controller {
     }
 
     public function eliminartipopago(Request $request) {
-        $eliminamensual = DetallePagosPropietarios::where("id_publicacion", "=", $request->id_pub_borrar)
+        $pm = PagosMensualesPropietarios::where("id_contratofinal", "=", $request->id_final_detalle)
                 ->where("id_inmueble", "=", $request->id_inmueble_mensual)
+                ->get();
+
+        foreach ($pm as $p) {
+            $eliminamensual = CargosAbonosPropietarios::where("id_pagomensual", "=", $p->id)
                 ->delete();
+
+            $eliminamensual = DetallePagosPropietarios::where("id_pagomensual", "=", $p->id)
+                ->delete();
+        }
+
+
         $eliminamensual = PagosMensualesPropietarios::where("id_contratofinal", "=", $request->id_final_detalle)
                 ->where("id_inmueble", "=", $request->id_inmueble_mensual)
                 ->delete();
@@ -599,6 +608,7 @@ class ContratoFinalController extends Controller {
 
         $simula = GenerarPagoPropietario::create([
                     'meses_contrato' => $meses_contrato,
+                     'id_contratofinal' => $request->id_final_pagos,
                     'id_publicacion' => $idp,
                     'id_propuesta' => $id_propuesta,
                     'id_inmueble' => $idinmueble,
@@ -772,6 +782,8 @@ class ContratoFinalController extends Controller {
                         'id_estado' => 1,
                         'canondearriendo' => $arriendo
             ]);
+
+        
         }
         $fecha_ini = date("d-m-Y", strtotime("+12 month", strtotime($fechafirma)));
         $dia = date("d", strtotime($fecha_ini));
@@ -808,6 +820,74 @@ class ContratoFinalController extends Controller {
                     'id_estado' => 1,
                     'canondearriendo' => $arriendo
         ]);
+
+
+
+        for ($i = 0; $i < $meses_contrato+1; $i++) {
+                $dia = date("d", strtotime($fecha_ini));
+                $mes = date("m", strtotime($fecha_ini));
+                $anio = date("Y", strtotime($fecha_ini));
+                $dias_mes = cal_days_in_month(CAL_GREGORIAN, date("m", strtotime($fecha_ini)), date("Y", strtotime($fecha_ini)));
+                $fecha_ini = date("d-m-Y", strtotime("+1 month", strtotime($fecha_ini)));
+
+$pago = PagosPropietarios::create([
+                            'id_contratofinal' => $idcontrato,
+                            'gastocomun' => $gastocomun,
+                            'id_publicacion' => $idp,
+                            'id_inmueble' => $idinmueble,
+                            'tipopago' => "Otros Abonos",
+                            'E_S' => 's',
+                            'idtipopago' => 17,
+                            'tipopropuesta' => $tipopropuesta,
+                            'meses_contrato' => $meses_contrato,
+                            'fecha_iniciocontrato' => $fechafirma,
+                            'dia' => $dia,
+                            'mes' => $mes,
+                            'anio' => $anio,
+                            'descuento' => $descuento,
+                            'cant_diasmes' => $dias_mes,
+                            'cant_diasproporcional' => $dias_proporcionales,
+                            'moneda' => $tipomoneda,
+                            'valormoneda' => 0,
+                            'valordia' => 0,
+                            'precio_en_moneda' => 0,
+                            'precio_en_pesos' => 0,
+                            'id_creador' => $id_creador,
+                            'id_modificador' => $id_creador,
+                            'id_estado' => 1,
+                            'gastocomun' => $gastocomun,
+                            'canondearriendo' => $arriendo
+                ]);
+
+                            $pago = PagosPropietarios::create([
+                            'id_contratofinal' => $idcontrato,
+                            'gastocomun' => $gastocomun,
+                            'id_publicacion' => $idp,
+                            'id_inmueble' => $idinmueble,
+                            'tipopago' => "Otros Cargos",
+                            'E_S' => 's',
+                            'idtipopago' => 16,
+                            'tipopropuesta' => $tipopropuesta,
+                            'meses_contrato' => $meses_contrato,
+                            'fecha_iniciocontrato' => $fechafirma,
+                            'dia' => $dia,
+                            'mes' => $mes,
+                            'anio' => $anio,
+                            'descuento' => $descuento,
+                            'cant_diasmes' => $dias_mes,
+                            'cant_diasproporcional' => $dias_proporcionales,
+                            'moneda' => $tipomoneda,
+                            'valormoneda' => 0,
+                            'valordia' => 0,
+                            'precio_en_moneda' => 0,
+                            'precio_en_pesos' => 0,
+                            'id_creador' => $id_creador,
+                            'id_modificador' => $id_creador,
+                            'id_estado' => 1,
+                            'gastocomun' => $gastocomun,
+                            'canondearriendo' => $arriendo
+                ]);
+            }
 
         //GASTO COMUN
 
@@ -1314,6 +1394,8 @@ class ContratoFinalController extends Controller {
                             'gastocomun' => $gastocomun,
                             'canondearriendo' => $arriendo
                 ]);
+
+                   
                 $fecha_ini = date("d-m-Y", strtotime("+1 month", strtotime($fecha_ini)));
             }
 

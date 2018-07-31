@@ -740,7 +740,7 @@ document.getElementById("tablearea").innerHTML="";
         }
 
         $.get("/contratofinalarr/consultapagos/"+$("#id_final_detalle").val()+"/"+ event.target.value +"",function(response,state){
-                        var meses = ["Ene","Feb","Mar","Abr","May","Jun","Jul","Ago","Sep","Oct","Nov","Dic"];
+                       var meses = ["Ene","Feb","Mar","Abr","May","Jun","Jul","Ago","Sep","Oct","Nov","Dic"];
 
                         document.getElementById("tablearea").innerHTML="";
                         if(response.length>0){
@@ -783,12 +783,14 @@ document.getElementById("tablearea").innerHTML="";
                                      tbl.appendChild(rowheader);
 
                                     // LINEAS
-                                    for (var r = 0; r < 50; r++) {
+                                    for (var r = 0; r < 50; r++) 
+                                    {
                                         var row = document.createElement("tr");
                                         var newArray = response.filter(function (el) {
                                               return el.idtipopago==r;
                                             });
 
+                                        
                                      // CONTENIDO
                                          if(newArray.length>0)
                                          {
@@ -806,42 +808,74 @@ document.getElementById("tablearea").innerHTML="";
                                                             row.appendChild(cell);
                                                  }
                                                 $subtotal=0;
-                                                 for (var c = 0; c < meses_contrato+1; c++) {
-                                                    if (!$.isEmptyObject(newArray[c])) {
-                                                            var idtp=newArray[c].idtipopago;
-                                                            $subtotal+=newArray[c].precio_en_moneda;
-                                                            var a = document.createElement("button");
-                                                            var linkText = document.createTextNode(newArray[c].precio_en_moneda);
-                                                            a.appendChild(linkText);
-                                                            if(newArray[c].E_S=='e'){
-                                                                a.className="btn btn-block btn-outline btn-success";
-                                                            }else{
-                                                                if(newArray[c].idtipopago==11){
-                                                                    a.className="btn btn-block btn-outline btn-info";
-                                                                }else{
-                                                                   a.className="btn btn-block btn-outline btn-danger"; 
-                                                                }
-                                                                
-                                                            }
-                                                            if(newArray[c].idtipopago==20 || newArray[c].idtipopago==21 || newArray[c].idtipopago==34 || newArray[c].idtipopago==35 )
-                                                                a.className="btn btn-block btn-outline btn-default";
-                                                            var id=newArray[c].id;
-                                                            a.id=id;
-                                                            if(newArray[c].idtipopago!=20 && newArray[c].idtipopago!=21  && newArray[c].idtipopago!=34 && newArray[c].idtipopago!=35 && newArray[c].idtipopago!=11)
-                                                            a.addEventListener('click', function(){
-                                                                    mostrar_modal(this);
+                                                 var fecha_inicio=new Date(response[0].fecha_iniciocontrato+'T00:00:00');
+                                                            fecha_inicio.setDate(1);
+                                                 for (var c = 0; c < meses_contrato+1; c++) 
+                                                 {
+
+
+                                                    if (!$.isEmptyObject(newArray[c])) 
+                                                    {
+                                                            var newArray2 = response.filter(function (el) {
+                                                                  return el.idtipopago==newArray[c].idtipopago && el.mes==fecha_inicio.getMonth()+1 && el.anio==fecha_inicio.getFullYear();
                                                                 });
-                                                            var cell = document.createElement("td");
-                                                            //var cellText = document.createTextNode();
-                                                            //cell.appendChild(cellText);
-                                                            cell.appendChild(a);
-                                                            cell.style.border="1px solid black";
-                                                            cell.style.padding="8px"
-                                                            cell.style.textAlign="center"
-                                                            row.appendChild(cell);
+
+
+                                                                 
+                                                            if (!$.isEmptyObject(newArray2)) 
+                                                            {
+
+                                                                    var total_precio_en_moneda = 0;
+                                                                    for (var i = 0; i < newArray2.length; i++) {total_precio_en_moneda += newArray2[i].precio_en_moneda;
+
+                                                                    }
+                                                                    
+                                                                    var idtp=newArray2.idtipopago;
+                                                                    $subtotal+=newArray2[0].precio_en_moneda;
+                                                                    var a = document.createElement("button");
+                                                                    var linkText = document.createTextNode(total_precio_en_moneda);
+                                                                    a.appendChild(linkText);
+                                                                    if(newArray2[0].E_S=='e'){
+                                                                        a.className="btn btn-block btn-outline btn-success";
+                                                                    }else{
+                                                                        if(newArray2[0].idtipopago==11){
+                                                                            a.className="btn btn-block btn-outline btn-info";
+                                                                        }else{
+                                                                           a.className="btn btn-block btn-outline btn-danger"; 
+                                                                        }
+                                                                        
+                                                                    }
+                                                                    if(newArray2[0].idtipopago==20 || newArray2[0].idtipopago==21 || newArray2[0].idtipopago==34 || newArray2[0].idtipopago==35 )
+                                                                        a.className="btn btn-block btn-outline btn-default";
+                                                                    var id=newArray2[0].id;
+                                                                    a.id=id;
+                                                                    if(newArray2[0].idtipopago!=20 && newArray2[0].idtipopago!=21  && newArray2[0].idtipopago!=34 && newArray2[0].idtipopago!=35 && newArray2[0].idtipopago!=11)
+                                                                    a.addEventListener('click', function(){
+                                                                            mostrar_modal(this);
+                                                                        });
+                                                                    var cell = document.createElement("td");
+                                                                    cell.appendChild(a);
+                                                                    cell.style.border="1px solid black";
+                                                                    cell.style.padding="8px"
+                                                                    cell.style.textAlign="center"
+                                                                    row.appendChild(cell);
+                                                                }else{
+                                                                    var a = document.createElement("button");
+                                                                    a.className="btn btn-block btn-outline btn-default";
+                                                                    var linkText = document.createTextNode(0);
+                                                                    a.appendChild(linkText);
+                                                                    var cell = document.createElement("td");
+                                                                    cell.appendChild(a);
+                                                                    cell.style.border="1px solid black";
+                                                                    cell.style.padding="8px"
+                                                                    cell.style.textAlign="center"
+                                                                    row.appendChild(cell);
+                                                                }
                                                             
                                                     }
-                                              
+                                                    
+                                                        
+                                                  fecha_inicio.setMonth(fecha_inicio.getMonth()+1);  
                                                 }           
                                                            
                                                 tbl.appendChild(row); // AGREGA EL PAGO
@@ -1048,13 +1082,13 @@ document.getElementById("pagoarea").innerHTML="";
                                     var cell = document.createElement("th");
                                         cell.style.border="1px solid black";
                                         cell.style.padding="8px";
-                                        cell.innerHTML = 'Total Entrada';
+                                        cell.innerHTML = 'Total Salida';
                                         rowheader.appendChild(cell);
 
                                     var cell = document.createElement("th");
                                         cell.style.border="1px solid black";
                                         cell.style.padding="8px";
-                                        cell.innerHTML = 'Pago a Rentas';
+                                        cell.innerHTML = 'Pagar a Propietario';
                                         rowheader.appendChild(cell);
 
 
@@ -1074,6 +1108,12 @@ document.getElementById("pagoarea").innerHTML="";
                                         cell.style.border="1px solid black";
                                         cell.style.padding="8px";
                                         cell.innerHTML = 'Comprobante';
+                                        rowheader.appendChild(cell);
+
+                                    var cell = document.createElement("th");
+                                        cell.style.border="1px solid black";
+                                        cell.style.padding="8px";
+                                        cell.innerHTML = 'Cargos/Abonos';
                                         rowheader.appendChild(cell);
                                      tbl.appendChild(rowheader);
 
@@ -1174,6 +1214,26 @@ document.getElementById("pagoarea").innerHTML="";
                                                             cell.style.padding="8px"
                                                             cell.style.textAlign="center"
                                                             row.appendChild(cell);
+
+                                                            
+                                                                var a = document.createElement("button");
+                                                                var linkText1 = document.createTextNode("C/A");
+                                                                a.className="btn btn-success btn-circle btn-lg";
+                                                                a.id=response[r].id;
+                                                                a.addEventListener('click', function(){
+                                                                        cargosabonos(this);
+                                                                    });
+                                                                a.appendChild(linkText1);
+                                                                a.style="font-size:small"
+                                                                var cell = document.createElement("td");
+                                                                if(estado!='Pagado'){
+                                                                    cell.appendChild(a);
+                                                                }
+                                                                cell.style.border="1px solid black";
+                                                                cell.style.padding="8px"
+                                                                cell.style.textAlign="center"
+                                                                row.appendChild(cell);
+                                                            
                                                     }
                                                  
                                                 tbl.appendChild(row); // AGREGA EL PAGO
@@ -1193,7 +1253,7 @@ function ir_pago(obj){
 
 $("#moneda").change(function (event) {
     if(this.value=="UF"){
-        $("#valormoneda").val({{ $uf->valor }});
+        $("#valormoneda").val({{ $uf->valor or 1 }});
     }else{
         $("#valormoneda").val(1);
     }
@@ -1225,6 +1285,10 @@ $("#id_propuesta").change(function (event) {
 });
 function comprobante(obj){
     window.location.href = '/finalContratoArr/comprobantedepago/'+obj.id;
+}
+
+function cargosabonos(obj){
+    window.location.href = '/finalContratoArr/cargosabonos/'+obj.id;
 }
 </script>
 @endsection

@@ -7,12 +7,14 @@ use App\ContratoBorradorArrendatario;
 use App\ContratoFinalPdf;
 use App\ContratoFinalDocs;
 use App\ContratoFinalArrPdf;
+use App\Arr_Reservas;
 use App\ContratoFinalArrDocs;
+use App\CargosAbonosArrendatarios;
+use App\DetallePagosArrendatarios;
 use App\Arrendatario;
 use App\PagosArrendatarios;
 use App\ArrendatarioGarantia;
 use App\PagosMensualesArrendatarios;
-use App\Arr_Reservas;
 use App\SimulaArrendatario;
 use Illuminate\Http\Request;
 use App\GenerarPagoArrendatario;
@@ -25,6 +27,17 @@ use Carbon\Carbon;
 class ContratoFinalArrController extends Controller {
 
     public function eliminartipopago(Request $request) {
+        $pm = PagosMensualesArrendatarios::where("id_contratofinal", "=", $request->id_final_detalle)
+                ->get();
+
+        foreach ($pm as $p) {
+            $eliminamensual = CargosAbonosArrendatarios::where("id_pagomensual", "=", $p->id)
+                ->delete();
+
+            $eliminamensual = DetallePagosArrendatarios::where("id_pagomensual", "=", $p->id)
+                ->delete();
+        }
+
         $eliminamensual = PagosMensualesArrendatarios::where("id_contratofinal", "=", $request->id_final_detalle)
                 ->delete();
         $eliminapagos = PagosArrendatarios::where("id_contratofinal", "=", $request->id_final_detalle)
@@ -106,7 +119,8 @@ class ContratoFinalArrController extends Controller {
                     "id_borrador" => $request->id_borradorfinal, //contrato borrador arrendatario
                     "id_borradorpdf" => $pdfBorradorArrendatario->id, //contrato borrador PDF
                     "id_simulacion" => $request->id_propuesta,
-                    "tipo_contrato" => $request->tipo_contrato
+                    "tipo_contrato" => $request->tipo_contrato,
+                    "meses_contrato" => $tipo_simulacion->meses_contrato
         ]);
 
 
@@ -809,6 +823,104 @@ class ContratoFinalArrController extends Controller {
                     'canondearriendo' => $arriendo
         ]);
 
+ $fecha_ini = date('Y-m-j', strtotime(date("Y", strtotime($fechafirma)) . '-' . date("m", strtotime($fechafirma)) . '-' . 1));
+for ($i = 0; $i < $meses_contrato+1; $i++) {
+                $dia = date("d", strtotime($fecha_ini));
+                $mes = date("m", strtotime($fecha_ini));
+                $anio = date("Y", strtotime($fecha_ini));
+                $dias_mes = cal_days_in_month(CAL_GREGORIAN, date("m", strtotime($fecha_ini)), date("Y", strtotime($fecha_ini)));
+                $fecha_ini = date("d-m-Y", strtotime("+1 month", strtotime($fecha_ini)));
+
+$pago = PagosArrendatarios::create([
+                            'id_contratofinal' => $idcontrato,
+                            'gastocomun' => $gastocomun,
+                            'id_publicacion' => $idp,
+                            'id_inmueble' => $idinmueble,
+                            'tipopago' => "Otros Abonos",
+                            'fecha_moneda' => Carbon::now()->format('Y/m/d'),
+                            'E_S' => 's',
+                            'idtipopago' => 17,
+                            'tipopropuesta' => $tipopropuesta,
+                            'meses_contrato' => $meses_contrato,
+                            'fecha_iniciocontrato' => $fechafirma,
+                            'dia' => $dia,
+                            'mes' => $mes,
+                            'anio' => $anio,
+                            'descuento' => $descuento,
+                            'cant_diasmes' => $dias_mes,
+                            'cant_diasproporcional' => $dias_proporcionales,
+                            'moneda' => $tipomoneda,
+                            'valormoneda' => 0,
+                            'valordia' => 0,
+                            'precio_en_moneda' => 0,
+                            'precio_en_pesos' => 0,
+                            'id_creador' => $id_creador,
+                            'id_modificador' => $id_creador,
+                            'id_estado' => 1,
+                            'gastocomun' => $gastocomun,
+                            'canondearriendo' => $arriendo
+                ]);
+
+                            $pago = PagosArrendatarios::create([
+                            'id_contratofinal' => $idcontrato,
+                            'gastocomun' => $gastocomun,
+                            'id_publicacion' => $idp,
+                            'id_inmueble' => $idinmueble,
+                            'tipopago' => "Otros Cargos",
+                            'fecha_moneda' => Carbon::now()->format('Y/m/d'),
+                            'E_S' => 's',
+                            'idtipopago' => 16,
+                            'tipopropuesta' => $tipopropuesta,
+                            'meses_contrato' => $meses_contrato,
+                            'fecha_iniciocontrato' => $fechafirma,
+                            'dia' => $dia,
+                            'mes' => $mes,
+                            'anio' => $anio,
+                            'descuento' => $descuento,
+                            'cant_diasmes' => $dias_mes,
+                            'cant_diasproporcional' => $dias_proporcionales,
+                            'moneda' => $tipomoneda,
+                            'valormoneda' => 0,
+                            'valordia' => 0,
+                            'precio_en_moneda' => 0,
+                            'precio_en_pesos' => 0,
+                            'id_creador' => $id_creador,
+                            'id_modificador' => $id_creador,
+                            'id_estado' => 1,
+                            'gastocomun' => $gastocomun,
+                            'canondearriendo' => $arriendo
+                ]);
+
+                $pago = PagosArrendatarios::create([
+                            'id_contratofinal' => $idcontrato,
+                            'gastocomun' => $gastocomun,
+                            'id_publicacion' => $idp,
+                            'id_inmueble' => $idinmueble,
+                            'tipopago' => "Multas",
+                            'fecha_moneda' => Carbon::now()->format('Y/m/d'),
+                            'E_S' => 's',
+                            'idtipopago' => 18,
+                            'tipopropuesta' => $tipopropuesta,
+                            'meses_contrato' => $meses_contrato,
+                            'fecha_iniciocontrato' => $fechafirma,
+                            'dia' => $dia,
+                            'mes' => $mes,
+                            'anio' => $anio,
+                            'descuento' => $descuento,
+                            'cant_diasmes' => $dias_mes,
+                            'cant_diasproporcional' => $dias_proporcionales,
+                            'moneda' => $tipomoneda,
+                            'valormoneda' => 0,
+                            'valordia' => 0,
+                            'precio_en_moneda' => 0,
+                            'precio_en_pesos' => 0,
+                            'id_creador' => $id_creador,
+                            'id_modificador' => $id_creador,
+                            'id_estado' => 1,
+                            'gastocomun' => $gastocomun,
+                            'canondearriendo' => $arriendo
+                ]);
+            }
         //GASTO COMUN
 
 
@@ -1059,6 +1171,49 @@ class ContratoFinalArrController extends Controller {
             }
         }
 
+
+$reservas = Arr_Reservas::where("id_arr_ges", "=", $idp)->first();
+
+        if (count($reservas) > 0) {
+            foreach ($garantias as $g) {
+                $mes = $g->mes;
+                $anio = $g->ano;
+                $dias_mes = cal_days_in_month(CAL_GREGORIAN, $mes, $anio);
+                $idtipopago = 10;
+                $precio_proporcional = $g->valor;
+                $valor_en_pesos = $g->valor;
+                $pago = PagosArrendatarios::create([
+                            'id_contratofinal' => $idcontrato,
+                            'id_publicacion' => $idp,
+                            'id_inmueble' => $idinmueble,
+                            'tipopropuesta' => $tipopropuesta,
+                            'tipopago' => "Reserva",
+                            'idtipopago' => $idtipopago,
+                            'meses_contrato' => $meses_contrato,
+                            'fecha_iniciocontrato' => $fechafirma,
+                            'dia' => $dia,
+                            'mes' => $mes,
+                            'anio' => $anio,
+                            'E_S' => 's',
+                            'descuento' => $descuento,
+                            'cant_diasmes' => $dias_mes,
+                            'cant_diasproporcional' => $dias_mes,
+                            'moneda' => $tipomoneda,
+                            'valormoneda' => $valormoneda,
+                            'fecha_moneda' => Carbon::now()->format('Y/m/d'),
+                            'valordia' => 1,
+                            'precio_en_moneda' => $reservas->monto_reserva,
+                            'precio_en_pesos' => $reservas->monto_reserva / $valormoneda,
+                            'id_creador' => $id_creador,
+                            'id_modificador' => $id_creador,
+                            'id_estado' => 1,
+                            'gastocomun' => $gastocomun,
+                            'canondearriendo' => $arriendo
+                ]);
+                // $primer_mes += $valor_en_pesos;
+            }
+        }
+
         if ($pagonotaria != 0) {
             $fecha_ini = date('Y-m-j', strtotime(date("Y", strtotime($fechafirma)) . '-' . date("m", strtotime($fechafirma)) . '-' . 1));
             $dia = date("d", strtotime($fecha_ini));
@@ -1203,7 +1358,7 @@ class ContratoFinalArrController extends Controller {
                 $dias_mes = cal_days_in_month(CAL_GREGORIAN, date("m", strtotime($fecha_ini)), date("Y", strtotime($fecha_ini)));
                 $pagomensual = PagosArrendatarios::where("mes", '=', $mes)
                         ->where("anio", '=', $anio)
-                        ->whereIn("idtipopago", [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 15])
+                        ->whereIn("idtipopago", [1, 2, 3, 4, 5, 6, 7, 8, 9, 11, 15])
                         ->where("id_contratofinal", '=', $idcontrato)
                         ->where("id_inmueble", '=', $idinmueble)
                         ->sum('precio_en_pesos');
@@ -1250,11 +1405,16 @@ class ContratoFinalArrController extends Controller {
                 $mes = date("m", strtotime($fecha_ini));
                 $anio = date("Y", strtotime($fecha_ini));
                 $dias_mes = cal_days_in_month(CAL_GREGORIAN, date("m", strtotime($fecha_ini)), date("Y", strtotime($fecha_ini)));
-                $saldo_a_favor = 0;
+                $saldo_a_favor = PagosArrendatarios::where("mes", '=', $mes)
+                        ->where("anio", '=', $anio)
+                        ->whereIn("idtipopago", [10])
+                        ->where("id_contratofinal", '=', $idcontrato)
+                        ->where("id_inmueble", '=', $idinmueble)
+                        ->sum('precio_en_pesos');
 
                 $pago_a_rentas = PagosArrendatarios::where("mes", '=', $mes)
                         ->where("anio", '=', $anio)
-                        ->whereIn("idtipopago", [1, 2, 3, 4, 5, 6, 7, 8, 10, 11, 15])
+                        ->whereIn("idtipopago", [1, 2, 3, 4, 5, 6, 7, 8, 11, 15])
                         ->where("id_contratofinal", '=', $idcontrato)
                         ->where("id_inmueble", '=', $idinmueble)
                         ->sum('precio_en_pesos');
@@ -1433,7 +1593,7 @@ class ContratoFinalArrController extends Controller {
                 $dias_mes = cal_days_in_month(CAL_GREGORIAN, date("m", strtotime($fecha_ini)), date("Y", strtotime($fecha_ini)));
                 $pagomensual = PagosArrendatarios::where("mes", '=', $mes)
                         ->where("anio", '=', $anio)
-                        ->whereIn("idtipopago", [1, 2, 5, 6, 7, 8, 9, 10, 11, 31, 32, 33])
+                        ->whereIn("idtipopago", [1, 2, 5, 6, 7, 8, 9, 11, 31, 32, 33])
                         ->where("id_contratofinal", '=', $idcontrato)
                         ->sum('precio_en_pesos');
                 $pago = PagosArrendatarios::create([
@@ -1476,11 +1636,16 @@ class ContratoFinalArrController extends Controller {
                 $mes = date("m", strtotime($fecha_ini));
                 $anio = date("Y", strtotime($fecha_ini));
                 $dias_mes = cal_days_in_month(CAL_GREGORIAN, date("m", strtotime($fecha_ini)), date("Y", strtotime($fecha_ini)));
-                $saldo_a_favor = 0;
+                $saldo_a_favor = $saldo_a_favor = PagosArrendatarios::where("mes", '=', $mes)
+                        ->where("anio", '=', $anio)
+                        ->whereIn("idtipopago", [10])
+                        ->where("id_contratofinal", '=', $idcontrato)
+                        ->where("id_inmueble", '=', $idinmueble)
+                        ->sum('precio_en_pesos');
 
                 $pago_a_rentas = PagosArrendatarios::where("mes", '=', $mes)
                         ->where("anio", '=', $anio)
-                        ->whereIn("idtipopago", [1, 2, 5, 6, 7, 8, 9, 10, 11, 31, 32, 33])
+                        ->whereIn("idtipopago", [1, 2, 5, 6, 7, 8, 9, 11, 31, 32, 33])
                         ->where("id_contratofinal", '=', $idcontrato)
                         ->where("id_inmueble", '=', $idinmueble)
                         ->sum('precio_en_pesos');

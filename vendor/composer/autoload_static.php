@@ -377,6 +377,8 @@ class ComposerStaticInit0178ccda3db7603c96af3e22d130f715
     );
 
     public static $classMap = array (
+        'AdmCargosabonosarrendatarios' => __DIR__ . '/../..' . '/database/migrations/2018_07_28_160228_adm_cargosabonosarrendatarios.php',
+        'AdmCargosabonospropietarios' => __DIR__ . '/../..' . '/database/migrations/2018_07_28_160104_adm_cargosabonospropietarios.php',
         'App\\ArrReservaGes' => __DIR__ . '/../..' . '/app/ArrReservaGes.php',
         'App\\ArrReservaGesDocs' => __DIR__ . '/../..' . '/app/ArrReservaGesDocs.php',
         'App\\Arr_Reservas' => __DIR__ . '/../..' . '/app/Arr_Reservas.php',
@@ -394,6 +396,7 @@ class ComposerStaticInit0178ccda3db7603c96af3e22d130f715
         'App\\CaptacionImageCorredor' => __DIR__ . '/../..' . '/app/CaptacionImageCorredor.php',
         'App\\CaptacionImport' => __DIR__ . '/../..' . '/app/CaptacionImport.php',
         'App\\Cargo' => __DIR__ . '/../..' . '/app/Cargo.php',
+        'App\\CargosAbonosPropietarios' => __DIR__ . '/../..' . '/app/CargosAbonosPropietarios.php',
         'App\\Comision' => __DIR__ . '/../..' . '/app/Comision.php',
         'App\\Comuna' => __DIR__ . '/../..' . '/app/Comuna.php',
         'App\\Condicion' => __DIR__ . '/../..' . '/app/Condicion.php',
@@ -409,6 +412,8 @@ class ComposerStaticInit0178ccda3db7603c96af3e22d130f715
         'App\\ContratoFinalPdf' => __DIR__ . '/../..' . '/app/ContratoFinalPdf.php',
         'App\\ContratoInmueblesPropietarios' => __DIR__ . '/../..' . '/app/ContratoInmueblesPropietarios.php',
         'App\\ContratoMantenedor' => __DIR__ . '/../..' . '/app/ContratoMantenedor.php',
+        'App\\ContratoRenovacionArrendatario' => __DIR__ . '/../..' . '/app/ContratoRenovacionArrendatario.php',
+        'App\\ContratoRenovacionPropietario' => __DIR__ . '/../..' . '/app/ContratoRenovacionPropietario.php',
         'App\\Contratoborradorpdf' => __DIR__ . '/../..' . '/app/Contratoborradorpdf.php',
         'App\\Correo' => __DIR__ . '/../..' . '/app/Correo.php',
         'App\\DetallePagosArrendatarios' => __DIR__ . '/../..' . '/app/DetallePagosArrendatarios.php',
@@ -438,6 +443,7 @@ class ComposerStaticInit0178ccda3db7603c96af3e22d130f715
         'App\\Http\\Controllers\\CaptacionImageCorredorController' => __DIR__ . '/../..' . '/app/Http/Controllers/CaptacionImageCorredorController.php',
         'App\\Http\\Controllers\\CaptacionImportController' => __DIR__ . '/../..' . '/app/Http/Controllers/CaptacionImportController.php',
         'App\\Http\\Controllers\\CargoController' => __DIR__ . '/../..' . '/app/Http/Controllers/CargoController.php',
+        'App\\Http\\Controllers\\CargosAbonosPropietariosController' => __DIR__ . '/../..' . '/app/Http/Controllers/CargosAbonosPropietariosController.php',
         'App\\Http\\Controllers\\ComisionController' => __DIR__ . '/../..' . '/app/Http/Controllers/ComisionController.php',
         'App\\Http\\Controllers\\ComunaController' => __DIR__ . '/../..' . '/app/Http/Controllers/ComunaController.php',
         'App\\Http\\Controllers\\CondicionController' => __DIR__ . '/../..' . '/app/Http/Controllers/CondicionController.php',
@@ -451,6 +457,8 @@ class ComposerStaticInit0178ccda3db7603c96af3e22d130f715
         'App\\Http\\Controllers\\ContratoFinalPdfController' => __DIR__ . '/../..' . '/app/Http/Controllers/ContratoFinalPdfController.php',
         'App\\Http\\Controllers\\ContratoInmueblesPropietariosController' => __DIR__ . '/../..' . '/app/Http/Controllers/ContratoInmueblesPropietariosController.php',
         'App\\Http\\Controllers\\ContratoMantenedorController' => __DIR__ . '/../..' . '/app/Http/Controllers/ContratoMantenedorController.php',
+        'App\\Http\\Controllers\\ContratoRenovacionArrendatarioController' => __DIR__ . '/../..' . '/app/Http/Controllers/ContratoRenovacionArrendatarioController.php',
+        'App\\Http\\Controllers\\ContratoRenovacionPropietarioController' => __DIR__ . '/../..' . '/app/Http/Controllers/ContratoRenovacionPropietarioController.php',
         'App\\Http\\Controllers\\Controller' => __DIR__ . '/../..' . '/app/Http/Controllers/Controller.php',
         'App\\Http\\Controllers\\CorreoController' => __DIR__ . '/../..' . '/app/Http/Controllers/CorreoController.php',
         'App\\Http\\Controllers\\DetallePagosArrendatariosController' => __DIR__ . '/../..' . '/app/Http/Controllers/DetallePagosArrendatariosController.php',
