@@ -176,6 +176,7 @@ class ContratoFinalController extends Controller {
                     'id_creador'        => $request->id_creadorfinal,
                     'id_modificador'    => $request->id_creadorfinal,
                     'tipo'              => 'Propietario',
+                    'id_cap_pro'        => $ContratoBorrador->id_publicacion,
                     'id_estado'         => '1',
         ]);
 

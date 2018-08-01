@@ -203,11 +203,14 @@ class ContratoFinalArrController extends Controller {
                     "id_creador" => $request->id_creadorfinal,
                 ])->toArray();
 
+
+
         $checklist  = Checklist::create([                      
                     'id_inmueble'       => $borradorPDF->id_inmueble,
                     'id_creador'        => $request->id_creadorfinal,
                     'id_modificador'    => $request->id_creadorfinal,
                     'tipo'              => 'Arrendatario',
+                    'id_bor_arr'        => $ContratoBorradorArrendatario->id_cap_arr,
                     'id_estado'         => '1',
         ]);
         

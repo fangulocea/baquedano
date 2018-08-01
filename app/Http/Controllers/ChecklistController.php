@@ -12,6 +12,7 @@ use App\ChkInmuebleFoto;
 use Image;
 use Auth;
 use File;
+use Carbon\Carbon;
 
 class ChecklistController extends Controller
 {
@@ -25,7 +26,8 @@ class ChecklistController extends Controller
         $publica = DB::table('chkinmuebles as chk')
          ->leftjoin('inmuebles as i', 'chk.id_inmueble', '=', 'i.id')
          ->leftjoin('comunas as co', 'i.id_comuna', '=', 'co.comuna_id')
-         ->select(DB::raw('i.id , i.direccion,i.numero,co.comuna_nombre as comuna,chk.id_estado,chk.tipo'))
+         ->select(DB::raw('i.id, i.direccion, i.numero, co.comuna_nombre as comuna, 
+                           chk.id_estado, chk.tipo, chk.id_bor_arr, chk.id_cap_pro, chk.created_at '))
          ->get();
 
         return view('checklist.index',compact('publica'));
@@ -202,6 +204,15 @@ public function eliminararchivo($idf,$idi,$idt){
         return redirect()->route('checklist.edit', [$idi,$idt])->with('status', 'Foto eliminada con éxito');
     }
 
+    
+static function cantDias($fecha1,$fecha2){
+
+        $fecha1 = Carbon::parse($fecha1);
+        $fecha2 = Carbon::parse($fecha2);
+
+        $res = $fecha2->diffInDays($fecha1);
+        return $res;
+    }
 
 }
 

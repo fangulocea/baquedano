@@ -1,7 +1,9 @@
 @extends('admin.layout')
 
 @section('contenido')
-
+@php 
+    use App\Http\Controllers\ChecklistController;
+@endphp
 <div id="tabla" >
     <div class="white-box">
         <h3 class="box-title m-b-0">Gestión de CheckList</h3>
@@ -33,11 +35,16 @@
                 </tfoot>
                 <tbody>
                     @foreach($publica as $p)
+                        @php 
+                            $fecha_ini = date('d-m-Y', strtotime($p->created_at)); 
+                            $fecha_fin = strtotime('+5 day', strtotime($fecha_ini));
+                            $fecha_fin = date('d-m-Y', $fecha_fin);
+                        @endphp
                     <tr>
                         <td>{{ $p->id }}</td>
                         <td>{{ $p->direccion }}, N°{{ $p->numero }}, {{ $p->comuna }}</td>
                         <td>{{ $p->tipo }}</td>
-                        <td>{{ trans_choice('mensajes.chk', $p->id_estado ) }}</td>
+                        <td>{{ ChecklistController::cantDias($fecha_ini,$fecha_fin) }} Días para Finalizar</td>
                         @can('checklist.show')
                         <td width="10px">
                             <a href="{{ route('checklist.show', $p->id) }}" 
