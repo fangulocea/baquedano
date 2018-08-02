@@ -20,11 +20,9 @@ class CreateChkinmueblefotoTable extends Migration
             $table->foreign('id_chk')->references('id')->on('chkinmuebles');
             $table->integer('id_inmueble')->unsigned();
             $table->foreign('id_inmueble')->references('id')->on('inmuebles');
-            $table->string('descripcion');
             $table->string('nombre');
             $table->string('ruta');
-            $table->integer('id_item')->unsigned();
-            $table->foreign('id_item')->references('id')->on('checklist');
+            $table->string('tipo')->nullable();
             $table->string('id_creador')->nullable();
             $table->timestamps();
         });
