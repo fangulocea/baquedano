@@ -403,7 +403,7 @@ if($request->moneda=='UF' && $request->arriendo_sim>300){
 
             $idtipopago = 3;
             $dias_mes = cal_days_in_month(CAL_GREGORIAN, date("m", strtotime($fecha_ini)), date("Y", strtotime($fecha_ini)));
-            $valor_en_moneda= ($arriendo - ($arriendo * ($descuento / 100)));
+            $valor_en_moneda= (($arriendo/2) - (($arriendo/2) * ($descuento / 100)));
             $valor_en_pesos = $valor_en_moneda *  $valormoneda;
    
             $dia = date("d", strtotime($fecha_ini));
@@ -490,6 +490,49 @@ if($request->moneda=='UF' && $request->arriendo_sim>300){
                             'id_arrendatario' => $id_arrendatario,
                             'tipo' => 1,
                             'tipopago' => "Garantía",
+                            'idtipopago' => $idtipopago,
+                            'meses_contrato' => $meses_contrato,
+                            'fecha_iniciocontrato' => $fechafirma,
+                            'dia' => $dia,
+                            'mes' => $mes,
+                            'anio' => $anio,
+                            'descuento' => $descuento,
+                            'cant_diasmes' => $dias_mes,
+                            'cant_diasproporcional' => $dias_mes,
+                            'moneda' => $tipomoneda,
+                            'valormoneda' => $valormoneda,
+                            'valordia' => 1,
+                            'precio_en_moneda' => $valor_en_pesos,
+                            'precio_en_pesos' => round($valor_en_pesos),
+                            'id_creador' => $id_creador,
+                            'id_modificador' => $id_creador,
+                            'id_estado' => 1,
+                            'canondearriendo' => $arriendo
+                ]);
+
+            }
+        }
+
+           $fecha_ini = date('Y-m-j', strtotime(date("Y", strtotime($fechafirma)) . '-' . date("m", strtotime($fechafirma)) . '-' . 1));
+
+        $reserva = Arr_Reservas::where("id_arr_ges", "=", $idp)->get();
+
+        if (count($reserva) > 0) {
+            foreach ($reserva as $g) {
+ $dia = date("d", strtotime($fecha_ini));
+            $mes = date("m", strtotime($fecha_ini));
+            $anio = date("Y", strtotime($fecha_ini));
+            $dias_mes = cal_days_in_month(CAL_GREGORIAN, date("m", strtotime($fecha_ini)), date("Y", strtotime($fecha_ini)));
+                $idtipopago = 10;
+                $precio_proporcional = $g->monto_reserva;
+                $valor_en_pesos = $g->monto_reserva;
+                $pago = SimulaPagoArrendatario::create([
+                            'id_simulacion' => $idsimulacion,
+                            'id_publicacion' => $idp,
+                            'id_inmueble' => $idinmueble,
+                            'id_arrendatario' => $id_arrendatario,
+                            'tipo' => 1,
+                            'tipopago' => "Reserva",
                             'idtipopago' => $idtipopago,
                             'meses_contrato' => $meses_contrato,
                             'fecha_iniciocontrato' => $fechafirma,

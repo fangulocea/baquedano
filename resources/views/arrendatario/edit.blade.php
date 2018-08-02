@@ -983,11 +983,8 @@ $('#i_direccion').typeahead({
         {
             name: 'direcciones',
             display: 'value',
-            source: direcciones,
-
-                templates: {
-                header: '<h4 class="dropdown">Direcciones</h4>'
-            }
+            limit: 10,
+            source: direcciones
         });
 
 jQuery('#i_direccion').on('typeahead:selected', function (e, datum) {
