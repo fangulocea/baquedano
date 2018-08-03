@@ -13,6 +13,7 @@ use Image;
 use Auth;
 use File;
 use Carbon\Carbon;
+use Barryvdh\DomPDF\Facade as PDF;
 
 class ChecklistController extends Controller
 {
@@ -26,7 +27,7 @@ class ChecklistController extends Controller
         $publica = DB::table('chkinmuebles as chk')
          ->leftjoin('inmuebles as i', 'chk.id_inmueble', '=', 'i.id')
          ->leftjoin('comunas as co', 'i.id_comuna', '=', 'co.comuna_id')
-         ->select(DB::raw('i.id, i.direccion, i.numero, co.comuna_nombre as comuna, 
+         ->select(DB::raw('chk.id, i.direccion, i.numero, co.comuna_nombre as comuna, 
                            chk.id_estado, chk.tipo, chk.id_bor_arr, chk.id_cap_pro, chk.created_at '))
          ->get();
 
@@ -55,17 +56,19 @@ class ChecklistController extends Controller
                         </ul></li></ol></body></html>";
 
 
+        $Checklist = DB::table('chkinmuebles')
+        ->Where('id','=',$id)
+        ->first();  
+
         $inmueble = DB::table('inmuebles as i')
          ->leftjoin('comunas as co', 'i.id_comuna', '=', 'co.comuna_id')
-         ->where('i.id','=', $id)
+         ->where('i.id','=', $Checklist->id_inmueble)
          ->select(DB::raw('i.id , i.direccion,i.numero,co.comuna_nombre as comuna'))
          ->first();
 
-        $Checklist = DB::table('chkinmuebles')
-        ->Where('id_inmueble','=',$id)
-        ->first();         
+       
 
-        $imgReserva = ChkInmuebleFoto::where('id_inmueble','=',$id)->get();
+        $imgReserva = ChkInmuebleFoto::where('id_chk','=',$id)->get();
 
         
         return view('checklist.check',compact('ListadoCheckList','inmueble','imgReserva','tipo','Checklist','vacio'));   
@@ -88,25 +91,41 @@ class ChecklistController extends Controller
      * @param  \App\Checklist  $checklist
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($id,$tipo)
     {
+        $year_now = date ("Y");  
+        $month_now = date ("n"); 
+
+        $ChkInmueble = DB::table('chkinmuebles as c')
+        ->leftjoin('inmuebles as i', 'c.id_inmueble', '=', 'i.id')
+        ->leftjoin('comunas as co', 'i.id_comuna', '=', 'co.comuna_id')
+        ->where('c.id', '=', $id)
+        ->select(DB::raw('c.id as id_chk, i.direccion, i.numero, co.comuna_nombre as comuna, c.descripcion'))
+        ->first();
+
+
         $foto = DB::table('chkinmueblefoto as f')
-         ->leftjoin('checklist as c', 'f.id_item', '=', 'c.id')
-         ->select(DB::raw('f.id, f.descripcion, f.nombre, f.ruta, c.nombre as tipo'))
-         ->where('f.id_inmueble','=',$id)
-         ->where('c.estado','=',1)
+         ->where('f.id_chk', '=', $ChkInmueble->id_chk)
+         ->select(DB::raw('f.id, f.ruta, f.nombre'))
          ->get();
 
+        if($tipo == 'Arrendatario')
+        {
 
-        $inmueble = DB::table('inmuebles as i')
-         ->leftjoin('comunas as co', 'i.id_comuna', '=', 'co.comuna_id')
-         ->where('i.id','=', $id)
-         ->select(DB::raw('i.id , i.direccion,i.numero,co.comuna_nombre as comuna'))
-         ->first();
+            $persona = DB::table('chkinmuebles as c')
+                ->leftjoin('arrendatarios as a', 'c.id_bor_arr', '=', 'a.id')
+                ->leftjoin('personas as p', 'a.id_arrendatario', '=', 'p.id')
+                ->where('c.id', '=', $id)
+                ->select(DB::raw('p.nombre, p.apellido_paterno, p.telefono, p.email'))
+                ->first();
 
-
-
-        return view('checklist.show',compact('foto','inmueble'));
+            $pdf = PDF::loadView('formatospdf.checklistarrendatario', compact('ChkInmueble', 'foto','persona'));
+            return $pdf->download($ChkInmueble->direccion . ' Nro.' . $ChkInmueble->numero . ' Comuna.' . $ChkInmueble->comuna . ' - ' . $month_now . '-' . $year_now . ' - CheckList Propietario.pdf');
+        }
+        else
+        {
+            
+        }
     }
 
     /**

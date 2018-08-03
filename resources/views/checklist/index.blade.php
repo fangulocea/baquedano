@@ -47,7 +47,7 @@
                         <td>{{ ChecklistController::cantDias($fecha_ini,$fecha_fin) }} Días para Finalizar</td>
                         @can('checklist.show')
                         <td width="10px">
-                            <a href="{{ route('checklist.show', $p->id) }}" 
+                            <a href="{{ route('checklist.show', [$p->id,$p->tipo]) }}" 
                                 class="btn btn-success btn-circle btn-lg">
                                 <i class="fa fa-check"></i>
                             </a>

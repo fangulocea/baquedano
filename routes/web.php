@@ -1077,7 +1077,7 @@ Route::get('contratorenovacionpropietario','ContratoRenovacionPropietarioControl
 	Route::get('checklist','ChecklistController@index')->name('checklist.index')
 		->middleware('permission:uf.index');
 
-	Route::get('checklist/{id}','ChecklistController@show')->name('checklist.show')
+	Route::get('checklist/{id}/{tipo}','ChecklistController@show')->name('checklist.show')
 		->middleware('permission:uf.show');
 
 	Route::get('checklist/{id}/{tipo}/edit','ChecklistController@edit')->name('checklist.edit')
