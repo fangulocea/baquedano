@@ -199,6 +199,8 @@ class ContratoBorradorArrendatarioController extends Controller
     public function crearBorrador(Request $request)
     {
 
+        dd($request);
+
         $fecha = $request->fecha_contrato;
 
         $contratoTipo = DB::table('contratos as c')
