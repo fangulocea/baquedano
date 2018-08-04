@@ -7,6 +7,7 @@ use App\Inmueble;
 use App\Condicion;
 use App\Region;
 use Illuminate\Database\Query\Builder;
+use Yajra\Datatables\Datatables;
 use DB;
 
 
@@ -54,11 +55,32 @@ class InmuebleController extends Controller
      */
         public function index()
         {
-            $inm = DB::table('inmuebles')->join('comunas', 'inmuebles.id_comuna', '=', 'comunas.comuna_id')->get();
-
-            return view('inmueble.index',compact('inm'));
+            
+            return view('inmueble.index');
         }
 
+
+        public function index_ajax()
+        {
+            $inm = DB::table('inmuebles as i')
+            ->join('comunas as c', 'i.id_comuna', '=', 'c.comuna_id')
+            ->leftjoin('mensajes as m', function($join){
+                 $join->on('m.nombre_modulo', '=',DB::raw("'Inmuebles'"));
+                 $join->on('m.id_estado', '=', 'i.estado');
+            })
+            ->select(DB::raw("i.direccion, i.id, i.numero, i.departamento, i.precio, i.gastosComunes, c.comuna_nombre, m.nombre"))
+            ->get();
+
+            return Datatables::of($inm)
+         ->addColumn('action', function ($inm) {
+                               return  '<a href="/inmueble/'.$inm->id.'/edit"><span class="btn btn-warning btn-circle btn-sm"><i class="ti-pencil-alt"></i></span></a>';
+        })
+        ->addColumn('id_link', function ($inm) {
+                               return  '<a href="/inmueble/'.$inm->id.'/edit"><span class="btn btn-success btn-sm"> '.$inm->id.'</span> </a>';
+        })
+        ->rawColumns(['id_link','action'])
+        ->make(true);
+        }
     /**
      * Show the form for creating a new resource.
      *

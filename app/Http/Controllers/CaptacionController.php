@@ -18,6 +18,7 @@ use DateTime;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\File;
 use Excel;
+use Yajra\Datatables\Datatables;
 
 class CaptacionController extends Controller {
 
@@ -429,6 +430,11 @@ class CaptacionController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function index() {
+    
+        return view('captaciones.index');
+    }
+
+     public function index_ajax() {
         $publica = DB::table('cap_publicaciones as c')
                 ->leftjoin('personas as p1', 'c.id_propietario', '=', 'p1.id')
                 ->leftjoin('inmuebles as i', 'c.id_inmueble', '=', 'i.id')
@@ -437,12 +443,25 @@ class CaptacionController extends Controller {
                 ->leftjoin('personas as p4', 'c.id_corredor', '=', 'p4.id')
                 ->leftjoin('comunas as o', 'i.id_comuna', '=', 'o.comuna_id')
                 ->leftjoin('portales as po', 'c.portal', '=', 'po.id')
-                ->select(DB::raw('c.id as id_publicacion, DATE_FORMAT(c.created_at, "%d/%m/%Y %T") as fecha_creacion,DATE_FORMAT(c.updated_at, "%d/%m/%Y") as fecha_modificacion, c.id_estado as id_estado, CONCAT_WS(" ",p1.nombre,p1.apellido_paterno,p1.apellido_materno) as Propietario, CONCAT_WS(" ",p4.nombre,p4.apellido_paterno,p4.apellido_materno) as Externo,
+                ->leftjoin('mensajes as m',"c.id_estado","m.id_estado")
+                ->select(DB::raw('c.id as id_publicacion, DATE_FORMAT(c.created_at, "%d/%m/%Y %T") as fecha_creacion,DATE_FORMAT(c.updated_at, "%d/%m/%Y") as fecha_modificacion, m.nombre as id_estado, CONCAT_WS(" ",p1.nombre,p1.apellido_paterno,p1.apellido_materno) as Propietario, CONCAT_WS(" ",p4.nombre,p4.apellido_paterno,p4.apellido_materno) as Externo,
+                    CONCAT_WS(" ",i.direccion,i.numero," Dpto ",i.departamento) as Direccion,
                     (select tipo_contacto from cap_gestion where id_captacion_gestion=c.id order by created_at asc limit 1) as tipo_contacto, (select (select name from users where id=id_creador_gestion limit 1)  from cap_gestion where id_captacion_gestion=c.id order by created_at asc limit 1) as creador_gestion, 
-         c.tipo, p2.name as Creador, CONCAT_WS(" ",p3.nombre,p3.apellido_paterno,p3.apellido_materno) as Modificador,p1.email,p1.telefono,c.fecha_publicacion'), 'i.id as id_inmueble', 'i.direccion', 'i.numero', 'i.departamento', 'o.comuna_nombre', 'po.nombre as portal', 'p1.nombre as nom_p', 'p1.apellido_paterno as apep_p', 'p1.apellido_materno as apem_p', 'p3.nombre as nom_m', 'p3.apellido_paterno as apep_m', 'p3.apellido_materno as apem_m')
+         c.tipo, p2.name as Creador, CONCAT_WS(" ",p3.nombre,p3.apellido_paterno,p3.apellido_materno) as Modificador,p1.email,p1.telefono,c.fecha_publicacion'), 'i.id as id_inmueble', 'o.comuna_nombre', 'po.nombre as portal', 'p1.nombre as nom_p', 'p1.apellido_paterno as apep_p', 'p1.apellido_materno as apem_p', 'p3.nombre as nom_m', 'p3.apellido_paterno as apep_m', 'p3.apellido_materno as apem_m')
+                ->orderBy("c.id","Desc")
                 ->get();
 
-        return view('captaciones.index', compact('publica'));
+         return Datatables::of($publica)
+         ->addColumn('action', function ($publica) {
+                               return  '<a href="/captacion/'.$publica->id_publicacion.'/2/edit"><span class="btn btn-warning btn-circle btn-sm"><i class="ti-pencil-alt"></i></span></a>
+                                    <a href="/captacion/'.$publica->id_publicacion.'/destroy"><span class="btn btn-danger btn-circle btn-sm"><i class="ti-pencil-alt"></i></span></a>';
+        })
+        ->addColumn('id_link', function ($publica) {
+                               return  '<a href="/captacion/'.$publica->id_publicacion.'/2/edit"><span class="btn btn-success btn-sm"> '.$publica->id_publicacion.'</span> </a>';
+        })
+        ->rawColumns(['id_link','action'])
+        ->make(true);
+
     }
 
     /**

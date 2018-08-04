@@ -13,66 +13,15 @@
                         <th>ID</th>
                         <th>Dirección</th>
                         <th>Nro</th>
+                        <th>Dpto.</th>
                         <th>Comuna</th>
                         <th>Precio</th>
                         <th>G.Comunes</th>
                         <th>Estado</th>
                         <th></th>
-                        <th></th>
-                        <th></th>
+
                     </tr>
                 </thead>
-                <tfoot>
-                    <tr>
-                        <th>ID</th>
-                        <th>Dirección</th>
-                        <th>Nro</th>
-                        <th>Comuna</th>
-                        <th>Precio</th>
-                        <th>G.Comunes</th>
-                        <th>Estado</th>
-                        <th></th>
-                        <th></th>
-                        <th></th>
-                    </tr>
-                </tfoot>
-                <tbody>
-                    @foreach($inm as $i)
-                            <tr>
-                                <td>{{ $i->id }}</td>
-                                <td>{{ $i->direccion }}</td>
-                                <td>{{ $i->numero }}</td>
-                                <td>{{ $i->comuna_nombre }}</td>
-                                <td>{{ $i->precio }}</td>
-                                <td>{{ $i->gastosComunes }}</td>
-                                <td>{{ trans_choice('mensajes.inmueble', $i->estado ) }}</td>
-                                @can('inmueble.show')
-                                <td width="10px">
-                                    <a href="{{ route('inmueble.show', $i->id) }}" 
-                                    class="btn btn-success btn-circle btn-lg">
-                                      <i class="fa fa-check"></i>
-                                    </a>
-                                </td>
-                                @endcan
-                                @can('inmueble.edit')
-                                <td width="10px">
-                                    <a href="{{ route('inmueble.edit', $i->id) }}"><span class="btn btn-warning btn-circle btn-lg"><i class="ti-pencil-alt"></i></span></a>
-                                </td>
-                                @endcan
-                                @can('inmueble.destroy')
-                                <td width="10px">
-
-                                    {!! Form::open(['route' => ['inmueble.destroy', $i->id], 
-                                    'method' => 'DELETE']) !!}
-                                        <button class="btn btn-danger btn-circle btn-lg"><i class="ti-trash"></i>
-                                        </button>
-                                    {!! Form::close() !!}
-                                </td>
-                                @endcan
-                            </tr>
-                            @endforeach
-
-                </tbody>
             </table>
         </div>
     </div>
@@ -99,6 +48,23 @@
 
 var table = $('#listusers').DataTable({
     dom: 'Bfrtip',
+     pageLength: 10,
+    ServerSide: true,
+    deferRender: true,
+      "ajax": {
+       "url": "{{ route('inmueble.index_ajax') }}"
+    },
+            "columns": [
+                {data: 'id_link', name: 'id_link'},
+                {data: 'direccion', name: 'direccion'},
+                {data: 'numero', name: 'numero'},
+                {data: 'departamento', name: 'departamento'},
+                {data: 'comuna_nombre', name: 'comuna_nombre'},
+                {data: 'precio', name: 'precio'},
+                {data: 'gastosComunes', name: 'gastosComunes'},
+                {data: 'nombre', name: 'nombre'},
+                {data: 'action', name: 'action'}
+            ],
     buttons: [
         'excel', 'pdf', 'print',{
             text: 'Crear Inmueble',
@@ -108,12 +74,6 @@ var table = $('#listusers').DataTable({
         }
 
     ],
-"ordering": false,
- 
-   columnDefs: [{
-            "targets": [7, 8, 9],
-            "orderable": false
-        }],
     language: {
         "sProcessing": "Procesando...",
         "sLengthMenu": "Mostrar _MENU_ registros",

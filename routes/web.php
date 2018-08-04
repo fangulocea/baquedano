@@ -170,6 +170,9 @@ Route::middleware(['auth'])->group(function(){
 	Route::get('inmueble','InmuebleController@index')->name('inmueble.index')
 		->middleware('permission:inmueble.index');
 
+	Route::get('inmueble/index','InmuebleController@index_ajax')->name('inmueble.index_ajax')
+		->middleware('permission:inmueble.index');
+
 	Route::get('inmueble/create','InmuebleController@create')->name('inmueble.create')
 		->middleware('permission:inmueble.create');
 
@@ -313,6 +316,9 @@ Route::middleware(['auth'])->group(function(){
 	Route::get('captacion','CaptacionController@index')->name('captacion.index')
 		->middleware('permission:captacion.index');
 
+	Route::get('captacion/index','CaptacionController@index_ajax')->name('captacion.index_ajax')
+		->middleware('permission:captacion.index');
+
 	Route::get('captacion/create','CaptacionController@create')->name('captacion.create')
 		->middleware('permission:captacion.create');
 
@@ -356,6 +362,9 @@ Route::middleware(['auth'])->group(function(){
 		->middleware('permission:captacion.show');
 
 	Route::delete('captacion/{captacion}','CaptacionController@destroy')->name('captacion.destroy')
+		->middleware('permission:captacion.destroy');
+
+	Route::get('captacion/{captacion}/destroy','CaptacionController@destroy')->name('captacion.destroy2')
 		->middleware('permission:captacion.destroy');
 
 	Route::get('captacion/agregarinmueble/{idc}/{idi}','CaptacionController@agregarInmueble')->name('captacion.agregarinmueble')
