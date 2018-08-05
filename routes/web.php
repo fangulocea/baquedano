@@ -285,6 +285,26 @@ Route::middleware(['auth'])->group(function(){
 		->middleware('permission:multa.edit');
 
 
+
+//Catalogo de Servicios
+	Route::post('catalogo/store','CatalogoServiciosController@store')->name('catalogo.store')
+		->middleware('permission:catalogo.create');
+
+	Route::get('catalogo','CatalogoServiciosController@index')->name('catalogo.index')
+		->middleware('permission:catalogo.index');
+
+	Route::get('catalogo/create','CatalogoServiciosController@create')->name('catalogo.create')
+		->middleware('permission:catalogo.create');
+
+	Route::post('catalogo/{catalogo}','CatalogoServiciosController@update')->name('catalogo.update')
+		->middleware('permission:catalogo.edit');
+
+	Route::delete('catalogo/{catalogo}','CatalogoServiciosController@destroy')->name('catalogo.destroy')
+		->middleware('permission:catalogo.destroy');
+
+	Route::get('catalogo/{catalogo}/edit','CatalogoServiciosController@edit')->name('catalogo.edit')
+		->middleware('permission:catalogo.edit');
+
 //Captacion Propietario
 
 

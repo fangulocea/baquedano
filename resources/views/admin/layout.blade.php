@@ -169,6 +169,9 @@
                                 @can('cargo.index')
                                 <li> <a href="{{ route('cargo.index') }}"><i class=" fa-fw">C</i><span class="hide-menu">Cargos</span></a> </li>
                                 @endcan
+                              @can('catalogo.index')
+                                <li> <a href="{{ route('catalogo.index') }}"><i class=" fa-fw">C</i><span class="hide-menu">Catálogo de Servicios </span></a> </li>
+                                @endcan
                                 @can('comision.index')
                                 <li> <a href="{{ route('comision.index') }}"><i class=" fa-fw">C</i><span class="hide-menu">Comisión</span></a> </li>
                                 @endcan

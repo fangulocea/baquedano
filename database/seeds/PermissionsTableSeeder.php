@@ -669,7 +669,32 @@ class PermissionsTableSeeder extends Seeder
             'description'   =>  'Desactiva UF del sistema',
         ]);
 
-
+//Catalogo de Servicios
+        Permission::create([
+            'name'          =>  'Listado de Servicios',
+            'slug'          =>  'catalogo.index',
+            'description'   =>  'Despliega Servicios',
+        ]);
+        Permission::create([
+            'name'          =>  'Ver detalle de Servicios',
+            'slug'          =>  'catalogo.show',
+            'description'   =>  'Despliega el detalle del Servicios ',
+        ]);
+        Permission::create([
+            'name'          =>  'Crea Servicios',
+            'slug'          =>  'catalogo.create',
+            'description'   =>  'Crear Servicios del sistema',
+        ]);
+        Permission::create([
+            'name'          =>  'Edición de Servicios',
+            'slug'          =>  'catalogo.edit',
+            'description'   =>  'Editar Servicios del sistema',
+        ]);
+        Permission::create([
+            'name'          =>  'Desactiva Servicios',
+            'slug'          =>  'catalogo.destroy',
+            'description'   =>  'Desactiva Servicios del sistema',
+        ]);
 
     }
 }
