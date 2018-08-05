@@ -28,8 +28,9 @@ class ChecklistController extends Controller
          ->leftjoin('inmuebles as i', 'chk.id_inmueble', '=', 'i.id')
          ->leftjoin('comunas as co', 'i.id_comuna', '=', 'co.comuna_id')
          ->select(DB::raw('chk.id, i.direccion, i.numero, co.comuna_nombre as comuna, 
-                           chk.id_estado, chk.tipo, chk.id_bor_arr, chk.id_cap_pro, chk.created_at '))
+                           chk.id_estado, chk.tipo, chk.id_bor_arr, chk.id_cap_pro, chk.created_at,chk.fecha_limite '))
          ->get();
+
 
         return view('checklist.index',compact('publica'));
     }
@@ -228,9 +229,26 @@ static function cantDias($fecha1,$fecha2){
 
         $fecha1 = Carbon::parse($fecha1);
         $fecha2 = Carbon::parse($fecha2);
-
         $res = $fecha2->diffInDays($fecha1);
         return $res;
+    }
+
+static function contrato($id_arr,$id_pro,$tipo){
+
+        if($tipo == 'Arrendatario')
+        {
+            $resultado = 'Arrendatario';
+        }
+        elseif($tipo == 'Propietario')
+        {
+            $resultado = 'Propietario';
+        }
+        else
+        {
+            $resultado = 'Sin Contrato';
+        }
+
+        return $resultado;
     }
 
 }

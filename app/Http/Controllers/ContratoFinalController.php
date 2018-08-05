@@ -23,6 +23,7 @@ use Illuminate\Support\Facades\File;
 use Auth;
 use App\PropietarioCheques;
 use App\Checklist;
+use DateTime;
 
 class ContratoFinalController extends Controller {
 
@@ -67,6 +68,13 @@ class ContratoFinalController extends Controller {
     }
 
     public function crearContrato(Request $request) {
+
+        $date = Carbon::now()->addDay(5)->format('Y-m-d');;
+
+        $date = DateTime::createFromFormat('Y-m-d', $date);
+
+        array_set($request, 'fecha_limite', $date);
+
 
 
         $ContratoBorrador = ContratoBorrador::find($request->id_borradorfinal);
@@ -176,6 +184,7 @@ class ContratoFinalController extends Controller {
                     'id_creador'        => $request->id_creadorfinal,
                     'id_modificador'    => $request->id_creadorfinal,
                     'tipo'              => 'Propietario',
+                    'fecha_limite'      => $request->fecha_limite,
                     'id_cap_pro'        => $ContratoBorrador->id_publicacion,
                     'id_estado'         => '1',
         ]);
