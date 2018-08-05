@@ -401,12 +401,42 @@ class ContratoFinalController extends Controller {
         ]);
 
         $captacion = Captacion::find($request->id_publicacion);
-        $cont_inmueble = ContratoInmueblesPropietarios::create([
-                    "id_publicacion" => $request->id_publicacion,
-                    "id_contratofinal" => $id,
-                    "id_inmueble" => $captacion->id_inmueble,
-                    "id_creador" => Auth::user()->id
-        ]);
+
+        $valida_dir = DB::table('adm_contratodirpropietarios as a')
+                ->where("a.id_publicacion", "=", $request->id_publicacion)
+                ->where("a.id_contratofinal", "=", $id)
+                ->where("a.id_inmueble", "=", $captacion->id_inmueble)
+                ->count();
+
+        if($valida_dir > 0)
+        {
+            $valida_dir = DB::table('adm_contratodirpropietarios as a')
+                ->where("a.id_publicacion", "=", $request->id_publicacion)
+                ->where("a.id_contratofinal", "=", $id)
+                ->where("a.id_inmueble", "=", $captacion->id_inmueble)
+                ->first();
+
+            dd($valida_dir);
+
+            $cont_inmueble = ContratoInmueblesPropietarios::where('id', '=', $valida_dir->id)->update([
+                "id_publicacion" => $request->id_publicacion,
+                "id_contratofinal" => $id,
+                "id_inmueble" => $captacion->id_inmueble,
+                "id_creador" => Auth::user()->id
+            ]);
+        }
+        else
+        {
+            $cont_inmueble = ContratoInmueblesPropietarios::create([
+                "id_publicacion" => $request->id_publicacion,
+                "id_contratofinal" => $id,
+                "id_inmueble" => $captacion->id_inmueble,
+                "id_creador" => Auth::user()->id
+            ]);            
+        }
+
+
+        
 
         return redirect()->route('finalContrato.edit', [$request->id_publicacion, $request->id_borrador, $request->id_pdf, 1])
                         ->with('status', 'Contrato actualizado con éxito');
