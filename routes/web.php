@@ -285,6 +285,26 @@ Route::middleware(['auth'])->group(function(){
 		->middleware('permission:multa.edit');
 
 
+
+//Catalogo de Servicios
+	Route::post('catalogo/store','CatalogoServiciosController@store')->name('catalogo.store')
+		->middleware('permission:catalogo.create');
+
+	Route::get('catalogo','CatalogoServiciosController@index')->name('catalogo.index')
+		->middleware('permission:catalogo.index');
+
+	Route::get('catalogo/create','CatalogoServiciosController@create')->name('catalogo.create')
+		->middleware('permission:catalogo.create');
+
+	Route::post('catalogo/{catalogo}','CatalogoServiciosController@update')->name('catalogo.update')
+		->middleware('permission:catalogo.edit');
+
+	Route::delete('catalogo/{catalogo}','CatalogoServiciosController@destroy')->name('catalogo.destroy')
+		->middleware('permission:catalogo.destroy');
+
+	Route::get('catalogo/{catalogo}/edit','CatalogoServiciosController@edit')->name('catalogo.edit')
+		->middleware('permission:catalogo.edit');
+
 //Captacion Propietario
 
 
@@ -1100,5 +1120,73 @@ Route::get('contratorenovacionpropietario','ContratoRenovacionPropietarioControl
 
 	Route::get('checklist/eliminararchivo/{idf}/{idi}/{idt}','ChecklistController@eliminararchivo')->name('checklist.eliminararchivo')
 		->middleware('permission:checklist.edit');		
+
+
+	//Solicitud de Servicios PROPIETARIO
+	Route::post('solservicio/store','SolicitudServicioController@store')->name('solservicio.store')
+		->middleware('permission:solservicio.create');
+
+	Route::get('solservicio','SolicitudServicioController@index')->name('solservicio.index')
+		->middleware('permission:solservicio.index');
+
+	Route::get('solservicio/index','SolicitudServicioController@index_ajax')->name('solservicio.index_ajax')
+		->middleware('permission:solservicio.index');
+
+	Route::get('solservicio/create','SolicitudServicioController@create')->name('solservicio.create')
+		->middleware('permission:solservicio.create');
+
+		Route::get('solservicio/create/seleccion','SolicitudServicioController@create_ajax')->name('solservicio.create_ajax')
+		->middleware('permission:solservicio.create');
+
+	Route::post('solservicio/{solservicio}','SolicitudServicioController@update')->name('solservicio.update')
+		->middleware('permission:solservicio.edit');
+
+	Route::get('solservicio/{solservicio}','SolicitudServicioController@show')->name('solservicio.show')
+		->middleware('permission:solservicio.show');
+
+	Route::delete('solservicio/{solservicio}','SolicitudServicioController@destroy')->name('solservicio.destroy')
+		->middleware('permission:solservicio.destroy');
+
+	Route::get('solservicio/{solservicio}/edit','SolicitudServicioController@edit')->name('solservicio.edit')
+		->middleware('permission:solservicio.edit');
+
+		Route::get('solservicio/{solservicio}/create','SolicitudServicioController@create_solicitud')->name('solservicio.create_solicitud')
+		->middleware('permission:solservicio.show');
+
+
+
+
+	//Solicitud de Servicios ARRENDATARIO
+	Route::post('arrsolservicio/store','SolicitudServiciosARRController@store')->name('arrsolservicio.store')
+		->middleware('permission:solservicio.create');
+
+	Route::get('arrsolservicio','SolicitudServiciosARRController@index')->name('arrsolservicio.index')
+		->middleware('permission:solservicio.index');
+
+	Route::get('arrsolservicio/index','SolicitudServiciosARRController@index_ajax')->name('arrsolservicio.index_ajax')
+		->middleware('permission:solservicio.index');
+
+	Route::get('arrsolservicio/create','SolicitudServiciosARRController@create')->name('arrsolservicio.create')
+		->middleware('permission:solservicio.create');
+
+		Route::get('arrsolservicio/create/seleccion','SolicitudServiciosARRController@create_ajax')->name('arrsolservicio.create_ajax')
+		->middleware('permission:solservicio.create');
+
+	Route::post('arrsolservicio/{solservicio}','SolicitudServiciosARRController@update')->name('arrsolservicio.update')
+		->middleware('permission:solservicio.edit');
+
+	Route::get('arrsolservicio/{solservicio}','SolicitudServiciosARRController@show')->name('arrsolservicio.show')
+		->middleware('permission:solservicio.show');
+
+
+	Route::get('arrsolservicio/{solservicio}/create','SolicitudServiciosARRController@create_solicitud')->name('arrsolservicio.create_solicitud')
+		->middleware('permission:solservicio.show');
+
+	Route::delete('arrsolservicio/{solservicio}','SolicitudServiciosARRController@destroy')->name('arrsolservicio.destroy')
+		->middleware('permission:solservicio.destroy');
+
+	Route::get('arrsolservicio/{solservicio}/edit','SolicitudServiciosARRController@edit')->name('arrsolservicio.edit')
+		->middleware('permission:solservicio.edit');
+
 
 });

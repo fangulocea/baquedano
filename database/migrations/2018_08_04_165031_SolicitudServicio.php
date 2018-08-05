@@ -20,15 +20,16 @@ class SolicitudServicio extends Migration
             $table->integer('id_inmueble');
             $table->integer('id_propietario');
             $table->integer('id_creador');
-            $table->integer('id_modificador');
-            $table->integer('id_autorizador');
-            $table->integer('id_asignacion');
-            $table->date('fecha_autorizacion');
+            $table->integer('id_modificador')->nullable();
+            $table->integer('id_autorizador')->nullable();
+            $table->integer('id_asignacion')->nullable();
+            $table->date('fecha_autorizacion')->nullable();
+            $table->string('modulo');
             $table->date('fecha_uf');
             $table->double('valor_uf',20,8);
             $table->double('valor_en_uf',20,8);
             $table->integer('valor_en_pesos');
-            $table->integer('id_estado');
+            $table->integer('id_estado')->nullable();
             $table->timestamps();
         });
     }
