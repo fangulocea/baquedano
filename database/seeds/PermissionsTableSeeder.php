@@ -696,5 +696,32 @@ class PermissionsTableSeeder extends Seeder
             'description'   =>  'Desactiva Servicios del sistema',
         ]);
 
+//Solicitud de Servicios
+        Permission::create([
+            'name'          =>  'Listado de Solicitud de Servicios',
+            'slug'          =>  'solservicio.index',
+            'description'   =>  'Despliega  Solicitud de Servicios',
+        ]);
+        Permission::create([
+            'name'          =>  'Ver detalle de  Solicitud de Servicios',
+            'slug'          =>  'solservicio.show',
+            'description'   =>  'Despliega el detalle del Servicios ',
+        ]);
+        Permission::create([
+            'name'          =>  'Crea Servicios',
+            'slug'          =>  'solservicio.create',
+            'description'   =>  'Crear  Solicitud de Servicios del sistema',
+        ]);
+        Permission::create([
+            'name'          =>  'Edición de  Solicitud de Servicios',
+            'slug'          =>  'solservicio.edit',
+            'description'   =>  'Editar  Solicitud de  Servicios del sistema',
+        ]);
+        Permission::create([
+            'name'          =>  'Desactiva  Solicitud de  Servicios',
+            'slug'          =>  'solservicio.destroy',
+            'description'   =>  'Desactiva  Solicitud de Servicios del sistema',
+        ]);
+
     }
 }

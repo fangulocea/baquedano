@@ -131,5 +131,131 @@ class MensajesSeed extends Seeder
             'id_estado'    => '2',
             'nombre' => 'Reservado'
         ]);
+
+                  Mensajes::create([
+            'id'    => '18',
+            'id_modulo'    => '1',
+            'nombre_modulo'    => 'Solicitud Servicio',
+            'id_estado'    => '0',
+            'nombre' => 'No Vigente'
+        ]);
+             Mensajes::create([
+            'id'    => '19',
+            'id_modulo'    => '1',
+            'nombre_modulo'    => 'Solicitud Servicio',
+            'id_estado'    => '1',
+            'nombre' => 'Vigente'
+        ]);
+              Mensajes::create([
+            'id'    => '20',
+            'id_modulo'    => '1',
+            'nombre_modulo'    => 'Solicitud Servicio',
+            'id_estado'    => '2',
+            'nombre' => 'Asignado'
+        ]);
+         Mensajes::create([
+            'id'    => '21',
+            'id_modulo'    => '1',
+            'nombre_modulo'    => 'Solicitud Servicio',
+            'id_estado'    => '3',
+            'nombre' => 'Autorizado'
+        ]);
+          Mensajes::create([
+            'id'    => '22',
+            'id_modulo'    => '1',
+            'nombre_modulo'    => 'Solicitud Servicio',
+            'id_estado'    => '4',
+            'nombre' => 'Cerrada'
+        ]);
+        Mensajes::create([
+            'id'    => '23',
+            'id_modulo'    => '1',
+            'nombre_modulo'    => 'Solicitud Servicio',
+            'id_estado'    => '5',
+            'nombre' => 'Anulada'
+        ]);
+        Mensajes::create([
+            'id'    => '24',
+            'id_modulo'    => '1',
+            'nombre_modulo'    => 'Solicitud Servicio',
+            'id_estado'    => '6',
+            'nombre' => 'En Evaluación'
+        ]);
+        Mensajes::create([
+            'id'    => '25',
+            'id_modulo'    => '1',
+            'nombre_modulo'    => 'Solicitud Servicio',
+            'id_estado'    => '7',
+            'nombre' => 'Cotizando'
+        ]);
+
+//ARRENDATARIO
+
+Mensajes::create([
+            'id_modulo'    => '1',
+            'nombre_modulo'    => 'Arrendatario',
+            'id_estado'    => '0',
+            'nombre' => 'Descartado'
+        ]);
+          Mensajes::create([
+            'id_modulo'    => '1',
+            'nombre_modulo'    => 'Arrendatario',
+            'id_estado'    => '1',
+            'nombre' => 'Sin Gestión(Activo)'
+        ]);
+           Mensajes::create([
+            'id_modulo'    => '1',
+            'nombre_modulo'    => 'Arrendatario',
+            'id_estado'    => '2',
+            'nombre' => 'Activo'
+        ]);
+           Mensajes::create([
+            'id_modulo'    => '1',
+            'nombre_modulo'    => 'Arrendatario',
+            'id_estado'    => '3',
+            'nombre' => 'En Espera'
+        ]);
+          Mensajes::create([
+            'id_modulo'    => '1',
+            'nombre_modulo'    => 'Arrendatario',
+            'id_estado'    => '4',
+            'nombre' => 'Activo - Problema Pago'
+        ]);
+           Mensajes::create([
+            'id_modulo'    => '1',
+            'nombre_modulo'    => 'Arrendatario',
+            'id_estado'    => '5',
+            'nombre' => 'Activo - Daño inmueble'
+        ]);
+        Mensajes::create([
+            'id_modulo'    => '1',
+            'nombre_modulo'    => 'Arrendatario',
+            'id_estado'    => '6',
+            'nombre' => 'Contrato Borrador'
+        ]);
+           Mensajes::create([
+            'id_modulo'    => '1',
+            'nombre_modulo'    => 'Arrendatario',
+            'id_estado'    => '7',
+            'nombre' => 'No Activo - Daño inmueble'
+        ]);
+           Mensajes::create([
+            'id_modulo'    => '1',
+            'nombre_modulo'    => 'Arrendatario',
+            'id_estado'    => '10',
+            'nombre' => 'Contrato Proceso Firma'
+        ]);
+        Mensajes::create([
+            'id_modulo'    => '1',
+            'nombre_modulo'    => 'Arrendatario',
+            'id_estado'    => '11',
+            'nombre' => 'Contrato Firmado'
+        ]);
+           Mensajes::create([
+            'id_modulo'    => '1',
+            'nombre_modulo'    => 'Arrendatario',
+            'id_estado'    => '12',
+            'nombre' => 'No Activo - Problema Pago'
+        ]);
     }
 }

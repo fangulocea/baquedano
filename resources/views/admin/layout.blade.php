@@ -268,7 +268,7 @@
                                 @endcan
 
                             <li>
-                                <a href="javascript:void(0)" class="waves-effect"><i data-icon="&#xe008;" class="linea-icon linea-basic fa-fw">P</i><span class="hide-menu">Propietario </span><span class="fa arrow"></span></a>
+                                <a href="javascript:void(0)" class="waves-effect"><i data-icon="&#xe008;" class="linea-icon linea-basic fa-fw">P</i><span class="hide-menu">ropietario </span><span class="fa arrow"></span></a>
                                 <ul class="nav nav-third-level">
                                     @can('borradorContrato.index')
                                     <li> <a href="{{ route('borradorContrato.index') }}"><i class=" fa-fw">CB</i><span class="hide-menu">Contrato Borrador</span></a> </li>
@@ -298,11 +298,29 @@
                             </li>
                             
                             @can('checklist.index')
-                                <li> <a href="{{ route('checklist.index') }}"><i class=" fa-fw">CHK</i><span class="hide-menu">CheckList Inmueble</span></a> </li>
+                                <li> <a href="{{ route('checklist.index') }}"><i class=" fa-fw">CH</i><span class="hide-menu">eckList Inmueble</span></a> </li>
                             @endcan
 
                             </ul>
 
+                        </li>
+                        <li> <a href="#" class="waves-effect"><i class="mdi mdi-settings fa-fw" data-icon="v"></i> <span class="hide-menu"> POST Atención <span class="fa arrow"></span> <span class="label label-rouded label-primary pull-right">2</span></span></a>
+                        
+                            <ul class="nav nav-second-level">
+                             <li>
+                                <a href="javascript:void(0)" class="waves-effect"><i data-icon="&#xe008;" class="linea-icon linea-basic fa-fw"></i><span class="hide-menu">Solicitudes </span><span class="fa arrow"></span></a>
+                                <ul class="nav nav-third-level">
+                                    @can('contratoborradorarrendatario.index')
+                                    <li> <a href="{{ route('solservicio.index') }}"><i data-icon="&#xe008;" class="linea-icon linea-basic fa-fw"></i><span class="hide-menu">Propietarios</span></a> </li>
+                                    @endcan
+                                    @can('finalContratoArr.index')
+                                    <li> <a href="{{ route('arrsolservicio.index') }}"><i data-icon="&#xe008;" class="linea-icon linea-basic fa-fw"></i><span class="hide-menu">Arrendatarios</span></a> </li>
+                                    @endcan
+                                </ul>
+                            </li>
+
+
+                            </ul>
                         </li>
                         <li><a href="{{ route('logout') }}"
                                        onclick="event.preventDefault();
