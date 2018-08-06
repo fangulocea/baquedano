@@ -65,6 +65,9 @@ class CaptacionCorredorController extends Controller
          return view('captacionesCorredor.index',compact('publica'));
     }
 
+
+ 
+
     /**
      * Show the form for creating a new resource.
      *

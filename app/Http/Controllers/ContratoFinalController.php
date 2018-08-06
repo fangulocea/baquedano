@@ -23,6 +23,7 @@ use Illuminate\Support\Facades\File;
 use Auth;
 use App\PropietarioCheques;
 use App\Checklist;
+use DateTime;
 
 class ContratoFinalController extends Controller {
 
@@ -67,6 +68,13 @@ class ContratoFinalController extends Controller {
     }
 
     public function crearContrato(Request $request) {
+
+        $date = Carbon::now()->addDay(5)->format('Y-m-d');;
+
+        $date = DateTime::createFromFormat('Y-m-d', $date);
+
+        array_set($request, 'fecha_limite', $date);
+
 
 
         $ContratoBorrador = ContratoBorrador::find($request->id_borradorfinal);
@@ -171,6 +179,19 @@ class ContratoFinalController extends Controller {
                     "id_creador" => $request->id_creadorfinal,
                 ])->toArray();
 
+<<<<<<< HEAD
+=======
+        $checklist  = Checklist::create([                      
+                    'id_inmueble'       => $borradorPDF->id_inmueble,
+                    'id_creador'        => $request->id_creadorfinal,
+                    'id_modificador'    => $request->id_creadorfinal,
+                    'tipo'              => 'Propietario',
+                    'fecha_limite'      => $request->fecha_limite,
+                    'id_cap_pro'        => $ContratoBorrador->id_publicacion,
+                    'id_estado'         => '1',
+        ]);
+
+>>>>>>> 7402318a3fc360c205b6263f9d7fbc9fe5282f51
         return redirect()->route('finalContrato.edit', [$ContratoBorrador->id_publicacion, $request->id_borradorfinal, $ContratoBorradorPDF->id, 1])
                         ->with('status', 'Contrato Final guardado con éxito');
     }
@@ -393,12 +414,42 @@ class ContratoFinalController extends Controller {
         ]);
 
         $captacion = Captacion::find($request->id_publicacion);
-        $cont_inmueble = ContratoInmueblesPropietarios::create([
-                    "id_publicacion" => $request->id_publicacion,
-                    "id_contratofinal" => $id,
-                    "id_inmueble" => $captacion->id_inmueble,
-                    "id_creador" => Auth::user()->id
-        ]);
+
+        $valida_dir = DB::table('adm_contratodirpropietarios as a')
+                ->where("a.id_publicacion", "=", $request->id_publicacion)
+                ->where("a.id_contratofinal", "=", $id)
+                ->where("a.id_inmueble", "=", $captacion->id_inmueble)
+                ->count();
+
+        if($valida_dir > 0)
+        {
+            $valida_dir = DB::table('adm_contratodirpropietarios as a')
+                ->where("a.id_publicacion", "=", $request->id_publicacion)
+                ->where("a.id_contratofinal", "=", $id)
+                ->where("a.id_inmueble", "=", $captacion->id_inmueble)
+                ->first();
+
+            dd($valida_dir);
+
+            $cont_inmueble = ContratoInmueblesPropietarios::where('id', '=', $valida_dir->id)->update([
+                "id_publicacion" => $request->id_publicacion,
+                "id_contratofinal" => $id,
+                "id_inmueble" => $captacion->id_inmueble,
+                "id_creador" => Auth::user()->id
+            ]);
+        }
+        else
+        {
+            $cont_inmueble = ContratoInmueblesPropietarios::create([
+                "id_publicacion" => $request->id_publicacion,
+                "id_contratofinal" => $id,
+                "id_inmueble" => $captacion->id_inmueble,
+                "id_creador" => Auth::user()->id
+            ]);            
+        }
+
+
+        
 
         return redirect()->route('finalContrato.edit', [$request->id_publicacion, $request->id_borrador, $request->id_pdf, 1])
                         ->with('status', 'Contrato actualizado con éxito');

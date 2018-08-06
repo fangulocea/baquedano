@@ -39,15 +39,14 @@
                     @foreach($publica as $p)
                         @php 
                             $fecha_ini = date('d-m-Y', strtotime($p->created_at)); 
-                            $fecha_fin = strtotime('+5 day', strtotime($fecha_ini));
-                            $fecha_fin = date('d-m-Y', $fecha_fin);
+                            $fecha_fin = date('d-m-Y', strtotime($p->fecha_limite));
                         @endphp
                     <tr>
                         <td>{{ $p->id }}</td>
                         <td>{{ $p->direccion }}, N°{{ $p->numero }}, {{ $p->comuna }}</td>
                         <td>{{ $p->id_contrato }}</td>
                         <td>{{ $p->tipo }}</td>
-                        <td>{{ ChecklistController::cantDias($fecha_ini,$fecha_fin) }} Días para Finalizar</td>
+                        <td>{{ ChecklistController::cantDias($fecha_ini,$fecha_fin) }} Días para Finalizar {{ ChecklistController::contrato($p->id_bor_arr,$p->id_cap_pro,$p->tipo) }}</td>
                         @can('checklist.show')
                         <td width="10px">
                             <a href="{{ route('checklist.show', [$p->id_contrato, $p->id, $p->tipo]) }}" 

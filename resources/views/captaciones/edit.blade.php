@@ -1015,10 +1015,10 @@ $(function() {
             @if(isset($persona->id_region))
             $("#p_id_provincia").empty();
             $("#p_id_comuna").empty();
-            $.get("/provincias/"+{{ $persona->id_region}}+"",function(response,state){
+            $.get("/provincias/"+{{ $persona->id_region or 0}}+"",function(response,state){
                 for(i=0; i< response.length;i++){
                     sel='';
-                    if(response[i].provincia_id=={{ $persona->id_provincia }}){
+                    if(response[i].provincia_id=={{ $persona->id_provincia or 0 }}){
                         sel=' selected="selected"';
                     }
                     $("#p_id_provincia").append("<option value='"+response[i].provincia_id+"' "+sel+">"+response[i].provincia_nombre+"</option>");
@@ -1026,10 +1026,10 @@ $(function() {
             });
             @endif
             @if(isset($persona->id_provincia))
-            $.get("/comunas/"+{{ $persona->id_provincia }}+"",function(response,state){
+            $.get("/comunas/"+{{ $persona->id_provincia or 0 }}+"",function(response,state){
                 for(i=0; i< response.length;i++){
                     sel='';
-                    if(response[i].comuna_id=={{ $persona->id_comuna }}){
+                    if(response[i].comuna_id=={{ $persona->id_comuna or 0 }}){
                         sel=' selected="selected"';
                     }
                     $("#p_id_comuna").append("<option value='"+response[i].comuna_id+"' "+sel+">"+response[i].comuna_nombre+"</option>");
@@ -1042,20 +1042,20 @@ $(function() {
 
             $("#i_id_provincia").empty();
             $("#i_id_comuna").empty();
-            $.get("/provincias/"+{{ $inmueble->id_region}}+"",function(response,state){
+            $.get("/provincias/"+{{ $inmueble->id_region or 0}}+"",function(response,state){
                 for(i=0; i< response.length;i++){
                     sel='';
-                    if(response[i].provincia_id=={{ $inmueble->id_provincia }}){
+                    if(response[i].provincia_id=={{ $inmueble->id_provincia or 0 }}){
                         sel=' selected="selected"';
                     }
                     $("#i_id_provincia").append("<option value='"+response[i].provincia_id+"' "+sel+">"+response[i].provincia_nombre+"</option>");
                 }
             });
             
-            $.get("/comunas/"+{{ $inmueble->id_provincia }}+"",function(response,state){
+            $.get("/comunas/"+{{ $inmueble->id_provincia or 0 }}+"",function(response,state){
                 for(i=0; i< response.length;i++){
                     sel='';
-                    if(response[i].comuna_id=={{ $inmueble->id_comuna }}){
+                    if(response[i].comuna_id=={{ $inmueble->id_comuna or 0 }}){
                         sel=' selected="selected"';
                     }
                     $("#i_id_comuna").append("<option value='"+response[i].comuna_id+"' "+sel+">"+response[i].comuna_nombre+"</option>");

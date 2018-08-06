@@ -13,89 +13,22 @@
                     <tr>
                         <th>ID</th>
                         <th>Tipo</th>
-                        <th>Corredor</th>
                         <th>Dirección</th>
                         <th>Comuna</th>
                         <th>Propietario</th>
-                        <th>Mail</th>
+                        <th>Email</th>
                         <th>Teléfono</th>
-                        <th>Fecha/P</th>
-                        <th>Gestión/ Ultima</th>
-                        <th>Gestión/ Creador</th>
+                        <th>Fecha Publicación</th>
+                        <th>Tipo Contacto</th>
+                        <th>Creador Gestión</th>
                         <th>Estado</th>
-                        <th>Portal</th>
+                        <th>Postal</th>
                         <th>Creador</th>
-                        <th>Fecha/C</th>
-                        <th></th>
-                        <th></th>
+                        <th>Fecha Creación</th>
+                        <th>Acción</th>
                     </tr>
                 </thead>
-                <tfoot>
-                    <tr>
-                        <th>ID</th>
-                        <th>Tipo</th>
-                        <th>Corredor</th>
-                        <th>Dirección</th>
-                        <th>Comuna</th>
-                        <th>Propietario</th>
-                        <th>Mail</th>
-                        <th>Teléfono</th>
-                        <th>Fecha/P</th>
-                        <th>Gestión/ Ultima</th>
-                        <th>Gestión/ Creador</th>
-                        <th>Estado</th>
-                        <th>Portal</th>
-                        <th>Creador</th>
-                        <th>Fecha/C</th>
-                        <th></th>
-                        <th></th>
-                    </tr>
-                </tfoot>
-                <tbody>
-                    @foreach($publica as $p)
-                            <tr>
-
-
-                                <td style="font-size: x-small;"><a href="{{ route('captacion.edit', [$p->id_publicacion,2]) }}"> {{ $p->id_publicacion }}</a></td>
-                                <td style="font-size: x-small;"><a href="{{ route('captacion.edit', [$p->id_publicacion,2]) }}"> {{ $p->tipo }}</a></td>
-                                <td style="font-size: x-small;"> {{ $p->Externo }}</td>
-                                
-                                <td style="font-size: small;"><a href="{{ route('captacion.edit', [$p->id_publicacion,2]) }}">{{ $p->direccion }} #{{ $p->numero }} , Dpto {{ $p->departamento }}</a></td>
-                                <td style="font-size: small;"> {{ $p->comuna_nombre }}</td>
-                                
-                                <td style="font-size: small;">{{ $p->nom_p }} {{ $p->apep_p }} {{ $p->apem_p }}</td>
-                                <td style="font-size: x-small;">{{ $p->email }}</td>
-                                <td>{{ $p->telefono }}</td>
-                                <td style="font-size: small;">{{ $p->fecha_publicacion }}</td>
-                                <td style="font-size: small;">{{ $p->tipo_contacto }}</td>
-                                <td style="font-size: small;">{{ $p->creador_gestion }}</td>
-                                
-                              <!--   <td style="font-size: small;">{{ $p->fecha_modificacion }}</td>
-                                <td>{{ $p->nom_m }}</td>-->
-                                 <td>{{ trans_choice('mensajes.captacion', $p->id_estado) }}</td>
-                                 <td style="font-size: small;">{{ substr(substr($p->portal, 4),0,10) }}</td>
-                                 <td style="font-size: small;">{{ $p->Creador }} </td>
-                                  <td style="font-size: small;">{{ $p->fecha_creacion }} </td>
-
-                                @can('captacion.edit')
-                                <td width="10px">
-                                    <a href="{{ route('captacion.edit', [$p->id_publicacion,2]) }}"><span class="btn btn-warning btn-circle btn-sm"><i class="ti-pencil-alt"></i></span></a>
-                                </td>
-                                @endcan
-                                @can('captacion.destroy')
-                                <td width="10px">
-
-                                    {!! Form::open(['route' => ['captacion.destroy', $p->id_publicacion], 
-                                    'method' => 'DELETE']) !!}
-                                        <button class="btn btn-danger btn-circle btn-sm"><i class="ti-trash"></i>
-                                        </button>
-                                    {!! Form::close() !!}
-                                </td>
-                                @endcan
-                            </tr>
-                            @endforeach
-
-                </tbody>
+               
             </table>
         </div>
     </div>
@@ -119,9 +52,29 @@ var table = $('#listusers').DataTable({
 
     dom: 'Bfrtip',
     ordering: false,
-    pageLength: 20,
+    pageLength: 10,
     ServerSide: true,
     deferRender: true,
+      "ajax": {
+       "url": "{{ route('captacion.index_ajax') }}"
+    },
+            "columns": [
+                {data: 'id_link', name: 'id_link'},
+                {data: 'tipo', name: 'tipo'},
+                {data: 'Direccion', name: 'Direccion'},
+                {data: 'comuna_nombre', name: 'comuna_nombre'},
+                {data: 'Propietario', name: 'Propietario'},
+                {data: 'email', name: 'email'},
+                {data: 'telefono', name: 'telefono'},
+                {data: 'fecha_publicacion', name: 'fecha_publicacion'},
+                {data: 'tipo_contacto', name: 'tipo_contacto'},
+                {data: 'creador_gestion', name: 'creador_gestion'},
+                {data: 'id_estado', name: 'id_estado'},
+                {data: 'portal', name: 'portal'},
+                {data: 'Creador', name: 'Creador'},
+                {data: 'fecha_creacion', name: 'fecha_creacion'},
+                {data: 'action', name: 'action'}
+            ],
     buttons: [
          'excel', {
             text: 'Ingresar Captación',
