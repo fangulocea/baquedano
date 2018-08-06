@@ -70,7 +70,7 @@
             
                 <div class="row">
                     <div class="col-md-12">
-                        <center><h3>CHECKLIST ARRENDATARIO</h3></center>
+                        <center><h3>CHECKLIST PROPIETARIO</h3></center>
                     </div>
                 </div>
                 <div class="row">
@@ -85,7 +85,7 @@
             <td width="80%" style="padding: 15px;">{{ $ChkInmueble->direccion or null }} # {{ $ChkInmueble->numero or null}} , {{ $ChkInmueble->comuna or null}}</td>
         </tr>
         <tr>
-            <td width="20%" style="padding: 15px;"><strong>Arrendatario</strong></td>
+            <td width="20%" style="padding: 15px;"><strong>Propietario</strong></td>
             <td width="20%" style="padding: 15px;"> {{ $persona->nombre or null}} {{ $persona->apellido_paterno or null}}, Fono : {{ $persona->telefono or null}}, Email: {{ $persona->email or null}}</td>
         </tr>
     </table>
@@ -107,7 +107,7 @@
                         </table>
 <br>
 
-<strong>FOTOS</strong>
+<strong>FOTOS </strong>
     <table id="listusers1" class="display nowrap" cellspacing="0" width="80%" style="display: table; margin: 0 auto;">
     <thead>
         <tr>
@@ -163,6 +163,7 @@
                                 </tr>
                             </tbody>
                         </table>
+
 </div>
 
 

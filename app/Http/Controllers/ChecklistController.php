@@ -28,7 +28,7 @@ class ChecklistController extends Controller
          ->leftjoin('inmuebles as i', 'chk.id_inmueble', '=', 'i.id')
          ->leftjoin('comunas as co', 'i.id_comuna', '=', 'co.comuna_id')
          ->select(DB::raw('chk.id, i.direccion, i.numero, co.comuna_nombre as comuna, 
-                           chk.id_estado, chk.tipo, chk.id_bor_arr, chk.id_cap_pro, chk.created_at '))
+                           chk.id_estado, chk.tipo, chk.id_bor_arr, chk.id_cap_pro, chk.created_at, chk.id_contrato '))
          ->get();
 
         return view('checklist.index',compact('publica'));
@@ -39,39 +39,42 @@ class ChecklistController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create($id,$tipo)
+    public function create($id_contrato,$id_chk,$tipo,$edr)
     {
-        $ListadoCheckList = DB::table('checklist')
-        ->Where('checklist.estado','=',1)
-        ->get();
 
-        $vacio = "<!DOCTYPE html>  
-                        <html><head></head><body>
-                        <p><strong>CheckList</strong></p><ol>
-                        <li><strong>Cocina</strong><ul>
-                        <li>Item 1</li><li>Item 2</li>
-                        </ul></li>
-                        <li>Ba&ntilde;o<ul>
-                        <li>Item 1</li><li>Item 2</li>
-                        </ul></li></ol></body></html>";
+        $vacio = "CheckList
+                    Cocina
+                    Item 1, Item 2
+                    Baño
+                    Item 1, Item 2";
 
+        $imgReserva = ChkInmuebleFoto::where('id_chk','=',$id_chk)->get();
 
-        $Checklist = DB::table('chkinmuebles')
-        ->Where('id','=',$id)
-        ->first();  
+        if($tipo == 'Propietario')
+        {
+            $Checklist = DB::table('adm_contratofinal as cf')
+                        ->leftjoin('cap_publicaciones as p', 'cf.id_publicacion' , '=', 'p.id' )
+                        ->leftjoin('inmuebles as i', 'p.id_inmueble', '=', 'i.id')
+                        ->leftjoin('comunas as co', 'i.id_comuna', '=', 'co.comuna_id')
+                        ->where('cf.id', '=', $id_contrato)
+                        ->select(DB::raw('i.direccion,i.numero,i.departamento,i.id as id_inmueble,co.comuna_nombre as comuna'))
+                        ->first();             
+        }
+        else
+        {
+            $Checklist = DB::table('adm_contratofinalarr as cf')
+                        ->leftjoin('arrendatarios as p', 'cf.id_publicacion' , '=', 'p.id' )
+                        ->leftjoin('inmuebles as i', 'p.id_inmueble', '=', 'i.id')
+                        ->leftjoin('comunas as co', 'i.id_comuna', '=', 'co.comuna_id')
+                        ->where('cf.id', '=', $id_contrato)
+                        ->select(DB::raw('i.direccion,i.numero,i.departamento,i.id as id_inmueble,co.comuna_nombre as comuna'))
+                        ->first();                         
+        }
 
-        $inmueble = DB::table('inmuebles as i')
-         ->leftjoin('comunas as co', 'i.id_comuna', '=', 'co.comuna_id')
-         ->where('i.id','=', $Checklist->id_inmueble)
-         ->select(DB::raw('i.id , i.direccion,i.numero,co.comuna_nombre as comuna'))
-         ->first();
-
-       
-
-        $imgReserva = ChkInmuebleFoto::where('id_chk','=',$id)->get();
 
         
-        return view('checklist.check',compact('ListadoCheckList','inmueble','imgReserva','tipo','Checklist','vacio'));   
+        
+        return view('checklist.create',compact('imgReserva','Checklist','vacio','tipo','id_contrato','id_chk','edr'));   
     }
 
     /**
@@ -100,9 +103,15 @@ class ChecklistController extends Controller
         ->leftjoin('inmuebles as i', 'c.id_inmueble', '=', 'i.id')
         ->leftjoin('comunas as co', 'i.id_comuna', '=', 'co.comuna_id')
         ->where('c.id', '=', $id)
-        ->select(DB::raw('c.id as id_chk, i.direccion, i.numero, co.comuna_nombre as comuna, c.descripcion'))
+        ->select(DB::raw('c.id as id_chk, i.direccion, i.numero, co.comuna_nombre as comuna, c.descripcion, c.comentarios'))
         ->first();
 
+        $descripcion = $ChkInmueble->descripcion;
+        $comentarios = $ChkInmueble->comentarios;
+        //$descripcion = nl2br($ChkInmueble->descripcion);
+        //$descripcion = str_replace("<br />", " /n", $descripcion);
+        //$descripcion = str_replace(array("\r\n", "\r", "\n"), "<br />", $descripcion);
+        
 
         $foto = DB::table('chkinmueblefoto as f')
          ->where('f.id_chk', '=', $ChkInmueble->id_chk)
@@ -111,7 +120,6 @@ class ChecklistController extends Controller
 
         if($tipo == 'Arrendatario')
         {
-
             $persona = DB::table('chkinmuebles as c')
                 ->leftjoin('arrendatarios as a', 'c.id_bor_arr', '=', 'a.id')
                 ->leftjoin('personas as p', 'a.id_arrendatario', '=', 'p.id')
@@ -119,12 +127,20 @@ class ChecklistController extends Controller
                 ->select(DB::raw('p.nombre, p.apellido_paterno, p.telefono, p.email'))
                 ->first();
 
-            $pdf = PDF::loadView('formatospdf.checklistarrendatario', compact('ChkInmueble', 'foto','persona'));
+            $pdf = PDF::loadView('formatospdf.checklistarrendatario', compact('ChkInmueble', 'foto','persona','descripcion','comentarios'));
             return $pdf->download($ChkInmueble->direccion . ' Nro.' . $ChkInmueble->numero . ' Comuna.' . $ChkInmueble->comuna . ' - ' . $month_now . '-' . $year_now . ' - CheckList Propietario.pdf');
         }
         else
         {
-            
+            $persona = DB::table('chkinmuebles as c')
+                ->leftjoin('cap_publicaciones as a', 'c.id_cap_pro', '=', 'a.id')
+                ->leftjoin('personas as p', 'a.id_propietario', '=', 'p.id')
+                ->where('c.id', '=', $id)
+                ->select(DB::raw('p.nombre, p.apellido_paterno, p.telefono, p.email'))
+                ->first();
+
+            $pdf = PDF::loadView('formatospdf.checklistpropietario', compact('ChkInmueble', 'foto','persona','descripcion','comentarios'));
+            return $pdf->download($ChkInmueble->direccion . ' Nro.' . $ChkInmueble->numero . ' Comuna.' . $ChkInmueble->comuna . ' - ' . $month_now . '-' . $year_now . ' - CheckList Propietario.pdf');
         }
     }
 
@@ -134,57 +150,112 @@ class ChecklistController extends Controller
      * @param  \App\Checklist  $checklist
      * @return \Illuminate\Http\Response
      */
-    public function edit($id,$tipo)
+    public function edit($id_contrato,$id_chk,$tipo,$edr)
     {
-        //$inmueble = Inmueble::find($id);
-        $inmueble = DB::table('inmuebles as i')
-         ->leftjoin('comunas as co', 'i.id_comuna', '=', 'co.comuna_id')
-         ->where('i.id','=', $id)
-         ->select(DB::raw('i.id , i.direccion,i.numero,co.comuna_nombre as comuna'))
-         ->first();
 
-         $Checklist = DB::table('chkinmuebles')
-        ->Where('id_inmueble','=',$id)
-        ->first();  
+        if($tipo == "Propietario")
+        {
+            $Checklist = DB::table('adm_contratofinal as cf')
+                        ->leftjoin('cap_publicaciones as p', 'cf.id_publicacion' , '=', 'p.id' )
+                        ->leftjoin('inmuebles as i', 'p.id_inmueble', '=', 'i.id')
+                        ->leftjoin('comunas as co', 'i.id_comuna', '=', 'co.comuna_id')
+                        ->where('cf.id', '=', $id_contrato)
+                        ->select(DB::raw('i.direccion,i.numero,i.departamento,i.id as id_inmueble,co.comuna_nombre as comuna'))
+                        ->first();             
+        }
+        else
+        {
+            $Checklist = DB::table('adm_contratofinalarr as cf')
+                        ->leftjoin('arrendatarios as p', 'cf.id_publicacion' , '=', 'p.id' )
+                        ->leftjoin('inmuebles as i', 'p.id_inmueble', '=', 'i.id')
+                        ->leftjoin('comunas as co', 'i.id_comuna', '=', 'co.comuna_id')
+                        ->where('cf.id', '=', $id_contrato)
+                        ->select(DB::raw('i.direccion,i.numero,i.departamento,i.id as id_inmueble,co.comuna_nombre as comuna'))
+                        ->first();                         
+        }
 
-         $imgReserva = ChkInmuebleFoto::where('id_inmueble','=',$id)->where('tipo','=',$tipo)->get();
+        $detalle = DB::table('chkinmuebles')
+                    ->where('id', '=', $id_chk)->first(); 
 
-         $NombreCheck = DB::table('checklist')
-        ->Where('checklist.id','=',$tipo)
-        ->first();
+        $vacio = $detalle->descripcion;
+        $comentarios = $detalle->comentarios;
 
-         return view('checklist.check',compact('inmueble','Checklist','imgReserva','tipo','NombreCheck'));
+        $imgReserva = ChkInmuebleFoto::where('id_chk','=',$id_chk)->get();
+        
 
+
+        return view('checklist.create',compact('imgReserva','comentarios','Checklist','vacio','tipo','id_contrato','id_chk','edr'));  
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Checklist  $checklist
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Checklist $checklist)
-    {
-        //
-    }
+    public function savefotos(Request $request, $id_inmueble){
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Checklist  $checklist
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Checklist $checklist)
-    {
-        //
-    }
+        //dd($request);
+        if($request->id_tipo == 'Propietario')
+        {
+                $adm_contratofinal = DB::table('adm_contratofinal')
+                                ->Where('id','=',$request->id_contrato)
+                                ->first();
 
-    public function savefotos(Request $request, $id){
+                if($request->id_chk == 0)
+                {
+                    $checklist  = Checklist::create([                      
+                                'id_inmueble'       => $id_inmueble,
+                                'id_creador'        => $request->id_creadorfinal,
+                                'id_modificador'    => $request->id_creadorfinal,
+                                'id_contrato'       => $request->id_contrato,
+                                'tipo'              => $request->id_tipo,
+                                'e_s_r'             => $request->edr,
+                                'comentarios'       => $request->comentarios,
+                                'descripcion'       => $request->descripcion,
+                                'id_cap_pro'        => $adm_contratofinal->id_publicacion,
+                                'id_estado'         => '1',
+                    ]);
+                    
+                    $id_chk      = $checklist->id;            
+                }
+                else
+                {   $id_chk      = $request->id_chk;   }                            
+        }
+        else
+        {
+            $adm_contratofinal = DB::table('adm_contratofinalarr')
+                            ->Where('id','=',$request->id_contrato)
+                            ->first();      
 
-        $checklist = DB::table('chkinmuebles')
-        ->Where('chkinmuebles.id_inmueble','=',$id)
-        ->first();
+                if($request->id_chk == 0)
+                {
+                    $checklist  = Checklist::create([                      
+                                'id_inmueble'       => $id_inmueble,
+                                'id_creador'        => $request->id_creadorfinal,
+                                'id_modificador'    => $request->id_creadorfinal,
+                                'id_contrato'       => $request->id_contrato,
+                                'tipo'              => $request->id_tipo,
+                                'e_s_r'             => $request->edr,
+                                'comentarios'       => $request->comentarios,
+                                'descripcion'       => $request->descripcion,
+                                'id_bor_arr'        => $adm_contratofinal->id_publicacion,
+                                'id_estado'         => '1',
+                    ]);
+                    
+                    $id_chk      = $checklist->id;            
+                }
+                else
+                {   $id_chk      = $request->id_chk;   }                                     
+        }
+        
+
+
+
+
+
+        $tipo        = $request->id_tipo;
+        $edr         = $request->edr;
+        $id_contrato = $request->id_contrato;
+
+
+        // $checklist = DB::table('chkinmuebles')
+        // ->Where('chkinmuebles.id_inmueble','=',$id)
+        // ->first();
 
         if(isset($request->foto))
         {
@@ -195,23 +266,32 @@ class ChecklistController extends Controller
             });
             $img->save($path.'/'.$archivo,72);
             $imagen=ChkInmuebleFoto::create([
-                   'id_chk'               => $checklist->id,
-                   'id_inmueble'          => $id,
+                   'id_chk'               => $id_chk,
+                   'id_inmueble'          => $id_inmueble,
                    'nombre'               => $archivo,
                    'ruta'                 => $path,
-                   'tipo'                   => $request->id_tipo,
+                   'tipo'                 => $request->id_tipo,
                    'id_creador'           => $request->id_creador
             ]);
 
-            Checklist::where('id', '=', $checklist->id)->update([
-                        'descripcion'     => $request->descripcion
+            Checklist::where('id', '=', $id_chk)->update([
+                        'descripcion'     => $request->descripcion,
+                        'comentarios'     => $request->comentarios,
+
                     ]);
 
         }
         else
-        { return redirect()->route('checklist.edit', [$id,$request->id_tipo])->with('status', 'No se ha actualizado ninguna imágen'); }
+        { 
+            Checklist::where('id', '=', $id_chk)->update([
+                    'descripcion'     => $request->descripcion,
+                    'comentarios'     => $request->comentarios,
+            ]);
+
+            return redirect()->route('checklist.edit', [$id_contrato,$id_chk,$tipo,$edr])->with('status', 'No se ha actualizado ninguna imágen'); 
+        }
         
-        return redirect()->route('checklist.edit', [$id,$request->id_tipo])->with('status', 'Foto guardada con éxito');
+        return redirect()->route('checklist.edit',   [$id_contrato,$id_chk,$tipo,$edr])->with('status', 'Foto guardada con éxito');
     }
 
 public function eliminararchivo($idf,$idi,$idt){
@@ -231,6 +311,62 @@ static function cantDias($fecha1,$fecha2){
 
         $res = $fecha2->diffInDays($fecha1);
         return $res;
+    }
+
+    public function checkindex($id_contrato,$id_chk,$tipo)
+    {
+        if($id_chk == 0)
+        {
+            $publica = DB::table('chkinmuebles as chk')
+             ->leftjoin('inmuebles as i', 'chk.id_inmueble', '=', 'i.id')
+             ->leftjoin('comunas as co', 'i.id_comuna', '=', 'co.comuna_id')
+             ->where('chk.id_contrato','=',$id_contrato)
+             ->select(DB::raw('chk.id, i.direccion, i.numero, co.comuna_nombre as comuna, 
+                               chk.id_estado, chk.tipo, chk.id_bor_arr, chk.id_cap_pro, chk.created_at, chk.id_contrato,chk.e_s_r '))
+             ->get();
+        }
+        else
+        {
+            $publica = DB::table('chkinmuebles as chk')
+             ->leftjoin('inmuebles as i', 'chk.id_inmueble', '=', 'i.id')
+             ->leftjoin('comunas as co', 'i.id_comuna', '=', 'co.comuna_id')
+             ->where('chk.id','=',$id_chk)
+             ->where('chk.id_contrato','=',$id_contrato)
+             ->select(DB::raw('chk.id, i.direccion, i.numero, co.comuna_nombre as comuna, 
+                               chk.id_estado, chk.tipo, chk.id_bor_arr, chk.id_cap_pro, chk.created_at, chk.id_contrato,chk.e_s_r '))
+             ->get();            
+        }
+
+
+         return view('contratoFinal.checklist',compact('publica','id_contrato','id_chk','tipo')); 
+    }
+
+    public function checkindexarr($id_contrato,$id_chk,$tipo)
+    {
+        if($id_chk == 0)
+        {
+            $publica = DB::table('chkinmuebles as chk')
+             ->leftjoin('inmuebles as i', 'chk.id_inmueble', '=', 'i.id')
+             ->leftjoin('comunas as co', 'i.id_comuna', '=', 'co.comuna_id')
+             ->where('chk.id_contrato','=',$id_contrato)
+             ->select(DB::raw('chk.id, i.direccion, i.numero, co.comuna_nombre as comuna, 
+                               chk.id_estado, chk.tipo, chk.id_bor_arr, chk.id_cap_pro, chk.created_at, chk.id_contrato,chk.e_s_r '))
+             ->get();
+        }
+        else
+        {
+            $publica = DB::table('chkinmuebles as chk')
+             ->leftjoin('inmuebles as i', 'chk.id_inmueble', '=', 'i.id')
+             ->leftjoin('comunas as co', 'i.id_comuna', '=', 'co.comuna_id')
+             ->where('chk.id','=',$id_chk)
+             ->where('chk.id_contrato','=',$id_contrato)
+             ->select(DB::raw('chk.id, i.direccion, i.numero, co.comuna_nombre as comuna, 
+                               chk.id_estado, chk.tipo, chk.id_bor_arr, chk.id_cap_pro, chk.created_at, chk.id_contrato,chk.e_s_r '))
+             ->get();            
+        }
+
+
+         return view('finalContratoArr.checklist',compact('publica','id_contrato','id_chk','tipo')); 
     }
 
 }
