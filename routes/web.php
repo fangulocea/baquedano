@@ -886,7 +886,6 @@ Route::get('borradorContrato/garantia/eliminar/{id}/{pub}','ContratoBorradorCont
 		Route::get('finalContrato/asignarinmueble/{idc}/{idi}/{idp}','ContratoFinalController@asignarinmueble')->name('finalContrato.asignarinmueble')
 		->middleware('permission:finalContrato.edit');
 
-
 		Route::get('finalContrato/volver_pago/{id}','PagosMensualesPropietariosController@volver_pago')->name('PagosMensualesPropietarios.volver_pago')
 		->middleware('permission:finalContrato.edit');
 
@@ -896,7 +895,6 @@ Route::get('borradorContrato/garantia/eliminar/{id}/{pub}','ContratoBorradorCont
 		Route::get('finalContrato/cargosabonos/{id}','PagosMensualesPropietariosController@cargosabonos')->name('PagosMensualesPropietarios.cargosabonos')
 		->middleware('permission:finalContrato.edit');
 
-
 		Route::get('finalContrato/comprobantedepago/{id}','PagosMensualesPropietariosController@comprobantedepago')->name('PagosMensualesPropietarios.comprobantedepago')
 		->middleware('permission:finalContrato.edit');
 
@@ -905,9 +903,6 @@ Route::get('borradorContrato/garantia/eliminar/{id}/{pub}','ContratoBorradorCont
 
 		Route::post('finalContrato/act_cheque/{idc}','ContratoFinalController@act_cheque')->name('finalContrato.act_cheque')
 		->middleware('permission:finalContrato.edit');
-
-
-
 
 
 		// COntratos Arrendatario Borrador
@@ -1102,8 +1097,18 @@ Route::get('contratorenovacionpropietario','ContratoRenovacionPropietarioControl
 	Route::get('checklist/prueba','ChecklistController@index')->name('checklist.index')
 		->middleware('permission:checklist.prueba');		
 
-	Route::get('checklist/create/{id}/{tipo}','ChecklistController@create')->name('checklist.check')
+	Route::get('checklist/create/{id_contrato}/{id_chk}/{tipo}/{edr}','ChecklistController@create')->name('checklist.create')
 		->middleware('permission:checklist.check');
+
+	Route::get('checklist/update/{id_contrato}/{id_chk}/{tipo}','ChecklistController@update')->name('checklist.update')
+		->middleware('permission:checklist.check');
+
+	Route::get('checklist/checkindex/{id_contrato}/{id_chk}/{tipo}','ChecklistController@checkindex')->name('checklist.checkindex')
+		->middleware('permission:checklist.check');
+
+	Route::get('checklist/checkindexarr/{id_contrato}/{id_chk}/{tipo}','ChecklistController@checkindexarr')->name('checklist.checkindexarr')
+		->middleware('permission:checklist.check');
+
 
 	Route::get('checklist','ChecklistController@index')->name('checklist.index')
 		->middleware('permission:uf.index');
@@ -1111,7 +1116,7 @@ Route::get('contratorenovacionpropietario','ContratoRenovacionPropietarioControl
 	Route::get('checklist/{id}/{tipo}','ChecklistController@show')->name('checklist.show')
 		->middleware('permission:uf.show');
 
-	Route::get('checklist/{id}/{tipo}/edit','ChecklistController@edit')->name('checklist.edit')
+	Route::get('checklist/{id_contrato}/{id_chk}/{tipo}/{edr}/edit','ChecklistController@edit')->name('checklist.edit')
 		->middleware('permission:uf.edit');	
 
 	Route::delete('checklist/{id}','ChecklistController@destroy')->name('checklist.destroy')

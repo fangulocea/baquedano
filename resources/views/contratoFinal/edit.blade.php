@@ -47,6 +47,7 @@ use App\Http\Controllers\ContratoFinalController;
                                     <th>Notaria</th>
                                     <th>Fecha Firma</th>
                                     <th>Guardar</th>
+                                    <th>CheckList</th>
                                     <th>Eliminar</th>
                                 </tr>
                             </thead>
@@ -93,8 +94,11 @@ use App\Http\Controllers\ContratoFinalController;
                                     @else
                                         <a href="{{ route('finalContrato.muestra_cheque',[$p->id,$p->id_pdf,$p->dia_pago]) }}"> <button type="button" class="btn btn-danger"> <i class="fa fa-check"></i> N° Cheques</button></a>
                                     @endif
-                                    
                                 </td>
+                                <td>
+                                    <a href="{{ route('checklist.checkindex',[$p->id,0 , 'Propietario']) }}"> <button type="button" class="btn btn-info"> <i class="fa fa-check"></i> CheckList</button></a>
+                                </td>
+
                                 <td>
                                     <a href="{{ route('finalContrato.destroy',[$p->id,$p->id_pdf]) }}"> <button type="button" class="btn btn-danger"> <i class="fa fa-check"></i> Eliminar</button></a>
                                 </td>

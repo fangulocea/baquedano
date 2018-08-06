@@ -23,6 +23,7 @@ use Illuminate\Support\Facades\File;
 use Auth;
 use App\PropietarioCheques;
 use App\Checklist;
+use DateTime;
 
 class ContratoFinalController extends Controller {
 
@@ -67,6 +68,13 @@ class ContratoFinalController extends Controller {
     }
 
     public function crearContrato(Request $request) {
+
+        $date = Carbon::now()->addDay(5)->format('Y-m-d');;
+
+        $date = DateTime::createFromFormat('Y-m-d', $date);
+
+        array_set($request, 'fecha_limite', $date);
+
 
 
         $ContratoBorrador = ContratoBorrador::find($request->id_borradorfinal);
@@ -171,15 +179,19 @@ class ContratoFinalController extends Controller {
                     "id_creador" => $request->id_creadorfinal,
                 ])->toArray();
 
+<<<<<<< HEAD
+=======
         $checklist  = Checklist::create([                      
                     'id_inmueble'       => $borradorPDF->id_inmueble,
                     'id_creador'        => $request->id_creadorfinal,
                     'id_modificador'    => $request->id_creadorfinal,
                     'tipo'              => 'Propietario',
+                    'fecha_limite'      => $request->fecha_limite,
                     'id_cap_pro'        => $ContratoBorrador->id_publicacion,
                     'id_estado'         => '1',
         ]);
 
+>>>>>>> 7402318a3fc360c205b6263f9d7fbc9fe5282f51
         return redirect()->route('finalContrato.edit', [$ContratoBorrador->id_publicacion, $request->id_borradorfinal, $ContratoBorradorPDF->id, 1])
                         ->with('status', 'Contrato Final guardado con éxito');
     }
@@ -329,8 +341,9 @@ class ContratoFinalController extends Controller {
                 ->leftjoin('cap_publicaciones as cp', 'b.id_publicacion', '=', 'cp.id')
                 ->leftjoin('adm_contratofinalpdf as bp', 'b.id', '=', 'bp.id_final')
                 ->leftjoin('borradores as cb', 'b.id_borrador', '=', 'cb.id')
+                ->leftjoin('chkinmuebles as ci', 'b.id', '=', 'ci.id_contrato')
                 ->where('b.id_publicacion', '=', $idc)
-                ->select(DB::raw(' b.id ,b.id_borrador, cp.id as id_publicacion,b.fecha_firma as fecha,b.id_estado,bp.nombre, bp.id as id_pdf,b.id_notaria,b.alias, cb.dia_pago'))
+                ->select(DB::raw(' b.id ,b.id_borrador, cp.id as id_publicacion,b.fecha_firma as fecha,b.id_estado,bp.nombre, bp.id as id_pdf,b.id_notaria,b.alias, cb.dia_pago, ci.id as id_chk'))
                 ->get();
 
         $notaria = DB::table('notarias as n')
@@ -1977,5 +1990,7 @@ $pago = PagosPropietarios::create([
         return redirect()->route('finalContrato.edit', [$contrato->id_publicacion, $contrato->id_borrador, $request->idpdf, 1])
                         ->with('status', 'Contrato eliminado con éxito');
     }
+
+
 
 }

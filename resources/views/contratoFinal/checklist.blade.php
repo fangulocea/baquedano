@@ -13,10 +13,11 @@
 
                 <thead>
                     <tr>
-                        <th>Id CheckList</th>
+                        <th>ID</th>
                         <th>Dirección</th>
                         <th>Id Contrato</th>
                         <th>Tipo CheckList</th>
+                        <th>Entrega/Devolución/Revisión</th>
                         <th>Estado</th>
                         <th></th>
                         <th></th>
@@ -25,10 +26,11 @@
                 </thead>
                 <tfoot>
                     <tr>
-                        <th>Id CheckList</th>
+                        <th>ID</th>
                         <th>Dirección</th>
                         <th>Id Contrato</th>
                         <th>Tipo CheckList</th>
+                        <th>Entrega/Devolución/Revisión</th>
                         <th>Estado</th>
                         <th></th>
                         <th></th>
@@ -39,17 +41,19 @@
                     @foreach($publica as $p)
                         @php 
                             $fecha_ini = date('d-m-Y', strtotime($p->created_at)); 
-                            $fecha_fin = date('d-m-Y', strtotime($p->fecha_limite));
+                            $fecha_fin = strtotime('+5 day', strtotime($fecha_ini));
+                            $fecha_fin = date('d-m-Y', $fecha_fin);
                         @endphp
                     <tr>
                         <td>{{ $p->id }}</td>
                         <td>{{ $p->direccion }}, N°{{ $p->numero }}, {{ $p->comuna }}</td>
                         <td>{{ $p->id_contrato }}</td>
                         <td>{{ $p->tipo }}</td>
-                        <td>{{ ChecklistController::cantDias($fecha_ini,$fecha_fin) }} Días para Finalizar {{ ChecklistController::contrato($p->id_bor_arr,$p->id_cap_pro,$p->tipo) }}</td>
+                        <td>{{ $p->e_s_r }}</td>
+                        <td>{{ ChecklistController::cantDias($fecha_ini,$fecha_fin) }} Días para Finalizar</td>
                         @can('checklist.show')
                         <td width="10px">
-                            <a href="{{ route('checklist.show', [$p->id_contrato, $p->id, $p->tipo]) }}" 
+                            <a href="{{ route('checklist.show', [$p->id,$p->tipo]) }}" 
                                 class="btn btn-success btn-circle btn-lg">
                                 <i class="fa fa-check"></i>
                             </a>
@@ -57,12 +61,10 @@
                         @endcan
                         @can('checklist.edit')
                         <td width="10px">
-                            <a href="{{ route('checklist.create', [$p->id_contrato, $p->id, $p->tipo,"otro"]) }}"><span class="btn btn-warning btn-circle btn-lg"><i class="ti-pencil-alt"></i></span></a>
-
-                                   
+                            <a href="{{ route('checklist.edit', [$p->id_contrato, $p->id, $p->tipo, $p->e_s_r]) }}"><span class="btn btn-warning btn-circle btn-lg"><i class="ti-pencil-alt"></i></span></a>
                         </td>
                         @endcan
-                        
+
                         <td width="10px">
                             
                         </td>
@@ -92,7 +94,16 @@
         ServerSide: true,
         deferRender: true,
         buttons: [
-        'excel'
+                    {   text: 'CheckList Entrega',
+                        action: function ( e, dt, node, config ) {
+                        window.location.href = '{{ route('checklist.create', [$id_contrato,$id_chk,$tipo,"Entrega"]) }}'; } },
+                    {   text: 'CheckList Devolución',
+                        action: function ( e, dt, node, config ) {
+                        window.location.href = '{{ route('checklist.create', [$id_contrato,$id_chk,$tipo,"Devolución"]) }}'; } },
+                    {   text: 'CheckList Revisión',
+                        action: function ( e, dt, node, config ) {
+                        window.location.href = '{{ route('checklist.create', [$id_contrato,$id_chk,$tipo,"Revisión"]) }}'; } }
+
 
      ],
      language: {
