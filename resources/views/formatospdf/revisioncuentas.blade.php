@@ -77,7 +77,7 @@
             
                 <div class="row">
                     <div class="col-md-12">
-                        <center><h3>SOLICITUD DE SERVICIOS - ID NRO. {{ $servicio->id }}</h3></center>
+                        <center><h3>REVISIÓN DE GASTOS DE INMUEBLE</h3></center>
                     </div>
                 </div>
                 <div class="row">
@@ -88,43 +88,35 @@
 
     <table class="display nowrap" cellspacing="0" width="100%">
         <tr>
-            <td width="20%" style="padding: 15px;"><strong>PROPIEDAD</strong></td>
+            <td width="20%" style="padding: 15px;"><strong>Propiedad</strong></td>
             <td width="80%" style="padding: 15px;">{{ $inmueble->direccion or null }} # {{ $inmueble->numero or null}} Dpto {{ $inmueble->departamento or null}}, {{ $inmueble->comuna_nombre or null}}</td>
         </tr>
         <tr>
-            <td width="20%" style="padding: 15px;"><strong>{{ $firma }}</strong></td>
+            <td width="20%" style="padding: 15px;"><strong>Arrendatario</strong></td>
             <td width="20%" style="padding: 15px;"> {{ $persona->nombre or null}} {{ $persona->apellido_paterno or null}}, Fono : {{ $persona->telefono or null}}, Email: {{ $persona->email or null}}</td>
         </tr>
     </table>
 
 
-        <table class="display nowrap" cellspacing="0" width="100%">
-        <tr>
-            <td width="33%" style="padding: 5px;text-align: center;border: 1px solid black"><strong>TOTAL EN PESOS</strong><br>$ {{ round($totalpesos)}}</td>
-            <td width="33%" style="padding: 5px;text-align: center;border: 1px solid black"><strong>VALOR UF</strong><br> {{ $servicio->valor_uf }}</strong><br> </td>
 
-            <td width="33%" style="padding: 5px;text-align: center;border: 1px solid black"><strong>TOTAL EN UF</strong><br> {{ $totaluf }}</td>
-        </tr>
-    </table>
 <br>
 
 <div style="text-align: center">
 
-           <strong>DETALLE DE SERVICIOS</strong>
+           <strong>DETALLE DE REVISIONES </strong>
         <table id="listusers1" class="display nowrap" cellspacing="0" width="80%" style="display: table;
   margin: 0 auto;">
-                            
+                                                                             
                                          <thead>
                                             <tr>
                                                  <th style="border: 1px solid black;text-align: center">ID</th>
-                                                <th style="border: 1px solid black;text-align: center">Servicio</th>
+                                                <th style="border: 1px solid black;text-align: center">Nombre de Empresa</th>
                                                 <th style="border: 1px solid black;text-align: center">Detalle</th>
-                                                <th style="border: 1px solid black;text-align: center">Valor UF</th>
-                                                <th style="border: 1px solid black;text-align: center">Valor $</th>
-                                                <th style="border: 1px solid black;text-align: center">Cant</th>
-                                                <th style="border: 1px solid black;text-align: center">SubTotal UF</th>
-                                                <th style="border: 1px solid black;text-align: center">SubTotal $</th>
-                                            </tr>
+                                                <th style="border: 1px solid black;text-align: center">Mes</th>
+                                                <th style="border: 1px solid black;text-align: center">Año</th>
+                                                <th style="border: 1px solid black;text-align: center">Valor</th>
+                                                <th style="border: 1px solid black;text-align: center">Fecha Vencimiento</th>
+                                           </tr>
                                         </thead>
                             <tbody>
                                 @foreach($detalle as $pi)
@@ -134,26 +126,24 @@
                                         {{ $pi->id }}
                                     </td>
                                     <td   style="border: 1px solid black; text-align: center" >
-                                        {{ $pi->nombre_servicio }}
+                                        {{ $pi->nombreempresa }}
                                     </td>
                                     <td    style="border: 1px solid black; text-align: center" >
                                         {{ $pi->detalle }}
                                     </td>
                                     <td   style="border: 1px solid black; text-align: center" >
-                                        {{ $pi->valor_en_uf }}
+                                        {{ $pi->mes }}
                                     </td>   
                                      <td   style="border: 1px solid black; text-align: center" >
-                                        {{ $pi->valor_en_pesos }}
+                                        {{ $pi->anio }}
                                     </td>  
                                  <td  style="border: 1px solid black; text-align: center" >
-                                        {{ $pi->cantidad }}
+                                        {{ $pi->valor_en_pesos }}
                                     </td>  
                                      <td  style="border: 1px solid black; text-align: center" >
-                                        {{ $pi->subtotal_uf }}
+                                        {{ $pi->fecha_vencimiento }}
                                     </td>  
-                                 <td   style="border: 1px solid black; text-align: center" >
-                                        {{ $pi->subtotal_pesos }}
-                                    </td> 
+
                                 </tr>
                                 @endforeach
 

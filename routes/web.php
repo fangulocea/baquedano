@@ -1203,6 +1203,9 @@ Route::get('contratorenovacionpropietario','ContratoRenovacionPropietarioControl
 
 
 	//Solicitud de Servicios ARRENDATARIO
+	Route::get('arrsolservicio/{solservicio}/edit','SolicitudServiciosARRController@edit')->name('arrsolservicio.edit')
+		->middleware('permission:solservicio.edit');
+
 	Route::post('arrsolservicio/store','SolicitudServiciosARRController@store')->name('arrsolservicio.store')
 		->middleware('permission:solservicio.create');
 
@@ -1228,11 +1231,86 @@ Route::get('contratorenovacionpropietario','ContratoRenovacionPropietarioControl
 	Route::get('arrsolservicio/{solservicio}/create','SolicitudServiciosARRController@create_solicitud')->name('arrsolservicio.create_solicitud')
 		->middleware('permission:solservicio.show');
 
+	Route::get('arrsolservicio/{solservicio}/destroy','SolicitudServiciosARRController@destroy')->name('arrsolservicio.destroy')
+		->middleware('permission:solservicio.destroy');
+
 	Route::delete('arrsolservicio/{solservicio}','SolicitudServiciosARRController@destroy')->name('arrsolservicio.destroy')
 		->middleware('permission:solservicio.destroy');
 
-	Route::get('arrsolservicio/{solservicio}/edit','SolicitudServiciosARRController@edit')->name('arrsolservicio.edit')
+		Route::get('arrsolservicio/{solservicio}/comprobante','SolicitudServiciosARRController@comprobantesolicitud')->name('arrsolservicio.comprobante')
 		->middleware('permission:solservicio.edit');
 
+
+
+//DETALLE SERVICIO ARR
+	Route::get('arrsolservicio/listadodetalle/{id}','SolicitudServiciosARRController@detalle_servicio_ajax')->name('arrsolservicio.detalle_servicio_ajax')
+		->middleware('permission:solservicio.index');
+
+		Route::get('arrsolservicio/borrar/{id}','SolicitudServiciosARRController@borrar_detalleservicio')->name('arrsolservicio.borrar_detalleservicio')
+		->middleware('permission:solservicio.index');
+
+
+
+
+	//REVISION DE CUENTAS DE ARRENDATARIO
+	Route::get('revisioncuentas/{cuenta}/edit','CuentasArrendatarioController@edit')->name('revisioncuentas.edit')
+		->middleware('permission:revisioncuentas.edit');
+
+	Route::post('revisioncuentas/store','CuentasArrendatarioController@store')->name('revisioncuentas.store')
+		->middleware('permission:revisioncuentas.create');
+
+	Route::get('revisioncuentas','CuentasArrendatarioController@index')->name('revisioncuentas.index')
+		->middleware('permission:revisioncuentas.index');
+
+	Route::get('revisioncuentas/index','CuentasArrendatarioController@index_ajax')->name('revisioncuentas.index_ajax')
+		->middleware('permission:revisioncuentas.index');
+
+	Route::get('revisioncuentas/{idc}/revisar','CuentasArrendatarioController@create')->name('revisioncuentas.create')
+		->middleware('permission:revisioncuentas.create');
+
+		Route::get('revisioncuentas/create/seleccion','CuentasArrendatarioController@create_ajax')->name('revisioncuentas.create_ajax')
+		->middleware('permission:revisioncuentas.create');
+
+	Route::post('revisioncuentas/{solservicio}','CuentasArrendatarioController@update')->name('revisioncuentas.update')
+		->middleware('permission:revisioncuentas.edit');
+
+		Route::get('revisioncuentas/listadodetalle/{id}','CuentasArrendatarioController@detalle_servicio_ajax')->name('revisioncuentas.detalle_servicio_ajax')
+		->middleware('permission:revisioncuentas.index');
+
+Route::get('revisioncuentas/borrar/{id}','CuentasArrendatarioController@borrar_detalleservicio')->name('revisioncuentas.borrar_detalleservicio')
+		->middleware('permission:revisioncuentas.index');
+
+Route::get('revisioncuentas/{id}/pagado','CuentasArrendatarioController@pagado')->name('revisioncuentas.pagado')
+		->middleware('permission:revisioncuentas.index');
+
+Route::get('revisioncuentas/{id}/moroso','CuentasArrendatarioController@moroso')->name('revisioncuentas.moroso')
+		->middleware('permission:revisioncuentas.index');
+
+
+		Route::get('revisioncuentas/{solservicio}/comprobante','CuentasArrendatarioController@comprobantesolicitud')->name('revisioncuentas.comprobante')
+		->middleware('permission:revisioncuentas.edit');
+//EMPRESA DE SERVICIO
+
+
+	Route::post('empresas/store','EmpresasServiciosController@store')->name('empresas.store')
+		->middleware('permission:empresas.create');
+
+	Route::get('empresas','EmpresasServiciosController@index')->name('empresas.index')
+		->middleware('permission:empresas.index');
+
+	Route::get('empresas/create','EmpresasServiciosController@create')->name('empresas.create')
+		->middleware('permission:empresas.create');
+
+	Route::post('empresas/{empresas}','EmpresasServiciosController@update')->name('empresas.update')
+		->middleware('permission:empresas.edit');
+
+	Route::get('empresas/{empresas}','EmpresasServiciosController@show')->name('empresas.show')
+		->middleware('permission:empresas.show');
+
+	Route::delete('empresas/{empresas}','EmpresasServiciosController@destroy')->name('empresas.destroy')
+		->middleware('permission:empresas.destroy');
+
+	Route::get('empresas/{empresas}/edit','EmpresasServiciosController@edit')->name('empresas.edit')
+		->middleware('permission:empresas.edit');
 
 });
