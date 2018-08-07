@@ -28,11 +28,9 @@ class ChecklistController extends Controller
          ->leftjoin('inmuebles as i', 'chk.id_inmueble', '=', 'i.id')
          ->leftjoin('comunas as co', 'i.id_comuna', '=', 'co.comuna_id')
          ->select(DB::raw('chk.id, i.direccion, i.numero, co.comuna_nombre as comuna, 
-<<<<<<< HEAD
-                           chk.id_estado, chk.tipo, chk.id_bor_arr, chk.id_cap_pro, chk.created_at, chk.id_contrato '))
-=======
+
                            chk.id_estado, chk.tipo, chk.id_bor_arr, chk.id_cap_pro, chk.created_at,chk.fecha_limite '))
->>>>>>> 7402318a3fc360c205b6263f9d7fbc9fe5282f51
+
          ->get();
 
 
@@ -75,9 +73,6 @@ class ChecklistController extends Controller
                         ->select(DB::raw('i.direccion,i.numero,i.departamento,i.id as id_inmueble,co.comuna_nombre as comuna'))
                         ->first();                         
         }
-
-
-        
         
         return view('checklist.create',compact('imgReserva','Checklist','vacio','tipo','id_contrato','id_chk','edr'));   
     }
@@ -317,7 +312,7 @@ static function cantDias($fecha1,$fecha2){
         return $res;
     }
 
-<<<<<<< HEAD
+
     public function checkindex($id_contrato,$id_chk,$tipo)
     {
         if($id_chk == 0)
@@ -372,7 +367,7 @@ static function cantDias($fecha1,$fecha2){
 
 
          return view('finalContratoArr.checklist',compact('publica','id_contrato','id_chk','tipo')); 
-=======
+}
 static function contrato($id_arr,$id_pro,$tipo){
 
         if($tipo == 'Arrendatario')
@@ -389,7 +384,7 @@ static function contrato($id_arr,$id_pro,$tipo){
         }
 
         return $resultado;
->>>>>>> 7402318a3fc360c205b6263f9d7fbc9fe5282f51
+
     }
 
 }

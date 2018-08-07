@@ -31,17 +31,10 @@ class CreateChkinmuebleTable extends Migration
 
             $table->integer('id_cap_pro')->unsigned()->nullable();
             $table->foreign('id_cap_pro')->references('id')->on('cap_publicaciones');
-
-<<<<<<< HEAD
             $table->integer('id_contrato')->nullable();
             $table->string('e_s_r')->nullable();
             $table->longText('comentarios')->nullable(); 
-
-
-=======
-            $fecha->date('fecha_limite')->nullable();
->>>>>>> 7402318a3fc360c205b6263f9d7fbc9fe5282f51
-
+            $table->date('fecha_limite')->nullable();
             $table->timestamps();
         });
     }
