@@ -22,6 +22,8 @@ class DetalleSolicitudServicio extends Migration
             $table->integer('id_propietario');
             $table->integer('id_creador');
             $table->integer('id_servicio');
+            $table->string('nombre')->nullable();
+            $table->string('ruta')->nullable();
             $table->date('fecha_uf');
             $table->double('valor_uf',20,8);
             $table->double('valor_en_uf',20,8);

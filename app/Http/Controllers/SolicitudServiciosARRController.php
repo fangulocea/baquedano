@@ -22,6 +22,7 @@ class SolicitudServiciosARRController extends Controller
 
      public function index_ajax()
     {
+        dd("dd");
         $sol = DB::table('post_solicitudservicios as ss')
          ->leftjoin('adm_contratofinal as cf',"ss.id_contrato","=","cf.id")
          ->leftjoin('personas as p1', 'ss.id_propietario', '=', 'p1.id')

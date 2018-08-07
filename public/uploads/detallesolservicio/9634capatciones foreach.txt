@@ -1,0 +1,60 @@
+id_publicacion
+tipo
+direccion numero departamento
+comuna_nombre
+nom_p apep_p apem_p
+email
+telefono
+fecha_publicacion
+tipo_contacto
+creador_gestion
+id_estado
+portal
+Creador
+fecha_creacion
+
+
+
+
+@foreach($publica as $p)
+                            <tr>
+
+<!--
+                                <td style="font-size: x-small;"><a href="{{ route('captacion.edit', [$p->id_publicacion,2]) }}"> {{ $p->id_publicacion }}</a></td>
+                                <td style="font-size: x-small;"><a href="{{ route('captacion.edit', [$p->id_publicacion,2]) }}"> {{ $p->tipo }}</a></td>
+                                <td style="font-size: x-small;"> {{ $p->Externo }}</td>
+                                
+                                <td style="font-size: small;"><a href="{{ route('captacion.edit', [$p->id_publicacion,2]) }}">{{ $p->direccion }} #{{ $p->numero }} , Dpto {{ $p->departamento }}</a></td>
+                                <td style="font-size: small;"> {{ $p->comuna_nombre }}</td>
+                                
+                                <td style="font-size: small;">{{ $p->nom_p }} {{ $p->apep_p }} {{ $p->apem_p }}</td>
+                                <td style="font-size: x-small;">{{ $p->email }}</td>
+                                <td>{{ $p->telefono }}</td>
+                                <td style="font-size: small;">{{ $p->fecha_publicacion }}</td>
+                                <td style="font-size: small;">{{ $p->tipo_contacto }}</td>
+                                <td style="font-size: small;">{{ $p->creador_gestion }}</td>
+                                
+                              <!--   <td style="font-size: small;">{{ $p->fecha_modificacion }}</td>
+                                <td>{{ $p->nom_m }}</td>-->
+                                 <td>{{ trans_choice('mensajes.captacion', $p->id_estado) }}</td>
+                                 <td style="font-size: small;">{{ substr(substr($p->portal, 4),0,10) }}</td>
+                                 <td style="font-size: small;">{{ $p->Creador }} </td>
+                                  <td style="font-size: small;">{{ $p->fecha_creacion }} </td>
+
+                                @can('captacion.edit')
+                                <td width="10px">
+                                    <a href="{{ route('captacion.edit', [$p->id_publicacion,2]) }}"><span class="btn btn-warning btn-circle btn-sm"><i class="ti-pencil-alt"></i></span></a>
+                                </td>
+                                @endcan
+                                @can('captacion.destroy')
+                                <td width="10px">
+
+                                    {!! Form::open(['route' => ['captacion.destroy', $p->id_publicacion], 
+                                    'method' => 'DELETE']) !!}
+                                        <button class="btn btn-danger btn-circle btn-sm"><i class="ti-trash"></i>
+                                        </button>
+                                    {!! Form::close() !!}
+                                </td>
+                                @endcan
+                            </tr>
+                            @endforeach

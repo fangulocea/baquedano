@@ -18,11 +18,9 @@
                                                 <th>Estado</th>
                                                 <th>Dirección</th>
                                                 <th>Comuna</th>
-                                                <th>Modulo</th>
                                                 <th>Cliente</th>
                                                 <th>Email</th>
                                                 <th>Teléfono</th>
-                                                <th>Asignado</th>
                                                 <th>Creador</th>
                                                 <th>Fecha Creación</th>
                                                 <th>Autorizador</th>
@@ -31,7 +29,7 @@
                                                 <th>Valor UF</th>
                                                 <th>Precio UF</th>
                                                 <th>Precio Pesos</th>
-                                                <th>Acción</th>
+                                                <th>Acción_Realizar</th>
                                             </tr>
                                         </thead>
                                         
@@ -77,11 +75,9 @@ var table = $('#listusers').DataTable({
                 {data: 'Estado', name: 'Estado'},
                 {data: 'Direccion', name: 'Direccion'},
                 {data: 'Comuna', name: 'Comuna'},
-                {data: 'Modulo', name: 'Modulo'},
                 {data: 'Propietario', name: 'Propietario'},
                 {data: 'email', name: 'email'},
                 {data: 'telefono', name: 'telefono'},
-                {data: 'Asignado', name: 'Asignado'},
                 {data: 'Creador', name: 'Creador'},
                 {data: 'FechaCreacion', name: 'FechaCreacion'},
                 {data: 'Autorizador', name: 'Autorizador'},
@@ -129,7 +125,7 @@ var table = $('#listusers').DataTable({
     $('#listusers thead th').each( function () {
         var title = $(this).text();
         if(title!='ID' && title!= "")
-        $(this).html( title+'<br><input type="text" style="width:100px"  />' );
+        $(this).html( title+'<br><input type="text" style="width:80px"  />' );
     } );
  
 

@@ -32,6 +32,8 @@ Route::get('test','CargosAbonosArrendatariosController@cargos');
 
 Route::get('personas/{text}','PersonaController@getPersonas');
 
+Route::get('solservicio/{datos_servicio}','SolicitudServicioController@datos_servicio');
+
 Route::get('personas/email/{text}','PersonaController@getPersonasEmail');
 
 Route::get('personas/fono/{text}','PersonaController@getPersonasFono');
@@ -1124,20 +1126,25 @@ Route::get('contratorenovacionpropietario','ContratoRenovacionPropietarioControl
 		->middleware('permission:checklist.edit');
 
 	Route::get('checklist/eliminararchivo/{idf}/{idi}/{idt}','ChecklistController@eliminararchivo')->name('checklist.eliminararchivo')
-		->middleware('permission:checklist.edit');		
+		->middleware('permission:checklist.edit');
 
 
 	//Solicitud de Servicios PROPIETARIO
-	Route::post('solservicio/store','SolicitudServicioController@store')->name('solservicio.store')
+
+	Route::get('solservicio/prop/index','SolicitudServicioController@index_ajax')->name('solservicio.index_ajax')
+		->middleware('permission:solservicio.index');
+
+
+	Route::post('solservicio/prop/store','SolicitudServicioController@store')->name('solservicio.store')
 		->middleware('permission:solservicio.create');
 
 	Route::get('solservicio','SolicitudServicioController@index')->name('solservicio.index')
 		->middleware('permission:solservicio.index');
 
-	Route::get('solservicio/index','SolicitudServicioController@index_ajax')->name('solservicio.index_ajax')
-		->middleware('permission:solservicio.index');
+	Route::get('solservicio/prop/create','SolicitudServicioController@create')->name('solservicio.create')
+		->middleware('permission:solservicio.create');
 
-	Route::get('solservicio/create','SolicitudServicioController@create')->name('solservicio.create')
+	Route::get('solservicio/createservicio','SolicitudServicioController@create_servicio')->name('solservicio.createservicio')
 		->middleware('permission:solservicio.create');
 
 		Route::get('solservicio/create/seleccion','SolicitudServicioController@create_ajax')->name('solservicio.create_ajax')
@@ -1146,11 +1153,11 @@ Route::get('contratorenovacionpropietario','ContratoRenovacionPropietarioControl
 	Route::post('solservicio/{solservicio}','SolicitudServicioController@update')->name('solservicio.update')
 		->middleware('permission:solservicio.edit');
 
-	Route::get('solservicio/{solservicio}','SolicitudServicioController@show')->name('solservicio.show')
-		->middleware('permission:solservicio.show');
-
-	Route::delete('solservicio/{solservicio}','SolicitudServicioController@destroy')->name('solservicio.destroy')
+	Route::get('solservicio/{solservicio}/destroy','SolicitudServicioController@destroy')->name('solservicio.destroy')
 		->middleware('permission:solservicio.destroy');
+
+	Route::get('solservicio/{solservicio}/comprobante','SolicitudServicioController@comprobantesolicitud')->name('solservicio.comprobante')
+		->middleware('permission:solservicio.edit');
 
 	Route::get('solservicio/{solservicio}/edit','SolicitudServicioController@edit')->name('solservicio.edit')
 		->middleware('permission:solservicio.edit');
@@ -1158,7 +1165,12 @@ Route::get('contratorenovacionpropietario','ContratoRenovacionPropietarioControl
 		Route::get('solservicio/{solservicio}/create','SolicitudServicioController@create_solicitud')->name('solservicio.create_solicitud')
 		->middleware('permission:solservicio.show');
 
+//DETALLE SERVICIO PRO
+	Route::get('solservicio/listadodetalle/{id}','SolicitudServicioController@detalle_servicio_ajax')->name('solservicio.detalle_servicio_ajax')
+		->middleware('permission:solservicio.index');
 
+		Route::get('solservicio/borrar/{id}','SolicitudServicioController@borrar_detalleservicio')->name('solservicio.borrar_detalleservicio')
+		->middleware('permission:solservicio.index');
 
 
 	//Solicitud de Servicios ARRENDATARIO
