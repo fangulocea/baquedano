@@ -3,13 +3,13 @@
 @section('contenido')
 <div class="row">
     <div class="col-md-12">
-        <div class="panel panel-info">
-            <div class="panel-heading"> CREACIÓN DE SOLICITUD DE SERVICIO PROPIETARIOO</div>
+        <div class="panel panel-success">
+            <div class="panel-heading"> CREACIÓN DE SOLICITUD DE SERVICIO ARRENDATARIO</div>
             <div class="panel-wrapper collapse in" aria-expanded="true">
                 <div class="panel-body">
                     <h1><center>SOLICITUD # {{ $nuevo_servicio->id }}</center></h1>
                     <hr>
-                    <form action="{{ route('solservicio.store') }}" method="post" enctype='multipart/form-data'>
+                    <form action="{{ route('arrsolservicio.store') }}" method="post" enctype='multipart/form-data'>
                          {!! csrf_field() !!}
                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
                         <div class="row">
@@ -17,7 +17,7 @@
                                 <input type="hidden" name="id_solicitud" id="id_solicitud" value="{{ $nuevo_servicio->id }}">
                                 <input type="hidden" name="id_contrato" id="id_contrato" value="{{ $idcontrato }}">
                                 <input type="hidden" name="id_inmueble" id="id_inmueble" value="{{ $nuevo_servicio->id_inmueble }}">
-                                <input type="hidden" name="id_propietario" id="id_propietario" value="{{ $nuevo_servicio->id_propietario }}">
+                                <input type="hidden" name="id_arrendatario" id="id_arrendatario" value="{{ $nuevo_servicio->id_arrendatario }}">
                                 <label>Catálogo de Servicios</label>
                                 <select name="servicio" id="servicio" class="form-control" required="required" >
                                     <option value="">Seleccione servicio</option>
@@ -71,7 +71,7 @@
                                 <br/>
                                  <div class="form-actions">
                                        <center> <button type="submit" class="btn btn-success"> <i class="fa fa-check"></i> Guardar Servicio</button>
-                                       <a href="{{ route('solservicio.index') }}" class="btn btn-info" style="color:white"><i class="fa fa-times-circle"></i>&nbsp;&nbsp;Volver</a></center>
+                                       <a href="{{ route('arrsolservicio.index') }}" class="btn btn-info" style="color:white"><i class="fa fa-times-circle"></i>&nbsp;&nbsp;Volver</a></center>
 
                                 </div>
                                 <div class="white-box"> 
@@ -157,7 +157,7 @@ var listventas = $('#listventas').DataTable({
         ServerSide: true,
         deferRender: true,
       "ajax": {
-       "url": "/solservicio/listadodetalle/{{ $nuevo_servicio->id }}"
+       "url": "/arrsolservicio/listadodetalle/{{ $nuevo_servicio->id }}"
     },
             "columns": [
                 {data: 'id', name: 'id'},

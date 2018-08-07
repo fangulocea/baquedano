@@ -184,6 +184,9 @@
                                 @can('correo.index')
                                 <li> <a href="{{ route('correo.index') }}"><i class=" fa-fw">C</i><span class="hide-menu">Correo Tipo   </span></a> </li>
                                 @endcan
+                                @can('empresas.index')
+                                <li> <a href="{{ route('empresas.index') }}"><i class=" fa-fw">F</i><span class="hide-menu">Empresas de Servicios</span></a> </li>
+                                @endcan
                                 @can('flexibilidad.index')
                                 <li> <a href="{{ route('flexibilidad.index') }}"><i class=" fa-fw">F</i><span class="hide-menu">Flexibilidad</span></a> </li>
                                 @endcan
@@ -297,9 +300,7 @@
                                 </ul>
                             </li>
                             
-                            @can('checklist.index')
-                                <li> <a href="{{ route('checklist.index') }}"><i class=" fa-fw">CH</i><span class="hide-menu">eckList Inmueble</span></a> </li>
-                            @endcan
+                            
 
                             </ul>
 
@@ -308,6 +309,7 @@
                         
                             <ul class="nav nav-second-level">
                              <li>
+                      
                                 <a href="javascript:void(0)" class="waves-effect"><i data-icon="&#xe008;" class="linea-icon linea-basic fa-fw"></i><span class="hide-menu">Solicitudes </span><span class="fa arrow"></span></a>
                                 <ul class="nav nav-third-level">
                                     @can('contratoborradorarrendatario.index')
@@ -319,7 +321,12 @@
                                 </ul>
                             </li>
 
-
+          @can('checklist.index')
+                                <li> <a href="{{ route('checklist.index') }}"><i class=" fa-fw">CH</i><span class="hide-menu">eckList Inmueble</span></a> </li>
+                                @endcan
+                                @can('revisioncuentas.index')
+                                <li> <a href="{{ route('revisioncuentas.index') }}"><i class=" fa-fw">RC</i><span class="hide-menu">Revisión de Cuentas Básicas</span></a> </li>
+                                @endcan
                             </ul>
                         </li>
                         <li><a href="{{ route('logout') }}"

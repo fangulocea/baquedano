@@ -3,58 +3,68 @@
 @section('contenido')
 <div class="row">
     <div class="col-md-12">
-        <div class="panel panel-info">
-            <div class="panel-heading"> CREACIÓN DE SOLICITUD DE SERVICIO PROPIETARIOO</div>
+        <div class="panel panel-success">
+            <div class="panel-heading"> CREACIÓN DE SOLICITUD DE SERVICIO ARRENDATARIO</div>
             <div class="panel-wrapper collapse in" aria-expanded="true">
                 <div class="panel-body">
-                    <h1><center>SOLICITUD # {{ $nuevo_servicio->id }}</center></h1>
-                    <hr>
-                    <form action="{{ route('solservicio.store') }}" method="post" enctype='multipart/form-data'>
+
+         <center><h3 class="box-title m-b-0">{{ $inmueble->direccion or null }} # {{ $inmueble->numero or null }} Dpto {{ $inmueble->departamento or null }}, {{ $inmueble->comuna_nombre or null }}</h3></center>
+
+                <center><h3 class="box-title m-b-0">{{ $persona->nombre or null }} {{ $persona->apellido_paterno or null }} {{ $persona->apellido_materno or null }}, {{ $persona->telefono or null }}, {{ $persona->email or null }}</h3></center>
+
+                    <form action="{{ route('revisioncuentas.store') }}" method="post" enctype='multipart/form-data'>
                          {!! csrf_field() !!}
                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
                         <div class="row">
-                            <div class="col-sm-5">
-                                <input type="hidden" name="id_solicitud" id="id_solicitud" value="{{ $nuevo_servicio->id }}">
+                            <div class="col-sm-3">
+
                                 <input type="hidden" name="id_contrato" id="id_contrato" value="{{ $idcontrato }}">
-                                <input type="hidden" name="id_inmueble" id="id_inmueble" value="{{ $nuevo_servicio->id_inmueble }}">
-                                <input type="hidden" name="id_propietario" id="id_propietario" value="{{ $nuevo_servicio->id_propietario }}">
-                                <label>Catálogo de Servicios</label>
+                                <input type="hidden" name="id_inmueble" id="id_inmueble" value="{{ $inmueble->id }}">
+                                <input type="hidden" name="id_arrendatario" id="id_arrendatario" value="{{ $captacion->id_arrendatario }}">
+                                <label>Empresas de Servicios</label>
                                 <select name="servicio" id="servicio" class="form-control" required="required" >
-                                    <option value="">Seleccione servicio</option>
+                                    <option value="">Seleccione Empresa</option>
                                     @foreach($servicio as $s)
-                                         <option value="{{ $s->id }}">{{ $s->nombre_servicio }}({{ $s->detalle }} )</option>
+                                         <option value="{{ $s->id }}">{{ $s->nombre }} ({{ $s->descripcion }} )</option>
                                     @endforeach
                                 </select>
                             </div>
-                            <div class="col-sm-2">
-                                <label>Moneda</label>
-                                <input name="moneda" id="moneda" type="text" class="form-control" readonly="readonly" required="required" >
+                            <div class="col-sm-1">
+                                <label>ID CLIENTE</label>
+                                <input name="idcliente" id="idcliente" type="text" class="form-control"  >
                             </div>
                             <div class="col-sm-2">
-                                <label>Valor Moneda</label>
-                                <input name="valor_moneda" id="valor_moneda" type="text" class="form-control" readonly="readonly" required="required" >
-                            </div>
-
-                        </div>
-                        <br>
-                        <div class="row">
-                            <div class="col-sm-5">
-
+                                <label for="input-file-now-custom-1">Mes</label>
+                                                        <select name="mes" class="form-control" required="required">
+                                                            <option value="1">Enero</option>
+                                                            <option value="2">Febrero</option>
+                                                            <option value="3">Marzo</option>
+                                                            <option value="4">Abril</option>
+                                                            <option value="5">Mayo</option>
+                                                            <option value="6">Junio</option>
+                                                            <option value="7">Julio</option>
+                                                            <option value="8">Agosto</option>
+                                                            <option value="9">Septiembre</option>
+                                                            <option value="10">Octubre</option>
+                                                            <option value="11">Noviembre</option>
+                                                            <option value="12">Diciembre</option>
+                                                        </select>
+                                
                             </div>
                             <div class="col-sm-2">
-                                <label>Valor</label>
+                                <label>Año</label>
+                                <input name="anio" id="anio" type="number" class="form-control" required="required" value="<?=date("Y")?>" >
+                            </div>
+                             <div class="col-sm-2">
+                                <label>Fecha Vencimiento</label>
+                                <input name="fecha_vencimiento" id="fecha_vencimiento" type="date" class="form-control" required="required"  >
+                            </div>
+                         <div class="col-sm-2">
+                                <label>Monto</label>
                                 <input name="valor_en_moneda" id="valor_en_moneda" type="number" class="form-control" step="any" required="required" >
                             </div>
-                            <div class="col-sm-2">
-                                <label>Cantidad</label>
-                                <input name="cantidad" id="cantidad" type="number" class="form-control" required="required" >
-                            </div>
-                            <div class="col-sm-2">
-                                <label>Sub Total </label>
-                                <input name="subtotal" id="subtotal" type="number" class="form-control" step="any" readonly="readonly" required="required" >
-                            </div>
-
                         </div>
+                        
                         <hr>
                         <div class="row">
                             <div class="col-sm-6">
@@ -66,34 +76,12 @@
                                 </div>
                             <div class="col-sm-6">
                                  <div class="white-box"> 
-                                <label>Motivos Generales</label>
-                                <input name="motivos" id="motivos" type="text" class="form-control" required="required" >
-                                <br/>
                                  <div class="form-actions">
                                        <center> <button type="submit" class="btn btn-success"> <i class="fa fa-check"></i> Guardar Servicio</button>
-                                       <a href="{{ route('solservicio.index') }}" class="btn btn-info" style="color:white"><i class="fa fa-times-circle"></i>&nbsp;&nbsp;Volver</a></center>
+                                       <a href="{{ route('revisioncuentas.index') }}" class="btn btn-info" style="color:white"><i class="fa fa-times-circle"></i>&nbsp;&nbsp;Volver</a></center>
 
                                 </div>
-                                <div class="white-box"> 
-                                <table border="1" width="100%">
-                                    <tr>
-                                        <td width="40%" >
-                                         <h2><center>TOTAL UF</center></h2>
-                                        </td>
-                                        <td>
-                                         <h2><center>{{ $totaluf or 0 }}</center></h2>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td width="40%">
-                                            <h2><center>TOTAL $</center></h2>
-                                        </td>
-                                        <td>
-                                            <h2><center>{{ $totalpesos or 0 }}</center></h2>
-                                        </td>
-                                    </tr>
-                                </table>
-                            </div>
+                                
                             </div>
                             </div>
                         </div>
@@ -108,13 +96,14 @@
                                         <thead>
                                             <tr>
                                                 <th>ID</th>
-                                                <th>Nombre de Servicio</th>
+                                                <th>Nombre de Empresa</th>
                                                 <th>Detalle</th>
-                                                <th>Valor UF</th>
-                                                <th>Valor $</th>
-                                                <th>Cantidad</th>
-                                                <th>Sub Total UF</th>
-                                                <th>Sub Total $</th>
+                                                <th>Mes</th>
+                                                <th>Año</th>
+                                                <th>Valor</th>
+                                                <th>Fecha Vencimiento</th>
+                                                 <th>Estado</th>
+                                                  
                                                 <th>Acción</th>
                                             </tr>
                                         </thead>
@@ -149,6 +138,7 @@
 
 
 
+
 var listventas = $('#listventas').DataTable({
 
     dom: 'Bfrtip',
@@ -157,17 +147,17 @@ var listventas = $('#listventas').DataTable({
         ServerSide: true,
         deferRender: true,
       "ajax": {
-       "url": "/solservicio/listadodetalle/{{ $nuevo_servicio->id }}"
+       "url": "/revisioncuentas/listadodetalle/{{  $idcontrato }}"
     },
             "columns": [
                 {data: 'id', name: 'id'},
-                {data: 'nombre_servicio', name: 'nombre_servicio'},
+                {data: 'nombreempresa', name: 'nombreempresa'},
                 {data: 'detalle', name: 'detalle'},
-                {data: 'valor_en_uf', name: 'valor_en_uf'},
+                {data: 'mes', name: 'mes'},
+                {data: 'anio', name: 'anio'},
                 {data: 'valor_en_pesos', name: 'valor_en_pesos'},
-                {data: 'cantidad', name: 'cantidad'},
-                {data: 'subtotal_uf', name: 'subtotal_uf'},
-                {data: 'subtotal_pesos', name: 'subtotal_pesos'},
+                {data: 'fecha_vencimiento', name: 'fecha_vencimiento'},
+                 {data: 'estado', name: 'estado'},
                 {data: 'action', name: 'action'}
             ],
     buttons: [
@@ -204,7 +194,6 @@ var listventas = $('#listventas').DataTable({
         }
     }
 });
-
 
 
 

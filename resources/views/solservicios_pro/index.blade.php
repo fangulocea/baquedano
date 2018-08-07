@@ -18,7 +18,7 @@
                                                 <th>Estado</th>
                                                 <th>Dirección</th>
                                                 <th>Comuna</th>
-                                                <th>Cliente</th>
+                                                <th>Propietario</th>
                                                 <th>Email</th>
                                                 <th>Teléfono</th>
                                                 <th>Creador</th>

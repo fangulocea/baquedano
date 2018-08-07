@@ -257,5 +257,33 @@ Mensajes::create([
             'id_estado'    => '12',
             'nombre' => 'No Activo - Problema Pago'
         ]);
+
+
+//Revision
+
+Mensajes::create([
+            'id_modulo'    => '1',
+            'nombre_modulo'    => 'Revisión Cuentas',
+            'id_estado'    => '0',
+            'nombre' => 'Descartado'
+        ]);
+          Mensajes::create([
+            'id_modulo'    => '1',
+            'nombre_modulo'    => 'Revisión Cuentas',
+            'id_estado'    => '1',
+            'nombre' => 'No Pagado'
+        ]);
+           Mensajes::create([
+            'id_modulo'    => '1',
+            'nombre_modulo'    => 'Revisión Cuentas',
+            'id_estado'    => '2',
+            'nombre' => 'Pagado'
+        ]);
+           Mensajes::create([
+            'id_modulo'    => '1',
+            'nombre_modulo'    => 'Revisión Cuentas',
+            'id_estado'    => '3',
+            'nombre' => 'Moroso'
+        ]);
     }
 }

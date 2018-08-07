@@ -188,14 +188,19 @@ class SolicitudServicioController extends Controller
                     ds.subtotal_uf,
                     ds.subtotal_pesos,
                     cs.nombre_servicio,
-                    cs.detalle'))
+                    cs.detalle,
+                    ds.ruta,ds.nombre'))
                 ->get();
 
        
 
         return Datatables::of($servicio)
          ->addColumn('action', function ($servicio) {
-                               return  '<a href="/solservicio/borrar/'.$servicio->id.'"><span class="btn btn-danger btn-circle btn-sm"><i class="ti-pencil-alt"></i></span></a>
+              $boton="";
+            if(isset($servicio->ruta)){
+                $boton='<a href="/'.$servicio->ruta.'/'.$servicio->nombre.'" target="_blank"> <span class="btn btn-success btn-circle btn-sm">D</span></a>';
+            }
+                               return  $boton.' <a href="/solservicio/borrar/'.$servicio->id.'"><span class="btn btn-danger btn-circle btn-sm"><i class="ti-pencil-alt"></i></span></a>
                                     ';
         })
         ->rawColumns(['action'])
@@ -324,8 +329,9 @@ class SolicitudServicioController extends Controller
      */
     public function destroy($id)
     {
-        $edit=SolicitudServicio::find($id);
-        if($edit->id_estado==1){
+        $edit=DetalleSolicitudServicio::where("id_solicitud","=",$id)->count();
+
+        if($edit<1){
             $edit=SolicitudServicio::find($id)->delete();
             return redirect()->route('solservicio.index' )
             ->with('status', 'Solicitud eliminada con éxito');  
@@ -372,9 +378,9 @@ class SolicitudServicioController extends Controller
                     cs.nombre_servicio,
                     cs.detalle'))
                 ->get();
+$firma="PROPIETARIO";
 
-
-        $pdf = PDF::loadView('formatospdf.solicitudpropietario', compact('servicio', 'persona', 'inmueble', 'uf','totaluf','totalpesos','detalle'));
+        $pdf = PDF::loadView('formatospdf.solicitudpropietario', compact('servicio', 'persona', 'inmueble', 'uf','totaluf','totalpesos','detalle','firma'));
 
         return $pdf->download($inmueble->direccion . ' Nro.' . $inmueble->numero . ' Dpto.' . $inmueble->departamento . ', ' . $inmueble->comuna_nombre . ' - Solicitud ' .$servicio->id. ' - Comprobante Solicitud de Servbicios.pdf');
     }
