@@ -179,8 +179,7 @@ class ContratoFinalController extends Controller {
                     "id_creador" => $request->id_creadorfinal,
                 ])->toArray();
 
-<<<<<<< HEAD
-=======
+
         $checklist  = Checklist::create([                      
                     'id_inmueble'       => $borradorPDF->id_inmueble,
                     'id_creador'        => $request->id_creadorfinal,
@@ -191,7 +190,6 @@ class ContratoFinalController extends Controller {
                     'id_estado'         => '1',
         ]);
 
->>>>>>> 7402318a3fc360c205b6263f9d7fbc9fe5282f51
         return redirect()->route('finalContrato.edit', [$ContratoBorrador->id_publicacion, $request->id_borradorfinal, $ContratoBorradorPDF->id, 1])
                         ->with('status', 'Contrato Final guardado con éxito');
     }
