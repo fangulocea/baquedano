@@ -284,6 +284,7 @@ return array(
     'CreatePersonaInmueblesTable' => $baseDir . '/database/migrations/2018_05_27_124638_create_personaInmuebles_table.php',
     'CreatePersonasTable' => $baseDir . '/database/migrations/2013_05_20_224557_create_personas_table.php',
     'CreatePropietarioCheques' => $baseDir . '/database/migrations/2018_07_18_200514_create_propietario_cheques.php',
+    'CreatePropietarioFinalizaTable' => $baseDir . '/database/migrations/2018_08_06_235829_create_propietario_finaliza_table.php',
     'CreatePropietarioGarantia' => $baseDir . '/database/migrations/2018_07_17_141957_create_propietario_garantia.php',
     'CreateServiciosTable' => $baseDir . '/database/migrations/2018_05_21_180938_create_servicios_table.php',
     'CreateUsersTable' => $baseDir . '/database/migrations/2014_10_12_000000_create_users_table.php',

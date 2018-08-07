@@ -663,6 +663,7 @@ class ComposerStaticInit0178ccda3db7603c96af3e22d130f715
         'CreatePersonaInmueblesTable' => __DIR__ . '/../..' . '/database/migrations/2018_05_27_124638_create_personaInmuebles_table.php',
         'CreatePersonasTable' => __DIR__ . '/../..' . '/database/migrations/2013_05_20_224557_create_personas_table.php',
         'CreatePropietarioCheques' => __DIR__ . '/../..' . '/database/migrations/2018_07_18_200514_create_propietario_cheques.php',
+        'CreatePropietarioFinalizaTable' => __DIR__ . '/../..' . '/database/migrations/2018_08_06_235829_create_propietario_finaliza_table.php',
         'CreatePropietarioGarantia' => __DIR__ . '/../..' . '/database/migrations/2018_07_17_141957_create_propietario_garantia.php',
         'CreateServiciosTable' => __DIR__ . '/../..' . '/database/migrations/2018_05_21_180938_create_servicios_table.php',
         'CreateUsersTable' => __DIR__ . '/../..' . '/database/migrations/2014_10_12_000000_create_users_table.php',
