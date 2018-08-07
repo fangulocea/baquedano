@@ -919,6 +919,20 @@ Route::get('borradorContrato/garantia/eliminar/{id}/{pub}','ContratoBorradorCont
 
 
 
+		Route::get('finalContrato/cuadratura/crear/{id_contrato}/{id_publicacion}','ContratoFinalController@indexcuadratura')->name('finalContrato.indexcuadratura')->middleware('permission:finalContrato.edit');
+
+		Route::get('finalContrato/cuadratura/eliminar/{id}/{id_contrato}/{id_publicacion}','ContratoFinalController@eliminarCuadratura')->name('finalContrato.eliminarCuadratura')
+				->middleware('permission:borradorContrato.edit');
+
+		Route::post('finalContrato/cuadratura/{id_contrato}/{id_publicacion}','ContratoFinalController@savecuadratura')->name('finalContrato.savecuadratura')
+				->middleware('permission:borradorContrato.edit');
+
+		Route::get('finalContrato/cuadratura/pago/{id_contrato}/{id_publicacion}','ContratoFinalController@generapago')->name('finalContrato.generapago')->middleware('permission:finalContrato.edit');		
+
+
+
+
+
 
 		// COntratos Arrendatario Borrador
 Route::post('cbararrendatario/garantia/{id}','ContratoBorradorArrendatarioController@garantia')->name('cbararrendatario.garantia')->middleware('permission:cbararrendatario.edit');

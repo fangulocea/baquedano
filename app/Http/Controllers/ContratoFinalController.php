@@ -25,6 +25,7 @@ use App\PropietarioCheques;
 use App\Checklist;
 use DateTime;
 use App\PropietarioFinaliza;
+use App\PropietarioCuadratura;
 
 class ContratoFinalController extends Controller {
 
@@ -51,7 +52,6 @@ class ContratoFinalController extends Controller {
                    ->where('a.id_inmueble','=',$propietario_propiedad->id_inmueble)
                    ->select(DB::raw('a.id, a.id_arrendatario, p.nombre, p.apellido_paterno, p.apellido_materno'))
                    ->first();
-                
 
         if(isset($arrendatario->id))
         {
@@ -62,14 +62,8 @@ class ContratoFinalController extends Controller {
         }
         else
         { $valida = 0; }
-
-
-
-
         return view('contratoFinal.finaliza', compact('valida','garantia_p','contrato','propietario_propiedad','arrendatario','garantia_a','id_contrato', 'id_publicacion'));
     }
-
-
 
     public function finalizadoc($id_contrato,$id_publicacion) {
 
@@ -77,12 +71,8 @@ class ContratoFinalController extends Controller {
                    ->where('id_contrato','=',$id_contrato)
                    ->where('id_publicacion','=',$id_publicacion)
                    ->get();
-
-
         return view('contratoFinal.finalizadoc', compact('id_contrato', 'id_publicacion','imgReserva'));
     }
-
-
 
     public function savedocsfinaliza(Request $request,$id_contrato,$id_publicacion){
 
@@ -102,19 +92,69 @@ class ContratoFinalController extends Controller {
                     'ruta'              => $destinationPath,
                     'id_creador'        => $request->id_creador
         ]);
-
         return redirect()->route('finalContrato.finalizadoc', [$id_contrato,$id_publicacion]);
     }
 
     public function eliminardocfinal($id_documento,$id_contrato,$id_publicacion) {
 
         $imagen = PropietarioFinaliza::find($id_documento);
-
         File::delete($imagen->ruta . '/' . $imagen->nombre);
         $foto = PropietarioFinaliza::find($id_documento)->delete();
-
         return redirect()->route('finalContrato.finalizadoc', [$id_contrato,$id_publicacion])->with('status', 'Documento eliminado con éxito');
     }
+
+    public function savecuadratura(Request $request,$id_contrato,$id_publicacion){
+
+        array_set($request, 'id_contrato', $id_contrato);
+        array_set($request, 'id_publicacion',$id_publicacion);
+        $itemCuadratura = PropietarioCuadratura::create(request()->except(['_token']));
+
+        return redirect()->route('finalContrato.indexcuadratura', [$id_contrato,$id_publicacion])
+                ->with('status', 'Garantía ingresada con éxito');
+    }
+
+    public function eliminarcuadratura($id,$idp){
+        PropietarioCuadratura::destroy($id);
+        return redirect()->route('finalContrato.indexcuadratura', [$id_contrato,$id_publicacion])
+                ->with('status', 'Garantía eliminada con éxito');
+    }
+
+    public function indexcuadratura($id_contrato,$id_publicacion){
+        $cuadraturas = DB::table('propietario_cuadratura as p')
+        ->where("id_publicacion","=",$id_publicacion)
+        ->where("id_contrato","=",$id_contrato)
+        ->get();
+        return view('contratoFinal.cuadratura', compact('cuadraturas', 'id_contrato','id_publicacion'));
+    }
+
+    public function generapago($id_contrato,$id_publicacion){
+
+        $cuadraturas = DB::table('propietario_cuadratura as p')
+        ->where("p.id_publicacion","=",$id_publicacion)
+        ->where("p.id_contrato","=",$id_contrato)
+        ->get();
+
+        $garantia_p = DB::table('propietario_garantia as pg')
+                     ->where('pg.id','=',$id_publicacion)
+                     ->first();
+
+        $total = DB::select('SELECT sum(valor) as valor FROM propietario_cuadratura WHERE id_publicacion = ? and  id_contrato = ?', [$id_contrato,$id_publicacion]);
+
+        dd($garantia_p);
+
+        return view('contratoFinal.cuadratura', compact('cuadraturas', 'garantia_p','total','valor'));
+    }
+
+
+
+
+
+
+
+
+
+
+
 
 
 

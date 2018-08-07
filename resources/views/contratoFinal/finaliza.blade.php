@@ -70,10 +70,13 @@
                             <a href="{{ route('finalContrato.finalizadoc', [ $id_contrato, $id_publicacion ] ) }}" class="btn btn-info" style="color:white"><i class="fa ti-save"></i>&nbsp;&nbsp;Ingresar Documentación Necesaria para el Cierre</a>
 
                             <hr>
+                            <a href="{{ route('finalContrato.indexcuadratura', [ $id_contrato, $id_publicacion ] ) }}" class="btn btn-info" style="color:white"><i class="fa ti-save"></i>&nbsp;&nbsp;Ingresar Gastos Básicos, Comunes y Reparaciones</a>
 
+                            <hr>
 
+                            <a href="{{ route('finalContrato.generapago', [ $id_contrato, $id_publicacion ] ) }}" class="btn btn-info" style="color:white"><i class="fa fa-times-circle"></i>&nbsp;&nbsp;Volver</a>
 
-
+                             <hr>   
 
 
 {{--                             <div class="row">
@@ -88,7 +91,7 @@
                         </div>
                         <div class="form-actions">
                             <button type="submit" class="btn btn-success"> <i class="fa fa-check"></i> Guardar</button>
-                            <a href="{{ route('finalContrato.edit',[$id_publicacion,0,0,1]) }}" class="btn btn-info" style="color:white"><i class="fa fa-times-circle"></i>&nbsp;&nbsp;Volver</a>
+                            
                         </div>
                     </form>
                 </div>
