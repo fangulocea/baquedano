@@ -12,7 +12,7 @@ return [
 
 		'borradorArrendatatio' => '{0}Rechazado|{1}Vigente|{2}Correo Enviado|{3}Reenvío Correo|{10}Contrato Proceso Firma',
 
-		'contratofinal' => '{1}Proceso de Firma|{2}Contrato Activo|{3}Contrato Vencido|{4}Anexo Contrato{5}Menor 60 días para vencer',
+		'contratofinal' => '{1}Proceso de Firma|{2}Contrato Activo|{3}Contrato Vencido|{4}Anexo Contrato|{5}Menor 60 días para vencer|{6}Cerrado por Cierre Propietario',
 
 		'pagopropietario' => '{1}No Pagado|{2}Pago Parcial|{3}Pagado|{4}Vencido',
 

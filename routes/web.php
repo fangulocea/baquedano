@@ -904,6 +904,21 @@ Route::get('borradorContrato/garantia/eliminar/{id}/{pub}','ContratoBorradorCont
 		Route::post('finalContrato/act_cheque/{idc}','ContratoFinalController@act_cheque')->name('finalContrato.act_cheque')
 		->middleware('permission:finalContrato.edit');
 
+		Route::get('finalContrato/finaliza/{id_contrato}/{id_publicacion}','ContratoFinalController@finaliza')->name('finalContrato.finaliza')
+		->middleware('permission:finalContrato.edit');
+
+		Route::get('finalContrato/finalizadoc/{id_contrato}/{id_publicacion}','ContratoFinalController@finalizadoc')->name('finalContrato.finalizadoc')
+		->middleware('permission:finalContrato.edit');
+
+		Route::post('finalContrato/doc/{id_contrato}/{id_publicacion}','ContratoFinalController@savedocsfinaliza')->name('finalContrato.savedocsfinaliza')
+		->middleware('permission:finalContrato.edit');
+
+		Route::get('finalContrato/eliminardocfinal/{id_documento}/{id_contrato}/{id_publicacion}','ContratoFinalController@eliminardocfinal')->name('finalContrato.eliminardocfinal')
+		->middleware('permission:finalContrato.edit');		
+
+
+
+
 
 		// COntratos Arrendatario Borrador
 Route::post('cbararrendatario/garantia/{id}','ContratoBorradorArrendatarioController@garantia')->name('cbararrendatario.garantia')->middleware('permission:cbararrendatario.edit');

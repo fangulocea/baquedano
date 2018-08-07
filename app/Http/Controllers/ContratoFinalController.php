@@ -24,8 +24,101 @@ use Auth;
 use App\PropietarioCheques;
 use App\Checklist;
 use DateTime;
+use App\PropietarioFinaliza;
 
 class ContratoFinalController extends Controller {
+
+    public function finaliza($id_contrato,$id_publicacion) {
+
+        $garantia_p = DB::table('propietario_garantia as pg')
+                     ->where('pg.id','=',$id_publicacion)
+                     ->first();
+
+        $contrato = DB::table('adm_contratofinal as pg')
+                   ->where('pg.id','=',$id_contrato)
+                   ->first();
+
+        $propietario_propiedad = DB::table('cap_publicaciones as c')
+                    ->leftjoin('personas as p', 'c.id_propietario', '=', 'p.id')
+                    ->leftjoin('inmuebles as i', 'c.id_inmueble', '=', 'i.id')
+                    ->leftjoin('comunas as co', 'i.id_comuna', '=', 'co.comuna_id')
+                    ->where('c.id','=',$id_publicacion)
+                    ->select(DB::raw(' c.id_propietario, p.nombre, p.apellido_paterno, p.apellido_materno, i.id as id_inmueble, i.direccion, i.numero, co.comuna_nombre as comuna '))
+                    ->first(); 
+
+        $arrendatario = DB::table('arrendatarios as a')
+                   ->leftjoin('personas as p', 'a.id_arrendatario', '=', 'p.id')
+                   ->where('a.id_inmueble','=',$propietario_propiedad->id_inmueble)
+                   ->select(DB::raw('a.id, a.id_arrendatario, p.nombre, p.apellido_paterno, p.apellido_materno'))
+                   ->first();
+                
+
+        if(isset($arrendatario->id))
+        {
+            $garantia_a = DB::table('arrendatario_garantia as a')
+                       ->where('a.id_publicacion','=',$arrendatario->id)
+                       ->first();            
+            $valida = 1;
+        }
+        else
+        { $valida = 0; }
+
+
+
+
+        return view('contratoFinal.finaliza', compact('valida','garantia_p','contrato','propietario_propiedad','arrendatario','garantia_a','id_contrato', 'id_publicacion'));
+    }
+
+
+
+    public function finalizadoc($id_contrato,$id_publicacion) {
+
+        $imgReserva = DB::table('propietario_finaliza')
+                   ->where('id_contrato','=',$id_contrato)
+                   ->where('id_publicacion','=',$id_publicacion)
+                   ->get();
+
+
+        return view('contratoFinal.finalizadoc', compact('id_contrato', 'id_publicacion','imgReserva'));
+    }
+
+
+
+    public function savedocsfinaliza(Request $request,$id_contrato,$id_publicacion){
+
+        if (!isset($request->foto)) {
+            return redirect()->route('finalContrato.finalizadoc', [$id_contrato,$id_publicacion])->with('error', 'Debe seleccionar archivo');
+        }
+
+        $destinationPath = 'uploads/finaliza_pro';
+        $archivo = rand() . $request->foto->getClientOriginalName();
+        $file = $request->file('foto');
+        $file->move($destinationPath, $archivo);
+
+        $imagen = PropietarioFinaliza::create([
+                    'id_contrato'       => $id_contrato,
+                    'id_publicacion'    => $id_publicacion,
+                    'nombre'            => $archivo,
+                    'ruta'              => $destinationPath,
+                    'id_creador'        => $request->id_creador
+        ]);
+
+        return redirect()->route('finalContrato.finalizadoc', [$id_contrato,$id_publicacion]);
+    }
+
+    public function eliminardocfinal($id_documento,$id_contrato,$id_publicacion) {
+
+        $imagen = PropietarioFinaliza::find($id_documento);
+
+        File::delete($imagen->ruta . '/' . $imagen->nombre);
+        $foto = PropietarioFinaliza::find($id_documento)->delete();
+
+        return redirect()->route('finalContrato.finalizadoc', [$id_contrato,$id_publicacion])->with('status', 'Documento eliminado con éxito');
+    }
+
+
+
+
 
     public function getContrato($id) {
         $contrato = DB::table('adm_contratofinal  as b')

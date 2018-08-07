@@ -48,6 +48,7 @@ use App\Http\Controllers\ContratoFinalController;
                                     <th>Fecha Firma</th>
                                     <th>Guardar</th>
                                     <th>CheckList</th>
+                                    <th>Finalizar</th>
                                     <th>Eliminar</th>
                                 </tr>
                             </thead>
@@ -97,6 +98,10 @@ use App\Http\Controllers\ContratoFinalController;
                                 </td>
                                 <td>
                                     <a href="{{ route('checklist.checkindex',[$p->id,0 , 'Propietario']) }}"> <button type="button" class="btn btn-info"> <i class="fa fa-check"></i> CheckList</button></a>
+                                </td>
+
+                                <td>
+                                    <a href="{{ route('finalContrato.finaliza',[$p->id,$p->id_publicacion]) }}"> <button type="button" class="btn btn-warning"> <i class="fa fa-check"></i> Finalizar</button></a>
                                 </td>
 
                                 <td>
