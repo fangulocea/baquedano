@@ -26,6 +26,11 @@ use App\Checklist;
 use DateTime;
 use App\PropietarioFinaliza;
 use App\PropietarioCuadratura;
+use Barryvdh\DomPDF\Facade as PDF;
+use App\propietariopagofin;
+use App\PropietarioPagoFinDoc;
+use App\Arrendatario;
+
 
 class ContratoFinalController extends Controller {
 
@@ -52,6 +57,20 @@ class ContratoFinalController extends Controller {
                    ->where('a.id_inmueble','=',$propietario_propiedad->id_inmueble)
                    ->select(DB::raw('a.id, a.id_arrendatario, p.nombre, p.apellido_paterno, p.apellido_materno'))
                    ->first();
+
+        $pagos = DB::table('propietariopagofin as p')
+                ->leftjoin('propietariopagofindoc as f', 'p.id', '=', 'f.id_pago')
+                ->where("p.id_publicacion","=",$id_publicacion)
+                ->where("p.id_contrato","=",$id_contrato)
+                ->select(DB::raw('p.id as id_pago, p.id_contrato, p.id_publicacion, DATE_FORMAT(p.fecha, "%d/%m/%Y") as fecha, p.monto, f.nombre, f.ruta'))
+                ->get();
+
+
+        $pagosuma = DB::table('propietariopagofin as p')
+                    ->where("p.id_publicacion","=",$id_publicacion)
+                    ->where("p.id_contrato","=",$id_contrato)
+                    ->sum('p.monto');
+
 
         if(isset($arrendatario->id))
         {
@@ -132,19 +151,201 @@ class ContratoFinalController extends Controller {
         $cuadraturas = DB::table('propietario_cuadratura as p')
         ->where("p.id_publicacion","=",$id_publicacion)
         ->where("p.id_contrato","=",$id_contrato)
-        ->get();
+        ->first();
 
         $garantia_p = DB::table('propietario_garantia as pg')
                      ->where('pg.id','=',$id_publicacion)
                      ->first();
 
-        $total = DB::select('SELECT sum(valor) as valor FROM propietario_cuadratura WHERE id_publicacion = ? and  id_contrato = ?', [$id_contrato,$id_publicacion]);
+        $totalGarantia = DB::table('propietario_cuadratura as p')
+        ->where("p.id_publicacion","=",$id_publicacion)
+        ->where("p.id_contrato","=",$id_contrato)
+        ->sum('p.valor');
 
-        dd($garantia_p);
+        $pagos = DB::table('propietariopagofin as p')
+                ->leftjoin('propietariopagofindoc as f', 'p.id', '=', 'f.id_pago')
+                ->where("p.id_publicacion","=",$id_publicacion)
+                ->where("p.id_contrato","=",$id_contrato)
+                ->select(DB::raw('p.id as id_pago, p.id_contrato, p.id_publicacion, DATE_FORMAT(p.fecha, "%d/%m/%Y") as fecha, p.monto,p.saldo, f.nombre, f.ruta'))
+                ->get();
 
-        return view('contratoFinal.cuadratura', compact('cuadraturas', 'garantia_p','total','valor'));
+
+        $pagosuma = DB::table('propietariopagofin as p')
+                    ->where("p.id_publicacion","=",$id_publicacion)
+                    ->where("p.id_contrato","=",$id_contrato)
+                    ->sum('p.monto');
+
+
+
+        $totalFinal = (int)$garantia_p->valor + (int)$totalGarantia;
+
+        $propietario_propiedad = DB::table('cap_publicaciones as c')
+                    ->leftjoin('personas as p', 'c.id_propietario', '=', 'p.id')
+                    ->leftjoin('inmuebles as i', 'c.id_inmueble', '=', 'i.id')
+                    ->leftjoin('comunas as co', 'i.id_comuna', '=', 'co.comuna_id')
+                    ->where('c.id','=',$id_publicacion)
+                    ->select(DB::raw(' c.id_propietario, UPPER(p.nombre) as nombre, UPPER(p.apellido_paterno) as apellido_paterno, UPPER(p.apellido_materno) as apellido_materno, i.id as id_inmueble, UPPER(i.direccion) as direccion, i.numero, UPPER(co.comuna_nombre) as comuna '))
+                    ->first();         
+
+        return view('contratoFinal.pago', compact('cuadraturas', 'garantia_p','totalGarantia','totalFinal','propietario_propiedad','id_contrato','id_publicacion','pagos','pagosuma'));
     }
 
+//////
+    public function comprobantefin($id_contrato,$id_publicacion) {
+        $meses = array("", "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre");
+
+        $propietario_propiedad = DB::table('cap_publicaciones as c')
+                    ->leftjoin('personas as p', 'c.id_propietario', '=', 'p.id')
+                    ->leftjoin('inmuebles as i', 'c.id_inmueble', '=', 'i.id')
+                    ->leftjoin('comunas as co', 'i.id_comuna', '=', 'co.comuna_id')
+                    ->where('c.id','=',$id_publicacion)
+                    ->select(DB::raw(' c.id_propietario, UPPER(p.nombre) as nombre, UPPER(p.apellido_paterno) as apellido_paterno, UPPER(p.apellido_materno) as apellido_materno, i.id as id_inmueble, UPPER(i.direccion) as direccion, i.numero, UPPER(co.comuna_nombre) as comuna,p.email '))
+                    ->first();         
+
+        $pagos = DB::table('propietariopagofin as p')
+                ->where("p.id_publicacion","=",$id_publicacion)
+                ->where("p.id_contrato","=",$id_contrato)->get();
+
+        $pagosuma = DB::table('propietariopagofin as p')
+                    ->where("p.id_publicacion","=",$id_publicacion)
+                    ->where("p.id_contrato","=",$id_contrato)
+                    ->sum('p.monto');                
+
+        $cuadraturas = DB::table('propietario_cuadratura as p')
+                ->where("p.id_publicacion","=",$id_publicacion)
+                ->where("p.id_contrato","=",$id_contrato)
+                ->get();
+
+        $garantia_p = DB::table('propietario_garantia as pg')
+                     ->where('pg.id','=',$id_publicacion)
+                     ->first();
+
+        $totalGarantia = DB::table('propietario_cuadratura as p')
+                    ->where("p.id_publicacion","=",$id_publicacion)
+                    ->where("p.id_contrato","=",$id_contrato)
+                    ->sum('p.valor');
+
+        $totalFinal = (int)$garantia_p->valor + (int)$totalGarantia;
+
+        $fecha  = date('d/m/Y');
+
+        $totalSaldo = $totalFinal - $pagosuma;
+
+        if($pagosuma == 0)
+        { $estado = "PENDIENTE"; }
+        elseif($pagosuma <= $totalFinal )
+        { 
+            $estado = "PAGADO";     
+        }
+        else
+            {
+                $estado = "CON SALDO";        
+            }
+            
+        
+
+
+        $pdf = PDF::loadView('formatospdf.recibopagoprofin', compact('propietario_propiedad', 'pagos', 'cuadraturas', 'garantia_p','fecha','estado','totalFinal'));
+
+        return $pdf->download($propietario_propiedad->direccion . ' Nro.' . $propietario_propiedad->numero . ', ' . $propietario_propiedad->comuna .   ' - Comprobante de Pago Finalización.pdf');
+
+    }
+
+public function savepagofin(Request $request,$id_contrato,$id_publicacion) {
+
+        $fecha = DateTime::createFromFormat('Y-m-d', $request->fecha);
+        $contratoFinal = propietariopagofin::create([
+                    "id_contrato"       => $id_contrato,
+                    "id_publicacion"    => $id_publicacion,
+                    "fecha"             => $fecha,
+                    "monto"             => $request->valor
+        ]);
+
+
+        if (isset($request->foto)) {
+            $destinationPath = 'uploads/fincontrato';
+            $archivo = rand() . $request->foto->getClientOriginalName();
+            $file = $request->file('foto');
+            $file->move($destinationPath, $archivo);
+
+            $imagen = PropietarioPagoFinDoc::create([
+                        'id_pago'           => $contratoFinal->id,
+                        'id_contrato'       => $id_contrato,
+                        'id_publicacion'    => $id_publicacion,
+                        'nombre'            => $archivo,
+                        'ruta'              => $destinationPath,
+            ]);
+        }
+
+        $act_contrato = ContratoFinal::find($id_contrato)->update(['id_estado' => 6]);
+        
+
+
+        $pagos = DB::table('propietariopagofin as p')
+                ->leftjoin('propietariopagofindoc as f', 'p.id', '=', 'f.id_pago')
+                ->where("p.id_publicacion","=",$id_publicacion)
+                ->where("p.id_contrato","=",$id_contrato)
+                ->select(DB::raw('p.id as id_pago, p.id_contrato, p.id_publicacion, DATE_FORMAT(p.fecha, "%d/%m/%Y") as fecha, p.monto,p.saldo, f.nombre, f.ruta'))
+                ->get();
+
+
+        $pagosuma = DB::table('propietariopagofin as p')
+                    ->where("p.id_publicacion","=",$id_publicacion)
+                    ->where("p.id_contrato","=",$id_contrato)
+                    ->sum('p.monto');
+
+
+
+        $cuadraturas = DB::table('propietario_cuadratura as p')
+        ->where("p.id_publicacion","=",$id_publicacion)
+        ->where("p.id_contrato","=",$id_contrato)
+        ->first();
+
+        $garantia_p = DB::table('propietario_garantia as pg')
+                     ->where('pg.id','=',$id_publicacion)
+                     ->first();
+
+        $totalGarantia = DB::table('propietario_cuadratura as p')
+        ->where("p.id_publicacion","=",$id_publicacion)
+        ->where("p.id_contrato","=",$id_contrato)
+        ->sum('p.valor');
+
+        $totalFinal = (int)$garantia_p->valor + (int)$totalGarantia;
+
+        $propietario_propiedad = DB::table('cap_publicaciones as c')
+                    ->leftjoin('personas as p', 'c.id_propietario', '=', 'p.id')
+                    ->leftjoin('inmuebles as i', 'c.id_inmueble', '=', 'i.id')
+                    ->leftjoin('comunas as co', 'i.id_comuna', '=', 'co.comuna_id')
+                    ->where('c.id','=',$id_publicacion)
+                    ->select(DB::raw(' c.id_propietario, UPPER(p.nombre) as nombre, UPPER(p.apellido_paterno) as apellido_paterno, UPPER(p.apellido_materno) as apellido_materno, i.id as id_inmueble, UPPER(i.direccion) as direccion, i.numero, UPPER(co.comuna_nombre) as comuna '))
+                    ->first();    
+
+        $arrendatario = DB::table('arrendatarios as a')
+                   ->leftjoin('personas as p', 'a.id_arrendatario', '=', 'p.id')
+                   ->where('a.id_inmueble','=',$propietario_propiedad->id_inmueble)
+                   ->select(DB::raw('a.id, a.id_arrendatario, p.nombre, p.apellido_paterno, p.apellido_materno'))
+                   ->first();
+
+        $id_arr = DB::table('arrendatarios as a')
+                   ->leftjoin('adm_contratofinalarr as c', 'a.id', '=', 'c.id_publicacion')
+                   ->where('a.id_inmueble','=',$propietario_propiedad->id_inmueble)
+                   ->select(DB::raw(' c.id as contrato '))
+                   ->first();
+
+
+        $garantia_a = DB::table('arrendatario_garantia as a')
+                    ->where('a.id_publicacion','=',$arrendatario->id)
+                    ->first(); 
+
+        // $act_contrato = ContratoFinalArr::find($id_arr->contrato)->update(['id_estado' => 13]);
+
+        // $arrendatario=Arrendatario::create([                      
+        //                     'id_arrendatario'   => $arrendatario->id,
+        //                     'id_creador'        => Auth::user()->id,
+        //                     'id_modificador'    => Auth::user()->id,
+        //                     'preferencias'      => " ",
+        //                     'id_estado'         => '1',
+        //             ]);
 
 
 
@@ -157,8 +358,9 @@ class ContratoFinalController extends Controller {
 
 
 
+        return view('contratoFinal.pago', compact('cuadraturas', 'garantia_p','totalGarantia','totalFinal','propietario_propiedad','id_contrato','id_publicacion','pagos','pagosuma'));
 
-
+}
 
     public function getContrato($id) {
         $contrato = DB::table('adm_contratofinal  as b')

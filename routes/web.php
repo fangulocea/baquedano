@@ -929,6 +929,12 @@ Route::get('borradorContrato/garantia/eliminar/{id}/{pub}','ContratoBorradorCont
 
 		Route::get('finalContrato/cuadratura/pago/{id_contrato}/{id_publicacion}','ContratoFinalController@generapago')->name('finalContrato.generapago')->middleware('permission:finalContrato.edit');		
 
+		Route::get('finalContrato/cuadratura/comprobante/{id_contrato}/{id_publicacion}','ContratoFinalController@comprobantefin')->name('finalContrato.comprobantefin')->middleware('permission:finalContrato.edit');
+
+		Route::post('finalContrato/savepagofin/{id_contrato}/{id_publicacion}','ContratoFinalController@savepagofin')->name('finalContrato.savepagofin')
+				->middleware('permission:borradorContrato.edit');
+
+
 
 
 

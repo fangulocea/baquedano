@@ -11,9 +11,10 @@ use App\Inmueble;
 use App\ChkInmuebleFoto;
 use Image;
 use Auth;
-use File;
 use Carbon\Carbon;
 use Barryvdh\DomPDF\Facade as PDF;
+use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Validator;
 
 class ChecklistController extends Controller
 {
@@ -244,11 +245,6 @@ class ChecklistController extends Controller
                 {   $id_chk      = $request->id_chk;   }                                     
         }
         
-
-
-
-
-
         $tipo        = $request->id_tipo;
         $edr         = $request->edr;
         $id_contrato = $request->id_contrato;
@@ -260,20 +256,42 @@ class ChecklistController extends Controller
 
         if(isset($request->foto))
         {
-            $path='uploads/checklist';
-            $archivo=rand().$request->foto->getClientOriginalName();
-            $img = Image::make($_FILES['foto']['tmp_name'])->resize(600,400, function ($constraint){ 
-                $constraint->aspectRatio();
-            });
-            $img->save($path.'/'.$archivo,72);
-            $imagen=ChkInmuebleFoto::create([
-                   'id_chk'               => $id_chk,
-                   'id_inmueble'          => $id_inmueble,
-                   'nombre'               => $archivo,
-                   'ruta'                 => $path,
-                   'tipo'                 => $request->id_tipo,
-                   'id_creador'           => $request->id_creador
-            ]);
+
+            $input  = array('image' => Input::file('foto'));
+            $reglas = array('image' => 'mimes:jpeg,png');
+            $validacion = Validator::make($input,  $reglas);
+            if ($validacion->fails())
+            {
+                    $path='uploads/checklist';
+                    $archivo=rand().$request->foto->getClientOriginalName();
+                    $file = $request->file('foto');
+                    $file->move($path, $archivo);
+                    $imagen = ChkInmuebleFoto::create([
+                                'id_chk'               => $id_chk,
+                                'id_inmueble'          => $id_inmueble,
+                                'nombre'               => $archivo,
+                                'ruta'                 => $path,
+                                'tipo'                 => $request->id_tipo,
+                                'id_creador'           => $request->id_creador
+                    ]);                
+            }
+            else
+            {
+                $path='uploads/checklist';
+                $archivo=rand().$request->foto->getClientOriginalName();
+                $img = Image::make($_FILES['foto']['tmp_name'])->resize(600,400, function ($constraint){ 
+                    $constraint->aspectRatio();
+                });
+                $img->save($path.'/'.$archivo,72);
+                $imagen=ChkInmuebleFoto::create([
+                       'id_chk'               => $id_chk,
+                       'id_inmueble'          => $id_inmueble,
+                       'nombre'               => $archivo,
+                       'ruta'                 => $path,
+                       'tipo'                 => $request->id_tipo,
+                       'id_creador'           => $request->id_creador
+                ]);                
+            }
 
             Checklist::where('id', '=', $id_chk)->update([
                         'descripcion'     => $request->descripcion,

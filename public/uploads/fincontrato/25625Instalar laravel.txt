@@ -1,0 +1,56 @@
+	Se instala 
+
+git bash
+xamp php 5.6
+composer
+
+se crea proyecto backend
+
+composer create-project --prefer-dist laravel/laravel backend
+
+
+php artisan migrate
+
+Saldra error
+En la ruta App\Providers
+abrir archivo y agregar al metodo boot
+Schema::defaultStringLength(191);
+
+y en el import 
+
+use Illuminate\Support\Facades\Schema;
+
+Luego nuevamente 
+
+crear base de datos y configurar en .env
+
+php artisan migrate
+
+Crea 3 tablas migrations, users y password_reset
+
+crear un modelo
+
+php artisan make:model Publicacion -m
+
+crear otro modelo
+
+php artisan make:model Comentario -m
+
+Crean los archivos necesarios para las migraciones en databases/migrations/ y se edita la tabla, ya que es el archivo que creara las tablas en la base de datos
+
+php artisan migrate
+
+se crean todas las tablas
+
+Autentificacion de usuarios
+
+php artisan make:auth
+
+php artisan make:model Role -m
+
+$ php artisan make:seeder RoleTableSeeder
+$ php artisan make:seeder UserTableSeeder
+
+se crean los seeder  en run
+
+php artisan migrate:refresh --seed
