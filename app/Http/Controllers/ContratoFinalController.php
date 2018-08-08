@@ -348,16 +348,6 @@ public function savepagofin(Request $request,$id_contrato,$id_publicacion) {
         //             ]);
 
 
-
-
-
-
-
-
-
-
-
-
         return view('contratoFinal.pago', compact('cuadraturas', 'garantia_p','totalGarantia','totalFinal','propietario_propiedad','id_contrato','id_publicacion','pagos','pagosuma'));
 
 }
@@ -409,8 +399,6 @@ public function savepagofin(Request $request,$id_contrato,$id_publicacion) {
         $date = DateTime::createFromFormat('Y-m-d', $date);
 
         array_set($request, 'fecha_limite', $date);
-
-
 
         $ContratoBorrador = ContratoBorrador::find($request->id_borradorfinal);
         $ContratoBorradorPDF = Contratoborradorpdf::where("id_borrador", "=", $request->id_borradorfinal)->first();
@@ -522,7 +510,8 @@ public function savepagofin(Request $request,$id_contrato,$id_publicacion) {
                     'id_creador'        => $request->id_creadorfinal,
                     'id_modificador'    => $request->id_creadorfinal,
                     'tipo'              => 'Propietario',
-                    'fecha_limite'      => $request->fecha_limite,
+                    'e_s_r'             => 'Entrega',
+                    'fecha_limite'      => $date,
                     'id_cap_pro'        => $ContratoBorrador->id_publicacion,
                     'id_estado'         => '1',
         ]);
@@ -681,6 +670,7 @@ public function savepagofin(Request $request,$id_contrato,$id_publicacion) {
                 ->where('b.id_publicacion', '=', $idc)
                 ->select(DB::raw(' b.id ,b.id_borrador, cp.id as id_publicacion,b.fecha_firma as fecha,b.id_estado,bp.nombre, bp.id as id_pdf,b.id_notaria,b.alias, cb.dia_pago, ci.id as id_chk'))
                 ->get();
+        
 
         $notaria = DB::table('notarias as n')
                 ->where("n.estado", "<>", 0)

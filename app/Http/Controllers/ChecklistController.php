@@ -15,6 +15,7 @@ use Carbon\Carbon;
 use Barryvdh\DomPDF\Facade as PDF;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\File;
 
 class ChecklistController extends Controller
 {
@@ -312,13 +313,14 @@ class ChecklistController extends Controller
         return redirect()->route('checklist.edit',   [$id_contrato,$id_chk,$tipo,$edr])->with('status', 'Foto guardada con éxito');
     }
 
-public function eliminararchivo($idf,$idi,$idt){
+public function eliminararchivo($idf,$id_contrato,$id_chk,$tipo,$edr){
+
         $imagen=ChkInmuebleFoto::find($idf);
 
         File::delete($imagen->ruta.'/'.$imagen->nombre);
         $foto = ChkInmuebleFoto::find($idf)->delete();
 
-        return redirect()->route('checklist.edit', [$idi,$idt])->with('status', 'Foto eliminada con éxito');
+        return redirect()->route('checklist.edit', [$id_contrato,$id_chk,$tipo,$edr])->with('status', 'Foto eliminada con éxito');
     }
 
     

@@ -211,7 +211,8 @@ class ContratoBorradorController extends Controller
     }
 
     public function crearBorrador(Request $request)
-    {
+    {   
+
         $fecha_gestion = DateTime::createFromFormat('Y-m-d', $request->fecha_gestion);
 
          $contratoTipo = DB::table('contratos as c')
