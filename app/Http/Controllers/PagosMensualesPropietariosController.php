@@ -9,7 +9,7 @@ use App\Captacion;
 use App\DetallePagosPropietarios;
 use App\PropietarioCheques;
 use App\PropietarioGarantia;
-use App\Pagospropietarios;
+use App\PagosPropietarios;
 use App\CargosAbonosPropietarios;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
@@ -104,7 +104,7 @@ class PagosMensualesPropietariosController extends Controller {
                 ->where("inmuebles.id", "=", $pago->id_inmueble)
                 ->first();
         $mes = $meses[$pago->mes];
-        $pagospropietarios = Pagospropietarios::where("id_contratofinal", "=", $pago->id_contratofinal)
+        $pagospropietarios = PagosPropietarios::where("id_contratofinal", "=", $pago->id_contratofinal)
                 ->where("id_inmueble", "=", $pago->id_inmueble)
                 ->where("id_publicacion", "=", $pago->id_publicacion)
                 ->where("mes", "=", $pago->mes)

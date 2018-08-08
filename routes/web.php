@@ -1169,6 +1169,9 @@ Route::get('contratorenovacionpropietario','ContratoRenovacionPropietarioControl
 	Route::get('solservicio/prop/index','SolicitudServicioController@index_ajax')->name('solservicio.index_ajax')
 		->middleware('permission:solservicio.index');
 
+		Route::get('solservicio/prop/autoriza_index','SolicitudServicioController@autoriza_index_ajax_pro')->name('solservicio.autoriza_index_ajax')
+		->middleware('permission:solservicio.index');
+
 
 	Route::post('solservicio/prop/store','SolicitudServicioController@store')->name('solservicio.store')
 		->middleware('permission:solservicio.create');
@@ -1200,6 +1203,17 @@ Route::get('contratorenovacionpropietario','ContratoRenovacionPropietarioControl
 		Route::get('solservicio/{solservicio}/create','SolicitudServicioController@create_solicitud')->name('solservicio.create_solicitud')
 		->middleware('permission:solservicio.show');
 
+Route::get('solservicio/{solservicio}/autorizar','SolicitudServicioController@autorizar')->name('solservicio.autorizar')
+		->middleware('permission:solservicio.edit');
+
+	Route::get('solservicio/{solservicio}/rechazar','SolicitudServicioController@rechazar')->name('solservicio.rechazar')
+		->middleware('permission:solservicio.edit');
+
+	Route::get('solservicio/autoriza_pro/index','SolicitudServicioController@autoriza_prop_index')->name('solservicio.autoriza_prop_index')
+		->middleware('permission:solservicio.edit');
+
+
+		
 //DETALLE SERVICIO PRO
 	Route::get('solservicio/listadodetalle/{id}','SolicitudServicioController@detalle_servicio_ajax')->name('solservicio.detalle_servicio_ajax')
 		->middleware('permission:solservicio.index');
@@ -1209,6 +1223,10 @@ Route::get('contratorenovacionpropietario','ContratoRenovacionPropietarioControl
 
 
 	//Solicitud de Servicios ARRENDATARIO
+
+	Route::get('arrsolservicio/arr/autoriza_index','SolicitudServiciosARRController@autoriza_index_ajax_arr')->name('arrsolservicio.autoriza_index_ajax_arr')
+		->middleware('permission:solservicio.index');
+
 	Route::get('arrsolservicio/{solservicio}/edit','SolicitudServiciosARRController@edit')->name('arrsolservicio.edit')
 		->middleware('permission:solservicio.edit');
 
@@ -1244,6 +1262,15 @@ Route::get('contratorenovacionpropietario','ContratoRenovacionPropietarioControl
 		->middleware('permission:solservicio.destroy');
 
 		Route::get('arrsolservicio/{solservicio}/comprobante','SolicitudServiciosARRController@comprobantesolicitud')->name('arrsolservicio.comprobante')
+		->middleware('permission:solservicio.edit');
+
+	Route::get('arrsolservicio/{solservicio}/autorizar','SolicitudServiciosARRController@autorizar')->name('arrsolservicio.autorizar')
+		->middleware('permission:solservicio.edit');
+
+	Route::get('arrsolservicio/{solservicio}/rechazar','SolicitudServiciosARRController@rechazar')->name('arrsolservicio.rechazar')
+		->middleware('permission:solservicio.edit');
+
+Route::get('arrsolservicio/autoriza_arr/index','SolicitudServicioController@autoriza_arr_index')->name('arrsolservicio.autoriza_arr_index')
 		->middleware('permission:solservicio.edit');
 
 

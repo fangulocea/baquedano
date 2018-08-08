@@ -29,9 +29,7 @@ class ChecklistController extends Controller
          ->leftjoin('inmuebles as i', 'chk.id_inmueble', '=', 'i.id')
          ->leftjoin('comunas as co', 'i.id_comuna', '=', 'co.comuna_id')
          ->select(DB::raw('chk.id, i.direccion, i.numero, co.comuna_nombre as comuna, 
-
-
-                           chk.id_estado, chk.tipo, chk.id_bor_arr, chk.id_cap_pro, chk.created_at,chk.fecha_limite , chk.id_contrato'))
+                           chk.id_estado, chk.tipo, chk.id_bor_arr, chk.id_cap_pro, chk.created_at, chk.fecha_limite , chk.id_contrato'))
 
          ->get();
 
@@ -108,6 +106,7 @@ class ChecklistController extends Controller
         ->select(DB::raw('c.id as id_chk, i.direccion, i.numero, co.comuna_nombre as comuna, c.descripcion, c.comentarios'))
         ->first();
 
+
         $descripcion = $ChkInmueble->descripcion;
         $comentarios = $ChkInmueble->comentarios;
         //$descripcion = nl2br($ChkInmueble->descripcion);
@@ -125,7 +124,7 @@ class ChecklistController extends Controller
             $persona = DB::table('chkinmuebles as c')
                 ->leftjoin('arrendatarios as a', 'c.id_bor_arr', '=', 'a.id')
                 ->leftjoin('personas as p', 'a.id_arrendatario', '=', 'p.id')
-                ->where('c.id', '=', $id)
+                ->where('c.id', '=', $tipo)
                 ->select(DB::raw('p.nombre, p.apellido_paterno, p.telefono, p.email'))
                 ->first();
 
