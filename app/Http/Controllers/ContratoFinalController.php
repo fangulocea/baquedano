@@ -194,7 +194,9 @@ class ContratoFinalController extends Controller {
                     "id_creador" => $request->id_creadorfinal,
                     "id_borrador" => $request->id_borradorfinal,
                     "id_borradorpdf" => $ContratoBorradorPDF->id,
-                    "tipo_contrato" => $request->tipo_contrato
+                    "tipo_contrato" => $request->tipo_contrato,
+                    "meses_contrato" => $tipo_simulacion->meses_contrato
+
         ]);
 
         //PARA PDF
@@ -274,6 +276,7 @@ class ContratoFinalController extends Controller {
 
         $checklist  = Checklist::create([                      
                     'id_inmueble'       => $borradorPDF->id_inmueble,
+                    'id_contrato'       => $contratoFinal->id,
                     'id_creador'        => $request->id_creadorfinal,
                     'id_modificador'    => $request->id_creadorfinal,
                     'tipo'              => 'Propietario',

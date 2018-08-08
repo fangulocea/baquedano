@@ -207,6 +207,7 @@ class ContratoFinalArrController extends Controller {
 
         $checklist  = Checklist::create([                      
                     'id_inmueble'       => $borradorPDF->id_inmueble,
+                    "id_contrato" => $contratoFinal->id,
                     'id_creador'        => $request->id_creadorfinal,
                     'id_modificador'    => $request->id_creadorfinal,
                     'tipo'              => 'Arrendatario',
@@ -1067,7 +1068,7 @@ $pago = PagosArrendatarios::create([
 
             $idtipopago = 3;
             $dias_mes = cal_days_in_month(CAL_GREGORIAN, date("m", strtotime($fecha_ini)), date("Y", strtotime($fecha_ini)));
-            $valor_en_moneda = ($arriendo - ($arriendo * ($descuento / 100)));
+            $valor_en_moneda = (($arriendo / 2) - (($arriendo/2) * ($descuento / 100)));
             $valor_en_pesos = $valor_en_moneda * $valormoneda;
             $dia = date("d", strtotime($fecha_ini));
             $mes = date("m", strtotime($fecha_ini));
