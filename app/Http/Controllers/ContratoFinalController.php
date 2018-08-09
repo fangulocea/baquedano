@@ -23,6 +23,7 @@ use Illuminate\Support\Facades\File;
 use Auth;
 use App\PropietarioCheques;
 use App\Checklist;
+use App\ChkInmuebleFoto;
 use DateTime;
 use App\PropietarioFinaliza;
 use App\PropietarioCuadratura;
@@ -662,16 +663,25 @@ public function savepagofin(Request $request,$id_contrato,$id_publicacion) {
                 ->select(DB::raw('c.id as id_publicacion, p1.id as id_propietario, i.id as id_inmueble, CONCAT_WS(" ",i.direccion,"#",i.numero,"Depto.",i.departamento,o.comuna_nombre) as direccion, CONCAT_WS(" ",p1.nombre , p1.apellido_paterno, " Fono: " ,p1.telefono, " Email: " ,p1.email ) as propietario, i.precio, i.gastosComunes'))
                 ->first();
 
+        // $finalIndex = DB::table('adm_contratofinal  as b')
+        //         ->leftjoin('cap_publicaciones as cp', 'b.id_publicacion', '=', 'cp.id')
+        //         ->leftjoin('adm_contratofinalpdf as bp', 'b.id', '=', 'bp.id_final')
+        //         ->leftjoin('borradores as cb', 'b.id_borrador', '=', 'cb.id')
+        //         ->leftjoin('chkinmuebles as ci', 'b.id', '=', 'ci.id_contrato')
+        //         ->where('b.id_publicacion', '=', $idc)
+        //         ->select(DB::raw(' b.id ,b.id_borrador, cp.id as id_publicacion,b.fecha_firma as fecha,b.id_estado,bp.nombre, bp.id as id_pdf,b.id_notaria,b.alias, cb.dia_pago, ci.id as id_chk'))
+        //         ->get();
+
         $finalIndex = DB::table('adm_contratofinal  as b')
                 ->leftjoin('cap_publicaciones as cp', 'b.id_publicacion', '=', 'cp.id')
                 ->leftjoin('adm_contratofinalpdf as bp', 'b.id', '=', 'bp.id_final')
                 ->leftjoin('borradores as cb', 'b.id_borrador', '=', 'cb.id')
-                ->leftjoin('chkinmuebles as ci', 'b.id', '=', 'ci.id_contrato')
                 ->where('b.id_publicacion', '=', $idc)
-                ->select(DB::raw(' b.id ,b.id_borrador, cp.id as id_publicacion,b.fecha_firma as fecha,b.id_estado,bp.nombre, bp.id as id_pdf,b.id_notaria,b.alias, cb.dia_pago, ci.id as id_chk'))
+                ->select(DB::raw(' b.id ,b.id_borrador, cp.id as id_publicacion,b.fecha_firma as fecha,b.id_estado,bp.nombre, bp.id as id_pdf,b.id_notaria,b.alias, cb.dia_pago'))
                 ->get();
-        
 
+
+        
         $notaria = DB::table('notarias as n')
                 ->where("n.estado", "<>", 0)
                 ->select(DB::raw('n.id as id,n.razonsocial as nombre'))
@@ -755,7 +765,7 @@ public function savepagofin(Request $request,$id_contrato,$id_publicacion) {
                 ->where("a.id_inmueble", "=", $captacion->id_inmueble)
                 ->first();
 
-            dd($valida_dir);
+            
 
             $cont_inmueble = ContratoInmueblesPropietarios::where('id', '=', $valida_dir->id)->update([
                 "id_publicacion" => $request->id_publicacion,
@@ -2235,6 +2245,19 @@ $pago = PagosPropietarios::create([
         $contrato = ContratoFinal::find($id);
         $condir = ContratoInmueblesPropietarios::where('id_contratofinal', '=', $id)->delete();
         $borrar = ContratoFinal::find($id)->delete();
+
+        $checklist = Checklist::where('id_contrato', '=', $id)->get();
+        foreach ($checklist as $chk) {
+            $condir = ChkInmuebleFoto::where('id_chk', '=', $chk->id)->delete();
+        }
+        $checklist = Checklist::where('id_contrato', '=', $id)->delete();
+
+
+
+
+
+
+        
 
         $cant = ContratoFinal::where("id_publicacion", "=", $contrato->id_publicacion)->get();
         if (count($cant) == 0) {
