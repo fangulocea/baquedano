@@ -23,11 +23,11 @@ class SimulaMensualPropietario extends Migration
             $table->date('fecha_iniciocontrato');
             $table->integer('mes');
             $table->integer('anio');
-            $table->integer('subtotal_entrada')->nullable();;
-            $table->integer('subtotal_salida')->nullable();;
-            $table->integer('pago_propietario')->nullable();;
-            $table->integer('pago_rentas')->nullable();;
-            $table->integer('valor_a_pagar')->nullable();;
+            $table->double('subtotal_entrada',20,2)->nullable();;
+            $table->double('subtotal_salida',20,2)->nullable();;
+            $table->double('pago_propietario',20,2)->nullable();;
+            $table->double('pago_rentas',20,2)->nullable();;
+            $table->double('valor_a_pagar',20,2)->nullable();;
             $table->integer('id_creador');
             $table->integer('id_modificador');
             $table->integer('id_estado');

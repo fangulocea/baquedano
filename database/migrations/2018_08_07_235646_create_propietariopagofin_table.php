@@ -21,8 +21,8 @@ class CreatePropietariopagofinTable extends Migration
             $table->integer('id_publicacion')->unsigned();
             $table->foreign('id_publicacion')->references('id')->on('cap_publicaciones');
             $table->date('fecha')->nullable();
-            $table->integer('monto')->nullable();
-            $table->integer('saldo')->nullable();
+            $table->double('monto',20,2)->nullable();
+            $table->double('saldo',20,2)->nullable();
             $table->timestamps();
         });
     }

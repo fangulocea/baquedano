@@ -29,13 +29,13 @@ class PagosMensualesPropietarios extends Migration
             $table->date('fecha_iniciocontrato');
             $table->integer('mes');
             $table->integer('anio');
-            $table->integer('subtotal_entrada')->nullable();
+            $table->double('subtotal_entrada',20,2)->nullable();
              $table->double('subtotal_entrada_moneda', 20, 8)->nullable();
             $table->double('subtotal_salida', 20, 8)->nullable();
             $table->double('subtotal_salida_moneda', 20, 8)->nullable();
             $table->double('pago_propietario', 20, 8)->nullable();
             $table->double('pago_propietario_moneda', 20, 8)->nullable();
-            $table->integer('pago_rentas')->nullable();
+            $table->double('pago_rentas',20,2)->nullable();
             $table->double('pago_rentas_moneda', 20, 8)->nullable();
             $table->double('valor_a_pagar', 20, 8)->nullable();
             $table->double('valor_a_pagar_moneda', 20, 8)->nullable();

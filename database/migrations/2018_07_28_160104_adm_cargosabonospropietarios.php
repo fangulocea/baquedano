@@ -28,7 +28,7 @@ class AdmCargosabonospropietarios extends Migration
             $table->date('fecha_moneda');
             $table->double('valor_moneda', 20, 8);
             $table->double('monto_moneda', 20, 8);
-            $table->integer('monto_pesos');
+            $table->double('monto_pesos',20,2);
             $table->string('tipo');
             $table->string('nombre');
             $table->string('ruta');

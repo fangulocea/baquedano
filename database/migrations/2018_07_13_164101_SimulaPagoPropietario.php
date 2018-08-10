@@ -35,7 +35,7 @@ class SimulaPagoPropietario extends Migration
             $table->double('valormoneda', 20, 8);
             $table->double('valordia', 20, 8);
             $table->double('precio_en_moneda', 20, 8);
-            $table->integer('precio_en_pesos');
+            $table->double('precio_en_pesos',20,2);
             $table->integer('id_creador');
             $table->integer('id_modificador');
             $table->integer('id_estado');

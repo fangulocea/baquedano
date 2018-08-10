@@ -91,7 +91,6 @@
                                                             <option value="Banco Itaú Chile">Banco Itaú Chile</option>
                                                             <option value="Banco Paris">Banco Paris</option>
                                                             <option value="Banco Penta">Banco Penta</option>
-                                                             <option value="Banco Estado">Banco Estado</option>
                                                             <option value="Banco RIpley">Banco RIpley</option>
                                                             <option value="Banco Santander">Banco Santander</option>
                                                             <option value="Banco Security">Banco Security</option>

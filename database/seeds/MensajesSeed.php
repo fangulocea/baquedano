@@ -285,7 +285,7 @@ Mensajes::create([
             'id_estado'    => '3',
             'nombre' => 'Moroso'
         ]);
-    }
+
 
 
 //Revision

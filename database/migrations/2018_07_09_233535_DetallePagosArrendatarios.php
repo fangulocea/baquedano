@@ -32,10 +32,10 @@ class DetallePagosArrendatarios extends Migration
             $table->double('valor_pagado_moneda', 20, 8);
             $table->double('saldo_moneda', 20, 8);
             $table->double('saldo_actual_moneda', 20, 8);
-            $table->integer('valor_original');
-            $table->integer('valor_pagado');
-            $table->integer('saldo');
-            $table->integer('saldo_actual');
+            $table->double('valor_original',20,2);
+            $table->double('valor_pagado',20,2);
+            $table->double('saldo',20,2);
+            $table->double('saldo_actual',20,2);
             $table->string('tipo');
             $table->string('nombre');
             $table->string('ruta');

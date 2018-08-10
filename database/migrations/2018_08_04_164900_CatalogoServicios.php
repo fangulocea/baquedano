@@ -22,7 +22,7 @@ class CatalogoServicios extends Migration
             $table->string('detalle');
             $table->date('fecha_moneda');
             $table->double('valor_moneda',20,8);
-            $table->integer('valor_en_pesos');
+            $table->double('valor_en_pesos',20,2);
             $table->double('valor_en_moneda',20,8);
             $table->string('nombre_servicio');
             $table->string('unidad_medida');

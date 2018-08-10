@@ -27,10 +27,10 @@ class DetalleSolicitudServiciosARR extends Migration
             $table->date('fecha_uf');
             $table->double('valor_uf',20,8);
             $table->double('valor_en_uf',20,8);
-            $table->integer('valor_en_pesos');
+            $table->double('valor_en_pesos',20,2);
             $table->integer('cantidad');
             $table->double('subtotal_uf',20,8);
-            $table->integer('subtotal_pesos');
+            $table->double('subtotal_pesos',20,2);
             $table->integer('id_estado');
             $table->timestamps();
         });
