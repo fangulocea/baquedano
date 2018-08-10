@@ -14,59 +14,10 @@
                         <th>Nombre</th>
                         <th>Tipo</th>
                         <th>Estado</th>
-                        
-                        <th></th>
-                        <th></th>
                         <th></th>
                     </tr>
                 </thead>
-                <tfoot>
-                    <tr>
-                        <th>ID</th>
-                        <th>Nombre</th>
-                        <th>Tipo</th>
-                        <th>Estado</th>
-                        
-                        <th></th>
-                        <th></th>
-                        <th></th>
-                    </tr>
-                </tfoot>
-                <tbody>
-                    @foreach($personas as $persona)
-                            <tr>
-                                <td>{{ $persona->id }}</td>
-                                <td>{{ $persona->nombre }} {{ $persona->apellido_paterno }} {{ $persona->apellido_materno }}</td>
-                                <td>{{ $persona->tipo_cargo }}</td>
-                                <td>{{ trans_choice('mensajes.vigencia', $persona->id_estado ) }}</td>
-                                @can('persona.show')
-                                <td width="10px">
-                                    <a href="{{ route('persona.show', $persona->id) }}" 
-                                    class="btn btn-success btn-circle btn-lg">
-                                      <i class="fa fa-check"></i>
-                                    </a>
-                                </td>
-                                @endcan
-                                @can('persona.edit')
-                                <td width="10px">
-                                    <a href="{{ route('persona.edit', $persona->id) }}"><span class="btn btn-warning btn-circle btn-lg"><i class="ti-pencil-alt"></i></span></a>
-                                </td>
-                                @endcan
-                                @can('persona.destroy')
-                                <td width="10px">
-
-                                    {!! Form::open(['route' => ['persona.destroy', $persona->id, $persona->tipo_cargo], 
-                                    'method' => 'DELETE']) !!}
-                                        <button class="btn btn-danger btn-circle btn-lg"><i class="ti-trash"></i>
-                                        </button>
-                                    {!! Form::close() !!}
-                                </td>
-                                @endcan
-                               
-                            </tr>
-                            @endforeach
-
-                </tbody>
+                
             </table>
         </div>
     </div>
@@ -81,19 +32,28 @@
 <script  src="{{ URL::asset('plugins/DataTables/datatables.min.js') }}"></script>
 <script src="{{ URL::asset('plugins/DataTables/DataTables-1.10.16/js/jquery.dataTables.min.js') }}"></script>
 <script src="{{ URL::asset('plugins/DataTables/Buttons-1.5.1/js/dataTables.buttons.min.js') }}"></script>
-<script src="{{ URL::asset('plugins/DataTables/Buttons-1.5.1/js/buttons.flash.min.js') }}"></script>
-<script src="{{ URL::asset('plugins/DataTables/JSZip-2.5.0/jszip.min.js') }}"></script>
-<script src="{{ URL::asset('plugins/DataTables/pdfmake-0.1.32/pdfmake.min.js') }}"></script>
-<script src="{{ URL::asset('plugins/DataTables/pdfmake-0.1.32/vfs_fonts.js') }}"></script>
 <script src="{{ URL::asset('plugins/DataTables/Buttons-1.5.1/js/buttons.html5.min.js') }}"></script>
-<script src="{{ URL::asset('plugins/DataTables/Buttons-1.5.1/js/buttons.print.min.js') }}"></script>
+
 <!-- end - This is for export functionality only -->
 <script>
 
-$('#listusers').DataTable({
+var table = $('#listusers').DataTable({
     dom: 'Bfrtip',
+    pageLength: 10,
+    ServerSide: true,
+    deferRender: true,
+      "ajax": {
+       "url": "{{ route('persona.index_ajax') }}"
+    },
+            "columns": [
+                {data: 'id_link', name: 'id_link'},
+                {data: 'Persona', name: 'Persona'},
+                {data: 'tipo_cargo', name: 'tipo_cargo'},
+                {data: 'estado', name: 'estado'},
+                {data: 'action', name: 'action'}
+            ],
     buttons: [
-        'copy', 'csv', 'excel', 'pdf', 'print',{
+         'excel',{
             text: 'Crear Persona',
             action: function ( e, dt, node, config ) {
                  window.location.href = '{{ route("persona.create") }}';
@@ -101,10 +61,6 @@ $('#listusers').DataTable({
         }
 
     ],
-    columnDefs: [{
-            "targets": [4, 5, 6],
-            "orderable": false
-        }],
 
     language: {
         "sProcessing": "Procesando...",
@@ -136,6 +92,28 @@ $('#listusers').DataTable({
     }
 });
 
+
+$('#listusers thead th').each( function () {
+        var title = $(this).text();
+        if(title!='ID' && title!= "")
+        $(this).html( title+'<br/><input type="text" style="width:100px"  />' );
+    } );
+ 
+
+ 
+    // Apply the search
+    table.columns().every( function () {
+        var that = this;
+ 
+        $( 'input', this.header() ).on( 'keyup change', function () {
+            if ( that.search() !== this.value ) {
+                that
+                    .search( this.value )
+                    .draw();
+
+            }
+        } );
+    } );
 </script>
 
 

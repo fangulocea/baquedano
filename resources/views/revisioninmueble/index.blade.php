@@ -17,34 +17,7 @@
                         <th></th>
                     </tr>
                 </thead>
-                <tfoot>
-                    <tr>
-                        <th>ID</th>
-                        <th>Dirección</th>
-                        <th>Comuna</th>
-                        <th># Revisión</th>
-                        <th># Documentos</th>
-                        <th></th>
-                    </tr>
-                </tfoot>
-                <tbody>
-                    @foreach($inm as $i)
-                            <tr>
-                                <td>{{ $i->id }}</td>
-                                <td>{{ $i->direccion }} #{{ $i->numero }} Dpto {{ $i->departamento }}</td>
-                                <td>{{ $i->comuna_nombre }}</td>
-                                <td>{{ $i->cant_revisiones }}</td>
-                                <td>{{ $i->cant_fotos }}</td>
-                                @can('revisioncomercial.edit')
-                                <td width="10px">
-                                    <a href="{{ route('revisioninmueble.edit', $i->id) }}"><span class="btn btn-warning btn-circle btn-lg"><i class="ti-pencil-alt"></i></span></a>
-                                </td>
-                                @endcan
-                              
-                            </tr>
-                            @endforeach
-
-                </tbody>
+                
             </table>
         </div>
     </div>
@@ -58,26 +31,32 @@
 <script  src="{{ URL::asset('plugins/DataTables/datatables.min.js') }}"></script>
 <script src="{{ URL::asset('plugins/DataTables/DataTables-1.10.16/js/jquery.dataTables.min.js') }}"></script>
 <script src="{{ URL::asset('plugins/DataTables/Buttons-1.5.1/js/dataTables.buttons.min.js') }}"></script>
-<script src="{{ URL::asset('plugins/DataTables/Buttons-1.5.1/js/buttons.flash.min.js') }}"></script>
-<script src="{{ URL::asset('plugins/DataTables/JSZip-2.5.0/jszip.min.js') }}"></script>
-<script src="{{ URL::asset('plugins/DataTables/pdfmake-0.1.32/pdfmake.min.js') }}"></script>
-<script src="{{ URL::asset('plugins/DataTables/pdfmake-0.1.32/vfs_fonts.js') }}"></script>
 <script src="{{ URL::asset('plugins/DataTables/Buttons-1.5.1/js/buttons.html5.min.js') }}"></script>
-<script src="{{ URL::asset('plugins/DataTables/Buttons-1.5.1/js/buttons.print.min.js') }}"></script>
+
 <!-- end - This is for export functionality only -->
 <script>
 
 var table = $('#listusers').DataTable({
     dom: 'Bfrtip',
+
+ pageLength: 10,
+    ServerSide: true,
+    deferRender: true,
+      "ajax": {
+       "url": "{{ route('revisioninmueble.index_ajax') }}"
+    },
+            "columns": [
+                {data: 'id_link', name: 'id_link'},
+                {data: 'direccion', name: 'direccion'},
+                {data: 'comuna_nombre', name: 'comuna_nombre'},
+                 {data: 'cant_revisiones', name: 'cant_revisiones'},
+                {data: 'cant_fotos', name: 'cant_fotos'},
+                {data: 'action', name: 'action'}
+            ],
     buttons: [
-        'excel', 'pdf', 'print'
+        'excel'
 
     ],
-"ordering": false,
-    columnDefs: [{
-            "targets": [4],
-            "orderable": false
-        }],
 
     language: {
         "sProcessing": "Procesando...",

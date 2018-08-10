@@ -13,6 +13,7 @@ use DateTime;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\File;
+use Yajra\Datatables\Datatables;
 
 class RevisionPersonaController extends Controller
 {
@@ -24,11 +25,23 @@ class RevisionPersonaController extends Controller
     public function index()
     {
 
-              $personas = DB::select("SELECT p.*, (select count(*) from adm_revisionpersona as a where a.id_persona= p.id) as cant_revisiones, (select count(*) from adm_fotorevpersona as a where a.id_persona= p.id) as cant_fotos, c.comuna_nombre FROM personas as p left join comunas c on p.id_comuna=c.comuna_id where p.id <> 1 and p.tipo_cargo<>'Empleado'");
+            return view('revisionpersona.index');
+    }
 
-           // $inm = DB::table('inmuebles')->join('comunas', 'inmuebles.id_comuna', '=', 'comunas.comuna_id')->get();
+    public function index_ajax()
+    {
 
-            return view('revisionpersona.index',compact('personas'));
+              $personas = DB::select("SELECT p.*, (select count(*) from adm_revisionpersona as a where a.id_persona= p.id) as cant_revisiones, (select count(*) from adm_fotorevpersona as a where a.id_persona= p.id) as cant_fotos, c.comuna_nombre, CONCAT_WS(' ',p.nombre,p.apellido_paterno,p.apellido_materno) as Persona FROM personas as p left join comunas c on p.id_comuna=c.comuna_id where p.id <> 1 and p.tipo_cargo<>'Empleado'");
+
+            return Datatables::of($personas)
+         ->addColumn('action', function ($personas) {
+                               return  '<a href="revisionpersona/edit/'.$personas->id.'"><span class="btn btn-warning btn-circle btn-sm"><i class="ti-pencil-alt"></i></span></a>';
+        })
+        ->addColumn('id_link', function ($personas) {
+                               return  '<a href="/revisionpersona/edit/'.$personas->id.'"><span class="btn btn-success btn-sm"> '.$personas->id.'</span> </a>';
+        })
+        ->rawColumns(['id_link','action'])
+        ->make(true);
     }
 
     /**

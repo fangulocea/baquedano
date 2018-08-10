@@ -20,38 +20,7 @@
                         <th></th>
                     </tr>
                 </thead>
-                <tfoot>
-                    <tr>
-                        <th>ID</th>
-                        <th>Teléfono</th>
-                        <th>Email</th>
-                        <th>Nombre</th>
-                        <th>Tipo</th>
-                        <th># Rev</th>
-                        <th># Doc</th>
-                        <th></th>
-                    </tr>
-                </tfoot>
-                <tbody>
-                    @foreach($personas as $persona)
-                            <tr>
-                                <td>{{ $persona->id }}</td>
-                                <td>{{ $persona->telefono }} </td>
-                                <td>{{ $persona->email }} </td>
-                                <td>{{ $persona->nombre }} {{ $persona->apellido_paterno }} {{ $persona->apellido_materno }}</td>
-                                <td>{{ $persona->tipo_cargo }}</td>
-                                <td>{{ $persona->cant_revisiones }}</td>
-                                <td>{{ $persona->cant_fotos }}</td>
-                                @can('revisioncomercial.edit')
-                                <td width="10px">
-                                    <a href="{{ route('revisionpersona.edit', $persona->id) }}"><span class="btn btn-warning btn-circle btn-lg"><i class="ti-pencil-alt"></i></span></a>
-                                </td>
-                                @endcan
-                               
-                            </tr>
-                            @endforeach
-
-                </tbody>
+               
             </table>
         </div>
     </div>
@@ -66,19 +35,32 @@
 <script  src="{{ URL::asset('plugins/DataTables/datatables.min.js') }}"></script>
 <script src="{{ URL::asset('plugins/DataTables/DataTables-1.10.16/js/jquery.dataTables.min.js') }}"></script>
 <script src="{{ URL::asset('plugins/DataTables/Buttons-1.5.1/js/dataTables.buttons.min.js') }}"></script>
-<script src="{{ URL::asset('plugins/DataTables/Buttons-1.5.1/js/buttons.flash.min.js') }}"></script>
-<script src="{{ URL::asset('plugins/DataTables/JSZip-2.5.0/jszip.min.js') }}"></script>
-<script src="{{ URL::asset('plugins/DataTables/pdfmake-0.1.32/pdfmake.min.js') }}"></script>
-<script src="{{ URL::asset('plugins/DataTables/pdfmake-0.1.32/vfs_fonts.js') }}"></script>
 <script src="{{ URL::asset('plugins/DataTables/Buttons-1.5.1/js/buttons.html5.min.js') }}"></script>
-<script src="{{ URL::asset('plugins/DataTables/Buttons-1.5.1/js/buttons.print.min.js') }}"></script>
+
 <!-- end - This is for export functionality only -->
 <script>
 
 var table =$('#listusers').DataTable({
+
     dom: 'Bfrtip',
+   pageLength: 10,
+    ServerSide: true,
+    deferRender: true,
+      "ajax": {
+       "url": "{{ route('revisionpersona.index_ajax') }}"
+    },
+            "columns": [
+                {data: 'id_link', name: 'id_link'},
+                {data: 'telefono', name: 'telefono'},
+                {data: 'email', name: 'email'},
+                {data: 'Persona', name: 'Persona'},
+                {data: 'tipo_cargo', name: 'tipo_cargo'},
+                {data: 'cant_revisiones', name: 'cant_revisiones'},
+                {data: 'cant_fotos', name: 'cant_fotos'},
+                {data: 'action', name: 'action'}
+            ],
     buttons: [
-        'copy', 'excel', 'pdf'
+        'excel'
 
     ],
 

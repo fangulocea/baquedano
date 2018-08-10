@@ -286,4 +286,35 @@ Mensajes::create([
             'nombre' => 'Moroso'
         ]);
     }
+
+
+//Revision
+
+Mensajes::create([
+            'id_modulo'    => '1',
+            'nombre_modulo'    => 'Borrador Propietario',
+            'id_estado'    => '0',
+            'nombre' => 'Rechazado'
+        ]);
+          Mensajes::create([
+            'id_modulo'    => '1',
+            'nombre_modulo'    => 'Borrador Propietario',
+            'id_estado'    => '1',
+            'nombre' => 'Vigente'
+        ]);
+           Mensajes::create([
+            'id_modulo'    => '1',
+            'nombre_modulo'    => 'Borrador Propietario',
+            'id_estado'    => '2',
+            'nombre' => 'Correo Enviado'
+        ]);
+           Mensajes::create([
+            'id_modulo'    => '1',
+            'nombre_modulo'    => 'Borrador Propietario',
+            'id_estado'    => '3',
+            'nombre' => 'Reenvío Correo'
+        ]);
+    }
 }
+
+

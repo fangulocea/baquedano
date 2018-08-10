@@ -6,6 +6,7 @@ use App\Persona;
 use App\Region;
 use App\Cargo;
 use App\User;
+use Yajra\Datatables\Datatables;
 use Illuminate\Http\Request;
 use Illuminate\Database\Query\Builder;
 use DB;
@@ -63,12 +64,33 @@ class PersonaController extends Controller
      */
     public function index()
     {
-        $personas = DB::table('personas')
-        ->leftjoin('comunas', 'personas.id_comuna', '=', 'comunas.comuna_id')
-        ->Where('personas.id','<>',1)
-        ->get();
-        return view('persona.index', compact('personas'));
+        return view('persona.index');
     }
+
+
+    public function index_ajax()
+    {
+        $personas = DB::table('personas as p')
+        ->leftjoin('comunas as c', 'p.id_comuna', '=', 'c.comuna_id')
+        ->Where('p.id','<>',1)
+        ->leftjoin('mensajes as m', function($join){
+                 $join->on('m.nombre_modulo', '=',DB::raw("'Vigencia'"));
+                 $join->on('m.id_estado', '=', 'p.id_estado');
+            })
+            ->select(DB::raw("p.id,CONCAT_WS(' ',p.nombre,p.apellido_paterno,p.apellido_materno) as Persona, p.tipo_cargo, m.nombre as estado"))
+            ->get();
+
+            return Datatables::of($personas)
+         ->addColumn('action', function ($personas) {
+                               return  '<a href="/persona/'.$personas->id.'/edit"><span class="btn btn-warning btn-circle btn-sm"><i class="ti-pencil-alt"></i></span></a>';
+        })
+        ->addColumn('id_link', function ($personas) {
+                               return  '<a href="/persona/'.$personas->id.'/edit"><span class="btn btn-success btn-sm"> '.$personas->id.'</span> </a>';
+        })
+        ->rawColumns(['id_link','action'])
+        ->make(true);
+    }
+
 
     /**
      * Show the form for creating a new resource.

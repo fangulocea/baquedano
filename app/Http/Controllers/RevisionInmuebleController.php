@@ -13,6 +13,7 @@ use DateTime;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\File;
+use Yajra\Datatables\Datatables;
 
 class RevisionInmuebleController extends Controller
 {
@@ -23,11 +24,26 @@ class RevisionInmuebleController extends Controller
      */
     public function index()
     {
-            $inm = DB::select("SELECT i.id, i.direccion, i.condicion, i.numero, i.departamento, i.observaciones, i.dormitorio, i.bano, i.estacionamiento, i.bodega, i.piscina, i.precio, i.gastosComunes, i.id_comuna, i.id_region, i.id_provincia, i.created_at, i.updated_at, i.estado, i.deleted_at, (select count(*) from adm_revisioninmueble as a where a.id_inmueble= i.id) as cant_revisiones, (select count(*) from adm_fotorevinmueble as a where a.id_inmueble= i.id) as cant_fotos, c.comuna_nombre FROM inmuebles as i left join comunas c on i.id_comuna=c.comuna_id");
+
+            return view('revisioninmueble.index');
+    }
+
+    public function index_ajax()
+    {
+            $inm = DB::select("SELECT CONCAT_WS(' ', i.direccion,' #',i.numero, ' Dpto ', i.departamento) as direccion, i.id, i.direccion, i.condicion, i.numero, i.departamento, i.observaciones, i.dormitorio, i.bano, i.estacionamiento, i.bodega, i.piscina, i.precio, i.gastosComunes, i.id_comuna, i.id_region, i.id_provincia, i.created_at, i.updated_at, i.estado, i.deleted_at, (select count(*) from adm_revisioninmueble as a where a.id_inmueble= i.id) as cant_revisiones, (select count(*) from adm_fotorevinmueble as a where a.id_inmueble= i.id) as cant_fotos, c.comuna_nombre FROM inmuebles as i left join comunas c on i.id_comuna=c.comuna_id
+                 ");
 
            // $inm = DB::table('inmuebles')->join('comunas', 'inmuebles.id_comuna', '=', 'comunas.comuna_id')->get();
 
-            return view('revisioninmueble.index',compact('inm'));
+                   return Datatables::of($inm)
+         ->addColumn('action', function ($inm) {
+                               return  '<a href="revisioninmueble/edit/'.$inm->id.'"><span class="btn btn-warning btn-circle btn-sm"><i class="ti-pencil-alt"></i></span></a>';
+        })
+        ->addColumn('id_link', function ($inm) {
+                               return  '<a href="/revisioninmueble/edit/'.$inm->id.'"><span class="btn btn-success btn-sm"> '.$inm->id.'</span> </a>';
+        })
+        ->rawColumns(['id_link','action'])
+        ->make(true);
     }
 
     /**

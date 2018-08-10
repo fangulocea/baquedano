@@ -198,6 +198,9 @@ Route::middleware(['auth'])->group(function(){
 	Route::get('persona','PersonaController@index')->name('persona.index')
 		->middleware('permission:persona.index');
 
+	Route::get('persona/index','PersonaController@index_ajax')->name('persona.index_ajax')
+		->middleware('permission:persona.index');
+
 	Route::get('persona/create','PersonaController@create')->name('persona.create')
 		->middleware('permission:persona.create');
 
@@ -213,6 +216,7 @@ Route::middleware(['auth'])->group(function(){
 
 	Route::delete('persona/{persona},{cargo}','PersonaController@destroy')->name('persona.destroy')
 		->middleware('permission:persona.destroy');
+
 
 	Route::get('persona/{persona}/edit','PersonaController@edit')->name('persona.edit')
 		->middleware('permission:persona.edit');
@@ -685,6 +689,9 @@ Route::middleware(['auth'])->group(function(){
 	Route::get('revisionpersona','RevisionPersonaController@index')->name('revisionpersona.index')
 		->middleware('permission:revisioncomercial.index');
 
+		Route::get('revisionpersona/index','RevisionPersonaController@index_ajax')->name('revisionpersona.index_ajax')
+		->middleware('permission:revisioncomercial.index');
+
 	Route::get('revisionpersona/create/{id}','RevisionPersonaController@create')->name('revisionpersona.create')
 		->middleware('permission:revisioncomercial.create');
 
@@ -720,6 +727,9 @@ Route::get('revisionpersona/eliminarfoto/{idf}/{idc}','RevisionPersonaController
 		->middleware('permission:revisioncomercial.create');
 
 	Route::get('revisioninmueble','RevisionInmuebleController@index')->name('revisioninmueble.index')
+		->middleware('permission:revisioncomercial.index');
+
+	Route::get('revisioninmueble/index','RevisionInmuebleController@index_ajax')->name('revisioninmueble.index_ajax')
 		->middleware('permission:revisioncomercial.index');
 
 	Route::get('revisioninmueble/create/{id}','RevisionInmuebleController@create')->name('revisioninmueble.create')
