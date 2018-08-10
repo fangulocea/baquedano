@@ -45,6 +45,8 @@
 </div>  
 <hr>
 
+{{ $id_contrato }}, {{ $id_publicacion }}
+
 <form action="{{ route('finalContrato.savepagofin', [ $id_contrato, $id_publicacion ] ) }}" method="post" enctype='multipart/form-data'>
 {!! csrf_field() !!}
 <input type="hidden" name="_token" value="{{ csrf_token() }}">
@@ -55,7 +57,7 @@
             <label>Monto a Pagar</label>
             <div class="input-group"> 
                 <span class="input-group-addon">$</span>
-                <input name='valor' type="number" value="{{ $totalFinal - $pagosuma }}" class="form-control" required="required">
+                <input name='valor' type="number" value="{{ $saldo }}" class="form-control" required="required">
             </div>
         </div>
     </div>
@@ -78,8 +80,7 @@
     </div>
     <div class="col-md-2"></div>
 </div>
-
-<div class="row">
+ <div class="row">
     <div class="col-md-6"> 
         <div class="form-group">
             <label for="input-file-now-custom-1">Comprobante de Pago</label>
@@ -94,11 +95,35 @@
             <th width="170px" style="text-align: center;">Saldo</th>
             <th width="170px" style="text-align: center;">Comprobante</th>
           </tr>
+        @php
+            $contador = 1;
+        @endphp          
           @foreach($pagos as $p)
               <tr>
                 <td style="text-align: center;">{{ $p->fecha }}</td>
                 <td style="text-align: center;">{{ $p->monto }}</td>
-                <td style="text-align: center;">{{ $totalFinal - $p->monto }}</td>
+                <td style="text-align: center;">
+                    @php
+                        if($contador == 1)
+                        {
+                            $anterior = $totalFinal - $p->monto;
+                            echo $anterior;
+                            $contador = 2;
+                        }
+                        elseif($contador == 2)
+                        {
+                            $anterior = $anterior - $p->monto;
+                            echo $anterior;
+                            $contador = 3;   
+                        }
+                        else
+                        {
+                            $anterior = $anterior - $p->monto;
+                            echo $anterior;
+                            $contador = 2;      
+                        }
+                    @endphp
+                </td>
                 <td style="text-align: center;"><a href="{{ URL::asset($p->ruta.'/'.$p->nombre) }}" target="_blank">BAJAR ARCHIVO</a></td> 
               </tr>
           @endforeach

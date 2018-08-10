@@ -176,9 +176,9 @@ class ContratoFinalController extends Controller {
                     ->where("p.id_contrato","=",$id_contrato)
                     ->sum('p.monto');
 
-
-
         $totalFinal = (int)$garantia_p->valor + (int)$totalGarantia;
+
+        $saldo = (int)$totalFinal - (int)$pagosuma;
 
         $propietario_propiedad = DB::table('cap_publicaciones as c')
                     ->leftjoin('personas as p', 'c.id_propietario', '=', 'p.id')
@@ -188,7 +188,7 @@ class ContratoFinalController extends Controller {
                     ->select(DB::raw(' c.id_propietario, UPPER(p.nombre) as nombre, UPPER(p.apellido_paterno) as apellido_paterno, UPPER(p.apellido_materno) as apellido_materno, i.id as id_inmueble, UPPER(i.direccion) as direccion, i.numero, UPPER(co.comuna_nombre) as comuna '))
                     ->first();         
 
-        return view('contratoFinal.pago', compact('cuadraturas', 'garantia_p','totalGarantia','totalFinal','propietario_propiedad','id_contrato','id_publicacion','pagos','pagosuma'));
+        return view('contratoFinal.pago', compact('saldo','cuadraturas', 'garantia_p','totalGarantia','totalFinal','propietario_propiedad','id_contrato','id_publicacion','pagos','pagosuma'));
     }
 
 //////
@@ -200,7 +200,7 @@ class ContratoFinalController extends Controller {
                     ->leftjoin('inmuebles as i', 'c.id_inmueble', '=', 'i.id')
                     ->leftjoin('comunas as co', 'i.id_comuna', '=', 'co.comuna_id')
                     ->where('c.id','=',$id_publicacion)
-                    ->select(DB::raw(' c.id_propietario, UPPER(p.nombre) as nombre, UPPER(p.apellido_paterno) as apellido_paterno, UPPER(p.apellido_materno) as apellido_materno, i.id as id_inmueble, UPPER(i.direccion) as direccion, i.numero, UPPER(co.comuna_nombre) as comuna,p.email '))
+                    ->select(DB::raw(' c.id_propietario, UPPER(p.nombre) as nombre, UPPER(p.apellido_paterno) as apellido_paterno, UPPER(p.apellido_materno) as apellido_materno, p.telefono , i.id as id_inmueble, UPPER(i.direccion) as direccion, i.numero, UPPER(co.comuna_nombre) as comuna,p.email '))
                     ->first();         
 
         $pagos = DB::table('propietariopagofin as p')
@@ -255,6 +255,7 @@ class ContratoFinalController extends Controller {
 public function savepagofin(Request $request,$id_contrato,$id_publicacion) {
 
         $fecha = DateTime::createFromFormat('Y-m-d', $request->fecha);
+
         $contratoFinal = propietariopagofin::create([
                     "id_contrato"       => $id_contrato,
                     "id_publicacion"    => $id_publicacion,
@@ -313,6 +314,8 @@ public function savepagofin(Request $request,$id_contrato,$id_publicacion) {
 
         $totalFinal = (int)$garantia_p->valor + (int)$totalGarantia;
 
+        $saldo = (int)$totalFinal - (int)$pagosuma;
+
         $propietario_propiedad = DB::table('cap_publicaciones as c')
                     ->leftjoin('personas as p', 'c.id_propietario', '=', 'p.id')
                     ->leftjoin('inmuebles as i', 'c.id_inmueble', '=', 'i.id')
@@ -321,22 +324,27 @@ public function savepagofin(Request $request,$id_contrato,$id_publicacion) {
                     ->select(DB::raw(' c.id_propietario, UPPER(p.nombre) as nombre, UPPER(p.apellido_paterno) as apellido_paterno, UPPER(p.apellido_materno) as apellido_materno, i.id as id_inmueble, UPPER(i.direccion) as direccion, i.numero, UPPER(co.comuna_nombre) as comuna '))
                     ->first();    
 
+
+
         $arrendatario = DB::table('arrendatarios as a')
                    ->leftjoin('personas as p', 'a.id_arrendatario', '=', 'p.id')
                    ->where('a.id_inmueble','=',$propietario_propiedad->id_inmueble)
                    ->select(DB::raw('a.id, a.id_arrendatario, p.nombre, p.apellido_paterno, p.apellido_materno'))
                    ->first();
 
-        $id_arr = DB::table('arrendatarios as a')
-                   ->leftjoin('adm_contratofinalarr as c', 'a.id', '=', 'c.id_publicacion')
-                   ->where('a.id_inmueble','=',$propietario_propiedad->id_inmueble)
-                   ->select(DB::raw(' c.id as contrato '))
-                   ->first();
+        if(isset($arrendatario))
+        {
+            //propiedad con arrendatario
+            $id_arr = DB::table('arrendatarios as a')
+                       ->leftjoin('adm_contratofinalarr as c', 'a.id', '=', 'c.id_publicacion')
+                       ->where('a.id_inmueble','=',$propietario_propiedad->id_inmueble)
+                       ->select(DB::raw(' c.id as contrato '))
+                       ->first();
 
-
-        $garantia_a = DB::table('arrendatario_garantia as a')
-                    ->where('a.id_publicacion','=',$arrendatario->id)
-                    ->first(); 
+            $garantia_a = DB::table('arrendatario_garantia as a')
+                        ->where('a.id_publicacion','=',$arrendatario->id)
+                        ->first(); 
+        }
 
         // $act_contrato = ContratoFinalArr::find($id_arr->contrato)->update(['id_estado' => 13]);
 
@@ -349,7 +357,7 @@ public function savepagofin(Request $request,$id_contrato,$id_publicacion) {
         //             ]);
 
 
-        return view('contratoFinal.pago', compact('cuadraturas', 'garantia_p','totalGarantia','totalFinal','propietario_propiedad','id_contrato','id_publicacion','pagos','pagosuma'));
+        return view('contratoFinal.pago', compact('saldo','cuadraturas', 'garantia_p','totalGarantia','totalFinal','propietario_propiedad','id_contrato','id_publicacion','pagos','pagosuma'));
 
 }
 

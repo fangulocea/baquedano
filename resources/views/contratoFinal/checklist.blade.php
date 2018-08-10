@@ -64,7 +64,7 @@
                             <a href="{{ route('checklist.edit', [$p->id_contrato, $p->id, $p->tipo, $p->e_s_r]) }}"><span class="btn btn-warning btn-circle btn-lg"><i class="ti-pencil-alt"></i></span></a>
                         </td>
                         @endcan
-
+ 
                         <td width="10px">
                             
                         </td>
@@ -74,6 +74,9 @@
 
                 </tbody>
             </table>
+
+            <a href="{{ route('finalContrato.edit', [$p->id_contrato,0,0,1]) }}" class="btn btn-info" style="color:white"><i class="fa fa-times-circle"></i>&nbsp;&nbsp;Volver</a>
+
         </div>
     </div>
 </div>
