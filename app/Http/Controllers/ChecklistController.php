@@ -11,9 +11,11 @@ use App\Inmueble;
 use App\ChkInmuebleFoto;
 use Image;
 use Auth;
-use File;
 use Carbon\Carbon;
 use Barryvdh\DomPDF\Facade as PDF;
+use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\File;
 
 class ChecklistController extends Controller
 {
@@ -243,11 +245,6 @@ class ChecklistController extends Controller
                 {   $id_chk      = $request->id_chk;   }                                     
         }
         
-
-
-
-
-
         $tipo        = $request->id_tipo;
         $edr         = $request->edr;
         $id_contrato = $request->id_contrato;
@@ -259,20 +256,42 @@ class ChecklistController extends Controller
 
         if(isset($request->foto))
         {
-            $path='uploads/checklist';
-            $archivo=rand().$request->foto->getClientOriginalName();
-            $img = Image::make($_FILES['foto']['tmp_name'])->resize(600,400, function ($constraint){ 
-                $constraint->aspectRatio();
-            });
-            $img->save($path.'/'.$archivo,72);
-            $imagen=ChkInmuebleFoto::create([
-                   'id_chk'               => $id_chk,
-                   'id_inmueble'          => $id_inmueble,
-                   'nombre'               => $archivo,
-                   'ruta'                 => $path,
-                   'tipo'                 => $request->id_tipo,
-                   'id_creador'           => $request->id_creador
-            ]);
+
+            $input  = array('image' => Input::file('foto'));
+            $reglas = array('image' => 'mimes:jpeg,png');
+            $validacion = Validator::make($input,  $reglas);
+            if ($validacion->fails())
+            {
+                    $path='uploads/checklist';
+                    $archivo=rand().$request->foto->getClientOriginalName();
+                    $file = $request->file('foto');
+                    $file->move($path, $archivo);
+                    $imagen = ChkInmuebleFoto::create([
+                                'id_chk'               => $id_chk,
+                                'id_inmueble'          => $id_inmueble,
+                                'nombre'               => $archivo,
+                                'ruta'                 => $path,
+                                'tipo'                 => $request->id_tipo,
+                                'id_creador'           => $request->id_creador
+                    ]);                
+            }
+            else
+            {
+                $path='uploads/checklist';
+                $archivo=rand().$request->foto->getClientOriginalName();
+                $img = Image::make($_FILES['foto']['tmp_name'])->resize(600,400, function ($constraint){ 
+                    $constraint->aspectRatio();
+                });
+                $img->save($path.'/'.$archivo,72);
+                $imagen=ChkInmuebleFoto::create([
+                       'id_chk'               => $id_chk,
+                       'id_inmueble'          => $id_inmueble,
+                       'nombre'               => $archivo,
+                       'ruta'                 => $path,
+                       'tipo'                 => $request->id_tipo,
+                       'id_creador'           => $request->id_creador
+                ]);                
+            }
 
             Checklist::where('id', '=', $id_chk)->update([
                         'descripcion'     => $request->descripcion,
@@ -294,13 +313,14 @@ class ChecklistController extends Controller
         return redirect()->route('checklist.edit',   [$id_contrato,$id_chk,$tipo,$edr])->with('status', 'Foto guardada con éxito');
     }
 
-public function eliminararchivo($idf,$idi,$idt){
+public function eliminararchivo($idf,$id_contrato,$id_chk,$tipo,$edr){
+
         $imagen=ChkInmuebleFoto::find($idf);
 
         File::delete($imagen->ruta.'/'.$imagen->nombre);
         $foto = ChkInmuebleFoto::find($idf)->delete();
 
-        return redirect()->route('checklist.edit', [$idi,$idt])->with('status', 'Foto eliminada con éxito');
+        return redirect()->route('checklist.edit', [$id_contrato,$id_chk,$tipo,$edr])->with('status', 'Foto eliminada con éxito');
     }
 
     
@@ -321,6 +341,7 @@ static function cantDias($fecha1,$fecha2){
              ->leftjoin('inmuebles as i', 'chk.id_inmueble', '=', 'i.id')
              ->leftjoin('comunas as co', 'i.id_comuna', '=', 'co.comuna_id')
              ->where('chk.id_contrato','=',$id_contrato)
+             ->where('chk.tipo','=',$tipo)
              ->select(DB::raw('chk.id, i.direccion, i.numero, co.comuna_nombre as comuna, 
                                chk.id_estado, chk.tipo, chk.id_bor_arr, chk.id_cap_pro, chk.created_at, chk.id_contrato,chk.e_s_r '))
              ->get();
@@ -332,6 +353,7 @@ static function cantDias($fecha1,$fecha2){
              ->leftjoin('comunas as co', 'i.id_comuna', '=', 'co.comuna_id')
              ->where('chk.id','=',$id_chk)
              ->where('chk.id_contrato','=',$id_contrato)
+             ->where('chk.tipo','=',$tipo)
              ->select(DB::raw('chk.id, i.direccion, i.numero, co.comuna_nombre as comuna, 
                                chk.id_estado, chk.tipo, chk.id_bor_arr, chk.id_cap_pro, chk.created_at, chk.id_contrato,chk.e_s_r '))
              ->get();            
@@ -349,6 +371,7 @@ static function cantDias($fecha1,$fecha2){
              ->leftjoin('inmuebles as i', 'chk.id_inmueble', '=', 'i.id')
              ->leftjoin('comunas as co', 'i.id_comuna', '=', 'co.comuna_id')
              ->where('chk.id_contrato','=',$id_contrato)
+             ->where('chk.tipo','=',$tipo)
              ->select(DB::raw('chk.id, i.direccion, i.numero, co.comuna_nombre as comuna, 
                                chk.id_estado, chk.tipo, chk.id_bor_arr, chk.id_cap_pro, chk.created_at, chk.id_contrato,chk.e_s_r '))
              ->get();
@@ -360,6 +383,7 @@ static function cantDias($fecha1,$fecha2){
              ->leftjoin('comunas as co', 'i.id_comuna', '=', 'co.comuna_id')
              ->where('chk.id','=',$id_chk)
              ->where('chk.id_contrato','=',$id_contrato)
+             ->where('chk.tipo','=',$tipo)
              ->select(DB::raw('chk.id, i.direccion, i.numero, co.comuna_nombre as comuna, 
                                chk.id_estado, chk.tipo, chk.id_bor_arr, chk.id_cap_pro, chk.created_at, chk.id_contrato,chk.e_s_r '))
              ->get();            

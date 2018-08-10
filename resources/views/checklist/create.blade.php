@@ -80,7 +80,7 @@
                                 <center><a href="{{ URL::asset($p->ruta.'/'.$p->nombre) }}" target="_blank">BAJAR ARCHIVO<br> {{ $p->nombre }} </a></center>
                                 @can('revisioncomercial.edit')
                                 <td width="10px">
-                                    <a href="{{ route('checklist.eliminararchivo', [$p->id,$Checklist->id_inmueble,$tipo]) }}" class="btn btn-danger btn-circle btn-lg"><i class="fa fa-check"></i></a>
+                                    <a href="{{ route('checklist.eliminararchivo', [$p->id,$id_contrato,$id_chk,$tipo,$edr]) }}" class="btn btn-danger btn-circle btn-lg"><i class="fa fa-check"></i></a>
                                 </td>
                                 @endcan
                             </tr>
@@ -96,7 +96,7 @@
                 @if($tipo == 'Propietario')
                     <a href="{{ route('checklist.checkindex',[$id_contrato,0 , 'Propietario']) }}" class="btn btn-info" style="color:white"><i class="fa fa-times-circle"></i>&nbsp;&nbsp;Volver</a>
                 @else
-                    <a href="{{ route('checklist.checkindex',[$id_contrato,0 , 'Arrendatario']) }}" class="btn btn-info" style="color:white"><i class="fa fa-times-circle"></i>&nbsp;&nbsp;Volver</a>
+                    <a href="{{ route('checklist.checkindexarr',[$id_contrato,0 , 'Arrendatario']) }}" class="btn btn-info" style="color:white"><i class="fa fa-times-circle"></i>&nbsp;&nbsp;Volver</a>
                 @endif
                 
     </div>

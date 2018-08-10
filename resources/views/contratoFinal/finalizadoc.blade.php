@@ -66,13 +66,7 @@
                 <a href="{{ route('finalContrato.finaliza',[ $id_contrato, $id_publicacion ]) }}" class="btn btn-info" style="color:white"><i class="fa fa-times-circle"></i>&nbsp;&nbsp;Volver</a>
     </div>
 </form>
-
-
-
-
-
-
-
+s
 <script src="{{ URL::asset('plugins/bower_components/jquery/dist/jquery.min.js') }}"></script>
 <!-- Bootstrap Core JavaScript -->
 <script src="{{ URL::asset('bootstrap/dist/js/bootstrap.min.js') }}"></script>

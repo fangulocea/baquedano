@@ -84,7 +84,7 @@ use App\Http\Controllers\ContratoFinalController;
                                         <option value="{{ $n->id }}">{{ $n->nombre }} </option>
                                         @endif
                                         @endforeach   
-                                    </select> 
+                                    </select>  
                                 </td>
                                 <td>
                                     <input type="date" class="form-control" name="fecha_firma" id="fecha_firma" value='{{ $p->fecha }}' required="required">

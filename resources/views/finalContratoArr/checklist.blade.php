@@ -74,6 +74,9 @@
 
                 </tbody>
             </table>
+
+            <a href="{{ route('finalContratoArr.edit', [$p->id_bor_arr,0,0,1]) }}" class="btn btn-info" style="color:white"><i class="fa fa-times-circle"></i>&nbsp;&nbsp;Volver</a>
+
         </div>
     </div>
 </div>

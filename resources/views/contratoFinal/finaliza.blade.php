@@ -66,33 +66,42 @@
                             @endif
 
                             <hr>
-
-                            <a href="{{ route('finalContrato.finalizadoc', [ $id_contrato, $id_publicacion ] ) }}" class="btn btn-info" style="color:white"><i class="fa ti-save"></i>&nbsp;&nbsp;Ingresar Documentación Necesaria para el Cierre</a>
-
-                            <hr>
-                            <a href="{{ route('finalContrato.indexcuadratura', [ $id_contrato, $id_publicacion ] ) }}" class="btn btn-info" style="color:white"><i class="fa ti-save"></i>&nbsp;&nbsp;Ingresar Gastos Básicos, Comunes y Reparaciones</a>
-
-                            <hr>
-
-                            <a href="{{ route('finalContrato.generapago', [ $id_contrato, $id_publicacion ] ) }}" class="btn btn-info" style="color:white"><i class="fa fa-times-circle"></i>&nbsp;&nbsp;Volver</a>
-
-                             <hr>   
-
-
-{{--                             <div class="row">
-                                <div class="col-md-12 ">
-                                    <div class="form-group">
-                                        <label>Detalle del cargo</label>
-                                        <input name='descripcion' type="text" class="form-control"> </div>
+                            <div class="row">
+                                <div class="col-md-3"> </div>
+                                <div class="col-md-6">
+                                    <a href="{{ route('finalContrato.finalizadoc', [ $id_contrato, $id_publicacion ] ) }}" class="btn btn-primary btn-lg btn-block btn-success" style="color:white"><i class="fa ti-save"></i>&nbsp;&nbsp;Ingresar Documentación Necesaria para el Cierre</a>
                                 </div>
+                                <div class="col-md-3"> </div>
                             </div>
- --}}
-
+                            <hr>
+                            <div class="row">
+                                <div class="col-md-3"> </div>
+                                <div class="col-md-6">
+                                    <a href="{{ route('finalContrato.indexcuadratura', [ $id_contrato, $id_publicacion ] ) }}" class="btn btn-primary btn-lg btn-block btn-success" style="color:white"><i class="fa ti-save"></i>&nbsp;&nbsp;Ingresar Gastos Básicos, Comunes y Reparaciones</a>
+                                </div>
+                                <div class="col-md-3"> </div>
+                            </div>                            
+                            <hr>
+                            <div class="row">
+                                <div class="col-md-3"> </div>
+                                <div class="col-md-6">
+                                    <a href="{{ route('finalContrato.generapago', [ $id_contrato, $id_publicacion ] ) }}" class="btn btn-primary btn-lg btn-block btn-warning" style="color:white"><i class="fa ti-money"></i>&nbsp;&nbsp;Generar Pagos</a>
+                                </div>
+                                <div class="col-md-3"> </div>
+                            </div>                            
+                            <hr> 
+                            <div class="row">
+                                <div class="col-md-3"> </div>
+                                <div class="col-md-6">
+                                    <a href="{{ route('finalContrato.edit',[ $id_publicacion,0,0,1 ]) }}"> <button type="button" class="btn btn-primary btn-lg btn-block btn-info"> <i class="fa ti-control-backward"></i>&nbsp;&nbsp;Volver</button></a>
+                                </div>
+                                <div class="col-md-3"> </div>
+                            </div>                              
                         </div>
-                        <div class="form-actions">
-                            <button type="submit" class="btn btn-success"> <i class="fa fa-check"></i> Guardar</button>
+                        
                             
-                        </div>
+                            
+                        
                     </form>
                 </div>
             </div>
