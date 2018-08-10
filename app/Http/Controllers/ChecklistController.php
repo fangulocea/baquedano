@@ -341,6 +341,7 @@ static function cantDias($fecha1,$fecha2){
              ->leftjoin('inmuebles as i', 'chk.id_inmueble', '=', 'i.id')
              ->leftjoin('comunas as co', 'i.id_comuna', '=', 'co.comuna_id')
              ->where('chk.id_contrato','=',$id_contrato)
+             ->where('chk.tipo','=',$tipo)
              ->select(DB::raw('chk.id, i.direccion, i.numero, co.comuna_nombre as comuna, 
                                chk.id_estado, chk.tipo, chk.id_bor_arr, chk.id_cap_pro, chk.created_at, chk.id_contrato,chk.e_s_r '))
              ->get();
@@ -352,6 +353,7 @@ static function cantDias($fecha1,$fecha2){
              ->leftjoin('comunas as co', 'i.id_comuna', '=', 'co.comuna_id')
              ->where('chk.id','=',$id_chk)
              ->where('chk.id_contrato','=',$id_contrato)
+             ->where('chk.tipo','=',$tipo)
              ->select(DB::raw('chk.id, i.direccion, i.numero, co.comuna_nombre as comuna, 
                                chk.id_estado, chk.tipo, chk.id_bor_arr, chk.id_cap_pro, chk.created_at, chk.id_contrato,chk.e_s_r '))
              ->get();            
@@ -369,6 +371,7 @@ static function cantDias($fecha1,$fecha2){
              ->leftjoin('inmuebles as i', 'chk.id_inmueble', '=', 'i.id')
              ->leftjoin('comunas as co', 'i.id_comuna', '=', 'co.comuna_id')
              ->where('chk.id_contrato','=',$id_contrato)
+             ->where('chk.tipo','=',$tipo)
              ->select(DB::raw('chk.id, i.direccion, i.numero, co.comuna_nombre as comuna, 
                                chk.id_estado, chk.tipo, chk.id_bor_arr, chk.id_cap_pro, chk.created_at, chk.id_contrato,chk.e_s_r '))
              ->get();
@@ -380,6 +383,7 @@ static function cantDias($fecha1,$fecha2){
              ->leftjoin('comunas as co', 'i.id_comuna', '=', 'co.comuna_id')
              ->where('chk.id','=',$id_chk)
              ->where('chk.id_contrato','=',$id_contrato)
+             ->where('chk.tipo','=',$tipo)
              ->select(DB::raw('chk.id, i.direccion, i.numero, co.comuna_nombre as comuna, 
                                chk.id_estado, chk.tipo, chk.id_bor_arr, chk.id_cap_pro, chk.created_at, chk.id_contrato,chk.e_s_r '))
              ->get();            

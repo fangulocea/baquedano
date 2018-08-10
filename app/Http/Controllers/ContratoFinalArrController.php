@@ -24,6 +24,7 @@ use Auth;
 use App\ArrendatarioCheques;
 use Carbon\Carbon;
 use App\Checklist;
+use DateTime;
 
 class ContratoFinalArrController extends Controller {
 
@@ -83,6 +84,12 @@ class ContratoFinalArrController extends Controller {
     }
 
     public function crearContrato(Request $request) {
+
+
+        $date = Carbon::now()->addDay(5)->format('Y-m-d');;
+        $date = DateTime::createFromFormat('Y-m-d', $date);
+        array_set($request, 'fecha_limite', $date);
+
 
         $ContratoBorradorArrendatario = ContratoBorradorArrendatario::find($request->id_borradorfinal);
 
@@ -207,12 +214,15 @@ class ContratoFinalArrController extends Controller {
 
         $checklist  = Checklist::create([                      
                     'id_inmueble'       => $borradorPDF->id_inmueble,
-                    "id_contrato" => $contratoFinal->id,
+                    'id_contrato'       => $contratoFinal->id,
                     'id_creador'        => $request->id_creadorfinal,
                     'id_modificador'    => $request->id_creadorfinal,
                     'tipo'              => 'Arrendatario',
+                    'e_s_r'             => 'Entrega',
+                    'fecha_limite'      => $date,
                     'id_bor_arr'        => $ContratoBorradorArrendatario->id_cap_arr,
                     'id_estado'         => '1',
+
         ]);
         
         return redirect()->route('finalContratoArr.edit', [$ContratoBorradorArrendatario->id_cap_arr, 0, 0, 1])

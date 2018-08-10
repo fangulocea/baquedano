@@ -96,7 +96,7 @@
                 @if($tipo == 'Propietario')
                     <a href="{{ route('checklist.checkindex',[$id_contrato,0 , 'Propietario']) }}" class="btn btn-info" style="color:white"><i class="fa fa-times-circle"></i>&nbsp;&nbsp;Volver</a>
                 @else
-                    <a href="{{ route('checklist.checkindex',[$id_contrato,0 , 'Arrendatario']) }}" class="btn btn-info" style="color:white"><i class="fa fa-times-circle"></i>&nbsp;&nbsp;Volver</a>
+                    <a href="{{ route('checklist.checkindexarr',[$id_contrato,0 , 'Arrendatario']) }}" class="btn btn-info" style="color:white"><i class="fa fa-times-circle"></i>&nbsp;&nbsp;Volver</a>
                 @endif
                 
     </div>
