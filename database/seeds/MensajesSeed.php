@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Seeder;
 use App\Mensajes;
+use App\Condicion;
 
 class MensajesSeed extends Seeder
 {
@@ -12,6 +13,13 @@ class MensajesSeed extends Seeder
      */
     public function run()
     {
+        Condicion::create([
+            'id'            => '1', 
+            'descripcion'   => 'Traspaso Reserva',
+            'nombre'        => 'Traspaso Reserva',
+            'estado'        => '1'
+        ]);
+
         Mensajes::create([
             'id'    => '1',
         	'id_modulo'    => '1',

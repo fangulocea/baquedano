@@ -31,7 +31,7 @@
                 </td>
             </tr>
             <tr>
-                <td style="font-family:Arial, sans-serif;font-size:15px;padding:15px 5px;border-style:solid;border-width:0px;overflow:hidden;word-break:normal;border-color:black;background-color:#fffc9e;vertical-align:top"><strong>ESTADO : </strong>                    
+                <td style="font-family:Arial, sans-serif;font-size:15px;padding:15px 5px;border-style:solid;border-width:0px;overflow:hidden;word-break:normal;border-color:black;background-color:#fffc9e;vertical-align:top"><strong>ESTADO : {{ $estado }} </strong>                    
                 </td>
             </tr>
             <tr>
@@ -45,14 +45,12 @@
 </div>  
 <hr>
 
-{{ $id_contrato }}, {{ $id_publicacion }}
-
 <form action="{{ route('finalContrato.savepagofin', [ $id_contrato, $id_publicacion ] ) }}" method="post" enctype='multipart/form-data'>
 {!! csrf_field() !!}
 <input type="hidden" name="_token" value="{{ csrf_token() }}">
 
 <div class="row"> 
-    <div class="col-md-3">
+    <div class="col-md-2">
         <div class="form-group">
             <label>Monto a Pagar</label>
             <div class="input-group"> 
@@ -61,7 +59,7 @@
             </div>
         </div>
     </div>
-    <div class="col-md-3">
+    <div class="col-md-2">
         <div class="form-group">
             <label>Fecha de Pago</label>
             <div class="input-group"> 
@@ -69,6 +67,14 @@
             </div>
         </div>
     </div>
+    <div class="col-md-2">
+        <div class="form-group">
+            <label>Fecha Finalización Contrato</label>
+            <div class="input-group"> 
+                <input type="date" class="form-control" name="fecha_fin" id="fecha_fin" value="{{ $fecha_fin or null }}" required="required">
+            </div>
+        </div>
+    </div>    
     <div class="col-md-2"></div>
     <div class="col-md-2">
         <div class="form-group">

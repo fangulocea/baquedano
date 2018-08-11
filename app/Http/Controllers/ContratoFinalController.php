@@ -31,6 +31,12 @@ use Barryvdh\DomPDF\Facade as PDF;
 use App\propietariopagofin;
 use App\PropietarioPagoFinDoc;
 use App\Arrendatario;
+use App\ContratoFinalArr;
+use App\PropietarioRegistraFin;
+use App\ArrendatarioGarantia;
+use App\Arr_Reservas;
+
+
 
 
 class ContratoFinalController extends Controller {
@@ -133,10 +139,12 @@ class ContratoFinalController extends Controller {
                 ->with('status', 'Garantía ingresada con éxito');
     }
 
-    public function eliminarcuadratura($id,$idp){
+    public function eliminarcuadratura($id,$id_contrato,$id_publicacion){
         PropietarioCuadratura::destroy($id);
+
         return redirect()->route('finalContrato.indexcuadratura', [$id_contrato,$id_publicacion])
                 ->with('status', 'Garantía eliminada con éxito');
+
     }
 
     public function indexcuadratura($id_contrato,$id_publicacion){
@@ -188,7 +196,23 @@ class ContratoFinalController extends Controller {
                     ->select(DB::raw(' c.id_propietario, UPPER(p.nombre) as nombre, UPPER(p.apellido_paterno) as apellido_paterno, UPPER(p.apellido_materno) as apellido_materno, i.id as id_inmueble, UPPER(i.direccion) as direccion, i.numero, UPPER(co.comuna_nombre) as comuna '))
                     ->first();         
 
-        return view('contratoFinal.pago', compact('saldo','cuadraturas', 'garantia_p','totalGarantia','totalFinal','propietario_propiedad','id_contrato','id_publicacion','pagos','pagosuma'));
+        $totalFinal = (int)$garantia_p->valor + (int)$totalGarantia;
+
+        $totalSaldo = $totalFinal - $pagosuma;
+
+        if($pagosuma == 0)
+        { $estado = "PENDIENTE"; }
+        elseif($pagosuma < $totalFinal )
+        { 
+            $estado = "CON SALDO";     
+        }
+        else
+            {
+                $estado = "PAGADO";        
+            }
+
+
+        return view('contratoFinal.pago', compact('estado','saldo','cuadraturas', 'garantia_p','totalGarantia','totalFinal','propietario_propiedad','id_contrato','id_publicacion','pagos','pagosuma'));
     }
 
 //////
@@ -234,13 +258,13 @@ class ContratoFinalController extends Controller {
 
         if($pagosuma == 0)
         { $estado = "PENDIENTE"; }
-        elseif($pagosuma <= $totalFinal )
+        elseif($pagosuma < $totalFinal )
         { 
-            $estado = "PAGADO";     
+            $estado = "CON SALDO";     
         }
         else
             {
-                $estado = "CON SALDO";        
+                $estado = "PAGADO";        
             }
             
         
@@ -255,6 +279,7 @@ class ContratoFinalController extends Controller {
 public function savepagofin(Request $request,$id_contrato,$id_publicacion) {
 
         $fecha = DateTime::createFromFormat('Y-m-d', $request->fecha);
+        $fecha_fin = DateTime::createFromFormat('Y-m-d', $request->fecha_fin);
 
         $contratoFinal = propietariopagofin::create([
                     "id_contrato"       => $id_contrato,
@@ -280,8 +305,6 @@ public function savepagofin(Request $request,$id_contrato,$id_publicacion) {
         }
 
         $act_contrato = ContratoFinal::find($id_contrato)->update(['id_estado' => 6]);
-        
-
 
         $pagos = DB::table('propietariopagofin as p')
                 ->leftjoin('propietariopagofindoc as f', 'p.id', '=', 'f.id_pago')
@@ -290,13 +313,10 @@ public function savepagofin(Request $request,$id_contrato,$id_publicacion) {
                 ->select(DB::raw('p.id as id_pago, p.id_contrato, p.id_publicacion, DATE_FORMAT(p.fecha, "%d/%m/%Y") as fecha, p.monto,p.saldo, f.nombre, f.ruta'))
                 ->get();
 
-
         $pagosuma = DB::table('propietariopagofin as p')
                     ->where("p.id_publicacion","=",$id_publicacion)
                     ->where("p.id_contrato","=",$id_contrato)
                     ->sum('p.monto');
-
-
 
         $cuadraturas = DB::table('propietario_cuadratura as p')
         ->where("p.id_publicacion","=",$id_publicacion)
@@ -324,13 +344,18 @@ public function savepagofin(Request $request,$id_contrato,$id_publicacion) {
                     ->select(DB::raw(' c.id_propietario, UPPER(p.nombre) as nombre, UPPER(p.apellido_paterno) as apellido_paterno, UPPER(p.apellido_materno) as apellido_materno, i.id as id_inmueble, UPPER(i.direccion) as direccion, i.numero, UPPER(co.comuna_nombre) as comuna '))
                     ->first();    
 
-
-
         $arrendatario = DB::table('arrendatarios as a')
                    ->leftjoin('personas as p', 'a.id_arrendatario', '=', 'p.id')
                    ->where('a.id_inmueble','=',$propietario_propiedad->id_inmueble)
                    ->select(DB::raw('a.id, a.id_arrendatario, p.nombre, p.apellido_paterno, p.apellido_materno'))
                    ->first();
+
+        if($pagosuma == 0)
+        {  $estado = "PENDIENTE";  }
+        elseif($pagosuma < $totalFinal )
+        {  $estado = "CON SALDO";  }
+        else
+        {  $estado = "PAGADO";     }
 
         if(isset($arrendatario))
         {
@@ -338,28 +363,125 @@ public function savepagofin(Request $request,$id_contrato,$id_publicacion) {
             $id_arr = DB::table('arrendatarios as a')
                        ->leftjoin('adm_contratofinalarr as c', 'a.id', '=', 'c.id_publicacion')
                        ->where('a.id_inmueble','=',$propietario_propiedad->id_inmueble)
-                       ->select(DB::raw(' c.id as contrato '))
+                       ->select(DB::raw(' c.id as contrato, a.id as id_cap_arr, a.id_arrendatario '))
                        ->first();
 
             $garantia_a = DB::table('arrendatario_garantia as a')
                         ->where('a.id_publicacion','=',$arrendatario->id)
                         ->first(); 
-        }
 
-        // $act_contrato = ContratoFinalArr::find($id_arr->contrato)->update(['id_estado' => 13]);
+            $arr_reserva  = DB::table('arr_reservas as a')
+                            ->where('a.id_arr_ges','=',$id_arr->id_cap_arr)
+                            ->sum('a.monto_reserva');
 
-        // $arrendatario=Arrendatario::create([                      
-        //                     'id_arrendatario'   => $arrendatario->id,
-        //                     'id_creador'        => Auth::user()->id,
-        //                     'id_modificador'    => Auth::user()->id,
-        //                     'preferencias'      => " ",
-        //                     'id_estado'         => '1',
-        //             ]);
+            $arr_garantia = DB::table('arrendatario_garantia as a')
+                            ->where('a.id_publicacion','=',$id_arr->id_cap_arr)
+                            ->sum('a.valor');
+
+            $contratoFinal = PropietarioRegistraFin::create([
+                            'id_contrato'         => $id_contrato, 
+                            'id_publicacion'      => $id_publicacion, 
+                            'id_arrendatario'     => $id_arr->id_arrendatario,
+                            'id_cap_arrendatario' => $id_arr->id_cap_arr,
+                            'fecha'               => $fecha_fin, 
+                            'garantia'            => $arr_garantia, 
+                            'reserva'             => $arr_reserva,
+            ]);                            
+
+            $act_contrato = ContratoFinalArr::find($id_arr->contrato)->update(['id_estado' => 13]);
+            $act_contrato = Arrendatario::find($id_arr->id_cap_arr)->update(['id_estado' => 13]);
+
+            $arrendatario=Arrendatario::create([                      
+                                'id_arrendatario'   => $arrendatario->id_arrendatario,
+                                'id_creador'        => Auth::user()->id,
+                                'id_modificador'    => Auth::user()->id,
+                                'preferencias'      => " ",
+                                'id_estado'         => '1',
+                         ]);
+
+            $arrendatario2=ArrendatarioGarantia::create([                      
+                                'id_publicacion'    => $arrendatario->id,
+                                'valor'             => $arr_garantia,
+                                'id_creador'        => Auth::user()->id,
+                                'id_estado'         => '1', 
+
+                         ]);
+            }
+
+            $arrendatario3=Arr_Reservas::create([                      
+                                'id_condicion'      => 1,
+                                'monto_reserva'     => $arr_reserva,
+                                'descripcion'       => 'Traspaso de reserva',
+                                'id_arr_ges'        => $arrendatario->id,
+                                'id_creador'        => Auth::user()->id,
+                                'id_modificador'    => Auth::user()->id,
+                                'id_estado'         => 1,
+                         ]);
 
 
-        return view('contratoFinal.pago', compact('saldo','cuadraturas', 'garantia_p','totalGarantia','totalFinal','propietario_propiedad','id_contrato','id_publicacion','pagos','pagosuma'));
+
+        return view('contratoFinal.pago', compact('estado','saldo','cuadraturas', 'garantia_p','totalGarantia','totalFinal','propietario_propiedad','id_contrato','id_publicacion','pagos','pagosuma'));
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     public function getContrato($id) {
         $contrato = DB::table('adm_contratofinal  as b')

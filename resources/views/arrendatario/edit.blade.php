@@ -338,6 +338,7 @@
                                 <label class="control-label">Condición</label>
                                 <select class="form-control" name="id_condicion" required="required" >
                                     <option value="">Selecione Condición</option>
+                                    
                                     @if(!isset($reserva->id_condicion))
                                         @foreach($condicion as $p)
                                             <option value="{{ $p->id }}">{{ $p->nombre }}</option>
