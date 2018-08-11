@@ -13,7 +13,12 @@
 <link href="{{ URL::asset('plugins/bower_components/timepicker/bootstrap-timepicker.min.css')}} rel="stylesheet">
 
 <link href="{{ URL::asset('plugins/bower_components/clockpicker/dist/jquery-clockpicker.min.css')}}" rel="stylesheet">
-
+<style>
+#scrollable-dropdown-menu .tt-dropdown-menu {
+  max-height: 130px;
+  overflow-y: auto;
+}
+</style>
 <div class="row">
 
     <div class="col-md-12">
@@ -165,7 +170,7 @@
                                     <div class="form-group">
 
                                         <label>Dirección</label>
-                                        <div id="direcciones">
+                                        <div id="scrollable-dropdown-menu">
                                             <input name='i_direccion' id='i_direccion' class="typeahead form-control" type="text" placeholder="Dirección" required="required" value='{{ $inmueble->direccion or '' }}'> 
                                         </div>
                                         
@@ -195,7 +200,7 @@
                                     <div class="form-group">
 
                                         <label>Referencia</label>
-                                        <div id="direcciones">
+                                        <div >
                                             <input name='i_referencia' id='i_referencia' class="typeahead form-control" type="text" placeholder="Referencia"  value='{{ $inmueble->referencia or '' }}'> 
                                         </div>
                                         
@@ -474,12 +479,15 @@
                                                 <div class="col-md-4 ">
                                                     <div class="form-group">
                                                         <label>Teléfono</label>
-                                                        <input name='p_telefono' id='p_telefono' type="numero" class="form-control" value="{{ $persona->telefono or '' }}" > </div>
+                                                        <input name='p_telefono' id='p_telefono' type="numero" class="typeahead form-control" class="form-control" value="{{ $persona->telefono or '' }}" > </div>
                                                 </div>
                                                 <div class="col-md-8 ">
                                                     <div class="form-group">
+                                                        <div id="scrollable-dropdown-menu">
                                                         <label>Email</label>
-                                                        <input name='p_email' id='p_email' type="email" class="form-control"  value="{{ $persona->email or '' }}" > </div>
+                                                        <input name='p_email' id='p_email' type="email" class="form-control"  value="{{ $persona->email or '' }}" >
+                                                    </div>
+                                                         </div>
                                                 </div>
 
                                             </div>

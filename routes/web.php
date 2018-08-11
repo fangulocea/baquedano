@@ -1356,4 +1356,28 @@ Route::get('revisioncuentas/{id}/moroso','CuentasArrendatarioController@moroso')
 	Route::get('empresas/{empresas}/edit','EmpresasServiciosController@edit')->name('empresas.edit')
 		->middleware('permission:empresas.edit');
 
+//EMPRESA DE POSTVENTA
+
+
+	Route::post('postventa/store','PostVentaController@store')->name('postventa.store')
+		->middleware('permission:postventa.create');
+
+	Route::get('postventa','PostVentaController@index')->name('postventa.index')
+		->middleware('permission:empresas.index');
+
+	Route::get('postventa/create','PostVentaController@create')->name('postventa.create')
+		->middleware('permission:postventa.create');
+
+	Route::post('postventa/{postventa}','PostVentaController@update')->name('postventa.update')
+		->middleware('permission:postventa.edit');
+
+	Route::get('postventa/{postventa}','PostVentaController@show')->name('postventa.show')
+		->middleware('permission:postventa.show');
+
+	Route::delete('postventa/{postventa}','PostVentaController@destroy')->name('postventa.destroy')
+		->middleware('permission:empresas.destroy');
+
+	Route::get('postventa/{postventa}/edit','PostVentaController@edit')->name('postventa.edit')
+		->middleware('permission:postventa.edit');
+
 });

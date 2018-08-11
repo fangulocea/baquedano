@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\PostVenta;
 use Illuminate\Http\Request;
+use App\Persona;
+use App\Mensajes;
+use DB;
 
 class PostVentaController extends Controller
 {
@@ -14,7 +17,7 @@ class PostVentaController extends Controller
      */
     public function index()
     {
-        //
+        return view('postventa.index');
     }
 
     /**
@@ -24,7 +27,18 @@ class PostVentaController extends Controller
      */
     public function create()
     {
-        //
+        $empleados = Persona::where('tipo_cargo', '=', 'Corredor - Externo')
+                ->Orwhere('tipo_cargo', '=', 'Empleado')
+                ->select(DB::raw('id , CONCAT_WS(" ",nombre,apellido_paterno,apellido_materno) as empleado'))
+                ->orderby('empleado',"asc")
+                ->get();
+
+        $estados = Mensajes::where('nombre_modulo', '=', 'Post Venta')
+                 ->select(DB::raw('id_estado , nombre'))
+                ->orderby('nombre',"asc")
+                ->get();
+
+        return view('postventa.create',compact('empleados','estados'));
     }
 
     /**
