@@ -47,10 +47,7 @@ $('#i_direccion').typeahead({
             name: 'direcciones',
             display: 'value',
             source: direcciones,
-
-                templates: {
-                header: '<h4 class="dropdown">Direcciones</h4>'
-            }
+            limit: 20
         });
 
 jQuery('#i_direccion').on('typeahead:selected', function (e, datum) {
@@ -113,10 +110,7 @@ $('#p_email').typeahead({
             name: 'personas',
             display: 'value',
             source: personas,
-
-            templates: {
-                header: '<h4 class="dropdown">Personas</h4>'
-            }
+            limit: 20
         });
 
 
@@ -163,10 +157,7 @@ $('#p_telefono').typeahead({
             name: 'personas',
             display: 'value',
             source: personas,
-
-            templates: {
-                header: '<h4 class="dropdown">Personas</h4>'
-            }
+            limit: 20
         });
 
 jQuery('#p_email').on('typeahead:selected', function (e, datum) {
@@ -417,10 +408,7 @@ $('#i_direccion_c').typeahead({
             name: 'direcciones',
             display: 'value',
             source: direcciones,
-
-                templates: {
-                header: '<h4 class="dropdown">Direcciones</h4>'
-            }
+            limit: 20
         });
 
 jQuery('#i_direccion_c').on('typeahead:selected', function (e, datum) {

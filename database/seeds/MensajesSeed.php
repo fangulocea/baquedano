@@ -314,6 +314,31 @@ Mensajes::create([
             'id_estado'    => '3',
             'nombre' => 'Reenvío Correo'
         ]);
+
+Mensajes::create([
+            'id_modulo'    => '1',
+            'nombre_modulo'    => 'Post Venta',
+            'id_estado'    => '0',
+            'nombre' => 'Activo'
+        ]);
+          Mensajes::create([
+            'id_modulo'    => '1',
+            'nombre_modulo'    => 'Post Venta',
+            'id_estado'    => '1',
+            'nombre' => 'Asignado'
+        ]);
+           Mensajes::create([
+            'id_modulo'    => '1',
+            'nombre_modulo'    => 'Post Venta',
+            'id_estado'    => '2',
+            'nombre' => 'Cerrado'
+        ]);
+           Mensajes::create([
+            'id_modulo'    => '1',
+            'nombre_modulo'    => 'Post Venta',
+            'id_estado'    => '3',
+            'nombre' => 'Anulado'
+        ]);
     }
 }
 

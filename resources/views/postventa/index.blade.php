@@ -4,7 +4,7 @@
 <div class="row">
     <div class="col-md-12">
         <div class="panel panel-info">
-            <div class="panel-heading"> CREACIÓN DE SOLICITUD DE SERVICIO PROPIETARIOS</div>
+            <div class="panel-heading"> CREACIÓN DE SOLICITUD DE POST ATENCIÓN</div>
             <div class="panel-wrapper collapse in" aria-expanded="true">
                 <div class="panel-body">
                         <div id="tabla" >
@@ -51,37 +51,13 @@ var table = $('#listusers').DataTable({
     dom: 'Bfrtip',
     buttons: [
         'excel',{
-            text: 'Crear Solicitud de Servicio Propietario',
+            text: 'Crear Solicitud Post Venta',
             action: function ( e, dt, node, config ) {
-                 window.location.href = '{{ route("solservicio.create") }}';
+                 window.location.href = '{{ route("postventa.create") }}';
             }
         }
     ],
-    ordering: false,
-    pageLength: 10,
-    ServerSide: true,
-    deferRender: true,
-      "ajax": {
-       "url": "{{ route('solservicio.index_ajax') }}"
-    },
-            "columns": [
-                {data: 'id_link', name: 'id_link'},
-                {data: 'Estado', name: 'Estado'},
-                {data: 'Direccion', name: 'Direccion'},
-                {data: 'Comuna', name: 'Comuna'},
-                {data: 'Propietario', name: 'Propietario'},
-                {data: 'email', name: 'email'},
-                {data: 'telefono', name: 'telefono'},
-                {data: 'Creador', name: 'Creador'},
-                {data: 'FechaCreacion', name: 'FechaCreacion'},
-                {data: 'Autorizador', name: 'Autorizador'},
-                {data: 'fecha_autorizacion', name: 'fecha_autorizacion'},
-                {data: 'fecha_uf', name: 'fecha_uf'},
-                {data: 'valor_uf', name: 'valor_uf'},
-                {data: 'valor_en_uf', name: 'valor_en_uf'},
-                {data: 'valor_en_pesos', name: 'valor_en_pesos'},
-                {data: 'action', name: 'action'}
-            ],
+   
    
     language: {
         "sProcessing": "Procesando...",
