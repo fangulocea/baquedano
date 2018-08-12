@@ -28,6 +28,8 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 Route::get('inmuebles/{text}','InmuebleController@getInmuebles');
 
+Route::get('inmuebles/{modulo}/{text}','InmuebleController@getInmuebles_modulo');
+
 Route::get('test','CargosAbonosArrendatariosController@cargos');
 
 Route::get('personas/{text}','PersonaController@getPersonas');
@@ -1455,14 +1457,16 @@ Route::get('revisioncuentas/{id}/moroso','CuentasArrendatarioController@moroso')
 	Route::get('empresas/{empresas}/edit','EmpresasServiciosController@edit')->name('empresas.edit')
 		->middleware('permission:empresas.edit');
 
-//EMPRESA DE POSTVENTA
+//POSTVENTA
 
 
-	Route::post('postventa/store','PostVentaController@store')->name('postventa.store')
-		->middleware('permission:postventa.create');
+	
 
 	Route::get('postventa','PostVentaController@index')->name('postventa.index')
-		->middleware('permission:empresas.index');
+		->middleware('permission:postventa.index');
+
+	Route::post('postventa/grabar','PostVentaController@store')->name('postventa.grabar')
+		->middleware('permission:postventa.create');
 
 	Route::get('postventa/create','PostVentaController@create')->name('postventa.create')
 		->middleware('permission:postventa.create');
@@ -1470,13 +1474,14 @@ Route::get('revisioncuentas/{id}/moroso','CuentasArrendatarioController@moroso')
 	Route::post('postventa/{postventa}','PostVentaController@update')->name('postventa.update')
 		->middleware('permission:postventa.edit');
 
+
 	Route::get('postventa/{postventa}','PostVentaController@show')->name('postventa.show')
 		->middleware('permission:postventa.show');
 
 	Route::delete('postventa/{postventa}','PostVentaController@destroy')->name('postventa.destroy')
 		->middleware('permission:empresas.destroy');
 
-	Route::get('postventa/{postventa}/edit','PostVentaController@edit')->name('postventa.edit')
+	Route::get('postventa/{postventa}/{tab}/edit','PostVentaController@edit')->name('postventa.edit')
 		->middleware('permission:postventa.edit');
 
 });

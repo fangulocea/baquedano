@@ -26,6 +26,7 @@ class ContratoFinal extends Migration
             $table->integer('id_estado');
             $table->integer('meses_contrato')->nullable();
             $table->integer('id_propuesta')->nullable();
+            $table->integer('id_aval')->nullable();
             $table->integer('id_creador')->unsigned();
             $table->foreign('id_creador')->references('id')->on('personas');
             $table->integer('id_modificador')->unsigned()->nullable();

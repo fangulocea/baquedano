@@ -186,7 +186,33 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="row"> 
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label>Nombre Edificio</label>
+                                            <input name='edificio' type="text" class="form-control" >
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label>Nombre Administrador</label>
+                                              <input name='nom_administrador' type="text"  class="form-control" >
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label>Teléfono Administrador</label>
+                                              <input name='tel_administrador' type="text"  class="form-control" >
+                                    </div>
+                                </div>
+                               <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label>Email Administrador</label>
+                                        <input name='email_administrador' type="email"  class="form-control" >
 
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         <div class="form-actions">
                             <button type="submit" class="btn btn-success"> <i class="fa fa-check"></i> Guardar</button>
