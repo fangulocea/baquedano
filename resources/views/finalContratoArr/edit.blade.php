@@ -43,6 +43,7 @@ use App\Http\Controllers\ContratoFinalArrController;
                                     <th>Fecha Firma</th>
                                     <th>Guardar</th>
                                     <th>CheckList</th>
+                                    <th>Finalizar</th>
                                     <th>Eliminar</th>
                                 </tr>
                             </thead>
@@ -93,6 +94,20 @@ use App\Http\Controllers\ContratoFinalArrController;
                                 <td>
                                     <a href="{{ route('checklist.checkindexarr',[$p->id,0 , 'Arrendatario']) }}"> <button type="button" class="btn btn-info"> <i class="fa fa-check"></i> CheckList</button></a>
                                 </td>
+                                <td>
+                                    @php 
+                                        if($p->id_estado == 6) { 
+                                    @endphp
+                                        <a href="#"> <button type="button" class="btn btn-warning" disabled="disabled"> <i class="fa fa-check"></i> Finalizar</button></a>
+                                    @php
+                                    }else{
+                                    @endphp
+                                        <a href="{{ route('finalContratoArr.finaliza',[$p->id,$p->id_publicacion]) }}"> <button type="button" class="btn btn-warning"> <i class="fa fa-check"></i> Finalizar</button></a>
+                                    @php
+                                        }
+                                    @endphp
+                                    
+                                </td>                                
                                 <td>
                                     <a href="{{ route('finalContratoArr.destroy',[$p->id,$p->id_pdf]) }}"> <button type="button" class="btn btn-danger"> <i class="fa fa-check"></i> Eliminar</button></a>
                                 </td>

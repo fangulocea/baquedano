@@ -281,13 +281,17 @@ public function savepagofin(Request $request,$id_contrato,$id_publicacion) {
         $fecha = DateTime::createFromFormat('Y-m-d', $request->fecha);
         $fecha_fin = DateTime::createFromFormat('Y-m-d', $request->fecha_fin);
 
+        $fecha_mes_sig = strtotime('+1 month',strtotime($request->fecha_fin));
+        $fecha_mes_sig = date ('Y-m-d',$fecha_mes_sig );
+        $mes = date("m",strtotime($fecha_mes_sig)); 
+        $ano = date("Y",strtotime($fecha_mes_sig)); 
+
         $contratoFinal = propietariopagofin::create([
                     "id_contrato"       => $id_contrato,
                     "id_publicacion"    => $id_publicacion,
                     "fecha"             => $fecha,
                     "monto"             => $request->valor
         ]);
-
 
         if (isset($request->foto)) {
             $destinationPath = 'uploads/fincontrato';
@@ -404,6 +408,8 @@ public function savepagofin(Request $request,$id_contrato,$id_publicacion) {
                                 'valor'             => $arr_garantia,
                                 'id_creador'        => Auth::user()->id,
                                 'id_estado'         => '1', 
+                                'mes'               => $mes,
+                                'ano'               => $ano,
 
                          ]);
             }
