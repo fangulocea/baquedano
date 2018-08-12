@@ -96,7 +96,7 @@ use App\Http\Controllers\ContratoFinalArrController;
                                 </td>
                                 <td>
                                     @php 
-                                        if($p->id_estado == 6) { 
+                                        if($p->id_estado == 13) { 
                                     @endphp
                                         <a href="#"> <button type="button" class="btn btn-warning" disabled="disabled"> <i class="fa fa-check"></i> Finalizar</button></a>
                                     @php
