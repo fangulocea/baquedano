@@ -39,7 +39,7 @@
                                  <div class="col-md-2">
                                     <div class="form-group">
                                       <label>Departamento</label>
-                                      <input name='departamento' value='{{ $inmueble->departamento or ''}}' type="text" class="form-control" required="required"> </div>
+                                      <input name='departamento' value='{{ $inmueble->departamento or ''}}' type="text" class="form-control" > </div>
                                   </div>
                                   <div class="col-md-2">
                                     <div class="form-group">
@@ -183,6 +183,33 @@
                                                     </div>
                                                 </div>
                                 </div>
+                                                      <div class="row"> 
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label>Nombre Edificio</label>
+                                            <input name='edificio' type="text" class="form-control" value='{{ $inmueble->edificio or '' }}'>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label>Nombre Administrador</label>
+                                              <input name='nom_administrador' type="text"  class="form-control" value='{{ $inmueble->nom_administrador or '' }}'>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label>Teléfono Administrador</label>
+                                              <input name='tel_administrador' type="text"  class="form-control" value='{{ $inmueble->tel_administrador or '' }}'>
+                                    </div>
+                                </div>
+                               <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label>Email Administrador</label>
+                                        <input name='email_administrador' type="email"  class="form-control" value='{{ $inmueble->email_administrador or '' }}'>
+
+                                    </div>
+                                </div>
+                            </div>
 
                             </div>
                             <div class="form-actions">

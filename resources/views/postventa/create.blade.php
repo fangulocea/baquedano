@@ -33,11 +33,15 @@
                 </nav>
                 <div class="content-wrap">
                     <section id="section-iconbox-1" style="height: 500px">
+                        <form action="{{ route('postventa.grabar') }}" method="post" id="form">
+                            {!! csrf_field() !!}
                         <div class="panel panel-info">
                             <div class="panel-heading"> Datos de la Atención</div>
                             <div class="panel-wrapper collapse in" aria-expanded="true">
                                 <div class="panel-body">
                                     <div class="row">
+                                       
+                                        
                                         <div class="col-md-3">
                                             <label>Fecha Solicitud</label>
                                             @php
@@ -45,6 +49,8 @@
                                                     $fecha = date('Y-m-d');
                                                     
                                             @endphp
+                                            <input type="hidden" name="id_contrato" id="id_contrato" >
+                                            <input type="hidden" name="id_modulo" id="id_modulo" >
                                             <input type="date" name="fecha_solicitud" id="fecha_solicitud" value="{{ $fecha }}"  class="form-control">
                                         </div>
                                          <div class="col-md-3">
@@ -58,15 +64,7 @@
 
                                             </select>
                                         </div>
-                                        <div class="col-md-3">
-                                            <label>Tipo de Contrato</label>
-                                            <select name="modulo" id="modulo" class="form-control">
-                                                <option value="">Seleccione</option>
-                                                <option value="Propietario">Propietario</option>
-                                                <option value="Arrendatario">Arrendatario</option>
-                                            </select>
-                                        </div>
-                                        <div class="col-md-3">
+                                         <div class="col-md-3">
                                             <label>Estado</label>
                                             <select name="estado" id="estado" class="form-control">
                                                 <option value="">Seleccione</option>
@@ -75,9 +73,19 @@
                                                 @endforeach
                                             </select>
                                         </div>
+                                    
+                                        <div class="col-md-3">
+                                            <label>Tipo de Contrato</label>
+                                            <select name="modulo" id="modulo" class="form-control">
+                                                <option value="">Seleccione</option>
+                                                <option value="1">Propietario</option>
+                                                <option value="2">Arrendatario</option>
+                                            </select>
+                                        </div>
+        
                                     </div>
                                     <hr>
-                                <div class="row">
+                                <div class="row" id="propietario" style="display:none">
                                         <div class="col-md-12">
                                             <label>Seleccione contrato por Dirección</label>
                                             <div id="scrollable-dropdown-menu">
@@ -85,9 +93,18 @@
                                         </div>
                                         </div>
                                     </div>
+                              <div class="row" id="arrendatario" style="display:none">
+                                        <div class="col-md-12">
+                                            <label>Seleccione contrato por Dirección</label>
+                                            <div id="scrollable-dropdown-menu">
+                                            <input type="text" name="direccion2" id="direccion2"  class="form-control">
+                                        </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
+                    </form>
                     </section>
                     <section id="section-iconbox-2">
                         
@@ -183,6 +200,7 @@ SweetAlert.prototype.init = function () {
 }(window.jQuery);
 
 
+
 var direcciones = new Bloodhound({
     datumTokenizer: function (datum) {
         return Bloodhound.tokenizers.whitespace(datum.value);
@@ -198,13 +216,13 @@ var direcciones = new Bloodhound({
     },
     remote: {
         wildcard: '%QUERY',
-        url: "/inmuebles/%QUERY",
+        url: "/inmuebles/1/%QUERY",
         transform: function (response) {
             return $.map(response, function (dir) {
                 var num=dir.numero==null?'':dir.numero;
                 var dpto=dir.departamento==null?'':dir.departamento;
                 return {value: dir.direccion + ' #' + num  + ' Dpto '+ dpto +',  ' + dir.comuna_nombre,
-                    option: dir.id};
+                    option: dir.id, modulo:1};
             });
         }
     }
@@ -225,14 +243,90 @@ $('#direccion').typeahead({
             name: 'direcciones',
             display: 'value',
             limit: 20,
-            source: direcciones,
-
-                templates: {
-                header: '<h4 class="dropdown">Direcciones</h4>'
-            }
+            source: direcciones
         });
 
 jQuery('#direccion').on('typeahead:selected', function (e, datum) {
+
+    if($("#fecha_solicitud").val()=='' || $("#asignado").val()=='' || $("#modulo").val()=='' || $("#estado").val()=='' ){
+
+        swal({   
+            title: "Debe completar todos los campos del formulario",    
+            type: "error",     
+            confirmButtonColor: "#DD6B55",   
+            closeOnConfirm: true 
+        }, function(){   
+             
+        }); 
+        
+        return false;
+
+    }
+ 
+        swal({   
+            title: "Esta seguro que desea crear una solicitud con el siguiente contrato?",   
+            text: datum.value,   
+            type: "warning",   
+            showCancelButton: true,   
+            confirmButtonColor: "#DD6B55",   
+            confirmButtonText: "SI",   
+            closeOnConfirm: false 
+        }, function(){   
+            $("#id_contrato").val(datum.option);
+            $("#id_modulo").val(1);
+             $('#form').submit();
+        });
+
+   
+});
+
+
+var direcciones1 = new Bloodhound({
+    datumTokenizer: function (datum) {
+        return Bloodhound.tokenizers.whitespace(datum.value);
+    },
+    queryTokenizer: Bloodhound.tokenizers.whitespace,
+    prefetch: {
+        url: "/",
+        transform: function (response) {
+            return $.map(response, function (dir) {
+                return {value: 'Id: ' + dir.id + ', Dir: ' + dir.direccion + ', Nro: ' + dir.numero + ', Comuna: ' + dir.comuna_nombre};
+            });
+        }
+    },
+    remote: {
+        wildcard: '%QUERY',
+        url: "/inmuebles/2/%QUERY",
+        transform: function (response) {
+            return $.map(response, function (dir) {
+                var num=dir.numero==null?'':dir.numero;
+                var dpto=dir.departamento==null?'':dir.departamento;
+                return {value: dir.direccion + ' #' + num  + ' Dpto '+ dpto +',  ' + dir.comuna_nombre,
+                    option: dir.id};
+            });
+        }
+    }
+});
+
+
+
+
+$('#direccion2').typeahead({
+
+    hint: false,
+    highlight: true,
+    minLength: 1,
+    val:'',
+    limit: 10
+},
+        {
+            name: 'direcciones',
+            display: 'value',
+            limit: 20,
+            source: direcciones1
+        });
+
+jQuery('#direccion2').on('typeahead:selected', function (e, datum) {
 
     if($("#fecha_solicitud").val()=='' || $("#asignado").val()=='' || $("#modulo").val()=='' || $("#estado").val()=='' ){
 
@@ -269,6 +363,16 @@ jQuery('#direccion').on('typeahead:selected', function (e, datum) {
         return false;
     });
         $("#modulo").change(function (event) {
+            if(this.value==1){
+                $("#arrendatario").hide();
+                $("#propietario").show();
+            }else if(this.value==2){
+                $("#arrendatario").show();
+                $("#propietario").hide();
+            }else{
+                $("#arrendatario").hide();
+                $("#propietario").hide();
+            }
         jQuery('#direccion').val("");
         return false;
     });

@@ -30,6 +30,10 @@ class CreateInmueblesTable extends Migration
             $table->string('referencia')->nullable();
             $table->integer('bodega')->nullable();
             $table->string('nro_estacionamiento')->nullable();
+            $table->string('edificio')->nullable();
+            $table->string('nom_administrador')->nullable();
+            $table->string('tel_administrador')->nullable();
+            $table->string('email_administrador')->nullable();
             $table->string('piscina')->nullable();
             $table->double('precio', 20, 8)->nullable();
             $table->integer('gastosComunes')->nullable();
