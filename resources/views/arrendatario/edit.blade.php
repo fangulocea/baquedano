@@ -7,6 +7,7 @@
 <link rel="stylesheet" href="{{ URL::asset('plugins/bower_components/dropify/dist/css/dropify.min.css')}}">
 <link href="{{ URL::asset('plugins/bower_components/timepicker/bootstrap-timepicker.min.css')}} rel="stylesheet">
 <link href="{{ URL::asset('plugins/bower_components/clockpicker/dist/jquery-clockpicker.min.css')}}" rel="stylesheet">
+
 <div class="row">
     <div class="col-md-12">
 {{--         @if(isset($inmueble->direccion))
@@ -31,7 +32,7 @@
                 <div class="content-wrap">
                     <section id="section-iconbox-1">
                         <div class="panel panel-info">
-                            <div class="panel-heading"> Nuevo Arrendatario</div>
+                            <div class="panel-heading"> Nuevo Arrendatario </div>
                             <div class="panel-wrapper collapse in" aria-expanded="true">
                                 <div class="panel-body">
                                     <form action="{{ route('arrendatario.update',$arrendatario->id) }}" method="post">
@@ -338,6 +339,7 @@
                                 <label class="control-label">Condición</label>
                                 <select class="form-control" name="id_condicion" required="required" >
                                     <option value="">Selecione Condición</option>
+                                    
                                     @if(!isset($reserva->id_condicion))
                                         @foreach($condicion as $p)
                                             <option value="{{ $p->id }}">{{ $p->nombre }}</option>

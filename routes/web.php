@@ -1077,6 +1077,105 @@ Route::get('cbararrendatario/garantia/eliminar/{id}/{pub}','ContratoBorradorArre
 
 
 
+
+
+
+
+
+		Route::get('finalContratoArr/cuadratura/crear/{id_contrato}/{id_publicacion}','ContratoFinalArrController@indexcuadratura')->name('finalContratoArr.indexcuadratura')->middleware('permission:finalContratoArr.edit');
+
+		Route::get('finalContratoArr/cuadratura/eliminar/{id}/{id_contrato}/{id_publicacion}','ContratoFinalArrController@eliminarCuadratura')->name('finalContratoArr.eliminarCuadratura')
+				->middleware('permission:borradorContrato.edit');
+
+		Route::post('finalContratoArr/cuadratura/{id_contrato}/{id_publicacion}','ContratoFinalArrController@savecuadratura')->name('finalContratoArr.savecuadratura')
+				->middleware('permission:borradorContrato.edit');
+
+		Route::get('finalContratoArr/cuadratura/pago/{id_contrato}/{id_publicacion}','ContratoFinalArrController@generapago')->name('finalContratoArr.generapago')->middleware('permission:finalContratoArr.edit');		
+
+		Route::get('finalContratoArr/cuadratura/comprobante/{id_contrato}/{id_publicacion}','ContratoFinalArrController@comprobantefin')->name('finalContratoArr.comprobantefin')->middleware('permission:finalContratoArr.edit');
+
+		Route::post('finalContratoArr/savepagofin/{id_contrato}/{id_publicacion}','ContratoFinalArrController@savepagofin')->name('finalContratoArr.savepagofin')
+				->middleware('permission:borradorContrato.edit');
+
+
+		Route::get('finalContratoArr/finaliza/{id_contrato}/{id_publicacion}','ContratoFinalArrController@finaliza')->name('finalContratoArr.finaliza')
+		->middleware('permission:finalContratoArr.edit');
+
+		Route::get('finalContratoArr/finalizadoc/{id_contrato}/{id_publicacion}','ContratoFinalArrController@finalizadoc')->name('finalContratoArr.finalizadoc')
+		->middleware('permission:finalContratoArr.edit');
+
+		Route::post('finalContratoArr/doc/{id_contrato}/{id_publicacion}','ContratoFinalArrController@savedocsfinaliza')->name('finalContratoArr.savedocsfinaliza')
+		->middleware('permission:finalContratoArr.edit');
+
+		Route::get('finalContratoArr/eliminardocfinal/{id_documento}/{id_contrato}/{id_publicacion}','ContratoFinalArrController@eliminardocfinal')->name('finalContratoArr.eliminardocfinal')
+		->middleware('permission:finalContratoArr.edit');
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // Contrato Renovacion Arrendatario
 Route::get('contratorenovacionarrendatario','ContratoRenovacionArrendatarioController@index')->name('contratorenovacionarrendatario.index')
 ->middleware('permission:contratorenovacionarrendatario.index');

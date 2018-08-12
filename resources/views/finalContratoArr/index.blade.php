@@ -65,7 +65,7 @@
                                 <td>{{ $p->comuna }}</td>
                                 <td>{{ $p->arrendatario }}</td>
                                 <td>{{ $p->dia_pago }}</td>
-                                <td>{{ trans_choice('mensajes.arrendatario', $p->id_estado) }}</td>
+                                <td>{{ trans_choice('mensajes.arrendatario', $p->id_estado) }} </td>
                                 <td> {{ $p->valoranterior6 - $p->valorpagadoanterior6 }} </td>
                                 <td> {{ $p->valoranterior5 - $p->valorpagadoanterior5 }} </td>
                                 <td> {{ $p->valoranterior4 - $p->valorpagadoanterior4 }} </td>

@@ -18,7 +18,10 @@ class CondicionController extends Controller
     public function index()
     {
 
-        $cond = Condicion::all();
+        $cond = DB::table('condicions')
+        ->Where('condicions.id','<>',1)
+        ->get();
+
         return view('condicion.index',compact('cond'));
 
     }

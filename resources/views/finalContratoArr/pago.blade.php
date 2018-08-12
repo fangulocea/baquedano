@@ -22,11 +22,11 @@
     <div class="col-md-12">
         <table style="border-collapse:collapse;border-spacing:0" width="100%">
             <tr>
-                <th style="font-family:Arial, sans-serif;font-size:15px;font-weight:normal;padding:15px 5px;border-style:solid;border-width:0px;overflow:hidden;word-break:normal;border-color:inherit;background-color:#67fd9a;vertical-align:top"><strong>INMUEBLE :  {{ $propietario_propiedad->direccion or null }} N°{{ $propietario_propiedad->numero or null }}, {{ $propietario_propiedad->comuna or null }}</strong> 
+                <th style="font-family:Arial, sans-serif;font-size:15px;font-weight:normal;padding:15px 5px;border-style:solid;border-width:0px;overflow:hidden;word-break:normal;border-color:inherit;background-color:#67fd9a;vertical-align:top"><strong>INMUEBLE :  {{ $arrendatario_propiedad->direccion or null }} N°{{ $arrendatario_propiedad->numero or null }}, {{ $arrendatario_propiedad->comuna or null }}</strong> 
                 </th>
             </tr>
             <tr>
-                <td style="font-family:Arial, sans-serif;font-size:15px;padding:15px 5px;border-style:solid;border-width:0px;overflow:hidden;word-break:normal;border-color:inherit;background-color:#96fffb;vertical-align:top"><strong>PROPIETARIO :  {{ $propietario_propiedad->nombre or null }} {{ $propietario_propiedad->apellido_paterno or null }} {{ $propietario_propiedad->apellido_materno  or null }}</strong>
+                <td style="font-family:Arial, sans-serif;font-size:15px;padding:15px 5px;border-style:solid;border-width:0px;overflow:hidden;word-break:normal;border-color:inherit;background-color:#96fffb;vertical-align:top"><strong>PROPIETARIO :  {{ $arrendatario_propiedad->nombre or null }} {{ $arrendatario_propiedad->apellido_paterno or null }} {{ $arrendatario_propiedad->apellido_materno  or null }}</strong>
                     
                 </td>
             </tr>
@@ -45,7 +45,7 @@
 </div>  
 <hr>
 
-<form action="{{ route('finalContrato.savepagofin', [ $id_contrato, $id_publicacion ] ) }}" method="post" enctype='multipart/form-data'>
+<form action="{{ route('finalContratoArr.savepagofin', [ $id_contrato, $id_publicacion ] ) }}" method="post" enctype='multipart/form-data'>
 {!! csrf_field() !!}
 <input type="hidden" name="_token" value="{{ csrf_token() }}">
 
@@ -80,7 +80,7 @@
         <div class="form-group">
             <label></label>
             <div class="input-group"> 
-                <a href="{{ route('finalContrato.comprobantefin',[ $id_contrato,$id_publicacion ]) }}"> <button type="button" class="btn btn-primary btn-lg btn-block btn-info">Generar Liquidación de Pago</button></a>
+                <a href="{{ route('finalContratoArr.comprobantefin',[ $id_contrato,$id_publicacion ]) }}"> <button type="button" class="btn btn-primary btn-lg btn-block btn-info">Generar Liquidación de Pago</button></a>
             </div>
         </div>
     </div>
@@ -147,7 +147,7 @@
     <div class="col-md-2"></div>
 </div>
 
-<a href="{{ route('finalContrato.finaliza',[ $id_contrato, $id_publicacion ]) }}" class="btn btn-info" style="color:white"><i class="fa fa-times-circle"></i>&nbsp;&nbsp;Volver</a> 
+<a href="{{ route('finalContratoArr.finaliza',[ $id_contrato, $id_publicacion ]) }}" class="btn btn-info" style="color:white"><i class="fa fa-times-circle"></i>&nbsp;&nbsp;Volver</a> 
 </form>
 
 

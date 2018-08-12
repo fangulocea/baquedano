@@ -101,7 +101,18 @@ use App\Http\Controllers\ContratoFinalController;
                                 </td>
 
                                 <td>
-                                    <a href="{{ route('finalContrato.finaliza',[$p->id,$p->id_publicacion]) }}"> <button type="button" class="btn btn-warning"> <i class="fa fa-check"></i> Finalizar</button></a>
+                                    @php 
+                                        if($p->id_estado == 6) { 
+                                    @endphp
+                                        <a href="#"> <button type="button" class="btn btn-warning" disabled="disabled"> <i class="fa fa-check"></i> Finalizar</button></a>
+                                    @php
+                                    }else{
+                                    @endphp
+                                        <a href="{{ route('finalContrato.finaliza',[$p->id,$p->id_publicacion]) }}"> <button type="button" class="btn btn-warning"> <i class="fa fa-check"></i> Finalizar</button></a>
+                                    @php
+                                        }
+                                    @endphp
+                                    
                                 </td>
 
                                 <td>
