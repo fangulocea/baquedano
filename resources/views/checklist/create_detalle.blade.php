@@ -2,9 +2,6 @@
 @section('contenido')
 
 
-@php 
-use App\Http\Controllers\ChecklistController;
-@endphp
 
 <link href="{{ URL::asset('/plugins/bower_components/typeahead.js-master/dist/typehead-min.css') }}" rel="stylesheet">
 <link href="{{ URL::asset('plugins/bower_components/bootstrap-datepicker/bootstrap-datepicker.min.css') }}" rel="stylesheet" type="text/css" />
@@ -27,65 +24,81 @@ use App\Http\Controllers\ChecklistController;
 <div class="row">
     <div class="col-md-12">
         <div class="panel panel-info">
-            <div class="panel-heading"> CheckList de {{ $edr }} para {{ $tipo }}</div>
+            <div class="panel-heading"> CheckList de {{ $edr }} para {{ $tipo }} ( {{ $NombreTipoCheckList->nombre }} )</div>
         </div>
     </div>
 </div>  
 
 
-<table id="listusers" class="display compact" cellspacing="0" >
-<thead>
-    <tr>
-        <th width="40px"  style="height: 30px;">Id</th>
-        <th width="250px" style="height: 30px;">ítem</th>
-        <th>Acción</th>
-    </tr>
-</thead>
-<tbody>
-    @foreach($listadoCheckList as $p)
-        <tr>
-            <td style="height: 40px;">{{ $p->id }}</td>
-            <td style="height: 40px;">{{ $p->nombre }}</td>
-            @can('checklist.edit')
-                <td width="10px" style="height: 40px;" >
-
-                    @if(ChecklistController::Valida_boton($id_chk,$p->id))
-                        <a href="{{ route('checklist.create_detalle', [ $id_contrato, $id_chk, $tipo, $edr, $p->id ]) }}">
-                            <span class="btn btn-success btn-circle "><i class="ti-check-box"></i></span>
-                        </a>                    
-                    @else
-                        <a href="{{ route('checklist.create_detalle', [ $id_contrato, $id_chk, $tipo, $edr, $p->id ]) }}">
-                            <span class="btn btn-default btn-circle "><i class="ti-control-stop"></i></span>
-                        </a>
-                    @endif
-
-
-
-
-
-                </td>
-            @endcan
-        </tr>
-    @endforeach
-</tbody>
-</table>
-<br>    
-<hr>
+<form action="{{ route('checklist.savefotos',$Checklist->id_inmueble) }}" method="post" enctype='multipart/form-data'>
+    {!! csrf_field() !!}
+    <input type="hidden" name="_token" value="{{ csrf_token() }}">
+    <input type="hidden" name="id_modificador"value="{{ Auth::user()->id_persona }}">
+    <input type="hidden" name="id_creador"value="{{ Auth::user()->id_persona }}">
+    <input type="hidden" name="id_tipo"value="{{ $tipo }}">
+    <input type="hidden" name="edr"value="{{ $edr }}">
+    <input type="hidden" name="id_contrato"value="{{ $id_contrato }}">
+    <input type="hidden" name="id_chk"value="{{ $id_chk }}">
+    <input type="hidden" name="tipo_chk"value="{{ $tipo_chk }}">
 
 
     <div class="row">
-        <div class="col-md-1">
-                @if($tipo == 'Propietario')
-                    <a href="{{ route('checklist.checkindex',[$id_contrato,0 , 'Propietario']) }}" class="btn btn-info" style="color:white"><i class="fa fa-times-circle"></i>&nbsp;&nbsp;Volver</a>
-                @else
-                    <a href="{{ route('checklist.checkindexarr',[$id_contrato,0 , 'Arrendatario']) }}" class="btn btn-info" style="color:white"><i class="fa fa-times-circle"></i>&nbsp;&nbsp;Volver</a>
-                @endif
+        <div class="col-md-6">
+            <div class="form-group">
+                <label>Comentarios / Coordinaciones</label>
+                    <textarea name="comentarios"  id="comentarios" cols="25" rows="10" class="form-control" required="required">{{ $NombreCheckList->comentarios or null }}</textarea>
+            </div>
         </div>
-        <div class="col-md-2">
+    </div>
 
-                    <a href="{{ route('checklist.chkmanual',[$id_contrato, $id_chk, $tipo, $edr]) }}" class="btn btn-success" style="color:white"><i class="ti-pencil-alt"></i>&nbsp;&nbsp;Crear CheckList Manual</a>
-        </div>        
-    </div>  
+
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="white-box"> 
+                <h3 class="box-title">Subir Imágen para: {{ $Checklist->direccion or null }}, #{{ $Checklist->numero or null }}</h3>
+                <label for="input-file-now-custom-1">Imágen de CheckList</label>
+                <input type="file" id="foto" name="foto"  class="dropify"  />  
+            </div>
+        </div>
+
+
+        <div class="col-sm-6">
+            <div class="white-box"> 
+                <table id="ssss"  cellspacing="0" width="100%">
+                    <thead>
+                        <tr>
+                            <th><center>Click Ver Documento</center></th>
+                            <th>Borrar</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($imgReserva as $p)
+                        <tr>
+                            <td  width="10px" height="10px">
+                                <center><a href="{{ URL::asset($p->ruta.'/'.$p->nombre) }}" target="_blank">BAJAR ARCHIVO<br> {{ $p->nombre }} </a></center>
+                                @can('revisioncomercial.edit')
+                                <td width="10px">
+                                    <a href="{{ route('checklist.eliminararchivo', [$p->id,$id_contrato,$id_chk,$tipo,$edr]) }}" class="btn btn-danger btn-circle btn-lg"><i class="fa fa-check"></i></a>
+                                </td>
+                                @endcan
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            </div> 
+    </div>
+    <div class="form-actions">
+                <button type="submit" class="btn btn-success"> <i class="fa fa-check"></i> Guardar</button>
+
+                @if($tipo == 'Propietario')
+                    <a href="{{ route('checklist.edit',[$id_contrato, $id_chk, $tipo, $edr]) }}" class="btn btn-info" style="color:white"><i class="fa fa-times-circle"></i>&nbsp;&nbsp;Volver</a>
+                @else
+                    <a href="{{ route('checklist.edit',[$id_contrato, $id_chk, $tipo, $edr]) }}" class="btn btn-info" style="color:white"><i class="fa fa-times-circle"></i>&nbsp;&nbsp;Volver</a>
+                @endif
+                
+    </div>
+</form>
 
 
 
