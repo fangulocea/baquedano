@@ -41,10 +41,7 @@ use App\Http\Controllers\ContratoFinalArrController;
                                     <th>Alias</th>
                                     <th>Notaria</th>
                                     <th>Fecha Firma</th>
-                                    <th>Guardar</th>
-                                    <th>CheckList</th>
-                                    <th>Finalizar</th>
-                                    <th>Eliminar</th>
+                                    <th>Opciones</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -85,31 +82,27 @@ use App\Http\Controllers\ContratoFinalArrController;
                                     <input type="date" class="form-control" name="fecha_firma" id="fecha_firma" value='{{ $p->fecha }}' required="required">
                                 </td>
                                 <td>
-                                    @if(ContratoFinalArrController::ValidaCh($p->id) == 0)
-                                    <button type="submit" class="btn btn-success"> <i class="fa fa-check"></i> Guardar</button>
+                                   @if(ContratoFinalArrController::ValidaCh($p->id) == 0)
+                                     <button type="submit" class="btn btn-success btn-circle btn-lg"> <a class="mytooltip" href="javascript:void(0)" style="color:white"><i class="fa fa-save"></i> <span class="tooltip-content3" style="font-size: medium;color:white">Guardar <br> Contrato</span></a></button>
                                     @else
                                     <a href="{{ route('finalContratoArr.muestra_cheque',[$p->id,$p->id_pdf,$p->dia_pago]) }}"> <button type="button" class="btn btn-danger"> <i class="fa fa-check"></i> N° Cheques</button></a>
                                     @endif
-                                </td>
-                                <td>
-                                    <a href="{{ route('checklist.checkindexarr',[$p->id,0 , 'Arrendatario']) }}"> <button type="button" class="btn btn-info"> <i class="fa fa-check"></i> CheckList</button></a>
-                                </td>
-                                <td>
+                                
+                                    <a class="mytooltip" href="{{ route('checklist.checkindexarr',[$p->id,0 , 'Arrendatario']) }}"> <button  class="btn btn-info btn-circle btn-lg"> <a class="mytooltip"href="{{ route('checklist.checkindexarr',[$p->id,0 , 'Arrendatario']) }}" style="color:white"><i class="fa fa-check"></i> <span class="tooltip-content3" style="font-size: medium;color:white">Realizar <br> Check-In</span></a></button></a>
+                                
                                     @php 
                                         if($p->id_estado == 13) { 
                                     @endphp
-                                        <a href="#"> <button type="button" class="btn btn-warning" disabled="disabled"> <i class="fa fa-check"></i> Finalizar</button></a>
+                                        <a class="mytooltip"href="#"> <button  class="btn btn-warning btn-circle btn-lg"> <a class="mytooltip" href="javascript:void(0)" style="color:white"><i class="fa fa-lock"></i> <span class="tooltip-content3" style="font-size: medium;color:white">Finalizar / Terminar <br>el Contrato</span></a></button></a>
                                     @php
                                     }else{
                                     @endphp
-                                        <a href="{{ route('finalContratoArr.finaliza',[$p->id,$p->id_publicacion]) }}"> <button type="button" class="btn btn-warning"> <i class="fa fa-check"></i> Finalizar</button></a>
+                                    <a class="mytooltip"href="{{ route('finalContratoArr.finaliza',[$p->id,$p->id_publicacion]) }}"> <button  class="btn btn-warning btn-circle btn-lg"> <a class="mytooltip" href="{{ route('finalContratoArr.finaliza',[$p->id,$p->id_publicacion]) }}" style="color:white"><i class="fa fa-lock"></i> <span class="tooltip-content3" style="font-size: medium;color:white">Finalizar / Terminar <br>el Contrato</span></a></button></a>
                                     @php
                                         }
                                     @endphp
-                                    
-                                </td>                                
-                                <td>
-                                    <a href="{{ route('finalContratoArr.destroy',[$p->id,$p->id_pdf]) }}"> <button type="button" class="btn btn-danger"> <i class="fa fa-check"></i> Eliminar</button></a>
+                                     <a class="mytooltip"href="{{ route('finalContratoArr.destroy',[$p->id,$p->id_pdf]) }}"> <button  class="btn btn-danger btn-circle btn-lg"> <a class="mytooltip" href="{{ route('finalContratoArr.destroy',[$p->id,$p->id_pdf]) }}" style="color:white"><i class="fa fa-trash-o"></i> <span class="tooltip-content3" style="font-size: medium;color:white">Eliminar <br> Contrato</span></a></button></a>
+
                                 </td>
                             </form>
                             </tr>

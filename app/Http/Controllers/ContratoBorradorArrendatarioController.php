@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\ContratoBorradorArrendatario;
+use App\Region;
+use App\Arrendatario;
+use App\Persona;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use DB;
@@ -89,7 +92,7 @@ class ContratoBorradorArrendatarioController extends Controller
          ->leftjoin('inmuebles as i','a.id_inmueble','i.id')
          ->leftjoin('comunas as c', 'i.id_comuna', '=', 'c.comuna_id')
          ->where('a.id','=',$id)
-         ->select(DB::raw('a.id as id_cap_arr, CONCAT_WS(" ",pa.nombre,pa.apellido_paterno,pa.apellido_materno) as arrendatario,i.direccion,i.numero,c.comuna_nombre as comuna,a.id_estado, a.id_arrendatario as id_arrendatario,i.id as id_inmueble,i.precio, i.gastosComunes'))
+         ->select(DB::raw('a.id as id_cap_arr, CONCAT_WS(" ",pa.nombre,pa.apellido_paterno,pa.apellido_materno) as arrendatario,i.direccion,i.numero,c.comuna_nombre as comuna,a.id_estado, a.id_arrendatario as id_arrendatario,i.id as id_inmueble,i.precio, i.gastosComunes, a.id_aval'))
          ->first();
 
          $id_publicacion = DB::table('arrendatarios as a')
@@ -162,15 +165,19 @@ class ContratoBorradorArrendatarioController extends Controller
         $uf = DB::table('adm_uf')
          ->where("fecha","=",Carbon::now()->format('Y/m/d'))
          ->first();  
+
+         $aval=null;
+        if(isset($publica->id_aval)){
+            $aval=Persona::find($publica->id_aval);
+        }
          
         if ($tab == 2) {
             if (count($borradoresIndex) > 0) {
                 $tab = 3;
-            }
-
-           
+            }  
         }
-        return view('contratoborradorarrendatario.edit',compact('garantias','servicio','formasdepago','comision','flexibilidad','multa','contrato','publica','borradoresIndex','id_publicacion','propuestas','tab','uf'));
+        $regiones = Region::pluck('region_nombre', 'region_id');
+        return view('contratoborradorarrendatario.edit',compact('garantias','servicio','formasdepago','comision','flexibilidad','multa','contrato','publica','borradoresIndex','id_publicacion','propuestas','tab','uf','aval','regiones'));
     }
 
     /**
@@ -279,7 +286,7 @@ class ContratoBorradorArrendatarioController extends Controller
                     "id_creador"  => $request->id_creador
                 ])->toArray();
 
-        return redirect()->route('cbararrendatario.edit', [$request->id_cap_arr,3])
+        return redirect()->route('cbararrendatario.edit', [$request->id_cap_arr,4])
         ->with('status', 'Contrato Borrador guardado con éxito');
     }
 
@@ -365,12 +372,12 @@ class ContratoBorradorArrendatarioController extends Controller
             }
         
 
-            return redirect()->route('cbararrendatario.edit',[$borradorCorreo->id_cap_arr,3])
+            return redirect()->route('cbararrendatario.edit',[$borradorCorreo->id_cap_arr,4])
                 ->with('status', 'Correo enviado con éxito');
         }
         else
         {
-            return redirect()->route('cbararrendatario.edit', [$borradorCorreo->id_cap_arr,3])
+            return redirect()->route('cbararrendatario.edit', [$borradorCorreo->id_cap_arr,4])
                 ->with('error', 'No se puede enviar correo a borrador Rechazado');   
         }
 

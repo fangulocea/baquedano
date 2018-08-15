@@ -15,9 +15,16 @@
 }
 </style>
 <div class="row" >
-    <center><h3 class="box-title m-b-0">SOLICITUD NRO {{ $postventa->id }}</h3></center>
+    <center><h3 class="box-title m-b-0">SOLICITUD NRO {{ $postventa->id }}<br></h3>
+        @if($postventa->id_modulo==1)
+            CONTRATO PROPIETARIO
+        @else
+            CONTRATO ARRENDATARIO
+        @endif
+        </center>
     @if(isset($inmueble->direccion))
     <center><h3 class="box-title m-b-0">{{ $inmueble->direccion or null }} # {{ $inmueble->numero or null }} Dpto {{ $inmueble->departamento or null }}, {{ $inmueble->comuna_nombre or null }}</h3></center>
+
     @endif
 
     <div class="col-md-12">
@@ -74,12 +81,18 @@
                                                 </select>
                                             </div>
 
-                                            <div class="col-md-3">
-                                                <label>Tipo de Contrato</label>
-                                                <select name="modulo" id="modulo" class="form-control">
+
+                                           <div class="col-md-3">
+                                                <label>Responsable del pago</label>
+                                                <select name="id_cobro" id="id_cobro" class="form-control" required="required">
                                                     <option value="">Seleccione</option>
-                                                    <option value="1" <?= 1 == $postventa->id_modulo ? 'Selected' : ''; ?>>Propietario</option>
-                                                    <option value="2" <?= 2 == $postventa->id_modulo ? 'Selected' : ''; ?>>Arrendatario</option>
+                                                    <option value="1" <?= 1 == $postventa->id_cobro ? 'Selected' : ''; ?>>Propietario</option>
+                                                    <option value="2" <?= 2 == $postventa->id_cobro ? 'Selected' : ''; ?>>Arrendatario</option>
+                                                     <option value="3" <?= 3 == $postventa->id_cobro ? 'Selected' : ''; ?>>Baquedano</option>
+                                                    <option value="4" <?= 4 == $postventa->id_cobro ? 'Selected' : ''; ?>>Garantía de Proveedor</option>
+                                                    <option value="5" <?= 5 == $postventa->id_cobro ? 'Selected' : ''; ?>>Sin Cobro</option>
+                                                    <option value="5" <?= 5 == $postventa->id_cobro ? 'Selected' : ''; ?>>En Evaluación</option>
+
                                                 </select>
                                             </div>
 
@@ -849,11 +862,13 @@
                                             <td>{{ $p->contacto_con }}</td>
                                             <td>{{ $p->Gestionador }}</td>
                                             <td>{{ $p->fecha_gestion }} {{ $p->hora_gestion }}</td>
-                                            @can('captacion.edit')
-                                            <td width="10px">
-                                                <div class="col-lg-2 col-sm-3 col-xs-12">
+                                            @can('postventa.edit')
+                                            <td >
+          
                                                     <button class="btn btn-success btn-circle btn-lg" id='via_edit' onclick="mostrar_modal({{ $p->id }})" ><i class="fa fa-check"></i></span></button>
-                                                </div>
+
+                                                    <button class="btn btn-danger btn-circle btn-lg" id='via_eliminar'  ><i class="fa fa-trash-o"></i></span></button>
+                                       
 
                                             </td>
                                             @endcan
@@ -869,7 +884,7 @@
                                         <div class="modal-content">
                                             <div class="modal-header">
                                                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                                                <h4 class="modal-title">Ingrese información de la gestión/h4> </div>
+                                                <h4 class="modal-title">Ingrese información de la gestión</h4> </div>
                                             <form id="form1" action="{{ route('postventa.creargestion') }}" method="post">
                                                 <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                                 {!! csrf_field() !!}
@@ -915,10 +930,13 @@
                                                         <div class="col-md-3">
                                                             <label>Fecha/Hora de Contacto</label>
                                                             <div class="input-group">
-                                                                
-                                                                <input type="date" autocomplete="off" class="form-control" id="fecha_gestion" name="fecha_gestion" required="required"> <span class="input-group-addon"><i class="icon-calender"></i></span> 
+                                                                @php
+                                                                $hoy = date("Y-m-d"); 
+                                                                $hora=date("G:i"); 
+                                                                @endphp
+                                                                <input type="date" autocomplete="off" class="form-control" id="fecha_gestion" name="fecha_gestion" required="required" value="{{ $hoy }}"> <span class="input-group-addon"><i class="icon-calender"></i></span> 
                                                                 <div class="input-group clockpicker">
-                                                                    <input type="time" class="form-control" name="hora_gestion" id="hora_gestion" placeholder="HH:MM" required="required" > <span class="input-group-addon"> <span class="glyphicon glyphicon-time"></span> </span>
+                                                                    <input type="time" class="form-control" name="hora_gestion" id="hora_gestion" placeholder="HH:MM" required="required" value="{{ $hora }}" > <span class="input-group-addon"> <span class="glyphicon glyphicon-time"></span> </span>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -938,6 +956,96 @@
                                                             <div class="form-group">
                                                                 <label for="detalle_gestion" class="control-label">Detalle de la gestión</label>
                                                                 <textarea class="form-control" name="detalle_gestion" id="detalle_gestion" cols="25" rows="10" class="form-control" required="required"></textarea>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">Cerrar</button>
+                                                    <button type="submit" class="btn btn-danger waves-effect waves-light">Guardar</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div> 
+                                <!-- FIN MODAL GESTION CREAR -->
+                                <!-- MODAL GESTION UPDATE -->
+                                <div id="modal-edit" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+                                    <div class="modal-dialog modal-lg">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                                <h4 class="modal-title">Actualice información de la gestión</h4> </div>
+                                            <form id="form1" action="{{ route('postventa.updategestion') }}" method="post">
+                                                <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                                {!! csrf_field() !!}
+                                                <input type="hidden" class="form-control" name="id_solicitud_gestion" id="e_id_solicitud_gestion" value="{{ $postventa->id }}">
+                                                <input type="hidden" class="form-control" name="id_gestion" id="e_id_gestion">
+                                                <div class="modal-body">
+                                                    <div class="row">
+                                                        <div class="col-md-3">
+                                                            <label>Gestionador</label>
+                                                            <select name="gestionador" id=e_gestionador class='form-control' required="required">
+                                                                   <option value="">Seleccione</option>
+                                                                                @foreach($empleados as $e )
+                                                                                <option value="{{ $e->id }}" >{{ $e->empleado }}</option>
+                                                                                @endforeach
+                                                            </select>
+                                                        </div>
+                                                       <div class="col-md-3">
+                                                            <label>Tipo de Contacto</label>
+                                                            <select name="tipo_contacto" id=e_tipo_contacto class='form-control' required="required">
+                                                                <option value="">Seleccione</option>
+                                                                <option value="Información Inicial">Información Inicial</option>
+                                                                <option value="Detectar Responsable">Detectar Responsable</option>
+                                                                <option value="Seguimiento">Seguimiento</option>
+                                                                <option value="Reinsistir">Reinsistir</option>
+                                                                <option value="Información de Cierre">Información de Cierre</option>
+                                                                <option value="Otro">Otro</option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            <label>Contacto con </label>
+                                                            <select name="contacto_con" id=e_contacto_con class='form-control' required="required">
+                                                                <option value="">Seleccione</option>
+                                                                <option value="Arrendatario">Arrendatario</option>
+                                                                <option value="Propietarios">Propietario</option>
+                                                                <option value="Propietarios">Administración</option>
+                                                                <option value="Proveedor">Proveedor</option>
+                                                                <option value="Empresa de Servicios">Empresa de Servicio</option>
+                                                                <option value="Empresa de Garantía">Empresa de Garantía</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <br>
+                                                    <div class="row">
+                                                        <div class="col-md-3">
+                                                            <label>Fecha/Hora de Contacto</label>
+                                                            <div class="input-group">
+                                                           
+                                                                <input type="date" autocomplete="off" class="form-control" id="e_fecha_gestion" name="fecha_gestion" required="required" > <span class="input-group-addon"><i class="icon-calender"></i></span> 
+                                                                <div class="input-group clockpicker">
+                                                                    <input type="time" class="form-control" name="hora_gestion" id="e_hora_gestion" placeholder="HH:MM" required="required"  > <span class="input-group-addon"> <span class="glyphicon glyphicon-time"></span> </span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                                    <hr>
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+                                                            <label>Información adicional del Contacto</label>
+                                                            <div class="form-group">
+                                                                <input type="text" name="detalle_contacto" id="e_detalle_contacto" class="form-control">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+                                                            <div class="form-group">
+                                                                <label for="detalle_gestion" class="control-label">Detalle de la gestión</label>
+                                                                <textarea class="form-control" name="detalle_gestion" id="e_detalle_gestion" cols="25" rows="10" class="form-control" required="required"></textarea>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -974,6 +1082,7 @@
 <script src="{{ URL::asset('plugins/bower_components/dropify/dist/js/dropify.min.js') }}"></script>
 
 <script >
+
 
  $('.dropify').dropify();
 
@@ -1344,26 +1453,7 @@ $("#li_8").click(function (event) {
             $("#section-iconbox-7").removeClass("content-current"); 
 
 
-function mostrar_modal(obj){
-    var url= "{{ URL::to('captacion/gestion')}}"+"/"+obj;
-    $.ajax({
-        type:"get",
-        url:url,
-        data:"",
-        success:function(response){
 
-            $('#modal-contacto_edit').modal('show');
-            $('#id_gestion').val(response[0].id);
-            $('#detalle_contacto_e').val(response[0].detalle_contacto);
-            $('#tipo_contacto_e').val(response[0].tipo_contacto);
-            var d = response[0].fecha_gestion.split('-');
-            $('#datepicker-fecha_contacto_e').val(d[2] + '-' + d[1] + '-' + d[0]);
-            $('#hora_gestion_e').val(response[0].hora_gestion);
-            $('#dir_e').val(response[0].dir);
-            tinyMCE.activeEditor.setContent(response[0].detalle_contacto);
-        }
-});
-}
            
 });
 
@@ -1423,5 +1513,95 @@ $('#listgestion').DataTable({
                 });
             }
         });
+
+    function mostrar_modal(obj){
+
+    var url= "{{ URL::to('postventa/gestion')}}"+"/"+obj;
+    $.ajax({
+        type:"get",
+        url:url,
+        data:"",
+        success:function(response){
+;
+            $('#modal-edit').modal('show');
+            $('#e_id_gestion').val(response.id);
+            $('#e_gestionador').val(response.id_gestionador);
+            $('#e_tipo_contacto').val(response.tipo_contacto);
+            $('#e_contacto_con').val(response.contacto_con);
+            
+            var d = response.fecha_gestion.split('-');
+            $('#e_fecha_gestion').val(d[2] + '-' + d[1] + '-' + d[0]);
+            $('#e_hora_gestion').val(response.hora_gestion);
+            $('#e_detalle_contacto').val(response.detalle_contacto);
+            $('#e_detalle_gestion').val(response.detalle_gestion);
+            tinyMCE.activeEditor.setContent(response.detalle_gestion);
+        }
+});
+}
+
+$("#v_id_region").change(function (event) {
+    $("#v_id_provincia").empty();
+    $("#v_id_comuna").empty();
+    $.get("/provincias/" + event.target.value + "", function (response, state) {
+        $("#v_id_provincia").append("<option value=''>Seleccione provincia</option>");
+        for (i = 0; i < response.length; i++) {
+            $("#v_id_provincia").append("<option value='" + response[i].provincia_id + "'>" + response[i].provincia_nombre + "</option>");
+        }
+    });
+});
+
+$("#v_id_provincia").change(function (event) {
+    $("#v_id_comuna").empty();
+    $.get("/comunas/" + event.target.value + "", function (response, state) {
+        $("#v_id_comuna").append("<option value=''>Seleccione comuna</option>");
+        for (i = 0; i < response.length; i++) {
+            $("#v_id_comuna").append("<option value='" + response[i].comuna_id + "'>" + response[i].comuna_nombre + "</option>");
+        }
+    });
+});
+
+
+$("#p_id_region").change(function (event) {
+    $("#p_id_provincia").empty();
+    $("#p_id_comuna").empty();
+    $.get("/provincias/" + event.target.value + "", function (response, state) {
+        $("#p_id_provincia").append("<option value=''>Seleccione provincia</option>");
+        for (i = 0; i < response.length; i++) {
+            $("#p_id_provincia").append("<option value='" + response[i].provincia_id + "'>" + response[i].provincia_nombre + "</option>");
+        }
+    });
+});
+
+$("#p_id_provincia").change(function (event) {
+    $("#p_id_comuna").empty();
+    $.get("/comunas/" + event.target.value + "", function (response, state) {
+        $("#p_id_comuna").append("<option value=''>Seleccione comuna</option>");
+        for (i = 0; i < response.length; i++) {
+            $("#p_id_comuna").append("<option value='" + response[i].comuna_id + "'>" + response[i].comuna_nombre + "</option>");
+        }
+    });
+});
+
+
+$("#a_id_region").change(function (event) {
+    $("#a_id_provincia").empty();
+    $("#a_id_comuna").empty();
+    $.get("/provincias/" + event.target.value + "", function (response, state) {
+        $("#a_id_provincia").append("<option value=''>Seleccione provincia</option>");
+        for (i = 0; i < response.length; i++) {
+            $("#a_id_provincia").append("<option value='" + response[i].provincia_id + "'>" + response[i].provincia_nombre + "</option>");
+        }
+    });
+});
+
+$("#a_id_provincia").change(function (event) {
+    $("#a_id_comuna").empty();
+    $.get("/comunas/" + event.target.value + "", function (response, state) {
+        $("#a_id_comuna").append("<option value=''>Seleccione comuna</option>");
+        for (i = 0; i < response.length; i++) {
+            $("#a_id_comuna").append("<option value='" + response[i].comuna_id + "'>" + response[i].comuna_nombre + "</option>");
+        }
+    });
+});
 </script>
 @endsection

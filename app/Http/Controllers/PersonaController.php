@@ -7,6 +7,7 @@ use App\Region;
 use App\Cargo;
 use App\User;
 use Yajra\Datatables\Datatables;
+use App\Arrendatario;
 use Illuminate\Http\Request;
 use Illuminate\Database\Query\Builder;
 use DB;
@@ -330,11 +331,74 @@ public function update_postventa_v(Request $request, $id)
                     'id_region' => $request->v_id_region,
                     'id_provincia' => $request->v_id_provincia,
                     'tipo_cargo' => 'Aval',
+                    'id_estado'=>1
                 ]);
  return redirect()->route('postventa.edit', [$request->i_postventa_v,5])
         ->with('status', 'Aval guardada con éxito');
     }
 
+
+
+public function update_borrador_v(Request $request, $id)
+    {
+       
+            $captacion = Arrendatario::find($id);
+
+            //Propietario Nuevo
+            if ($captacion->id_aval == null) {
+                $p = Persona::where('rut', '=', $request->v_rut)->first();
+                if ($p != null && isset($request->v_rut)) {
+                    return back()->with('error', 'Rut existente en el sistema');
+                }
+                $persona = Persona::create([
+                    'rut' => $request->v_rut,
+                    'nombre' => $request->v_nombre,
+                    'apellido_paterno' => $request->v_apellido_paterno,
+                    'apellido_materno' => $request->v_apellido_materno,
+                    'direccion' => $request->v_direccion,
+                    'numero' => $request->v_numero,
+                    'departamento' => $request->v_departamento,
+                    'estado_civil' => $request->v_estado_civil,
+                    'profesion' => $request->v_profesion,
+                    'telefono' => $request->v_telefono,
+                    'email' => $request->v_email,
+                    'id_comuna' => $request->v_id_comuna,
+                    'id_region' => $request->v_id_region,
+                    'id_provincia' => $request->v_id_provincia,
+                    'tipo_cargo' => 'Aval',
+                    'id_estado'=>1
+                ]);
+            }
+            //Propietario ya ingresado
+            else {
+                $persona = Persona::whereId($captacion->id_aval)->update([
+                      'rut' => $request->v_rut,
+                    'nombre' => $request->v_nombre,
+                    'apellido_paterno' => $request->v_apellido_paterno,
+                    'apellido_materno' => $request->v_apellido_materno,
+                    'direccion' => $request->v_direccion,
+                    'numero' => $request->v_numero,
+                    'departamento' => $request->v_departamento,
+                    'estado_civil' => $request->v_estado_civil,
+                    'profesion' => $request->v_profesion,
+                    'telefono' => $request->v_telefono,
+                    'email' => $request->v_email,
+                    'id_comuna' => $request->v_id_comuna,
+                    'id_region' => $request->v_id_region,
+                    'id_provincia' => $request->v_id_provincia,
+                    'tipo_cargo' => 'Aval',
+                    'id_estado'=>1
+                ]);
+                 $persona = Persona::find($captacion->id_aval);
+            }
+
+            $captacion = Arrendatario::whereId($id)->update([
+                'id_aval' => $persona->id
+                    ]
+            );
+         return redirect()->route('cbararrendatario.edit', [$id,2])
+        ->with('status', 'Aval guardado con éxito');
+    }
 
     public function edithome($id)
     {
