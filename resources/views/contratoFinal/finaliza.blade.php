@@ -33,7 +33,7 @@
                                 <div class="col-md-2">
                                     <div class="form-group">
                                         <label class="control-label">Garantia a Devolver</label>
-                                        <input type="text" class="form-control" disabled="disabled" value="{{ $garantia_p->valor }}" >
+                                        <input type="text" class="form-control" disabled="disabled" value="{{ $garantia_p->valor or null }}" >
                                     </div>
                                 </div>
 
