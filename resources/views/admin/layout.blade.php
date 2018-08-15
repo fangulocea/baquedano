@@ -73,7 +73,7 @@
                         
                         
                     </ul>
-                    <button class="right-side-toggle waves-effect waves-light btn-info btn-circle pull-right m-l-20"><i class="ti-settings text-white"></i></button>
+                    
                     <ul class="nav navbar-top-links navbar-right pull-right">
                         <li>
                             <form role="search" class="app-search hidden-sm hidden-xs m-r-10">
@@ -424,21 +424,19 @@
         <script src="{{ URL::asset('bootstrap/dist/js/bootstrap.min.js') }}"></script>
         <!-- Menu Plugin JavaScript -->
         <script src="{{ URL::asset('plugins/bower_components/sidebar-nav/dist/sidebar-nav.min.js') }}"></script>
-        <!--slimscroll JavaScript -->
-        <script src="{{ URL::asset('js/jquery.slimscroll.js') }}"></script>
-        <!--Wave Effects -->
-        <script src="{{ URL::asset('js/waves.js') }}"></script>
-        <!--Counter js -->
-        <script src="{{ URL::asset('plugins/bower_components/waypoints/lib/jquery.waypoints.js') }}"></script>
         <script src="{{ URL::asset('plugins/bower_components/counterup/jquery.counterup.min.js') }}"></script>
-        <!--Morris JavaScript -->
+        <script src="{{ URL::asset('js/jquery.slimscroll.js') }}"></script>
+        <script src="{{ URL::asset('plugins/bower_components/waypoints/lib/jquery.waypoints.js') }}"></script>
+        <!--
+        <script src="{{ URL::asset('plugins/bower_components/styleswitcher/jQuery.style.switcher.js') }}"></script>
+        <script src="{{ URL::asset('plugins/bower_components/toast-master/js/jquery.toast.js') }}"></script>
+        <script src="{{ URL::asset('js/waves.js') }}"></script>
         <script src="{{ URL::asset('plugins/bower_components/raphael/raphael-min.js') }}"></script>
         <script src="{{ URL::asset('plugins/bower_components/morrisjs/morris.js') }}"></script>
-        <!-- Calendar JavaScript -->
         <script src="{{ URL::asset('plugins/bower_components/moment/moment.js') }}"></script>
         <script src="{{ URL::asset('plugins/bower_components/calendar/dist/fullcalendar.min.js') }}"></script>
         <script src="{{ URL::asset('plugins/bower_components/calendar/dist/cal-init.js') }}"></script>
-        <!-- Custom Theme JavaScript -->
+         -->
         <script src="{{ URL::asset('js/custom.min.js') }}"></script>
         <script src="{{ URL::asset('js/dashboard1.js') }}"></script>
         <!-- Custom tab JavaScript -->
@@ -450,10 +448,6 @@
                                                });
                                            })();
         </script>
-        <script src="{{ URL::asset('plugins/bower_components/toast-master/js/jquery.toast.js') }}"></script>
-        <!--Style Switcher -->
-        <script src="{{ URL::asset('plugins/bower_components/styleswitcher/jQuery.style.switcher.js') }}"></script>
-
 
     </body>
 

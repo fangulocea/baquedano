@@ -255,6 +255,87 @@ class PersonaController extends Controller
         }
     }
 
+
+public function update_postventa_p(Request $request, $id)
+    {
+          if($id==0){
+            return redirect()->route('postventa.edit', [$request->i_postventa_p,3])->with('error', 'No existe contrato propietario para la propiedad, no se puede guardar la información');
+        }
+ $persona = Persona::whereId($id)->update([
+                    'rut' => $request->p_rut,
+                    'nombre' => $request->p_nombre,
+                    'apellido_paterno' => $request->p_apellido_paterno,
+                    'apellido_materno' => $request->p_apellido_materno,
+                    'direccion' => $request->p_direccion,
+                    'numero' => $request->p_numero,
+                    'departamento' => $request->p_departamento,
+                    'estado_civil' => $request->p_estado_civil,
+                    'profesion' => $request->p_profesion,
+                    'telefono' => $request->p_telefono,
+                    'email' => $request->p_email,
+                    'id_comuna' => $request->p_id_comuna,
+                    'id_region' => $request->p_id_region,
+                    'id_provincia' => $request->p_id_provincia,
+                    'tipo_cargo' => 'Propietario',
+                ]);
+return redirect()->route('postventa.edit', [$request->i_postventa_p,3])
+        ->with('status', 'Propietario guardada con éxito');
+    }
+
+public function update_postventa_a(Request $request, $id)
+    {
+        if($id==0){
+            return redirect()->route('postventa.edit', [$request->i_postventa_a,4])->with('error', 'No existe contrato arrendatario para la propiedad, no se puede guardar la información');
+        }
+ $persona = Persona::whereId($id)->update([
+                    'rut' => $request->a_rut,
+                    'nombre' => $request->a_nombre,
+                    'apellido_paterno' => $request->a_apellido_paterno,
+                    'apellido_materno' => $request->a_apellido_materno,
+                    'direccion' => $request->a_direccion,
+                    'numero' => $request->a_numero,
+                    'departamento' => $request->a_departamento,
+                    'estado_civil' => $request->a_estado_civil,
+                    'profesion' => $request->a_profesion,
+                    'telefono' => $request->a_telefono,
+                    'email' => $request->a_email,
+                    'id_comuna' => $request->a_id_comuna,
+                    'id_region' => $request->a_id_region,
+                    'id_provincia' => $request->a_id_provincia,
+                    'tipo_cargo' => 'Arrendatario',
+                ]);
+return redirect()->route('postventa.edit', [$request->i_postventa_a,4])
+        ->with('status', 'Arrendatario guardada con éxito');
+    }
+
+
+public function update_postventa_v(Request $request, $id)
+    {
+          if($id==0){
+            return redirect()->route('postventa.edit', [$request->i_postventa_v,5])->with('error', 'No existe asignado un aval al contrato arrendatario para la propiedad, no se puede guardar la información');
+        }
+ $persona = Persona::whereId($id)->update([
+                    'rut' => $request->v_rut,
+                    'nombre' => $request->v_nombre,
+                    'apellido_paterno' => $request->v_apellido_paterno,
+                    'apellido_materno' => $request->v_apellido_materno,
+                    'direccion' => $request->v_direccion,
+                    'numero' => $request->v_numero,
+                    'departamento' => $request->v_departamento,
+                    'estado_civil' => $request->v_estado_civil,
+                    'profesion' => $request->v_profesion,
+                    'telefono' => $request->v_telefono,
+                    'email' => $request->v_email,
+                    'id_comuna' => $request->v_id_comuna,
+                    'id_region' => $request->v_id_region,
+                    'id_provincia' => $request->v_id_provincia,
+                    'tipo_cargo' => 'Aval',
+                ]);
+ return redirect()->route('postventa.edit', [$request->i_postventa_v,5])
+        ->with('status', 'Aval guardada con éxito');
+    }
+
+
     public function edithome($id)
     {
         $regiones = Region::pluck('region_nombre','region_id');

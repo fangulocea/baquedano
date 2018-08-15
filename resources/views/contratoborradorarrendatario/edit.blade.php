@@ -228,7 +228,7 @@
                                                     <div class="col-md-2">
                                                         <div class="form-group">
                                                             <label for="input-file-now-custom-1">Valor</label>
-                                                            <input name='valormoneda' id='valormoneda' type="number" class="form-control" required="required" step="any" value="1" >
+                                                            <input name='valormoneda' id='valormoneda' type="number" class="form-control" required="required" step="any" value="1" readonly="readonly">
                                                         </div>
                                                     </div>
                                                 </div>
