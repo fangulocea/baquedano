@@ -19,24 +19,7 @@ use Illuminate\Support\Facades\File;
 
 class ChecklistController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        $publica = DB::table('chkinmuebles as chk')
-         ->leftjoin('inmuebles as i', 'chk.id_inmueble', '=', 'i.id')
-         ->leftjoin('comunas as co', 'i.id_comuna', '=', 'co.comuna_id')
-         ->select(DB::raw('chk.id, i.direccion, i.numero, co.comuna_nombre as comuna, 
-                           chk.id_estado, chk.tipo, chk.id_bor_arr, chk.id_cap_pro, chk.created_at, chk.fecha_limite , chk.id_contrato'))
 
-         ->get();
-
-
-        return view('checklist.index',compact('publica'));
-    }
 
     /**
      * Show the form for creating a new resource.
@@ -443,6 +426,27 @@ static function cantDias($fecha1,$fecha2){
     }
 
 
+
+    public function index()
+    {
+        $publica = DB::table('chkinmuebles as chk')
+         ->leftjoin('inmuebles as i', 'chk.id_inmueble', '=', 'i.id')
+         ->leftjoin('comunas as co', 'i.id_comuna', '=', 'co.comuna_id')
+         ->select(DB::raw('chk.id, i.direccion, i.numero, co.comuna_nombre as comuna, 
+                           chk.id_estado, chk.tipo, chk.id_bor_arr, chk.id_cap_pro, chk.created_at, chk.fecha_limite , chk.id_contrato, chk.e_s_r'))
+         ->orderBy('chk.id_contrato')
+         ->orderBy('chk.tipo')
+         ->get();
+
+        return view('checklist.index',compact('publica'));
+
+    }
+
+
+
+
+
+
     public function checkindex($id_contrato,$id_chk,$tipo)
     {
         if($id_chk == 0)
@@ -503,6 +507,38 @@ static function cantDias($fecha1,$fecha2){
          return view('finalContratoArr.checklist',compact('publica','id_contrato','id_chk','tipo')); 
 
      }
+
+public function creachkportipo($tipoACrear)
+{
+    if($tipoACrear == 'Propietario')
+    {
+        $publica = DB::table('chkinmuebles as chk')
+         ->leftjoin('inmuebles as i', 'chk.id_inmueble', '=', 'i.id')
+         ->leftjoin('comunas as co', 'i.id_comuna', '=', 'co.comuna_id')
+         ->where('chk.tipo','=',$tipoACrear)
+         ->select(DB::raw('chk.id, i.direccion, i.numero, co.comuna_nombre as comuna, 
+                           chk.id_estado, chk.tipo, chk.id_bor_arr, chk.id_cap_pro, chk.created_at, chk.fecha_limite , chk.id_contrato, chk.e_s_r'))
+         ->orderBy('chk.id_contrato')
+         ->get();
+    }
+    elseif ($tipoACrear == 'Arrendatario') 
+    {
+        $publica = DB::table('chkinmuebles as chk')
+        ->select(DB::raw('chk.id_contrato, chk.id, i.direccion, i.numero, co.comuna_nombre as comuna, 
+                           chk.id_estado, chk.tipo, chk.id_bor_arr, chk.id_cap_pro, chk.created_at, chk.fecha_limite , chk.e_s_r'))
+         ->leftjoin('inmuebles as i', 'chk.id_inmueble', '=', 'i.id')
+         ->leftjoin('comunas as co', 'i.id_comuna', '=', 'co.comuna_id')
+         ->where('chk.tipo','=',$tipoACrear)
+         ->orderBy('chk.id_contrato')
+          ->get(); 
+
+    }
+
+    return view('checklist.indexTipo',compact('publica','tipoACrear')); 
+
+}
+
+
 
 
 static function contrato($id_arr,$id_pro,$tipo){

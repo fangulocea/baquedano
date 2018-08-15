@@ -88,6 +88,7 @@ class ContratoFinalController extends Controller {
         }
         else
         { $valida = 0; }
+
         return view('contratoFinal.finaliza', compact('valida','garantia_p','contrato','propietario_propiedad','arrendatario','garantia_a','id_contrato', 'id_publicacion'));
     }
 
@@ -184,7 +185,15 @@ class ContratoFinalController extends Controller {
                     ->where("p.id_contrato","=",$id_contrato)
                     ->sum('p.monto');
 
-        $totalFinal = (int)$garantia_p->valor + (int)$totalGarantia;
+        if(isset($garantia_p->valor))
+        {
+            $totalFinal = (int)$garantia_p->valor + (int)$totalGarantia;    
+        }
+        else
+        {
+            $totalFinal = (int)$totalGarantia;    
+        }
+        
 
         $saldo = (int)$totalFinal - (int)$pagosuma;
 
@@ -196,7 +205,6 @@ class ContratoFinalController extends Controller {
                     ->select(DB::raw(' c.id_propietario, UPPER(p.nombre) as nombre, UPPER(p.apellido_paterno) as apellido_paterno, UPPER(p.apellido_materno) as apellido_materno, i.id as id_inmueble, UPPER(i.direccion) as direccion, i.numero, UPPER(co.comuna_nombre) as comuna '))
                     ->first();         
 
-        $totalFinal = (int)$garantia_p->valor + (int)$totalGarantia;
 
         $totalSaldo = $totalFinal - $pagosuma;
 
@@ -429,63 +437,6 @@ public function savepagofin(Request $request,$id_contrato,$id_publicacion) {
         return view('contratoFinal.pago', compact('estado','saldo','cuadraturas', 'garantia_p','totalGarantia','totalFinal','propietario_propiedad','id_contrato','id_publicacion','pagos','pagosuma'));
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
