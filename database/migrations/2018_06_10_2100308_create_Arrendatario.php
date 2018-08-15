@@ -20,6 +20,8 @@ class CreateArrendatario extends Migration
             $table->foreign('id_arrendatario')->references('id')->on('personas');
             $table->integer('id_inmueble')->unsigned()->nullable();
             $table->foreign('id_inmueble')->references('id')->on('inmuebles');
+            $table->integer('id_aval')->unsigned()->nullable();
+            $table->foreign('id_aval')->references('id')->on('personas');  
             $table->integer('id_creador')->unsigned()->nullable();
             $table->foreign('id_creador')->references('id')->on('personas');   
             $table->integer('id_modificador')->unsigned()->nullable();

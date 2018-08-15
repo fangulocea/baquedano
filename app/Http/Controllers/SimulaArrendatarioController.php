@@ -990,7 +990,7 @@ if($request->moneda=='UF' && $request->arriendo_sim>300){
             $fecha_ini = date("d-m-Y", strtotime("+1 month", strtotime($fecha_ini)));
         }
 
-        return redirect()->route('cbararrendatario.edit', [$idp,2])
+        return redirect()->route('cbararrendatario.edit', [$idp,3])
          ->with('status', 'Simulación generada con éxito');
         
         

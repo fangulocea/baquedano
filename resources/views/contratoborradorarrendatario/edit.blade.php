@@ -23,6 +23,7 @@
                 <nav>
                     <ul>
                         <li id="li_1_c"><a id="6" href="#section-iconbox-1_c" class="sticon ti-money"><span>Registro de Garantía</span></a></li>
+                        <li id="li_2_c"><a id="2" href="#section-iconbox-2_c" class="sticon ti-user"><span>Asignación de Aval</span></a></li>
                         <li id="li_6_c"><a id="6" href="#section-iconbox-6_c" class="sticon ti-money"><span>Simulación de Pago</span></a></li>
                         <li id="li_5_c"><a id="5" href="#section-iconbox-5_c" class="sticon ti-agenda"><span>Gestión Contrato Borrador</span></a></li>
                     </ul>
@@ -165,7 +166,147 @@
                         
 </section>
 {{-- FIN INICIO GARANTIA --}}
+<section id="section-iconbox-2_c">
+ @php
+                   
 
+                        @endphp
+                        <form action="{{ route('persona.update_borrador_v',$publica->id_cap_arr) }}" method="post">
+                            {!! csrf_field() !!}
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="panel panel-warning">
+                                        <div class="panel-heading"> Información del Aval</div>
+                                        <div class="panel-body">
+
+
+                                            <div class="row">
+                                                <div class="col-md-2">
+                                                    <div class="form-group">
+                                                        <label class="control-label">Rut</label>
+                                                        <input type="text" name="v_rut" id="v_rut" class="form-control" placeholder=""  oninput='checkRut(this)' value='{{ $aval->rut or '' }}' > 
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-10">
+                                                </div>
+                                            </div>
+
+                                            <div class="row"> 
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label class="control-label">Nombre</label>
+                                                        <input type="text" name="v_nombre" id="v_nombre"  class="form-control" placeholder="" required="required" value='{{ $aval->nombre or '' }}' > 
+                                                    </div>
+                                                </div>
+                                                <!--/span-->
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label>Apellido Paterno</label>
+                                                        <input type="text" name="v_apellido_paterno" id="v_apellido_paterno" class="form-control" placeholder=""  value='{{ $aval->apellido_paterno or '' }}'> 
+                                                    </div>
+                                                </div>
+                                                <!--/span-->
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label>Apellido Materno</label>
+                                                        <input type="text" name="v_apellido_materno" id="v_apellido_materno" class="form-control" placeholder=""  value='{{ $aval->apellido_materno or '' }}'>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-4 ">
+                                                    <div class="form-group">
+                                                        <label>Profesión / Ocupación</label>
+                                                        <div id="profesion">
+                                                            <input name='v_profesion' id='v_profesion' class="typeahead form-control" type="text" placeholder="Profesión / Ocupación" value="{{ $aval->profesion or ''}}"> 
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4 ">
+                                                    <div class="form-group">
+                                                        @if(!isset($aval->estado_civil))
+                                                        <?php $idr = null; ?>
+                                                        @else
+                                                        <?php $idr = $aval->estado_civil; ?>
+                                                        @endif
+                                                        <label>Estado civil</label>
+                                                        {{ Form::select('v_estado_civil',['Soltero/a'=>'Soltero/a','Casado/a'=>'Casado/a','Viudo/a'=>'Viudo/a','Divorciado/a'=>'Divorciado/a','Separado/a'=>'Separado/a','Conviviente'=>'Conviviente'], $idr ,array('class'=>'form-control','style'=>'','id'=>'v_estado_civil')) }}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6 ">
+                                                    <div class="form-group">
+                                                        <label>Dirección</label>
+                                                        <input name='v_direccion' id='v_direccion' type="text" class="form-control"  value="{{ $aval->direccion or '' }}" > </div>
+                                                </div>
+                                                <div class="col-md-3 ">
+                                                    <div class="form-group">
+                                                        <label>Número</label>
+                                                        <input name='v_numero' id='v_numero' class="typeahead form-control" type="text" placeholder="Dirección" value="{{ $aval->numero or '' }}" > 
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3 ">
+                                                    <div class="form-group">
+                                                        <label>Departamento</label>
+                                                        <input name='v_departamento' id='v_departamento' class="typeahead form-control" type="text" value="{{ $aval->departamento or ''}}" placeholder="Dirección" > 
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-4 ">
+                                                    <div class="form-group">
+                                                        <label>Teléfono</label>
+                                                        <input name='v_telefono' id='v_telefono' type="numero" class="typeahead form-control" class="form-control" value="{{ $aval->telefono or '' }}" > </div>
+                                                </div>
+                                                <div class="col-md-8 ">
+                                                    <div class="form-group">
+                                                        <div >
+                                                            <label>Email</label>
+                                                            <input name='v_email' id='v_email' type="email" class="form-control"  value="{{ $aval->email or '' }}" >
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                            @if(!isset($aval->id_region))
+                                            <?php $idr = null; ?>
+                                            @else
+                                            <?php $idr = $aval->id_region; ?>
+                                            @endif
+                                            <div class="row"> 
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label>Región</label>
+                                                        {{ Form::select('v_id_region',$regiones, $idr,array('class'=>'form-control','style'=>'','id'=>'v_id_region','placeholder'=>'Selecciona región')) }}
+                                                    </div>
+                                                </div>
+
+                                                <!--/span-->
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label>Provincia</label>
+                                                        {{ Form::select('v_id_provincia',[''=>'Selecciona provincia'], null, array('class'=>'form-control','style'=>'','id'=>'v_id_provincia')) }} </div>
+                                                </div>
+                                                <!--/span-->
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label>Comuna</label>
+                                                        {{ Form::select('v_id_comuna',[''=>'Selecciona comuna'], null, array('class'=>'form-control','style'=>'','id'=>'v_id_comuna')) }}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <hr>
+                                            <div class="form-actions">
+                                                <button type="submit" class="btn btn-success"> <i class="fa fa-check"></i> Guardar</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+</section>
 
                     <section id="section-iconbox-6_c">
 
@@ -387,6 +528,7 @@
 
 
 
+
                     <section id="section-iconbox-5_c">
                         <form id="form1_a" action="{{ route('cbararrendatario.crearBorrador') }}" method="post">                 
                             <input type="hidden" name="_token" value="{{ csrf_token() }}">
@@ -394,6 +536,7 @@
                             <input type="hidden" name="id_arrendatario" value="{{ $publica->id_arrendatario }}">
                             <input type="hidden" name="id_inmueble" value="{{ $publica->id_inmueble }}">
                             <input type="hidden" name="id_cap_arr" value="{{ $publica->id_cap_arr }}">
+                            <input type="hidden" name="id_aval" value="{{ $aval->id or null }}">
                             {!! csrf_field() !!}   
 
                             <div class="row">
@@ -554,6 +697,7 @@
                                 <form  action="{{ route('finalContratoArr.crearContrato') }}" method="post"> 
                                     {!! csrf_field() !!}  
                                 <input type="hidden" name="id_creadorfinal" value="{{ Auth::user()->id }}">  
+                                <input type="hidden" name="id_aval" value="{{ $aval->id or null }}">
                                 <div class="col-md-4">
                                     <div class="form-group">
                                             <label class="control-label">
@@ -1164,7 +1308,33 @@ $(function(){
 
 });
 
-
+@if(isset($aval->id))
+   
+            @if(isset($aval->id_region))
+            $("#v_id_provincia").empty();
+            $("#v_id_comuna").empty();
+            $.get("/provincias/"+{{ $aval->id_region or 0}}+"",function(response,state){
+                for(i=0; i< response.length;i++){
+                    sel='';
+                    if(response[i].provincia_id=={{ $aval->id_provincia or 0 }}){
+                        sel=' selected="selected"';
+                    }
+                    $("#v_id_provincia").append("<option value='"+response[i].provincia_id+"' "+sel+">"+response[i].provincia_nombre+"</option>");
+                }
+            });
+            @endif
+            @if(isset($aval->id_provincia))
+            $.get("/comunas/"+{{ $aval->id_provincia or 0 }}+"",function(response,state){
+                for(i=0; i< response.length;i++){
+                    sel='';
+                    if(response[i].comuna_id=={{ $aval->id_comuna or 0 }}){
+                        sel=' selected="selected"';
+                    }
+                    $("#v_id_comuna").append("<option value='"+response[i].comuna_id+"' "+sel+">"+response[i].comuna_nombre+"</option>");
+                }
+            });
+            @endif
+        @endif
 
 
 function mostrar_modalpersona(obj){
@@ -1527,9 +1697,9 @@ if($tab==2){
     $(function() {
 
             $("#li_1_c").removeClass("tab-current");
-            $("#li_6_c").addClass("tab-current");
+            $("#li_2_c").addClass("tab-current");
             $("#section-iconbox-1_c").removeClass("content-current");
-            $("#section-iconbox-6_c").addClass("content-current");
+            $("#section-iconbox-2_c").addClass("content-current");
            }); 
 <?php
 }
@@ -1538,6 +1708,20 @@ if($tab==2){
 
 <?php
 if($tab==3){
+    ?>
+    $(function() {
+
+            $("#li_1_c").removeClass("tab-current");
+            $("#li_6_c").addClass("tab-current");
+            $("#section-iconbox-1_c").removeClass("content-current");
+            $("#section-iconbox-6_c").addClass("content-current");
+           }); 
+<?php
+}
+?>
+
+<?php
+if($tab==4){
     ?>
     $(function() {
 
@@ -1551,27 +1735,44 @@ if($tab==3){
 ?>
 
 $("#li_1_c").click(function (event) {
-             $("#li_1_c").addClass("tab-current");
+            $("#li_1_c").addClass("tab-current");
+            $("#li_2_c").removeClass("tab-current");
             $("#li_6_c").removeClass("tab-current");
             $("#li_5_c").removeClass("tab-current");
             $("#section-iconbox-1_c").addClass("content-current");
+            $("#section-iconbox-2_c").removeClass("content-current");
+            $("#section-iconbox-6_c").removeClass("content-current");
+            $("#section-iconbox-5_c").removeClass("content-current");
+            
+});
+$("#li_2_c").click(function (event) {
+            $("#li_1_c").removeClass("tab-current");
+            $("#li_2_c").addClass("tab-current");
+            $("#li_6_c").removeClass("tab-current");
+            $("#li_5_c").removeClass("tab-current");
+            $("#section-iconbox-1_c").removeClass("content-current");
+            $("#section-iconbox-2_c").addClass("content-current");
             $("#section-iconbox-6_c").removeClass("content-current");
             $("#section-iconbox-5_c").removeClass("content-current");
             
 });
 $("#li_6_c").click(function (event) {
             $("#li_6_c").addClass("tab-current");
+             $("#li_2_c").removeClass("tab-current");
             $("#li_5_c").removeClass("tab-current");
             $("#li_1_c").removeClass("tab-current");
              $("#section-iconbox-6_c").addClass("content-current");
+             $("#section-iconbox-2_c").removeClass("content-current");   
             $("#section-iconbox-5_c").removeClass("content-current");    
             $("#section-iconbox-1_c").removeClass("content-current");        
 });
 $("#li_5_c").click(function (event) {
             $("#li_1_c").removeClass("tab-current");
+            $("#li_2_c").removeClass("tab-current");
             $("#li_6_c").removeClass("tab-current");
             $("#li_5_c").addClass("tab-current");
             $("#section-iconbox-5_c").addClass("content-current");
+            $("#section-iconbox-2_c").removeClass("content-current");   
             $("#section-iconbox-6_c").removeClass("content-current");
             $("#section-iconbox-1_c").removeClass("content-current");      
             
@@ -1600,6 +1801,28 @@ $("#id_simulacion").change(function (event) {
     });
 
 });
+
+$("#v_id_region").change(function (event) {
+    $("#v_id_provincia").empty();
+    $("#v_id_comuna").empty();
+    $.get("/provincias/" + event.target.value + "", function (response, state) {
+        $("#v_id_provincia").append("<option value=''>Seleccione provincia</option>");
+        for (i = 0; i < response.length; i++) {
+            $("#v_id_provincia").append("<option value='" + response[i].provincia_id + "'>" + response[i].provincia_nombre + "</option>");
+        }
+    });
+});
+
+$("#v_id_provincia").change(function (event) {
+    $("#v_id_comuna").empty();
+    $.get("/comunas/" + event.target.value + "", function (response, state) {
+        $("#v_id_comuna").append("<option value=''>Seleccione comuna</option>");
+        for (i = 0; i < response.length; i++) {
+            $("#v_id_comuna").append("<option value='" + response[i].comuna_id + "'>" + response[i].comuna_nombre + "</option>");
+        }
+    });
+});
+
 
 </script>
 @endsection

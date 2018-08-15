@@ -36,6 +36,8 @@ class CreateContratoborradorarrendatarioTable extends Migration
             $table->text('detalle');
             $table->integer('valorarriendo')->nullable();
             $table->integer('id_estado');
+            $table->integer('id_aval')->unsigned()->nullable();
+            $table->foreign('id_aval')->references('id')->on('personas');
             $table->integer('id_creador')->unsigned();
             $table->foreign('id_creador')->references('id')->on('personas');
             $table->integer('id_modificador')->unsigned()->nullable();

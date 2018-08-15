@@ -15,6 +15,7 @@
                                         <thead>
                                             <tr>
                                                 <th>ID</th>
+                                                <th>Tipo Contrato</th>
                                                 <th>Dirección</th>
                                                 <th>Asignado</th>
                                                 <th>Estado</th>
@@ -54,6 +55,8 @@ var table = $('#listusers').DataTable({
     },
             "columns": [
                 {data: 'id_link', name: 'id_link'},
+                {data: 'tipo_contrato', name: 'tipo_contrato'},
+                
                 {data: 'direccion', name: 'direccion'},
                 {data: 'asignacion', name: 'asignacion'},
                 {data: 'estado', name: 'estado'},

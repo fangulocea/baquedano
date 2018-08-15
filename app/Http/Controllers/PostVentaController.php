@@ -12,6 +12,8 @@ use App\GestionPostVenta;
 use App\Captacion;
 use App\Region;
 use App\DocPostVenta;
+use App\ContratoFinalArr;
+use App\Arrendatario;
 use Yajra\Datatables\Datatables;
 use Illuminate\Support\Facades\File;
 use DB;
@@ -41,7 +43,9 @@ class PostVentaController extends Controller
                  $join->on('m.nombre_modulo', '=',DB::raw("'Post Venta'"));
                  $join->on('m.id_estado', '=', 'p.id_estado');
             })
-            ->select(DB::raw("p.id,CONCAT_WS(' ',i.direccion,i.numero,i.departamento,c.comuna_nombre) as direccion, m.nombre as estado, u.name as asignacion, p.updated_at as ultima_modificacion, p.created_at as fecha_creacion"))
+            ->select(DB::raw("p.id,CONCAT_WS(' ',i.direccion,i.numero,i.departamento,c.comuna_nombre) as direccion, m.nombre as estado, u.name as asignacion, p.updated_at as ultima_modificacion, p.created_at as fecha_creacion, 
+                CASE p.id_modulo when 1 then 'CONTRATO PROPIETARIO' when 2 then 'CONTRATO ARRENDATARIO' end as tipo_contrato"))
+            ->orderby("p.id_estado","asc")
             ->get();
 
             return Datatables::of($postventa)
@@ -107,8 +111,8 @@ class PostVentaController extends Controller
             ->join('cap_publicaciones as a',"a.id",'cf.id_publicacion')
             ->whereIn("a.id_estado",[10,11])
             ->first();
-            if(count($contratoarr)>0){
-                $id_propietario=$contratoarr->id_propietario;
+            if(count($contrato)>0){
+                $id_propietario=$contrato->id_propietario;
             }else{
                  $id_propietario=null;
             }
@@ -242,6 +246,34 @@ class PostVentaController extends Controller
         return redirect()->route('postventa.edit', [$request->id_solicitud_gestion, 7])->with('status', 'Gestión agregada con éxito');
     }
 
+
+
+  public function updategestion(Request $request,$id) {
+
+        $gestion= GestionPostVenta::find($request->id_gestion)->update([
+            "id_gestionador" => $request->gestionador,
+            "id_postventa" => $request->id_solicitud_gestion,
+            "tipo_contacto" => $request->tipo_contacto,
+            "contacto_con" => $request->contacto_con,
+            "detalle_contacto"=>$request->detalle_contacto,
+            "detalle_gestion"=>$request->detalle_gestion,
+            "fecha_gestion"=>$request->fecha_gestion,
+            "hora_gestion"=>$request->hora_gestion,
+            "id_modificador"=>Auth::user()->id
+
+        ]);
+
+
+        return redirect()->route('postventa.edit', [$request->id_solicitud_gestion, 7])->with('status', 'Gestión agregada con éxito');
+    }
+
+      public function mostrargestion($id) {
+
+        $gestion= GestionPostVenta::find($id);
+
+            return response()->json($gestion);
+    }
+
     /**
      * Update the specified resource in storage.
      *
@@ -249,9 +281,19 @@ class PostVentaController extends Controller
      * @param  \App\PostVenta  $postVenta
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, PostVenta $postVenta)
+    public function update(Request $request, $id)
     {
-        //
+          $postventa=PostVenta::find($id)->update([
+            'id_modificador' => Auth::user()->id,
+            'id_asignacion' => $request->asignado,
+            'id_estado' => $request->estado,
+            'fecha_solicitud' => $request->fecha_solicitud,
+            'nombre_caso' => $request->nombre_caso,
+            'descripcion_del_caso' => $request->descripcion_del_caso,
+            'id_cobro' => $request->id_cobro
+       ]);
+           return redirect()->route('postventa.edit', [$id, 1])->with('status', 'Post Atención actualizada con éxito');
+
     }
 
     /**

@@ -473,6 +473,7 @@ public function savepagofin(Request $request,$id_contrato,$id_publicacion) {
                     "id_borradorpdf" => $pdfBorradorArrendatario->id, //contrato borrador PDF
                     "id_simulacion" => $request->id_propuesta,
                     "tipo_contrato" => $request->tipo_contrato,
+                    "id_aval" => $request->id_aval,
                     "meses_contrato" => $tipo_simulacion->meses_contrato
         ]);
 

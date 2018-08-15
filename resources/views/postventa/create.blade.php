@@ -352,7 +352,9 @@ jQuery('#direccion2').on('typeahead:selected', function (e, datum) {
             confirmButtonText: "SI",   
             closeOnConfirm: false 
         }, function(){   
-             window.location.href = '/captacion/agregarinmueble/'+$('#idcaptacion').val()+'/'+datum.option; 
+            $("#id_contrato").val(datum.option);
+            $("#id_modulo").val(2);
+             $('#form').submit();
         });
 
    
