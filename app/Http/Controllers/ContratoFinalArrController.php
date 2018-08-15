@@ -373,69 +373,6 @@ public function savepagofin(Request $request,$id_contrato,$id_publicacion) {
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     public function eliminartipopago(Request $request) {
         $pm = PagosMensualesArrendatarios::where("id_contratofinal", "=", $request->id_final_detalle)
                 ->get();
@@ -731,6 +668,10 @@ public function savepagofin(Request $request,$id_contrato,$id_publicacion) {
 
                     '), 'p1.id as id_propietario', 'i.id as id_inmueble', 'i.direccion', 'i.numero', 'i.departamento', 'o.comuna_nombre', 'p1.nombre as nom_p', 'p1.apellido_paterno as apep_p', 'p1.apellido_materno as apem_p', 'p3.nombre as nom_m', 'p3.apellido_paterno as apep_m', 'p3.apellido_materno as apem_m')
                 ->get();
+
+
+
+
 
 
         /*    $publica = DB::table('arrendatarios as a')

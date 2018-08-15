@@ -1206,15 +1206,28 @@ Route::get('contratorenovacionpropietario','ContratoRenovacionPropietarioControl
 	Route::get('checklist/checkindexarr/{id_contrato}/{id_chk}/{tipo}','ChecklistController@checkindexarr')->name('checklist.checkindexarr')
 		->middleware('permission:checklist.check');
 
-
 	Route::get('checklist','ChecklistController@index')->name('checklist.index')
 		->middleware('permission:uf.index');
 
 	Route::get('checklist/{id}/{tipo}','ChecklistController@show')->name('checklist.show')
 		->middleware('permission:uf.show');
 
+
+
+
+	Route::get('checklist/{id_contrato}/{id_chk}/{tipo}/{edr}','ChecklistController@chkmanual')->name('checklist.chkmanual')
+		->middleware('permission:uf.show');
+
+
 	Route::get('checklist/{id_c}/{id_chk}/{tipo}/{edr}/edit','ChecklistController@edit')->name('checklist.edit')
 		->middleware('permission:uf.edit');	
+
+	Route::get('checklist/create_detalle/{id_contrato}/{id_chk}/{tipo}/{edr}/{id_tipo_chk}','ChecklistController@create_detalle')->name('checklist.create_detalle')
+		->middleware('permission:checklist.edit');
+
+
+
+
 
 	Route::delete('checklist/{id}','ChecklistController@destroy')->name('checklist.destroy')
 		->middleware('permission:checklist.destroy');
@@ -1224,6 +1237,9 @@ Route::get('contratorenovacionpropietario','ContratoRenovacionPropietarioControl
 
 	Route::get('checklist/eliminararchivo/{idf}/{id_contrato}/{id_chk}/{tipo}/{edr}','ChecklistController@eliminararchivo')->name('checklist.eliminararchivo')
 		->middleware('permission:checklist.edit');
+
+
+
 
 
 	//Solicitud de Servicios PROPIETARIO
