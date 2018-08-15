@@ -15,14 +15,11 @@
                                         <thead>
                                             <tr>
                                                 <th>ID</th>
-                                                <th>Estado</th>
                                                 <th>Dirección</th>
-                                                <th>Comuna</th>
-                                                <th>Propietario</th>
-                                                <th>Arrendatario</th>
                                                 <th>Asignado</th>
-                                                <th>Fecha Creación</th>
+                                                <th>Estado</th>
                                                 <th>Fecha Ultima Revisión</th>
+                                                <th>Fecha Creación</th>
                                                 <th>Acción_Realizar</th>
                                             </tr>
                                         </thead>
@@ -49,6 +46,21 @@ $('.sorting_desc').hide();
 var table = $('#listusers').DataTable({
 
     dom: 'Bfrtip',
+    pageLength: 10,
+    ServerSide: true,
+    deferRender: true,
+      "ajax": {
+       "url": "{{ route('postventa.index_ajax') }}"
+    },
+            "columns": [
+                {data: 'id_link', name: 'id_link'},
+                {data: 'direccion', name: 'direccion'},
+                {data: 'asignacion', name: 'asignacion'},
+                {data: 'estado', name: 'estado'},
+                {data: 'ultima_modificacion', name: 'ultima_modificacion'},
+                {data: 'fecha_creacion', name: 'fecha_creacion'},
+                {data: 'action', name: 'action'}
+            ],
     buttons: [
         'excel',{
             text: 'Crear Solicitud Post Venta',

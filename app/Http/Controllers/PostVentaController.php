@@ -12,6 +12,7 @@ use App\GestionPostVenta;
 use App\Captacion;
 use App\Region;
 use App\DocPostVenta;
+use Yajra\Datatables\Datatables;
 use Illuminate\Support\Facades\File;
 use DB;
 use Auth;
@@ -25,7 +26,33 @@ class PostVentaController extends Controller
      */
     public function index()
     {
+
         return view('postventa.index');
+    }
+
+    public function index_ajax()
+    {
+        
+        $postventa = DB::table('post_venta as p')
+        ->leftjoin('inmuebles as i', 'i.id', '=', 'p.id_inmueble')
+        ->leftjoin('comunas as c', 'i.id_comuna', '=', 'c.comuna_id')
+        ->leftjoin('users as u', 'p.id_asignacion', '=', 'u.id')
+        ->leftjoin('mensajes as m', function($join){
+                 $join->on('m.nombre_modulo', '=',DB::raw("'Post Venta'"));
+                 $join->on('m.id_estado', '=', 'p.id_estado');
+            })
+            ->select(DB::raw("p.id,CONCAT_WS(' ',i.direccion,i.numero,i.departamento,c.comuna_nombre) as direccion, m.nombre as estado, u.name as asignacion, p.updated_at as ultima_modificacion, p.created_at as fecha_creacion"))
+            ->get();
+
+            return Datatables::of($postventa)
+         ->addColumn('action', function ($postventa) {
+                               return  '<a href="/postventa/'.$postventa->id.'/1/edit"><span class="btn btn-warning btn-circle btn-sm"><i class="ti-pencil-alt"></i></span></a>';
+        })
+        ->addColumn('id_link', function ($postventa) {
+                               return  '<a href="/postventa/'.$postventa->id.'/1/edit"><span class="btn btn-success btn-sm"> '.$postventa->id.'</span> </a>';
+        })
+        ->rawColumns(['id_link','action'])
+        ->make(true);
     }
 
     /**
