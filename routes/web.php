@@ -1016,9 +1016,6 @@ Route::get('cbararrendatario/garantia/eliminar/{id}/{pub}','ContratoBorradorArre
 				Route::get('cbararrendatario/propuesta/{id}','SimulaArrendatarioController@downloadExcel')->name('cbararrendatario.excelsimulacion')->middleware('permission:cbararrendatario.edit');
 
 
-
-
-
 // COntratos final Arrendatario  
 
 	Route::get('finalContratoArr/comprobantedepago/{id}','PagosMensualesArrendatariosController@comprobantedepago')->name('PagosMensualesArrendatarios.comprobantedepago')
