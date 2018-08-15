@@ -6,7 +6,7 @@
 @endphp
 <div id="tabla" >
     <div class="white-box">
-        <h3 class="box-title m-b-0">Gestión de CheckList</h3>
+        <h3 class="box-title m-b-0">Gestión de CheckList {{ $tipoACrear }}</h3>
         <p class="text-muted m-b-30">Administración de registros para el proceso de CheckList</p>
         <div class="table-responsive" style="padding-bottom: 50px;">
             <table id="listusers" class="display compact" cellspacing="0" width="200%">
@@ -16,9 +16,6 @@
                         <th>ID</th>
                         <th>Dirección</th>
                         <th>Id Contrato</th>
-                        <th>Tipo CheckList</th>
-                        <th>Entrega/Devolución/Revisión</th>
-                        <th>Estado</th>
                         <th></th>
                         <th></th>
                         <th></th>
@@ -29,49 +26,40 @@
                         <th>ID</th>
                         <th>Dirección</th>
                         <th>Id Contrato</th>
-                        <th>Tipo CheckList</th>
-                        <th>Entrega/Devolución/Revisión</th>
-                        <th>Estado</th>
                         <th></th>
                         <th></th>
                         <th></th>
                     </tr>
                 </tfoot>
                 <tbody>
+                         @php 
+                            $valida = 0;                    
+                        @endphp
                     @foreach($publica as $p)
                         @php 
-                            $fecha_ini = date('d-m-Y', strtotime($p->created_at)); 
-                            $fecha_fin = strtotime('+5 day', strtotime($fecha_ini));
-                            $fecha_fin = date('d-m-Y', $fecha_fin);
+                            if($valida != $p->id_contrato){                    
                         @endphp
-                    <tr>
-                        <td>{{ $p->id }}</td>
-                        <td>{{ $p->direccion }}, N°{{ $p->numero }}, {{ $p->comuna }}</td>
-                        <td>{{ $p->id_contrato }}</td>
-                        <td>{{ $p->tipo }}</td>
-                        <td>{{ $p->e_s_r }}</td>
-                        <td>{{ ChecklistController::cantDias($fecha_ini,$fecha_fin) }} Días para Finalizar {{ ChecklistController::contrato($p->id_bor_arr,$p->id_cap_pro,$p->tipo) }}</td>
-                        @can('checklist.show')
-                        <td width="10px">
-                            <a href="{{ route('checklist.show', [$p->id_contrato, $p->id, $p->tipo]) }}" 
-                                class="btn btn-success btn-circle btn-lg">
-                                <i class="fa fa-check"></i>
-                            </a>
-                        </td>
-                        @endcan
-                        @can('checklist.edit')
-                        <td width="10px">
-                            <a href="{{ route('checklist.create', [$p->id_contrato, $p->id, $p->tipo,"otro"]) }}"><span class="btn btn-warning btn-circle btn-lg"><i class="ti-pencil-alt"></i></span></a>
+                            <tr>
+                                <td>{{ $p->id }}</td>
+                                <td>{{ $p->direccion }}, N°{{ $p->numero }}, {{ $p->comuna }}</td>
+                                <td>{{ $p->id_contrato }} </td>
+                                <td width="10px">
+                                    <a href="{{ route('checklist.create', [$p->id_contrato, 0, $tipoACrear,"Entrega"]) }}" class="btn btn-info" style="color:white"><i class="fa fa-times-circle"></i>&nbsp;&nbsp;Entrega</a>
+                                </td>
+                                <td width="10px">
+                                    <a href="{{ route('checklist.create', [$p->id_contrato, 0, $tipoACrear,"Devolución"]) }}" class="btn btn-info" style="color:white"><i class="fa fa-times-circle"></i>&nbsp;&nbsp;Devolución</a>
+                                </td>
+                                <td width="10px">
+                                    <a href="{{ route('checklist.create', [$p->id_contrato, 0, $tipoACrear,"Revisión"]) }}" class="btn btn-info" style="color:white"><i class="fa fa-times-circle"></i>&nbsp;&nbsp;Revisión</a>
+                                </td>
+                            </tr>
+                        @php
+                            $valida = $p->id_contrato; 
+                        }
+                            $valida = $p->id_contrato;
+                        @endphp
 
-                                   
-                        </td>
-                        @endcan
-                        
-                        <td width="10px">
-                            
-                        </td>
-                        
-                    </tr>
+
                     @endforeach
 
                 </tbody>
@@ -95,16 +83,7 @@
         pageLength: 20,
         ServerSide: true,
         deferRender: true,
-        buttons: [
-                    {   text: 'CheckList Propietario',
-                        action: function ( e, dt, node, config ) {
-                        window.location.href = '{{ route('checklist.creachkportipo','Propietario' ) }}'; } },
-                    {   text: 'CheckList Arrendatario',
-                        action: function ( e, dt, node, config ) {
-                        window.location.href = '{{ route('checklist.creachkportipo','Arrendatario' ) }}'; } }
-
-
-     ],
+        buttons: [  ],
      language: {
         "sProcessing": "Procesando...",
         "sLengthMenu": "Mostrar _MENU_ registros",

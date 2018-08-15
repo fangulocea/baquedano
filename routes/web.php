@@ -1213,6 +1213,10 @@ Route::get('contratorenovacionpropietario','ContratoRenovacionPropietarioControl
 		->middleware('permission:uf.show');
 
 
+	Route::get('checklist/{tipo}','ChecklistController@creachkportipo')->name('checklist.creachkportipo')
+		->middleware('permission:uf.show');
+
+
 
 
 	Route::get('checklist/{id_contrato}/{id_chk}/{tipo}/{edr}','ChecklistController@chkmanual')->name('checklist.chkmanual')
