@@ -92,7 +92,7 @@ use App\Http\Controllers\ContratoFinalArrController;
                                     @endif
                                 </td>
                                 <td>
-                                    <a href="{{ route('checklist.checkindexarr',[$p->id,0 , 'Arrendatario']) }}"> <button type="button" class="btn btn-info"> <i class="fa fa-check"></i> CheckList</button></a>
+                                    <a href="{{ route('checklist.checkindexarr',[$p->id,0 , 'Arrendatario',$origen]) }}"> <button type="button" class="btn btn-info"> <i class="fa fa-check"></i> CheckList</button></a>
                                 </td>
                                 <td>
                                     @php 

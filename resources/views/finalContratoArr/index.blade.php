@@ -81,7 +81,7 @@
                                 <td> {{ $p->valorsiguiente6 - $p->valorpagadosiguiente6 }} </td>
                                 @can('cbararrendatario.edit')
                                 <td width="10px">
-                                    <a href="{{ route('finalContratoArr.edit', [$p->id_cap_arr,0,0,1]) }}"><span class="btn btn-warning btn-circle btn-lg"><i class="ti-pencil-alt"></i></span></a>
+                                    <a href="{{ route('finalContratoArr.edit', [$p->id_cap_arr,0,0,1,"contrato"]) }}"><span class="btn btn-warning btn-circle btn-lg"><i class="ti-pencil-alt"></i></span></a>
                                 </td>
                                 @endcan
 

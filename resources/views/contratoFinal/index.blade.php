@@ -83,7 +83,7 @@
                                  
                                 @can('finalContrato.edit')
                                 <td width="10px">
-                                    <a href="{{ route('finalContrato.edit', [$p->id_publicacion,0,0,1]) }}"><span class="btn btn-warning btn-circle btn-lg"><i class="ti-pencil-alt"></i></span></a>
+                                    <a href="{{ route('finalContrato.edit', [$p->id_publicacion,0,0,1,"contrato"]) }}"><span class="btn btn-warning btn-circle btn-lg"><i class="ti-pencil-alt"></i></span></a>
                                 </td>
                                 @endcan
 

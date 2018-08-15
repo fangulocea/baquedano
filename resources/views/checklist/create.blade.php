@@ -50,19 +50,14 @@ use App\Http\Controllers\ChecklistController;
                 <td width="10px" style="height: 40px;" >
 
                     @if(ChecklistController::Valida_boton($id_chk,$p->id))
-                        <a href="{{ route('checklist.create_detalle', [ $id_contrato, $id_chk, $tipo, $edr, $p->id ]) }}">
+                        <a href="{{ route('checklist.create_detalle', [ $id_contrato, $id_chk, $tipo, $edr, $p->id, $origen ]) }}">
                             <span class="btn btn-success btn-circle "><i class="ti-check-box"></i></span>
                         </a>                    
                     @else
-                        <a href="{{ route('checklist.create_detalle', [ $id_contrato, $id_chk, $tipo, $edr, $p->id ]) }}">
+                        <a href="{{ route('checklist.create_detalle', [ $id_contrato, $id_chk, $tipo, $edr, $p->id, $origen ]) }}">
                             <span class="btn btn-default btn-circle "><i class="ti-control-stop"></i></span>
                         </a>
                     @endif
-
-
-
-
-
                 </td>
             @endcan
         </tr>
@@ -71,15 +66,17 @@ use App\Http\Controllers\ChecklistController;
 </table>
 <br>    
 <hr>
-
-
     <div class="row">
         <div class="col-md-1">
+            @if($origen == 'menu')
+                <a href="{{ route('checklist.creachkportipo',$tipo) }}" class="btn btn-info" style="color:white"><i class="fa fa-times-circle"></i>&nbsp;&nbsp;Volver</a>
+            @else
                 @if($tipo == 'Propietario')
-                    <a href="{{ route('checklist.checkindex',[$id_contrato,0 , 'Propietario']) }}" class="btn btn-info" style="color:white"><i class="fa fa-times-circle"></i>&nbsp;&nbsp;Volver</a>
+                        <a href="{{ route('checklist.checkindex',[$id_contrato,0 , 'Propietario', $origen]) }}" class="btn btn-info" style="color:white"><i class="fa fa-times-circle"></i>&nbsp;&nbsp;Volver</a>
                 @else
-                    <a href="{{ route('checklist.checkindexarr',[$id_contrato,0 , 'Arrendatario']) }}" class="btn btn-info" style="color:white"><i class="fa fa-times-circle"></i>&nbsp;&nbsp;Volver</a>
-                @endif
+                    <a href="{{ route('checklist.checkindexarr',[$id_contrato,0 , 'Arrendatario' ,$origen ]) }}" class="btn btn-info" style="color:white"><i class="fa fa-times-circle"></i>&nbsp;&nbsp;Volver</a>
+                @endif            
+            @endif
         </div>
         <div class="col-md-2">
 

@@ -61,7 +61,7 @@
                         @endcan
                         @can('checklist.edit')
                         <td width="10px">
-                            <a href="{{ route('checklist.edit', [$p->id_contrato, $p->id, $p->tipo, $p->e_s_r]) }}"><span class="btn btn-warning btn-circle btn-lg"><i class="ti-pencil-alt"></i></span></a>
+                            <a href="{{ route('checklist.edit', [$p->id_contrato, $p->id, $p->tipo, $p->e_s_r, $origen]) }}"><span class="btn btn-warning btn-circle btn-lg"><i class="ti-pencil-alt"></i></span></a>
                         </td>
                         @endcan
 
@@ -75,7 +75,7 @@
                 </tbody>
             </table>
 
-            <a href="{{ route('finalContratoArr.edit', [$p->id_bor_arr,0,0,1]) }}" class="btn btn-info" style="color:white"><i class="fa fa-times-circle"></i>&nbsp;&nbsp;Volver</a>
+            <a href="{{ route('finalContratoArr.edit', [$p->id_bor_arr,0,0,1,$origen]) }}" class="btn btn-info" style="color:white"><i class="fa fa-times-circle"></i>&nbsp;&nbsp;Volver</a>
 
         </div>
     </div>
@@ -99,13 +99,13 @@
         buttons: [
                     {   text: 'CheckList Entrega',
                         action: function ( e, dt, node, config ) {
-                        window.location.href = '{{ route('checklist.create', [$id_contrato,$id_chk,$tipo,"Entrega"]) }}'; } },
+                        window.location.href = '{{ route('checklist.create', [$id_contrato,$id_chk,$tipo,"Entrega",$origen]) }}'; } },
                     {   text: 'CheckList Devolución',
                         action: function ( e, dt, node, config ) {
-                        window.location.href = '{{ route('checklist.create', [$id_contrato,$id_chk,$tipo,"Devolución"]) }}'; } },
+                        window.location.href = '{{ route('checklist.create', [$id_contrato,$id_chk,$tipo,"Devolución",$origen]) }}'; } },
                     {   text: 'CheckList Revisión',
                         action: function ( e, dt, node, config ) {
-                        window.location.href = '{{ route('checklist.create', [$id_contrato,$id_chk,$tipo,"Revisión"]) }}'; } }
+                        window.location.href = '{{ route('checklist.create', [$id_contrato,$id_chk,$tipo,"Revisión",$origen]) }}'; } }
 
 
      ],

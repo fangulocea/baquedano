@@ -11,7 +11,7 @@
     $date = $week_days[$week_day_now] . ", " . $day_now . " de " . $months[$month_now] . " de " . $year_now;   
     return $date;    
 }  
-
+use App\Http\Controllers\ChecklistController;
 @endphp
 
 <head>
@@ -61,16 +61,15 @@
         info@ibaquedano.cl   www.ibaquedano.cl  
     </center>
 </footer>
+
 <main>
     <br>
     <div class="row">
         <div class="col-md-12">
             <div class="white-box">
-
-            
                 <div class="row">
                     <div class="col-md-12">
-                        <center><h3>CHECKLIST PROPIETARIO</h3></center>
+                        <center><h3>CHECKLIST {{ strtoupper($tipo) }}</h3></center>
                     </div>
                 </div>
                 <div class="row">
@@ -79,35 +78,52 @@
                     </div>
                 </div>
 
-    <table class="display nowrap" cellspacing="0" width="100%">
+<table class="display nowrap" cellspacing="0" width="100%">
+    <tr>
+        <td width="20%" style="padding: 15px;"><strong>Propiedad</strong></td>
+        <td width="80%" style="padding: 15px;">{{ $ChkInmueble->direccion or null }} # {{ $ChkInmueble->numero or null}} , {{ $ChkInmueble->comuna or null}}</td>
+    </tr>
+    <tr>
+        <td width="20%" style="padding: 15px;"><strong>Propietario</strong></td>
+        <td width="20%" style="padding: 15px;"> {{ $persona->nombre or null}} {{ $persona->apellido_paterno or null}}, Fono : {{ $persona->telefono or null}}, Email: {{ $persona->email or null}}</td>
+    </tr>
+</table>
+
+<table class="display nowrap" cellspacing="0" width="100%">
+    <tr>
+        <td width="20%" style="padding: 5px;text-align: center;border: 1px solid black"><strong>CHECKLIST</strong><br></td>
+        <td width="80%" style="padding: 5px;text-align: center;border: 1px solid black"><strong>COMENTARIOS</strong><br> </td>
+    </tr>
+    @php
+        $contador = 1;
+    @endphp
+    @foreach($listadoCheckList as $pi)
         <tr>
-            <td width="20%" style="padding: 15px;"><strong>Propiedad</strong></td>
-            <td width="80%" style="padding: 15px;">{{ $ChkInmueble->direccion or null }} # {{ $ChkInmueble->numero or null}} , {{ $ChkInmueble->comuna or null}}</td>
+            <td width="20%" style="padding: 5px;text-align: left;border: 1px solid black">
+                <table style="border: 1px">
+                    <tr>
+                        <td width="10px">{{ $contador }}</td>
+                        <td width="20px">{{ $pi->nombre }}</td>
+                        <td width="10px">
+                            @php 
+                                if(ChecklistController::validaChk($id_chk,$pi->id) > 0 )
+                                {  echo "<input class='form-check-input position-static' type='checkbox' checked=''>"; } 
+                                else
+                                {  echo "<input class='form-check-input position-static' type='checkbox' >"; } 
+                            @endphp
+                        </td>
+                    </tr>
+                </table>
+            </td>
+            <td width="80%" style="padding: 5px;text-align: center;border: 1px solid black"><br>  </td>
         </tr>
-        <tr>
-            <td width="20%" style="padding: 15px;"><strong>Propietario</strong></td>
-            <td width="20%" style="padding: 15px;"> {{ $persona->nombre or null}} {{ $persona->apellido_paterno or null}}, Fono : {{ $persona->telefono or null}}, Email: {{ $persona->email or null}}</td>
-        </tr>
-    </table>
-<br>
-
-<div style="text-align: center">
-           <strong>DETALLE CHECKLIST</strong>
-        <table id="listusers1" class="display nowrap" cellspacing="0" width="80%" style="display: table;
-  margin: 0 auto;">
-
-                            <tbody>
-                                <tr>
-                                    <th style="border: 1px solid black;text-align: center">
-                                        {{ $descripcion or null }}
-                                        
-                                    </th>
-                                </tr>
-                            </tbody>
-                        </table>
-<br>
-
-<strong>FOTOS </strong>
+        @php
+            $contador ++;
+        @endphp
+    @endforeach
+</table>
+<hr>
+<div style="text-align: center;"> <strong>FOTOS </strong> </div>
     <table id="listusers1" class="display nowrap" cellspacing="0" width="80%" style="display: table; margin: 0 auto;">
     <thead>
         <tr>
@@ -121,17 +137,17 @@
             @php 
                 $contador = 0;
             @endphp
-            @foreach($foto as $i)
+            @foreach($ChkFotos as $i)
                     @if($contador == 2)
                     <tr>
                         <td height="10px" style="border: 1px solid black; text-align: center" >
-                            <img src="{{ $i->ruta }}/{{ $i->nombre }}" width="300" >
+                            <img src="{{ $i->ruta }}/{{ $i->nombre }}" width="150" >
                         </td>
 
                     
                     @else
                         <td height="10px" style="border: 1px solid black; text-align: center" >
-                            <img src="{{ $i->ruta }}/{{ $i->nombre }}" width="300" >
+                            <img src="{{ $i->ruta }}/{{ $i->nombre }}" width="150" >
                         </td>
                     @endif
 
@@ -149,22 +165,12 @@
         </tr>
     </tbody>
 </table>
-<br>
-<strong>Comentarios / Coordinaciones</strong>
-<table id="listusers1" class="display nowrap" cellspacing="0" width="80%" style="display: table;
-  margin: 0 auto;">
 
-                            <tbody>
-                                <tr>
-                                    <th style="border: 1px solid black;text-align: center">
-                                        {{ $comentarios or null }}
-                                        
-                                    </th>
-                                </tr>
-                            </tbody>
-                        </table>
 
-</div>
+
+
+
+
 
 
                 

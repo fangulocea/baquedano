@@ -40,6 +40,7 @@
     <input type="hidden" name="id_contrato"value="{{ $id_contrato }}">
     <input type="hidden" name="id_chk"value="{{ $id_chk }}">
     <input type="hidden" name="tipo_chk"value="{{ $tipo_chk }}">
+    <input type="hidden" name="origen"value="{{ $origen }}">
 
 
     <div class="row">
@@ -57,7 +58,7 @@
             <div class="white-box"> 
                 <h3 class="box-title">Subir Imágen para: {{ $Checklist->direccion or null }}, #{{ $Checklist->numero or null }}</h3>
                 <label for="input-file-now-custom-1">Imágen de CheckList</label>
-                <input type="file" id="foto" name="foto"  class="dropify"  />  
+                <input type="file" id="foto" name="foto"  class="dropify" required="required" />  
             </div>
         </div>
 
@@ -92,9 +93,9 @@
                 <button type="submit" class="btn btn-success"> <i class="fa fa-check"></i> Guardar</button>
 
                 @if($tipo == 'Propietario')
-                    <a href="{{ route('checklist.edit',[$id_contrato, $id_chk, $tipo, $edr]) }}" class="btn btn-info" style="color:white"><i class="fa fa-times-circle"></i>&nbsp;&nbsp;Volver</a>
+                    <a href="{{ route('checklist.edit',[$id_contrato, $id_chk, $tipo, $edr, $origen]) }}" class="btn btn-info" style="color:white"><i class="fa fa-times-circle"></i>&nbsp;&nbsp;Volver</a>
                 @else
-                    <a href="{{ route('checklist.edit',[$id_contrato, $id_chk, $tipo, $edr]) }}" class="btn btn-info" style="color:white"><i class="fa fa-times-circle"></i>&nbsp;&nbsp;Volver</a>
+                    <a href="{{ route('checklist.edit',[$id_contrato, $id_chk, $tipo, $edr, $origen]) }}" class="btn btn-info" style="color:white"><i class="fa fa-times-circle"></i>&nbsp;&nbsp;Volver</a>
                 @endif
                 
     </div>

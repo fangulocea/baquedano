@@ -570,7 +570,10 @@ public function savepagofin(Request $request,$id_contrato,$id_publicacion) {
 
         ]);
         
-        return redirect()->route('finalContratoArr.edit', [$ContratoBorradorArrendatario->id_cap_arr, 0, 0, 1])
+
+        $origen = "Contrato";
+
+        return redirect()->route('finalContratoArr.edit', [$ContratoBorradorArrendatario->id_cap_arr, 0, 0, 1, $origen])
                         ->with('status', 'Contrato Final guardado con éxito');
     }
 
@@ -723,7 +726,7 @@ public function savepagofin(Request $request,$id_contrato,$id_publicacion) {
      * @param  \App\ContratoFinalArr  $contratoFinalArr
      * @return \Illuminate\Http\Response
      */
-    public function edit($idc, $idcb, $idpdf, $tab) {
+    public function edit($idc, $idcb, $idpdf, $tab, $origen) {
         // $borrador = DB::table('cap_publicaciones as c')
         //   ->leftjoin('personas as p1', 'c.id_propietario', '=', 'p1.id')
         //   ->leftjoin('inmuebles as i', 'c.id_inmueble', '=', 'i.id')
@@ -773,7 +776,7 @@ public function savepagofin(Request $request,$id_contrato,$id_publicacion) {
                 ->first();
         $flag = 0;
 
-        return view('finalContratoArr.edit', compact('borrador', 'finalIndex', 'notaria', 'documentos', 'flag', 'tab', 'propuestas', 'uf'));
+        return view('finalContratoArr.edit', compact('borrador', 'finalIndex', 'notaria', 'documentos', 'flag', 'tab', 'propuestas', 'uf', 'origen'));
     }
 
     /**
