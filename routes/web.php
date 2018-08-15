@@ -1430,6 +1430,9 @@ Route::get('revisioncuentas/{id}/moroso','CuentasArrendatarioController@moroso')
 	Route::post('postventa/crear_gestion','PostVentaController@creargestion')->name('postventa.creargestion')
 		->middleware('permission:postventa.edit');
 
+	Route::get('postventa/index','PostVentaController@index_ajax')->name('postventa.index_ajax')
+		->middleware('permission:postventa.index');
+
 	Route::get('postventa','PostVentaController@index')->name('postventa.index')
 		->middleware('permission:postventa.index');
 
