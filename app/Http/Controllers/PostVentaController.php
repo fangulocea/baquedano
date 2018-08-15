@@ -8,8 +8,11 @@ use App\Persona;
 use App\Inmueble;
 use App\Mensajes;
 use App\ContratoFinal;
+use App\GestionPostVenta;
 use App\Captacion;
 use App\Region;
+use App\DocPostVenta;
+use Illuminate\Support\Facades\File;
 use DB;
 use Auth;
 
@@ -147,13 +150,69 @@ class PostVentaController extends Controller
          }
 
         $inmueble=Inmueble::find($postventa->id_inmueble);
-        $tab=2;
+        $docs=DocPostVenta::where("id_postventa","=",$id)->get();
+        $gestion=GestionPostVenta::where("id_postventa","=",$id)->get();
+
+        $gestion=DB::table('post_gestion as g')
+            ->leftjoin('users as a',"a.id",'g.id_gestionador')
+            ->select(DB::raw('g.id , a.name as Gestionador, g.tipo_contacto, g.fecha_gestion, g.hora_gestion, g.contacto_con'))
+            ->orderBy("g.id","asc")
+            ->get();
         $aval=null;
         if(isset($postventa->id_aval)){
             $aval=Persona::find($postventa->id_aval);
         }
         
-       return view('postventa.edit',compact('postventa','propietario','arrendatario','inmueble','empleados','estados','regiones','tab','aval'));
+       return view('postventa.edit',compact('postventa','propietario','arrendatario','inmueble','empleados','estados','regiones','tab','aval','docs','gestion'));
+    }
+
+    public function subir_documentos(Request $request,$id){
+        if (!isset($request->foto)) {
+                    return redirect()->route('postventa.edit', [$id, 6])->with('error', 'Debe seleccionar un documento');
+                }
+                $path = 'uploads/postventa';
+                $archivo = rand() . $request->foto->getClientOriginalName();
+                $file = $request->file('foto');
+                $file->move($path, $archivo);
+
+                $imagen = DocPostVenta::create([
+                            'id_postventa' => $id,
+                            'descripcion' => $request->descripcion,
+                            'nombre' => $archivo,
+                            'ruta' => $path,
+                            'id_creador' => $request->id_creador
+                ]);
+                return redirect()->route('postventa.edit', [$id, 6])->with('status', 'Documento registrado con éxito');
+            }
+
+  public function eliminardoc($id, $ids) {
+        $imagen = DocPostVenta::find($id);
+        File::delete($imagen->ruta . '/' . $imagen->nombre);
+        $foto = DocPostVenta::find($id)->delete();
+
+        return redirect()->route('postventa.edit', [$ids, 6])->with('status', 'Foto eliminada con éxito');
+    }
+
+
+  public function creargestion(Request $request) {
+        $postventa = PostVenta::find($request->id_solicitud_gestion);
+
+        $gestion= GestionPostVenta::create([
+            "id_gestionador" => $request->gestionador,
+            "id_postventa" => $request->id_solicitud_gestion,
+            "tipo_contacto" => $request->tipo_contacto,
+            "contacto_con" => $request->contacto_con,
+            "detalle_contacto"=>$request->detalle_contacto,
+            "detalle_gestion"=>$request->detalle_gestion,
+            "fecha_gestion"=>$request->fecha_gestion,
+            "hora_gestion"=>$request->hora_gestion,
+            "id_creador"=>Auth::user()->id,
+            "id_modificador"=>Auth::user()->id
+
+        ]);
+
+
+        return redirect()->route('postventa.edit', [$request->id_solicitud_gestion, 7])->with('status', 'Gestión agregada con éxito');
     }
 
     /**

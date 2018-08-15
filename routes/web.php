@@ -183,6 +183,9 @@ Route::middleware(['auth'])->group(function(){
 	Route::post('inmueble/{inmueble}','InmuebleController@update')->name('inmueble.update')
 		->middleware('permission:inmueble.edit');
 
+	Route::post('inmueble/postventa/{inmueble}','InmuebleController@update_postventa')->name('inmueble.update_postventa')
+		->middleware('permission:postventa.edit');
+
 	Route::get('inmueble/{inmueble}','InmuebleController@show')->name('inmueble.show')
 		->middleware('permission:inmueble.show');
 
@@ -208,6 +211,16 @@ Route::middleware(['auth'])->group(function(){
 
 	Route::post('persona/{persona}','PersonaController@update')->name('persona.update')
 		->middleware('permission:persona.edit');
+
+	Route::post('postventa/propietario/{persona}','PersonaController@update_postventa_p')->name('persona.update_postventa_p')
+		->middleware('permission:postventa.edit');
+
+	Route::post('postventa/arrendatario/{persona}','PersonaController@update_postventa_a')->name('persona.update_postventa_a')
+		->middleware('permission:postventa.edit');
+
+	Route::post('postventa/aval/{persona}','PersonaController@update_postventa_v')->name('persona.update_postventa_v')
+		->middleware('permission:postventa.edit');
+
 
 	Route::post('persona/{persona}/updatehome','PersonaController@updatehome')->name('persona.updatehome');
 		
@@ -1114,68 +1127,6 @@ Route::get('cbararrendatario/garantia/eliminar/{id}/{pub}','ContratoBorradorArre
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 // Contrato Renovacion Arrendatario
 Route::get('contratorenovacionarrendatario','ContratoRenovacionArrendatarioController@index')->name('contratorenovacionarrendatario.index')
 ->middleware('permission:contratorenovacionarrendatario.index');
@@ -1460,7 +1411,8 @@ Route::get('revisioncuentas/{id}/moroso','CuentasArrendatarioController@moroso')
 //POSTVENTA
 
 
-	
+	Route::post('postventa/crear_gestion','PostVentaController@creargestion')->name('postventa.creargestion')
+		->middleware('permission:postventa.edit');
 
 	Route::get('postventa','PostVentaController@index')->name('postventa.index')
 		->middleware('permission:postventa.index');
@@ -1483,5 +1435,13 @@ Route::get('revisioncuentas/{id}/moroso','CuentasArrendatarioController@moroso')
 
 	Route::get('postventa/{postventa}/{tab}/edit','PostVentaController@edit')->name('postventa.edit')
 		->middleware('permission:postventa.edit');
+
+	Route::post('postventa/subirdocs/{postventa}','PostVentaController@subir_documentos')->name('postventa.subir_documentos')
+		->middleware('permission:postventa.edit');
+
+	Route::get('postventa/eliminardoc/{doc}/{solicitud}','PostVentaController@eliminardoc')->name('postventa.eliminardoc')
+		->middleware('permission:postventa.edit');
+
+
 
 });

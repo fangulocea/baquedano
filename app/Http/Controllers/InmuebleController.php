@@ -160,7 +160,41 @@ class InmuebleController extends Controller
         $inmueble = Inmueble::whereId($id)->update($data);
 
         return redirect()->route('inmueble.index', $id)
-        ->with('status', 'Notaria guardada con éxito');
+        ->with('status', 'Inmueble guardada con éxito');
+    }
+
+        public function update_postventa(Request $request, $id)
+    {
+        $data = request()->except(['_token']);
+        $inmueble = Inmueble::whereId($id)->update([
+                   'direccion' => $request->i_direccion,
+                    'numero' => $request->i_numero,
+                    'departamento' => $request->i_departamento,
+                    'dormitorio' => $request->i_dormitorio,
+                    'bano' => $request->i_bano,
+                    'estacionamiento' => $request->i_estacionamiento,
+                    'rol' => $request->i_rol,
+                    'nro_bodega' => $request->i_nro_bodega,
+                    'referencia' => $request->i_referencia,
+                    'bodega' => $request->i_bodega,
+                    'piscina' => $request->i_piscina,
+                    'referencia' => $request->i_referencia,
+                    'precio' => $request->i_precio,
+                    'gastosComunes' => $request->i_gastosComunes,
+                    'condicion' => $request->i_condicion,
+                    'id_comuna' => $request->i_id_comuna,
+                    'id_region' => $request->i_id_region,
+                    'id_provincia' => $request->i_id_provincia,
+                    'anio_antiguedad' => $request->i_anio_antiguedad,
+                    'nro_estacionamiento' =>  $request->i_nro_estacionamiento,
+                    'edificio' =>  $request->i_edificio,
+                    'nom_administrador' =>  $request->i_nom_administrador,
+                    'tel_administrador' =>  $request->i_tel_administrador,
+                    'email_administrador' => $request->i_email_administrador
+        ]);
+
+        return redirect()->route('postventa.edit', [$request->i_postventa,2])
+        ->with('status', 'Inmueble guardada con éxito');
     }
 
     /**

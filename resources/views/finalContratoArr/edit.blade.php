@@ -289,7 +289,7 @@ use App\Http\Controllers\ContratoFinalArrController;
                                                         <div class="col-md-4">
                                                             <div class="form-group">
                                                                 <label for="input-file-now-custom-1">Valor Moneda</label>
-                                                                <input name='valormoneda' id='valormoneda' type="number" class="form-control" required="required" value='1' step="any">
+                                                                <input name='valormoneda' id='valormoneda' type="number" class="form-control" required="required" value='1' step="any" readonly="readonly">
                                                             </div>
                                                         </div>
                                                     </div>

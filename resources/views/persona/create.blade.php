@@ -150,6 +150,7 @@
                                             <option value="Banco de Crédito e Inversiones">Banco de Crédito e Inversiones</option>
                                             <option value="Banco de la Nacion Argentina">Banco de la Nacion Argentina</option>
                                             <option value="Banco Falabella">Banco Falabella</option>
+                                            <option value="Banco Falabella">Banco Estado</option>
                                             <option value="Banco Internacional">Banco Internacional</option>
                                             <option value="Banco Itaú Chile">Banco Itaú Chile</option>
                                             <option value="Banco Paris">Banco Paris</option>
