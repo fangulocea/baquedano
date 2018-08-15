@@ -88,7 +88,7 @@ use App\Http\Controllers\ContratoFinalArrController;
                                     <a href="{{ route('finalContratoArr.muestra_cheque',[$p->id,$p->id_pdf,$p->dia_pago]) }}"> <button type="button" class="btn btn-danger"> <i class="fa fa-check"></i> N° Cheques</button></a>
                                     @endif
                                 
-                                    <a class="mytooltip" href="{{ route('checklist.checkindexarr',[$p->id,0 , 'Arrendatario']) }}"> <button  class="btn btn-info btn-circle btn-lg"> <a class="mytooltip"href="{{ route('checklist.checkindexarr',[$p->id,0 , 'Arrendatario']) }}" style="color:white"><i class="fa fa-check"></i> <span class="tooltip-content3" style="font-size: medium;color:white">Realizar <br> Check-In</span></a></button></a>
+                                    <a class="mytooltip" href="{{ route('checklist.checkindexarr',[$p->id,0 , 'Arrendatario',$origen]) }}"> <button  class="btn btn-info btn-circle btn-lg"> <a class="mytooltip"href="{{ route('checklist.checkindexarr',[$p->id,0 , 'Arrendatario']) }}" style="color:white"><i class="fa fa-check"></i> <span class="tooltip-content3" style="font-size: medium;color:white">Realizar <br> Check-In</span></a></button></a>
                                 
                                     @php 
                                         if($p->id_estado == 13) { 

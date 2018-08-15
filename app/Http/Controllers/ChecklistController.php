@@ -27,7 +27,7 @@ class ChecklistController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-    public function create_detalle($id_contrato,$id_chk,$tipo,$edr,$tipo_chk)
+    public function create_detalle($id_contrato,$id_chk,$tipo,$edr,$tipo_chk,$origen)
     {
         $imgReserva = DB::table('chkinmueblefoto')
                     ->where('id_chk',   '=', $id_chk)
@@ -66,17 +66,18 @@ class ChecklistController extends Controller
         $NombreCheckList = DB::table('chkinmueblefoto')
                     ->where('id_chk',   '=', $id_chk)
                     ->where('tipo_chk', '=', $tipo_chk)
+                    ->orderBy('id','desc')
                     ->first();
 
           
-        return view('checklist.create_detalle',compact('NombreCheckList','NombreTipoCheckList','deta_check','listadoCheckList','imgReserva','Checklist','vacio','tipo','id_contrato','id_chk','edr','tipo_chk'));  
+        return view('checklist.create_detalle',compact('origen','NombreCheckList','NombreTipoCheckList','deta_check','listadoCheckList','imgReserva','Checklist','vacio','tipo','id_contrato','id_chk','edr','tipo_chk'));  
     }
 
 
 
 
 
-    public function create($id_contrato,$id_chk,$tipo,$edr)
+    public function create($id_contrato,$id_chk,$tipo,$edr,$origen)
     {
 
         $vacio = "CheckList
@@ -112,7 +113,7 @@ class ChecklistController extends Controller
                     ->where('estado', '=', 1)->get(); 
   
         
-        return view('checklist.create',compact('listadoCheckList','imgReserva','Checklist','vacio','tipo','id_contrato','id_chk','edr'));   
+        return view('checklist.create',compact('listadoCheckList','imgReserva','Checklist','vacio','tipo','id_contrato','id_chk','edr','origen'));   
     }
 
     /**
@@ -174,55 +175,83 @@ class ChecklistController extends Controller
      * @param  \App\Checklist  $checklist
      * @return \Illuminate\Http\Response
      */
-    public function show($id,$tipo)
+    public function show($id_chk,$tipo)
     {
         $year_now = date ("Y");  
         $month_now = date ("n"); 
 
+
         $ChkInmueble = DB::table('chkinmuebles as c')
         ->leftjoin('inmuebles as i', 'c.id_inmueble', '=', 'i.id')
         ->leftjoin('comunas as co', 'i.id_comuna', '=', 'co.comuna_id')
-        ->where('c.id', '=', $id)
-        ->select(DB::raw('c.id as id_chk, i.direccion, i.numero, co.comuna_nombre as comuna, c.descripcion, c.comentarios'))
+        ->where('c.id', '=', $id_chk)
+        ->select(DB::raw('c.id as id_chk, i.direccion, i.numero, co.comuna_nombre as comuna'))
         ->first();
 
+        $ChkFotos = DB::table('chkinmueblefoto as f')
+        ->where('f.id_chk', '=', $id_chk)
+        ->select(DB::raw('f.id_chk, f.tipo_chk, f.ruta, f.nombre, f.comentarios'))
+        ->get();
 
-        $descripcion = $ChkInmueble->descripcion;
-        $comentarios = $ChkInmueble->comentarios;
-        //$descripcion = nl2br($ChkInmueble->descripcion);
-        //$descripcion = str_replace("<br />", " /n", $descripcion);
-        //$descripcion = str_replace(array("\r\n", "\r", "\n"), "<br />", $descripcion);
-        
-
-        $foto = DB::table('chkinmueblefoto as f')
-         ->where('f.id_chk', '=', $ChkInmueble->id_chk)
-         ->select(DB::raw('f.id, f.ruta, f.nombre'))
-         ->get();
+        $listadoCheckList = DB::table('checklist')
+                    ->where('estado', '=', 1)->get();         
 
         if($tipo == 'Arrendatario')
         {
             $persona = DB::table('chkinmuebles as c')
                 ->leftjoin('arrendatarios as a', 'c.id_bor_arr', '=', 'a.id')
                 ->leftjoin('personas as p', 'a.id_arrendatario', '=', 'p.id')
-                ->where('c.id', '=', $tipo)
+                ->where('c.id', '=', $id_chk)
                 ->select(DB::raw('p.nombre, p.apellido_paterno, p.telefono, p.email'))
                 ->first();
-
-            $pdf = PDF::loadView('formatospdf.checklistarrendatario', compact('ChkInmueble', 'foto','persona','descripcion','comentarios'));
-            return $pdf->download($ChkInmueble->direccion . ' Nro.' . $ChkInmueble->numero . ' Comuna.' . $ChkInmueble->comuna . ' - ' . $month_now . '-' . $year_now . ' - CheckList Propietario.pdf');
         }
         else
         {
             $persona = DB::table('chkinmuebles as c')
                 ->leftjoin('cap_publicaciones as a', 'c.id_cap_pro', '=', 'a.id')
                 ->leftjoin('personas as p', 'a.id_propietario', '=', 'p.id')
-                ->where('c.id', '=', $id)
+                ->where('c.id', '=', $id_chk)
                 ->select(DB::raw('p.nombre, p.apellido_paterno, p.telefono, p.email'))
-                ->first();
-
-            $pdf = PDF::loadView('formatospdf.checklistpropietario', compact('ChkInmueble', 'foto','persona','descripcion','comentarios'));
-            return $pdf->download($ChkInmueble->direccion . ' Nro.' . $ChkInmueble->numero . ' Comuna.' . $ChkInmueble->comuna . ' - ' . $month_now . '-' . $year_now . ' - CheckList Propietario.pdf');
+                ->first();            
         }
+
+
+
+        $pdf = PDF::loadView('formatospdf.checklist', compact('ChkInmueble', 'ChkFotos','listadoCheckList','tipo','persona','id_chk'));
+        return $pdf->download($ChkInmueble->direccion . ' Nro.' . $ChkInmueble->numero . ' Comuna.' . $ChkInmueble->comuna . ' - ' . $month_now . '-' . $year_now . ' - CheckList.pdf');
+
+       
+      
+
+        // $foto = DB::table('chkinmueblefoto as f')
+        //  ->where('f.id_chk', '=', $ChkInmueble->id_chk)
+        //  ->select(DB::raw('f.id, f.ruta, f.nombre'))
+        //  ->get();
+
+        // if($tipo == 'Arrendatario')
+        // {
+        //     $persona = DB::table('chkinmuebles as c')
+        //         ->leftjoin('arrendatarios as a', 'c.id_bor_arr', '=', 'a.id')
+        //         ->leftjoin('personas as p', 'a.id_arrendatario', '=', 'p.id')
+        //         ->where('c.id', '=', $tipo)
+        //         ->select(DB::raw('p.nombre, p.apellido_paterno, p.telefono, p.email'))
+        //         ->first();
+
+        //     $pdf = PDF::loadView('formatospdf.checklistarrendatario', compact('ChkInmueble', 'foto','persona','descripcion','comentarios'));
+        //     return $pdf->download($ChkInmueble->direccion . ' Nro.' . $ChkInmueble->numero . ' Comuna.' . $ChkInmueble->comuna . ' - ' . $month_now . '-' . $year_now . ' - CheckList Propietario.pdf');
+        // }
+        // else
+        // {
+        //     $persona = DB::table('chkinmuebles as c')
+        //         ->leftjoin('cap_publicaciones as a', 'c.id_cap_pro', '=', 'a.id')
+        //         ->leftjoin('personas as p', 'a.id_propietario', '=', 'p.id')
+        //         ->where('c.id', '=', $id)
+        //         ->select(DB::raw('p.nombre, p.apellido_paterno, p.telefono, p.email'))
+        //         ->first();
+
+             $pdf = PDF::loadView('formatospdf.checklistpropietario', compact('ChkInmueble', 'foto','persona','descripcion','comentarios'));
+             return $pdf->download($ChkInmueble->direccion . ' Nro.' . $ChkInmueble->numero . ' Comuna.' . $ChkInmueble->comuna . ' - ' . $month_now . '-' . $year_now . ' - CheckList Propietario.pdf');
+        // }
     }
 
     /**
@@ -231,7 +260,7 @@ class ChecklistController extends Controller
      * @param  \App\Checklist  $checklist
      * @return \Illuminate\Http\Response
      */
-    public function edit($id_contrato,$id_chk,$tipo,$edr)
+    public function edit($id_contrato,$id_chk,$tipo,$edr,$origen)
     {
 
         if($tipo == "Propietario")
@@ -258,17 +287,24 @@ class ChecklistController extends Controller
         $detalle = DB::table('chkinmuebles')
                     ->where('id', '=', $id_chk)->first(); 
 
-        $vacio = $detalle->descripcion;
-        $comentarios = $detalle->comentarios;
+        if(isset($detalle->comentarios))
+        {
+            $comentarios = "";
+        }
+        else
+        {
+            $comentarios = $detalle->comentarios;    
+        }
 
         $imgReserva = ChkInmuebleFoto::where('id_chk','=',$id_chk)->get();
         
         $listadoCheckList = DB::table('checklist')
                     ->where('estado', '=', 1)->get(); 
 
-
-        return view('checklist.create',compact('listadoCheckList','imgReserva','comentarios','Checklist','vacio','tipo','id_contrato','id_chk','edr'));  
+        return view('checklist.create',compact('listadoCheckList','imgReserva','comentarios','Checklist','vacio','tipo','id_contrato','id_chk','edr','origen'));  
     }
+
+
 
     public function savefotos(Request $request, $id_inmueble){
 
@@ -358,7 +394,12 @@ class ChecklistController extends Controller
                                 'id_creador'           => $request->id_creador,
                                 'tipo_chk'             => $request->tipo_chk,
                                 'comentarios'          => $request->comentarios,
-                    ]);                
+                    ]);
+
+                // Checklist::where('id', '=', $imagen->id)->update([
+                //          'comentarios'     => $request->comentarios,
+                //      ]);                    
+
             }
             else
             {
@@ -377,7 +418,12 @@ class ChecklistController extends Controller
                        'id_creador'           => $request->id_creador,
                        'tipo_chk'             => $request->tipo_chk,
                        'comentarios'          => $request->comentarios,
-                ]);                
+                ]); 
+
+                // Checklist::where('id', '=', $imagen->id)->update([
+                //          'comentarios'     => $request->comentarios,
+                //      ]);
+
             }
 
             // Checklist::where('id', '=', $id_chk)->update([
@@ -394,16 +440,17 @@ class ChecklistController extends Controller
                        'id_inmueble'          => $id_inmueble,
                        'comentarios'          => $request->comentarios,
                        'tipo_chk'             => $request->tipo_chk,
-                ]);             
+                ]);      
+
             // Checklist::where('id', '=', $id_chk)->update([
             //         'descripcion'     => $request->descripcion,
             //         'comentarios'     => $request->comentarios,
             // ]);
 
-            return redirect()->route('checklist.create_detalle', [$id_contrato,$id_chk,$tipo,$edr,$request->tipo_chk])->with('status', 'No se ha actualizado ninguna imágen'); 
+            return redirect()->route('checklist.create_detalle', [$id_contrato, $id_chk, $tipo, $edr, $request->tipo_chk, $request->origen])->with('status', 'No se ha actualizado ninguna imágen'); 
         }
         
-        return redirect()->route('checklist.create_detalle',   [$id_contrato,$id_chk,$tipo,$edr,$request->tipo_chk])->with('status', 'Foto guardada con éxito');
+        return redirect()->route('checklist.create_detalle',     [$id_contrato, $id_chk, $tipo, $edr, $request->tipo_chk, $request->origen])->with('status', 'Foto guardada con éxito');
     }
 
 public function eliminararchivo($idf,$id_contrato,$id_chk,$tipo,$edr){
@@ -427,7 +474,7 @@ static function cantDias($fecha1,$fecha2){
 
 
 
-    public function index()
+    public function index($origen)
     {
         $publica = DB::table('chkinmuebles as chk')
          ->leftjoin('inmuebles as i', 'chk.id_inmueble', '=', 'i.id')
@@ -438,7 +485,7 @@ static function cantDias($fecha1,$fecha2){
          ->orderBy('chk.tipo')
          ->get();
 
-        return view('checklist.index',compact('publica'));
+        return view('checklist.index',compact('publica','origen'));
 
     }
 
@@ -447,7 +494,7 @@ static function cantDias($fecha1,$fecha2){
 
 
 
-    public function checkindex($id_contrato,$id_chk,$tipo)
+    public function checkindex($id_contrato,$id_chk,$tipo,$origen)
     {
         if($id_chk == 0)
         {
@@ -474,10 +521,10 @@ static function cantDias($fecha1,$fecha2){
         }
 
 
-         return view('contratoFinal.checklist',compact('publica','id_contrato','id_chk','tipo')); 
+         return view('contratoFinal.checklist',compact('publica','id_contrato','id_chk','tipo','origen')); 
     }
 
-    public function checkindexarr($id_contrato,$id_chk,$tipo)
+    public function checkindexarr($id_contrato,$id_chk,$tipo,$origen)
     {
         if($id_chk == 0)
         {
@@ -504,7 +551,7 @@ static function cantDias($fecha1,$fecha2){
         }
 
 
-         return view('finalContratoArr.checklist',compact('publica','id_contrato','id_chk','tipo')); 
+         return view('finalContratoArr.checklist',compact('publica','id_contrato','id_chk','tipo','origen')); 
 
      }
 
@@ -572,8 +619,36 @@ static function contrato($id_arr,$id_pro,$tipo){
         { return false; }
         else
         { return true; }
-        
     }   
+
+    static function validaChk($id_chk,$tipo_check){
+
+        //cuenta por tipo de chk para marcar
+        $ValidaCheckOk = DB::table('chkinmueblefoto as f')
+        ->where('f.id_chk', '=', $id_chk)
+        ->where('f.tipo_chk', '=', $tipo_check)
+        ->count();        
+        return $ValidaCheckOk;
+    }
+
+    static function obtieneComentarios($id_chk,$tipo_check){
+
+        //mensaje por tipo
+        $MensajeCheck = DB::table('chkinmueblefoto as f')
+        ->where('f.id_chk', '=', $id_chk)
+        ->where('f.tipo_chk', '=', $tipo_check)
+        ->select(DB::raw('f.comentarios'))
+        ->orderBy('f.id','ASC')
+        ->first();   
+
+        $mensaje = $MensajeCheck;
+
+        return $mensaje;
+
+
+    }
+
+
 
 
 }

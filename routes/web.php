@@ -883,7 +883,7 @@ Route::get('borradorContrato/garantia/eliminar/{id}/{pub}','ContratoBorradorCont
 		Route::get('finalContrato/create','ContratoFinalController@create')->name('finalContrato.create')
 		->middleware('permission:finalContrato.create');
 
-		Route::get('finalContrato/edit/{idp}/{idc}/{idpdf}/{tab}','ContratoFinalController@edit')->name('finalContrato.edit')
+		Route::get('finalContrato/edit/{idp}/{idc}/{idpdf}/{tab}/{origen}','ContratoFinalController@edit')->name('finalContrato.edit')
 		->middleware('permission:finalContrato.edit');
 
 		Route::get('finalContrato/destroy/{id}/{idpdf}','ContratoFinalController@destroy')->name('finalContrato.destroy')
@@ -1048,7 +1048,7 @@ Route::get('cbararrendatario/garantia/eliminar/{id}/{pub}','ContratoBorradorArre
 		Route::get('finalContratoArr/create','ContratoFinalArrController@create')->name('finalContratoArr.create')
 		->middleware('permission:finalContratoArr.create');
 
-		Route::get('finalContratoArr/edit/{idp}/{idc}/{idpdf}/{tab}','ContratoFinalArrController@edit')->name('finalContratoArr.edit')
+		Route::get('finalContratoArr/edit/{idp}/{idc}/{idpdf}/{tab}/{origen}','ContratoFinalArrController@edit')->name('finalContratoArr.edit')
 		->middleware('permission:finalContratoArr.edit');
 
 		Route::get('finalContratoArr/destroy/{id}/{idpdf}','ContratoFinalArrController@destroy')->name('finalContratoArr.destroy')
@@ -1195,47 +1195,37 @@ Route::get('contratorenovacionpropietario','ContratoRenovacionPropietarioControl
 
 // CHECKLIST
 
-	Route::get('checklist/prueba','ChecklistController@index')->name('checklist.index')
-		->middleware('permission:checklist.prueba');		
-
-	Route::get('checklist/create/{id_contrato}/{id_chk}/{tipo}/{edr}','ChecklistController@create')->name('checklist.create')
+	Route::get('checklist/create/{id_contrato}/{id_chk}/{tipo}/{edr}/{origen}','ChecklistController@create')->name('checklist.create')
 		->middleware('permission:checklist.check');
 
 	Route::get('checklist/update/{id_contrato}/{id_chk}/{tipo}','ChecklistController@update')->name('checklist.update')
 		->middleware('permission:checklist.check');
 
-	Route::get('checklist/checkindex/{id_contrato}/{id_chk}/{tipo}','ChecklistController@checkindex')->name('checklist.checkindex')
+	Route::get('checklist/checkindex/{id_contrato}/{id_chk}/{tipo}/{origen}','ChecklistController@checkindex')->name('checklist.checkindex')
 		->middleware('permission:checklist.check');
 
-	Route::get('checklist/checkindexarr/{id_contrato}/{id_chk}/{tipo}','ChecklistController@checkindexarr')->name('checklist.checkindexarr')
+	Route::get('checklist/checkindexarr/{id_contrato}/{id_chk}/{tipo}/{origen}','ChecklistController@checkindexarr')->name('checklist.checkindexarr')
 		->middleware('permission:checklist.check');
 
-	Route::get('checklist','ChecklistController@index')->name('checklist.index')
+	Route::get('checklist/index/{origen}','ChecklistController@index')->name('checklist.index')
 		->middleware('permission:uf.index');
 
-	Route::get('checklist/{id}/{tipo}','ChecklistController@show')->name('checklist.show')
+	Route::get('checklist/pdf/{id_chk}/{tipo_chk}','ChecklistController@show')->name('checklist.show')
 		->middleware('permission:uf.show');
 
 
 	Route::get('checklist/{tipo}','ChecklistController@creachkportipo')->name('checklist.creachkportipo')
 		->middleware('permission:uf.show');
 
-
-
-
 	Route::get('checklist/{id_contrato}/{id_chk}/{tipo}/{edr}','ChecklistController@chkmanual')->name('checklist.chkmanual')
 		->middleware('permission:uf.show');
 
 
-	Route::get('checklist/{id_c}/{id_chk}/{tipo}/{edr}/edit','ChecklistController@edit')->name('checklist.edit')
+	Route::get('checklist/{id_c}/{id_chk}/{tipo}/{edr}/{origen}/edit','ChecklistController@edit')->name('checklist.edit')
 		->middleware('permission:uf.edit');	
 
-	Route::get('checklist/create_detalle/{id_contrato}/{id_chk}/{tipo}/{edr}/{id_tipo_chk}','ChecklistController@create_detalle')->name('checklist.create_detalle')
+	Route::get('checklist/create_detalle/{id_contrato}/{id_chk}/{tipo}/{edr}/{id_tipo_chk}/{origen}','ChecklistController@create_detalle')->name('checklist.create_detalle')
 		->middleware('permission:checklist.edit');
-
-
-
-
 
 	Route::delete('checklist/{id}','ChecklistController@destroy')->name('checklist.destroy')
 		->middleware('permission:checklist.destroy');

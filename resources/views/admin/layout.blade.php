@@ -333,7 +333,7 @@
                             </li>
 
                                  @can('checklist.index')
-                                <li> <a href="{{ route('checklist.index') }}"><i class=" fa-fw">CH</i><span class="hide-menu">eckList Inmueble</span></a> </li>
+                                <li> <a href="{{ route('checklist.index',"menu") }}"><i class=" fa-fw">CH</i><span class="hide-menu">eckList Inmueble</span></a> </li>
                                 @endcan
                                 @can('revisioncuentas.index')
                                 <li> <a href="{{ route('revisioncuentas.index') }}"><i class=" fa-fw">RC</i><span class="hide-menu">Revisión de Cuentas Básicas</span></a> </li>

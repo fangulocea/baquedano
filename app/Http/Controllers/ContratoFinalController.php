@@ -604,8 +604,9 @@ public function savepagofin(Request $request,$id_contrato,$id_publicacion) {
                     'id_estado'         => '1',
         ]);
 
+        $origen = "Contrato";
 
-        return redirect()->route('finalContrato.edit', [$ContratoBorrador->id_publicacion, $request->id_borradorfinal, $ContratoBorradorPDF->id, 1])
+        return redirect()->route('finalContrato.edit', [$ContratoBorrador->id_publicacion, $request->id_borradorfinal, $ContratoBorradorPDF->id, 1,$origen])
                         ->with('status', 'Contrato Final guardado con éxito');
     }
 
@@ -738,7 +739,7 @@ public function savepagofin(Request $request,$id_contrato,$id_publicacion) {
      * @param  \App\ContratoFinal  $contratoFinal
      * @return \Illuminate\Http-\Response
      */
-    public function edit($idc, $idcb, $idpdf, $tab) {
+    public function edit($idc, $idcb, $idpdf, $tab, $origen) {
         $borrador = DB::table('cap_publicaciones as c')
                 ->leftjoin('personas as p1', 'c.id_propietario', '=', 'p1.id')
                 ->leftjoin('inmuebles as i', 'c.id_inmueble', '=', 'i.id')
@@ -801,7 +802,7 @@ public function savepagofin(Request $request,$id_contrato,$id_publicacion) {
                 ->select(DB::raw(" s.id, (CASE  WHEN tipopropuesta=1 THEN '1 Cuota' WHEN tipopropuesta=2 THEN'Pie + Cuota' WHEN tipopropuesta=3 THEN 'Renovación, 1 Cuota' WHEN tipopropuesta=4 THEN 'Renovación, Pie + Cuotas' ELSE 'Renovación' END) as tipopropuesta, s.proporcional, s.fecha_iniciocontrato, s.meses_contrato, s.iva,descuento, s.pie, cobromensual, s.nrocuotas,s.canondearriendo"))
                 ->get();
 
-        return view('contratoFinal.edit', compact('borrador', 'finalIndex', 'notaria', 'documentos', 'flag', 'tab', 'direcciones', 'propuestas', 'uf'));
+        return view('contratoFinal.edit', compact('borrador', 'finalIndex', 'notaria', 'documentos', 'flag', 'tab', 'direcciones', 'propuestas', 'uf', 'origen'));
     }
 
     /**

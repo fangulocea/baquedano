@@ -97,7 +97,7 @@ use App\Http\Controllers\ContratoFinalController;
                                     @endif
                                 </td>
                                 <td>
-                                    <a href="{{ route('checklist.checkindex',[$p->id,0 , 'Propietario']) }}"> <button type="button" class="btn btn-info"> <i class="fa fa-check"></i> CheckList</button></a>
+                                    <a href="{{ route('checklist.checkindex',[$p->id,0 , 'Propietario',$origen]) }}"> <button type="button" class="btn btn-info"> <i class="fa fa-check"></i> CheckList</button></a>
                                 </td>
 
                                 <td>
