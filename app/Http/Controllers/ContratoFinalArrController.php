@@ -167,7 +167,11 @@ class ContratoFinalArrController extends Controller {
                     ->where("p.id_contrato","=",$id_contrato)
                     ->sum('p.monto');
 
-        $totalFinal = (int)$garantia_a->valor + (int)$totalCuadratura;
+        if(isset($garantia_a->valor))
+        {
+            $totalFinal = (int)$garantia_a->valor + (int)$totalCuadratura;    
+        }
+        $totalFinal = (int)$totalCuadratura;
 
         $saldo = (int)$totalFinal - (int)$pagosuma;
 
@@ -322,7 +326,11 @@ public function savepagofin(Request $request,$id_contrato,$id_publicacion) {
         ->where("p.id_contrato","=",$id_contrato)
         ->sum('p.valor');
 
-        $totalFinal = (int)$garantia_a->valor + (int)$totalCuadratura;
+        if(isset($garantia_a->valor))
+        {
+            $totalFinal = (int)$garantia_a->valor + (int)$totalCuadratura;    
+        }
+        $totalFinal = (int)$totalCuadratura;
 
         $saldo = (int)$totalFinal - (int)$pagosuma;
 
@@ -815,6 +823,23 @@ public function savepagofin(Request $request,$id_contrato,$id_publicacion) {
                 "id_estado" => 2
             ]);
         }
+
+        $tipo = "Arrendatario";
+
+        $chk = DB::table('chkinmuebles')
+                ->where('id_contrato' , '=',$id)
+                ->where('tipo' , '=' , "Arrendatario")
+                ->first();
+
+        $chkFoto = DB::table('chkinmueblefoto')
+                   ->where('id_chk' , '=' , $chk->id)
+                   ->delete();
+
+        $chk = DB::table('chkinmuebles')
+                ->where('id_contrato' , '=',$id)
+                ->where('tipo' , '=' , "Arrendatario")
+                ->delete();
+
 
         $origen = "Contrato";
         return redirect()->route('finalContratoArr.edit', [$contrato->id_publicacion, $contrato->id_borrador, $idpdf, 1,$origen])

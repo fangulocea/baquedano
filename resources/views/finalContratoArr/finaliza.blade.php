@@ -70,7 +70,7 @@
                             <div class="row">
                                 <div class="col-md-3"> </div>
                                 <div class="col-md-6">
-                                    <a href="{{ route('finalContratoArr.edit',[ $id_publicacion,0,0,1 ]) }}"> <button type="button" class="btn btn-primary btn-lg btn-block btn-info"> <i class="fa ti-control-backward"></i>&nbsp;&nbsp;Volver</button></a>
+                                    <a href="{{ route('finalContratoArr.edit',[ $id_publicacion,0,0,1,"Contrato" ]) }}"> <button type="button" class="btn btn-primary btn-lg btn-block btn-info"> <i class="fa ti-control-backward"></i>&nbsp;&nbsp;Volver</button></a>
                                 </div>
                                 <div class="col-md-3"> </div>
                             </div>                              

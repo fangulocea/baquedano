@@ -369,6 +369,7 @@ public function savepagofin(Request $request,$id_contrato,$id_publicacion) {
         else
         {  $estado = "PAGADO";     }
 
+
         if(isset($arrendatario))
         {
             //propiedad con arrendatario
@@ -385,6 +386,8 @@ public function savepagofin(Request $request,$id_contrato,$id_publicacion) {
             $arr_reserva  = DB::table('arr_reservas as a')
                             ->where('a.id_arr_ges','=',$id_arr->id_cap_arr)
                             ->sum('a.monto_reserva');
+            if(isset($arr_reserva))
+            {  $arr_reserva  = 0;  }
 
             $arr_garantia = DB::table('arrendatario_garantia as a')
                             ->where('a.id_publicacion','=',$id_arr->id_cap_arr)
@@ -420,7 +423,6 @@ public function savepagofin(Request $request,$id_contrato,$id_publicacion) {
                                 'ano'               => $ano,
 
                          ]);
-            }
 
             $arrendatario3=Arr_Reservas::create([                      
                                 'id_condicion'      => 1,
@@ -431,6 +433,10 @@ public function savepagofin(Request $request,$id_contrato,$id_publicacion) {
                                 'id_modificador'    => Auth::user()->id,
                                 'id_estado'         => 1,
                          ]);
+
+            }
+
+
 
 
 
@@ -802,7 +808,7 @@ public function savepagofin(Request $request,$id_contrato,$id_publicacion) {
                 ->select(DB::raw(" s.id, (CASE  WHEN tipopropuesta=1 THEN '1 Cuota' WHEN tipopropuesta=2 THEN'Pie + Cuota' WHEN tipopropuesta=3 THEN 'Renovación, 1 Cuota' WHEN tipopropuesta=4 THEN 'Renovación, Pie + Cuotas' ELSE 'Renovación' END) as tipopropuesta, s.proporcional, s.fecha_iniciocontrato, s.meses_contrato, s.iva,descuento, s.pie, cobromensual, s.nrocuotas,s.canondearriendo"))
                 ->get();
 
-        return view('contratoFinal.edit', compact('borrador', 'finalIndex', 'notaria', 'documentos', 'flag', 'tab', 'direcciones', 'propuestas', 'uf', 'origen'));
+        return view('contratoFinal.edit', compact('idpdf','idc','borrador', 'finalIndex', 'notaria', 'documentos', 'flag', 'tab', 'direcciones', 'propuestas', 'uf', 'origen'));
     }
 
     /**
@@ -873,18 +879,23 @@ public function savepagofin(Request $request,$id_contrato,$id_publicacion) {
         }
 
 
-        return redirect()->route('finalContrato.edit', [$request->id_publicacion, $request->id_borrador, $request->id_pdf, 1,'contrato'])
+
+        
+        $origen = "Contrato";
+        return redirect()->route('finalContrato.edit', [$request->id_publicacion, $request->id_borrador, $request->id_pdf, 1,$origen])
+
                         ->with('status', 'Contrato actualizado con éxito');
     }
 
     public function asignarinmueble($idc, $idi, $idp) {
 
+        $origen = "Contrato";
         $cont_inmueble = ContratoInmueblesPropietarios::where("id_inmueble", "=", $idi)
                 ->where("id_contratofinal", "=", $idc)
                 ->where("id_publicacion", "=", $idp)
                 ->get();
         if (count($cont_inmueble) > 0) {
-            return redirect()->route('finalContrato.edit', [$idp, 0, 0, 6])
+            return redirect()->route('finalContrato.edit', [$idp, 0, 0, 6,$origen])
                             ->with('error', 'Inmueble ya se encuentra asignado a contrato');
         }
 
@@ -895,7 +906,7 @@ public function savepagofin(Request $request,$id_contrato,$id_publicacion) {
                     "id_creador" => Auth::user()->id
         ]);
 
-        return redirect()->route('finalContrato.edit', [$idp, 0, 0, 6])
+        return redirect()->route('finalContrato.edit', [$idp, 0, 0, 6,$origen])
                         ->with('status', 'Contrato actualizado con éxito');
     }
 
@@ -919,8 +930,8 @@ public function savepagofin(Request $request,$id_contrato,$id_publicacion) {
                     'id_creador' => $request->id_creador
         ]);
 
-
-        return redirect()->route('finalContrato.edit', [$request->id_publicacion, 0, 0, 2])->with('status', 'Documento guardada con éxito');
+        $origen = "Contrato";
+        return redirect()->route('finalContrato.edit', [$request->id_publicacion, 0, 0, 2,$origen])->with('status', 'Documento guardada con éxito');
     }
 
     public function eliminarfoto($idf) {
@@ -929,8 +940,8 @@ public function savepagofin(Request $request,$id_contrato,$id_publicacion) {
 
         File::delete($imagen->ruta . '/' . $imagen->nombre);
         $foto = ContratoFinalDocs::find($idf)->delete();
-
-        return redirect()->route('finalContrato.edit', [$imagen->id_publicacion, 0, 0, 2])->with('status', 'Documento eliminado con éxito');
+        $origen = "Contrato";
+        return redirect()->route('finalContrato.edit', [$imagen->id_publicacion, 0, 0, 2,$origen])->with('status', 'Documento eliminado con éxito');
     }
 
     public function eliminartipopago(Request $request) {
@@ -953,7 +964,8 @@ public function savepagofin(Request $request,$id_contrato,$id_publicacion) {
         $eliminapagos = PagosPropietarios::where("id_contratofinal", "=", $request->id_final_detalle)
                 ->where("id_inmueble", "=", $request->id_inmueble_mensual)
                 ->delete();
-        return redirect()->route('finalContrato.edit', [$request->id_pub_borrar, 0, 0, 4])->with('status', 'Pagos Eliminados con éxito');
+        $origen = "Contrato";
+        return redirect()->route('finalContrato.edit', [$request->id_pub_borrar, 0, 0, 4,$origen])->with('status', 'Pagos Eliminados con éxito');
     }
 
     public function updatepago(Request $request) {
@@ -1010,7 +1022,8 @@ public function savepagofin(Request $request,$id_contrato,$id_publicacion) {
                 'pago_rentas' => $pagar_a_baquedano
             ]);
         }
-        return redirect()->route('finalContrato.edit', [$p->id_publicacion, 0, 0, 4])->with('status', 'Pago actualizado con éxito');
+        $origen = "Contrato";
+        return redirect()->route('finalContrato.edit', [$p->id_publicacion, 0, 0, 4,$origen])->with('status', 'Pago actualizado con éxito');
     }
 
     public function mostrar_un_pago($id) {
@@ -1038,7 +1051,8 @@ public function savepagofin(Request $request,$id_contrato,$id_publicacion) {
 
 
         if (count($canMPagos) > 0 || count($canPagos) > 0) {
-            return redirect()->route('finalContrato.edit', [$idp, 0, 0, 4])->with('error', 'Debe eliminar pagos antes de volver a crear');
+            $origen = "Contrato";
+            return redirect()->route('finalContrato.edit', [$idp, 0, 0, 4,$origen])->with('error', 'Debe eliminar pagos antes de volver a crear');
         }
 
 
@@ -2318,7 +2332,8 @@ $pago = PagosPropietarios::create([
                         'id_estado' => 1
             ]);
         }
-        return redirect()->route('finalContrato.edit', [$idp, 0, 0, 4])->with('status', 'Pago generado con éxito');
+        $origen = "Contrato";
+        return redirect()->route('finalContrato.edit', [$idp, 0, 0, 4,$origen])->with('status', 'Pago generado con éxito');
     }
 
     public function destroy($id, $idpdf) {
@@ -2332,16 +2347,21 @@ $pago = PagosPropietarios::create([
         $condir = ContratoInmueblesPropietarios::where('id_contratofinal', '=', $id)->delete();
         $borrar = ContratoFinal::find($id)->delete();
 
-        $checklist = Checklist::where('id_contrato', '=', $id)->get();
-        foreach ($checklist as $chk) {
-            $condir = ChkInmuebleFoto::where('id_chk', '=', $chk->id)->delete();
-        }
-        $checklist = Checklist::where('id_contrato', '=', $id)->delete();
+        $tipo = "Arrendatario";
 
+        $chk = DB::table('chkinmuebles')
+                ->where('id_contrato' , '=',$id)
+                ->where('tipo' , '=' , "Propietario")
+                ->first();
 
+        $chkFoto = DB::table('chkinmueblefoto')
+                   ->where('id_chk' , '=' , $chk->id)
+                   ->delete();
 
-
-
+        $chk = DB::table('chkinmuebles')
+                ->where('id_contrato' , '=',$id)
+                ->where('tipo' , '=' , "Propietario")
+                ->delete();
 
         
 
@@ -2351,7 +2371,8 @@ $pago = PagosPropietarios::create([
                 "id_estado" => 6
             ]);
         }
-        return redirect()->route('finalContrato.edit', [$contrato->id_publicacion, $contrato->id_borrador, $idpdf, 1])
+        $origen = "Contrato";
+        return redirect()->route('finalContrato.edit', [$contrato->id_publicacion, $contrato->id_borrador, $idpdf, 1,$origen])
                         ->with('status', 'Contrato eliminado con éxito');
     }
 
@@ -2421,8 +2442,8 @@ $pago = PagosPropietarios::create([
         $numero = rand();
         $pdf->crontratoFinalPdfAct($borradorPDF, $pdfnombre->nombre, $simulacion);
         // FIN PARA PDFsss
-
-        return redirect()->route('finalContrato.edit', [$contrato->id_publicacion, $contrato->id_borrador, $request->idpdf, 1])
+        $origen = "Contrato";
+        return redirect()->route('finalContrato.edit', [$contrato->id_publicacion, $contrato->id_borrador, $request->idpdf, 1, $origen])
                         ->with('status', 'Contrato eliminado con éxito');
     }
 

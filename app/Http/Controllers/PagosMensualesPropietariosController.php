@@ -22,7 +22,8 @@ class PagosMensualesPropietariosController extends Controller {
 
     public function volver_pago($id) {
         $pago = PagosMensualesPropietarios::find($id);
-        return redirect()->route('finalContrato.edit', [$pago->id_publicacion, 0, 0, 5])
+        $origen = "Contrato";
+        return redirect()->route('finalContrato.edit', [$pago->id_publicacion, 0, 0, 5,$origen])
                         ->with('status', 'Contrato Final guardado con éxito');
     }
 

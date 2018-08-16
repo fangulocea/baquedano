@@ -163,7 +163,7 @@
 <br><br><br>
 
        
-<a href="{{ route('finalContrato.edit',[$pago->id_publicacion,0,0,5]) }}" class="btn btn-info" style="color:white"><i class="fa fa-times-circle"></i>&nbsp;&nbsp;Volver</a>
+<a href="{{ route('finalContrato.edit',[$pago->id_publicacion,0,0,5,"Contrato"]) }}" class="btn btn-info" style="color:white"><i class="fa fa-times-circle"></i>&nbsp;&nbsp;Volver</a>
 </div>
 
     </div>  
