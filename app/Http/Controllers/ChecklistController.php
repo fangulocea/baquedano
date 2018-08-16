@@ -287,15 +287,6 @@ class ChecklistController extends Controller
         $detalle = DB::table('chkinmuebles')
                     ->where('id', '=', $id_chk)->first(); 
 
-        if(isset($detalle->comentarios))
-        {
-            $comentarios = "";
-        }
-        else
-        {
-            $comentarios = $detalle->comentarios;    
-        }
-
         $imgReserva = ChkInmuebleFoto::where('id_chk','=',$id_chk)->get();
         
         $listadoCheckList = DB::table('checklist')
@@ -578,7 +569,16 @@ public function creachkportipo($tipoACrear)
          ->where('chk.tipo','=',$tipoACrear)
          ->orderBy('chk.id_contrato')
           ->get(); 
-
+    }
+    elseif ($tipoACrear == 'todo') 
+    {
+        $publica = DB::table('chkinmuebles as chk')
+        ->select(DB::raw('chk.id_contrato, chk.id, i.direccion, i.numero, co.comuna_nombre as comuna, 
+                           chk.id_estado, chk.tipo, chk.id_bor_arr, chk.id_cap_pro, chk.created_at, chk.fecha_limite , chk.e_s_r'))
+         ->leftjoin('inmuebles as i', 'chk.id_inmueble', '=', 'i.id')
+         ->leftjoin('comunas as co', 'i.id_comuna', '=', 'co.comuna_id')
+         ->orderBy('chk.id_contrato')
+          ->get(); 
     }
 
     return view('checklist.indexTipo',compact('publica','tipoACrear')); 

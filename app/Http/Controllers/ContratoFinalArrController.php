@@ -389,7 +389,8 @@ public function savepagofin(Request $request,$id_contrato,$id_publicacion) {
                 ->delete();
         $eliminapagos = PagosArrendatarios::where("id_contratofinal", "=", $request->id_final_detalle)
                 ->delete();
-        return redirect()->route('finalContratoArr.edit', [$request->id_pub_borrar, 0, 0, 4])->with('status', 'Pagos Eliminados con éxito');
+        $origen = "Contrato";
+        return redirect()->route('finalContratoArr.edit', [$request->id_pub_borrar, 0, 0, 4,$origen])->with('status', 'Pagos Eliminados con éxito');
     }
 
     public function getContrato($id) {
@@ -777,7 +778,8 @@ public function savepagofin(Request $request,$id_contrato,$id_publicacion) {
                 ->first();
         $flag = 0;
 
-        return view('finalContratoArr.edit', compact('borrador', 'finalIndex', 'notaria', 'documentos', 'flag', 'tab', 'propuestas', 'uf', 'origen'));
+        $origen = "Contrato";
+        return view('finalContratoArr.edit', compact('borrador', 'finalIndex', 'notaria', 'documentos', 'flag', 'tab', 'propuestas', 'uf', 'origen','origen'));
     }
 
     /**
@@ -813,7 +815,9 @@ public function savepagofin(Request $request,$id_contrato,$id_publicacion) {
                 "id_estado" => 2
             ]);
         }
-        return redirect()->route('finalContratoArr.edit', [$contrato->id_publicacion, $contrato->id_borrador, $idpdf, 1])
+
+        $origen = "Contrato";
+        return redirect()->route('finalContratoArr.edit', [$contrato->id_publicacion, $contrato->id_borrador, $idpdf, 1,$origen])
                         ->with('status', 'Contrato eliminado con éxito');
     }
 
@@ -833,7 +837,9 @@ public function savepagofin(Request $request,$id_contrato,$id_publicacion) {
         $Arr = Arrendatario::find($request->id_publicacion)->update([
             "id_estado" => 11
         ]);
-        return redirect()->route('finalContratoArr.edit', [$request->id_publicacion, $request->id_borrador, $request->id_pdf, 1])
+
+        $origen = "Contrato";
+        return redirect()->route('finalContratoArr.edit', [$request->id_publicacion, $request->id_borrador, $request->id_pdf, 1,$origen])
                         ->with('status', 'Contrato actualizado con éxito');
     }
 
@@ -856,8 +862,8 @@ public function savepagofin(Request $request,$id_contrato,$id_publicacion) {
                     'id_creador' => $request->id_creador
         ]);
 
-
-        return redirect()->route('finalContratoArr.edit', [$request->id_publicacion, 0, 0, 2])->with('status', 'Documento guardada con éxito');
+        $origen = "Contrato";
+        return redirect()->route('finalContratoArr.edit', [$request->id_publicacion, 0, 0, 2,$origen])->with('status', 'Documento guardada con éxito');
     }
 
     public function eliminarfoto($idf) {
@@ -867,7 +873,8 @@ public function savepagofin(Request $request,$id_contrato,$id_publicacion) {
         File::delete($imagen->ruta . '/' . $imagen->nombre);
         $foto = ContratoFinalArrDocs::find($idf)->delete();
 
-        return redirect()->route('finalContratoArr.edit', [$imagen->id_publicacion, 0, 0, 2])->with('status', 'Documento eliminado con éxito');
+        $origen = "Contrato";
+        return redirect()->route('finalContratoArr.edit', [$imagen->id_publicacion, 0, 0, 2,$origen])->with('status', 'Documento eliminado con éxito');
     }
 
     public function updatepago(Request $request) {
@@ -926,7 +933,10 @@ public function savepagofin(Request $request,$id_contrato,$id_publicacion) {
                 'pago_a_rentas' => $pagar_a_baquedano
             ]);
         }
-        return redirect()->route('finalContratoArr.edit', [$p->id_publicacion, 0, 0, 4])->with('status', 'Pago actualizado con éxito');
+
+        $origen = "Contrato";
+
+        return redirect()->route('finalContratoArr.edit', [$p->id_publicacion, 0, 0, 4,$origen])->with('status', 'Pago actualizado con éxito');
     }
 
     public function mostrar_un_pago($id) {
@@ -2114,7 +2124,9 @@ $reservas = Arr_Reservas::where("id_arr_ges", "=", $idp)->first();
                         'id_estado' => 1
             ]);
         }
-        return redirect()->route('finalContratoArr.edit', [$idp, 0, 0, 4])->with('status', 'Pago generado con éxito');
+
+        $origen = "Contrato";
+        return redirect()->route('finalContratoArr.edit', [$idp, 0, 0, 4,$origen])->with('status', 'Pago generado con éxito');
     }
 
     static function ValidaCh($idc) {
@@ -2193,7 +2205,8 @@ $reservas = Arr_Reservas::where("id_arr_ges", "=", $idp)->first();
         $pdf->pdfArrendatarioFinalAct($borradorPDF, $pdfnombre->nombre, $simulacion);
         // FIN PARA PDFsss
 
-        return redirect()->route('finalContratoArr.edit', [$contrato->id_publicacion, $contrato->id_borrador, $request->idpdf, 1])
+        $origen = "Contrato";
+        return redirect()->route('finalContratoArr.edit', [$contrato->id_publicacion, $contrato->id_borrador, $request->idpdf, 1,$origen])
                         ->with('status', 'Contrato eliminado con éxito');
     }
 

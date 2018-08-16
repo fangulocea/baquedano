@@ -14,8 +14,10 @@
                 <thead>
                     <tr>
                         <th>ID</th>
-                        <th>Dirección</th>
                         <th>Id Contrato</th>
+                        <th>Tipo</th>
+                        <th>Dirección</th>
+                        <th></th>
                         <th></th>
                         <th></th>
                         <th></th>
@@ -24,8 +26,10 @@
                 <tfoot>
                     <tr>
                         <th>ID</th>
-                        <th>Dirección</th>
                         <th>Id Contrato</th>
+                        <th>Tipo</th>
+                        <th>Dirección</th>
+                        <th></th>
                         <th></th>
                         <th></th>
                         <th></th>
@@ -41,16 +45,17 @@
                         @endphp
                             <tr>
                                 <td>{{ $p->id }}</td>
-                                <td>{{ $p->direccion }}, N°{{ $p->numero }}, {{ $p->comuna }}</td>
                                 <td>{{ $p->id_contrato }} </td>
+                                <td>{{ $p->tipo }} </td>
+                                <td>{{ $p->direccion }}, N°{{ $p->numero }}, {{ $p->comuna }}</td>
                                 <td width="10px">
-                                    <a href="{{ route('checklist.create', [$p->id_contrato, 0, $tipoACrear,"Entrega","menu"]) }}" class="btn btn-info" style="color:white"><i class="fa fa-times-circle"></i>&nbsp;&nbsp;Entrega</a>
+                                    <a href="{{ route('checklist.create', [$p->id_contrato, 0, $tipoACrear,"Entrega","menu"]) }}" class="btn btn-info" style="color:white"><i class="ti-pencil-alt"></i>&nbsp;&nbsp;Entrega</a>
                                 </td>
                                 <td width="10px">
-                                    <a href="{{ route('checklist.create', [$p->id_contrato, 0, $tipoACrear,"Devolución","menu"]) }}" class="btn btn-info" style="color:white"><i class="fa fa-times-circle"></i>&nbsp;&nbsp;Devolución</a>
+                                    <a href="{{ route('checklist.create', [$p->id_contrato, 0, $tipoACrear,"Devolución","menu"]) }}" class="btn btn-info" style="color:white"><i class="ti-pencil-alt"></i>&nbsp;&nbsp;Devolución</a>
                                 </td>
                                 <td width="10px">
-                                    <a href="{{ route('checklist.create', [$p->id_contrato, 0, $tipoACrear,"Revisión","menu"]) }}" class="btn btn-info" style="color:white"><i class="fa fa-times-circle"></i>&nbsp;&nbsp;Revisión</a>
+                                    <a href="{{ route('checklist.create', [$p->id_contrato, 0, $tipoACrear,"Revisión","menu"]) }}" class="btn btn-info" style="color:white"><i class="ti-pencil-alt"></i>&nbsp;&nbsp;Revisión</a>
                                 </td>
                             </tr>
                         @php

@@ -19,7 +19,8 @@ class PagosMensualesArrendatariosController extends Controller {
 
     public function volver_pago($id) {
         $pago = PagosMensualesArrendatarios::find($id);
-        return redirect()->route('finalContratoArr.edit', [$pago->id_publicacion, 0, 0, 5])
+        $origen = "Contrato";
+        return redirect()->route('finalContratoArr.edit', [$pago->id_publicacion, 0, 0, 5,$origen])
                         ->with('status', 'Contrato Final guardado con éxito');
     }
 
