@@ -98,6 +98,7 @@ class PostVentaController extends Controller
             $id_propietario=$publicacion->id_propietario;
             if(count($contratoarr)>0){
                 $id_arrendatario=$contratoarr->id_arrendatario;
+                $idaval=$contratoarr->id_aval;
             }else{
                  $id_arrendatario=null;
             }
@@ -111,8 +112,9 @@ class PostVentaController extends Controller
             ->join('cap_publicaciones as a',"a.id",'cf.id_publicacion')
             ->whereIn("a.id_estado",[10,11])
             ->first();
+             $idaval=$contrato->id_aval;
             if(count($contrato)>0){
-                $id_propietario=$contrato->id_propietario;
+                $id_propietario=$contratopro->id_propietario;
             }else{
                  $id_propietario=null;
             }
@@ -129,7 +131,7 @@ class PostVentaController extends Controller
             'id_estado' => 1,
             'meses_contrato' => $contrato->meses_contrato,
             'fecha_contrato' => $contrato->fecha_firma,
-            'id_aval'=> $contrato->id_aval,
+            'id_aval'=> $idaval,
             'fecha_solicitud' => $request->fecha_solicitud
        ]);
 

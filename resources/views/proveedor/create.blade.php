@@ -4,7 +4,7 @@
 <div class="row">
     <div class="col-md-12">
         <div class="panel panel-info">
-            <div class="panel-heading"> Crear nueva Familia de Materiales</div>
+            <div class="panel-heading"> Crear nuev Proveedor</div>
             <div class="panel-wrapper collapse in" aria-expanded="true">
                 <div class="panel-body">
                     <form action="{{ route('proveedor.store') }}" method="post">

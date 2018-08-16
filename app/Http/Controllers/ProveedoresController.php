@@ -42,7 +42,7 @@ class ProveedoresController extends Controller
 
         if($valida == 0)
         {   $proveedor = Proveedores::create($request->all());
-        return redirect()->route('proveedor.index', $familia->id)
+        return redirect()->route('proveedor.index', $proveedor->id)
             ->with('status', 'proveedor guardado con éxito');  }
         else
         {   return redirect()->route('proveedor.index')
