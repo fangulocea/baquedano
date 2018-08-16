@@ -75,7 +75,7 @@
                 </tbody>
             </table>
 
-            <a href="{{ route('finalContrato.edit', [$p->id_contrato,0,0,1,$origen]) }}" class="btn btn-info" style="color:white"><i class="fa fa-times-circle"></i>&nbsp;&nbsp;Volver</a>
+            <a href="{{ route('finalContrato.edit', [$publicacion,0,0,1,"Contrato"]) }}" class="btn btn-info" style="color:white"><i class="fa fa-times-circle"></i>&nbsp;&nbsp;Volver</a>
 
         </div>
     </div>

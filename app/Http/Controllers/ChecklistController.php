@@ -497,7 +497,10 @@ static function cantDias($fecha1,$fecha2){
              ->select(DB::raw('chk.id, i.direccion, i.numero, co.comuna_nombre as comuna, 
                                chk.id_estado, chk.tipo, chk.id_bor_arr, chk.id_cap_pro, chk.created_at, chk.id_contrato,chk.e_s_r '))
              ->get();
-        }
+             foreach ($publica as $p) {
+                $publicacion = $p->id_cap_pro;
+             }
+         }
         else
         {
             $publica = DB::table('chkinmuebles as chk')
@@ -508,11 +511,14 @@ static function cantDias($fecha1,$fecha2){
              ->where('chk.tipo','=',$tipo)
              ->select(DB::raw('chk.id, i.direccion, i.numero, co.comuna_nombre as comuna, 
                                chk.id_estado, chk.tipo, chk.id_bor_arr, chk.id_cap_pro, chk.created_at, chk.id_contrato,chk.e_s_r '))
-             ->get();            
+             ->get();  
+             foreach ($publica as $p) {
+                $publicacion = $p->id_bor_arr;
+             }          
         }
 
 
-         return view('contratoFinal.checklist',compact('publica','id_contrato','id_chk','tipo','origen')); 
+         return view('contratoFinal.checklist',compact('publica','id_contrato','id_chk','tipo','origen','publicacion')); 
     }
 
     public function checkindexarr($id_contrato,$id_chk,$tipo,$origen)
