@@ -873,9 +873,7 @@ public function savepagofin(Request $request,$id_contrato,$id_publicacion) {
         }
 
 
-        
-
-        return redirect()->route('finalContrato.edit', [$request->id_publicacion, $request->id_borrador, $request->id_pdf, 1])
+        return redirect()->route('finalContrato.edit', [$request->id_publicacion, $request->id_borrador, $request->id_pdf, 1,'contrato'])
                         ->with('status', 'Contrato actualizado con éxito');
     }
 

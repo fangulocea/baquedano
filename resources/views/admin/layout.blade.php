@@ -164,13 +164,16 @@
                                 @endcan
                             </ul>
                         </li>
-                        <li> <a href="#" class="waves-effect"><i class="mdi mdi-clipboard-text fa-fw" data-icon="v"></i> <span class="hide-menu"> Mantenedores <span class="fa arrow"></span> <span class="label label-rouded label-warning pull-right">7</span></span></a>
+                        <li> <a href="#" class="waves-effect"><i class="mdi mdi-clipboard-text fa-fw" data-icon="v"></i> <span class="hide-menu"> Mantenedores <span class="fa arrow"></span> <span class="label label-rouded label-warning pull-right">20</span></span></a>
                             <ul class="nav nav-second-level">
                                 @can('cargo.index')
                                 <li> <a href="{{ route('cargo.index') }}"><i class=" fa-fw">C</i><span class="hide-menu">Cargos</span></a> </li>
                                 @endcan
                               @can('catalogo.index')
                                 <li> <a href="{{ route('catalogo.index') }}"><i class=" fa-fw">C</i><span class="hide-menu">Catálogo de Servicios </span></a> </li>
+                                @endcan
+                                @can('mantenedorchecklist.index')
+                                <li> <a href="{{ route('mantenedorchecklist.index') }}"><i class=" fa-fw">C</i><span class="hide-menu">CheckList</span></a> </li>
                                 @endcan
                                 @can('comision.index')
                                 <li> <a href="{{ route('comision.index') }}"><i class=" fa-fw">C</i><span class="hide-menu">Comisión</span></a> </li>
@@ -180,6 +183,12 @@
                                 @endcan
                                 @can('contrato.index')
                                 <li> <a href="{{ route('contrato.index') }}"><i class=" fa-fw">C</i><span class="hide-menu"> Contrato   </span></a> </li>
+                                @endcan
+                                @can('familia.index')
+                                <li> <a href="{{ route('familia.index') }}"><i class=" fa-fw">C</i><span class="hide-menu"> Familia de Materiales   </span></a> </li>
+                                @endcan
+                                @can('item.index')
+                                <li> <a href="{{ route('item.index') }}"><i class=" fa-fw">C</i><span class="hide-menu"> Items de Materiales   </span></a> </li>
                                 @endcan
                                 @can('correo.index')
                                 <li> <a href="{{ route('correo.index') }}"><i class=" fa-fw">C</i><span class="hide-menu">Correo Tipo   </span></a> </li>
@@ -211,18 +220,19 @@
                                 @can('portal.index')
                                 <li> <a href="{{ route('portal.index') }}"><i class=" fa-fw">P</i><span class="hide-menu">Portal   </span></a> </li>
                                 @endcan
+                                @can('proveedor.index')
+                                <li> <a href="{{ route('proveedor.index') }}"><i class=" fa-fw">P</i><span class="hide-menu">Proveedores   </span></a> </li>
+                                @endcan
                                 @can('servicio.index')
                                 <li> <a href="{{ route('servicio.index') }}"><i class=" fa-fw">S</i><span class="hide-menu">Servicios</span></a> </li>
                                 @endcan
                                 @can('uf.index')
                                 <li> <a href="{{ route('uf.index') }}"><i class=" fa-fw">S</i><span class="hide-menu">UF</span></a> </li>
                                 @endcan
-                                @can('mantenedorchecklist.index')
-                                <li> <a href="{{ route('mantenedorchecklist.index') }}"><i class=" fa-fw">C</i><span class="hide-menu">CheckList</span></a> </li>
-                                @endcan
+
                             </ul>
                         </li>
-                        <li> <a href="#" class="waves-effect"><i class="mdi mdi-settings fa-fw" data-icon="v"></i> <span class="hide-menu"> Captaciones <span class="fa arrow"></span> <span class="label label-rouded label-primary pull-right">6</span></span></a>
+                        <li> <a href="#" class="waves-effect"><i class="mdi mdi-settings fa-fw" data-icon="v"></i> <span class="hide-menu"> Captaciones <span class="fa arrow"></span> <span class="label label-rouded label-primary pull-right">7</span></span></a>
                             <ul class="nav nav-second-level">
                                 @can('captacion.index')
                                     <li> 
@@ -261,7 +271,7 @@
 
                             </ul>
                         </li>
-                        <li> <a href="#" class="waves-effect"><i class="mdi mdi-settings fa-fw" data-icon="v"></i> <span class="hide-menu"> Administración <span class="fa arrow"></span> <span class="label label-rouded label-primary pull-right">2</span></span></a>
+                        <li> <a href="#" class="waves-effect"><i class="mdi mdi-settings fa-fw" data-icon="v"></i> <span class="hide-menu"> Administración <span class="fa arrow"></span> <span class="label label-rouded label-primary pull-right">5</span></span></a>
                             <ul class="nav nav-second-level">
                                 @can('revisioncomercial.index')
                                 <li> <a href="{{ route('revisioninmueble.index') }}"><i class=" fa-fw">CP</i><span class="hide-menu">Revisión Comercial Inmueble</span></a> </li>
@@ -316,7 +326,7 @@
                             </ul>
 
                         </li>
-                        <li> <a href="#" class="waves-effect"><i class="mdi mdi-settings fa-fw" data-icon="v"></i> <span class="hide-menu"> POST Atención <span class="fa arrow"></span> <span class="label label-rouded label-primary pull-right">2</span></span></a>
+                        <li> <a href="#" class="waves-effect"><i class="mdi mdi-settings fa-fw" data-icon="v"></i> <span class="hide-menu"> POST Atención <span class="fa arrow"></span> <span class="label label-rouded label-primary pull-right">4</span></span></a>
                         
                             <ul class="nav nav-second-level">
                              <li>

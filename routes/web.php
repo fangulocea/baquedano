@@ -1022,8 +1022,6 @@ Route::get('cbararrendatario/garantia/eliminar/{id}/{pub}','ContratoBorradorArre
 
 // COntratos final Arrendatario  
 
-	Route::get('finalContratoArr/edit/{idp}/{idc}/{idpdf}/{tab}/{origen}','ContratoFinalArrController@edit')->name('finalContratoArr.edit')
-		->middleware('permission:finalContratoArr.edit');
 
 	Route::get('finalContratoArr/comprobantedepago/{id}','PagosMensualesArrendatariosController@comprobantedepago')->name('PagosMensualesArrendatarios.comprobantedepago')
 		->middleware('permission:finalContratoArr.edit');
@@ -1050,7 +1048,8 @@ Route::get('cbararrendatario/garantia/eliminar/{id}/{pub}','ContratoBorradorArre
 		Route::get('finalContratoArr/create','ContratoFinalArrController@create')->name('finalContratoArr.create')
 		->middleware('permission:finalContratoArr.create');
 
-	
+		Route::get('finalContratoArr/edit/{idp}/{idc}/{idpdf}/{tab}/{origen}','ContratoFinalArrController@edit')->name('finalContratoArr.edit')
+		->middleware('permission:finalContratoArr.edit');
 
 		Route::get('finalContratoArr/destroy/{id}/{idpdf}','ContratoFinalArrController@destroy')->name('finalContratoArr.destroy')
 		->middleware('permission:finalContratoArr.destroy');
@@ -1435,6 +1434,9 @@ Route::get('revisioncuentas/{id}/moroso','CuentasArrendatarioController@moroso')
 	Route::get('postventa/index','PostVentaController@index_ajax')->name('postventa.index_ajax')
 		->middleware('permission:postventa.index');
 
+		Route::get('postventa/eliminargestion/{id}','PostVentaController@eliminargestion')->name('postventa.eliminargestion')
+		->middleware('permission:postventa.edit');
+
 	Route::get('postventa','PostVentaController@index')->name('postventa.index')
 		->middleware('permission:postventa.index');
 
@@ -1467,5 +1469,70 @@ Route::get('revisioncuentas/{id}/moroso','CuentasArrendatarioController@moroso')
 		->middleware('permission:postventa.edit');
 
 
+
+//FAMILIA
+
+
+	Route::post('familia/store','FamiliaMaterialesController@store')->name('familia.store')
+		->middleware('permission:empresas.create');
+
+	Route::get('familia','FamiliaMaterialesController@index')->name('familia.index')
+		->middleware('permission:empresas.index');
+
+	Route::get('familia/create','FamiliaMaterialesController@create')->name('familia.create')
+		->middleware('permission:familia.create');
+
+	Route::post('familia/{familia}','FamiliaMaterialesController@update')->name('familia.update')
+		->middleware('permission:familia.edit');
+
+	Route::delete('familia/{familia}','FamiliaMaterialesController@destroy')->name('familia.destroy')
+		->middleware('permission:empresas.destroy');
+
+	Route::get('familia/{familia}/edit','FamiliaMaterialesController@edit')->name('familia.edit')
+		->middleware('permission:familia.edit');
+
+
+//ITEM
+
+
+	Route::post('item/store','ItemMaterialesController@store')->name('item.store')
+		->middleware('permission:item.create');
+
+	Route::get('item','ItemMaterialesController@index')->name('item.index')
+		->middleware('permission:item.index');
+
+	Route::get('item/create','ItemMaterialesController@create')->name('item.create')
+		->middleware('permission:item.create');
+
+	Route::post('item/{item}','ItemMaterialesController@update')->name('item.update')
+		->middleware('permission:item.edit');
+
+	Route::delete('item/{item}','ItemMaterialesController@destroy')->name('item.destroy')
+		->middleware('permission:item.destroy');
+
+	Route::get('item/{item}/edit','ItemMaterialesController@edit')->name('item.edit')
+		->middleware('permission:item.edit');
+
+
+//Proveedor
+
+
+	Route::post('proveedor/store','ProveedoresController@store')->name('proveedor.store')
+		->middleware('permission:proveedor.create');
+
+	Route::get('proveedor','ProveedoresController@index')->name('proveedor.index')
+		->middleware('permission:proveedor.index');
+
+	Route::get('proveedor/create','ProveedoresController@create')->name('proveedor.create')
+		->middleware('permission:proveedor.create');
+
+	Route::post('proveedor/{proveedor}','ProveedoresController@update')->name('proveedor.update')
+		->middleware('permission:proveedor.edit');
+
+	Route::delete('proveedor/{proveedor}','ProveedoresController@destroy')->name('proveedor.destroy')
+		->middleware('permission:item.destroy');
+
+	Route::get('proveedor/{proveedor}/edit','ProveedoresController@edit')->name('proveedor.edit')
+		->middleware('permission:proveedor.edit');
 
 });

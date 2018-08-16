@@ -867,7 +867,9 @@
           
                                                     <button class="btn btn-success btn-circle btn-lg" id='via_edit' onclick="mostrar_modal({{ $p->id }})" ><i class="fa fa-check"></i></span></button>
 
-                                                    <button class="btn btn-danger btn-circle btn-lg" id='via_eliminar'  ><i class="fa fa-trash-o"></i></span></button>
+                                                    <a href="/postventa/eliminargestion/{{ $p->id }}"><span class="btn btn-danger btn-circle btn-lg"><i class="ti-trash"></i></span></a>
+
+                    
                                        
 
                                             </td>
@@ -1528,9 +1530,7 @@ $('#listgestion').DataTable({
             $('#e_gestionador').val(response.id_gestionador);
             $('#e_tipo_contacto').val(response.tipo_contacto);
             $('#e_contacto_con').val(response.contacto_con);
-            
-            var d = response.fecha_gestion.split('-');
-            $('#e_fecha_gestion').val(d[2] + '-' + d[1] + '-' + d[0]);
+            $('#e_fecha_gestion').val(response.fecha_gestion);
             $('#e_hora_gestion').val(response.hora_gestion);
             $('#e_detalle_contacto').val(response.detalle_contacto);
             $('#e_detalle_gestion').val(response.detalle_gestion);

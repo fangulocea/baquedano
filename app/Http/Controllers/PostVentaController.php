@@ -248,7 +248,7 @@ class PostVentaController extends Controller
 
 
 
-  public function updategestion(Request $request,$id) {
+  public function updategestion(Request $request) {
 
         $gestion= GestionPostVenta::find($request->id_gestion)->update([
             "id_gestionador" => $request->gestionador,
@@ -266,6 +266,15 @@ class PostVentaController extends Controller
 
         return redirect()->route('postventa.edit', [$request->id_solicitud_gestion, 7])->with('status', 'Gestión agregada con éxito');
     }
+
+  public function eliminargestion($id) {
+
+        $gestion= GestionPostVenta::find($id);
+        $del= GestionPostVenta::find($id)->delete();
+
+        return redirect()->route('postventa.edit', [$gestion->id_postventa, 7])->with('status', 'Gestión agregada con éxito');
+    }
+
 
       public function mostrargestion($id) {
 
