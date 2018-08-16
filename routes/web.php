@@ -1022,6 +1022,9 @@ Route::get('cbararrendatario/garantia/eliminar/{id}/{pub}','ContratoBorradorArre
 
 // COntratos final Arrendatario  
 
+	Route::get('finalContratoArr/edit/{idp}/{idc}/{idpdf}/{tab}/{origen}','ContratoFinalArrController@edit')->name('finalContratoArr.edit')
+		->middleware('permission:finalContratoArr.edit');
+
 	Route::get('finalContratoArr/comprobantedepago/{id}','PagosMensualesArrendatariosController@comprobantedepago')->name('PagosMensualesArrendatarios.comprobantedepago')
 		->middleware('permission:finalContratoArr.edit');
 
@@ -1047,8 +1050,7 @@ Route::get('cbararrendatario/garantia/eliminar/{id}/{pub}','ContratoBorradorArre
 		Route::get('finalContratoArr/create','ContratoFinalArrController@create')->name('finalContratoArr.create')
 		->middleware('permission:finalContratoArr.create');
 
-		Route::get('finalContratoArr/edit/{idp}/{idc}/{idpdf}/{tab}/{origen}','ContratoFinalArrController@edit')->name('finalContratoArr.edit')
-		->middleware('permission:finalContratoArr.edit');
+	
 
 		Route::get('finalContratoArr/destroy/{id}/{idpdf}','ContratoFinalArrController@destroy')->name('finalContratoArr.destroy')
 		->middleware('permission:finalContratoArr.destroy');
