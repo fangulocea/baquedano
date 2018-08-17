@@ -69,6 +69,7 @@
 
                 </tbody>
             </table>
+            <a href="{{ route('checklist.index',"menu" ) }}" class="btn btn-info" style="color:white"><i class="fa fa-times-circle"></i>&nbsp;&nbsp;Volver</a>
         </div>
     </div>
 </div>

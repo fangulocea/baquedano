@@ -58,7 +58,7 @@
             <div class="white-box"> 
                 <h3 class="box-title">Subir Imágen para: {{ $Checklist->direccion or null }}, #{{ $Checklist->numero or null }}</h3>
                 <label for="input-file-now-custom-1">Imágen de CheckList</label>
-                <input type="file" id="foto" name="foto"  class="dropify" required="required" />  
+                <input type="file" id="foto" name="foto"  class="dropify" />  
             </div>
         </div>
 
@@ -79,7 +79,7 @@
                                 <center><a href="{{ URL::asset($p->ruta.'/'.$p->nombre) }}" target="_blank">BAJAR ARCHIVO<br> {{ $p->nombre }} </a></center>
                                 @can('revisioncomercial.edit')
                                 <td width="10px">
-                                    <a href="{{ route('checklist.eliminararchivo', [$p->id,$id_contrato,$id_chk,$tipo,$edr]) }}" class="btn btn-danger btn-circle btn-lg"><i class="fa fa-check"></i></a>
+                                    <a href="{{ route('checklist.eliminararchivo', [$p->id,$id_contrato,$id_chk,$tipo,$edr,$tipo_chk,$origen]) }}" class="btn btn-danger btn-circle btn-lg"><i class="fa fa-check"></i></a>
                                 </td>
                                 @endcan
                             </tr>

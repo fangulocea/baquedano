@@ -69,7 +69,7 @@ use App\Http\Controllers\ChecklistController;
     <div class="row">
         <div class="col-md-1">
             @if($origen == 'menu')
-                <a href="{{ route('checklist.creachkportipo',$tipo) }}" class="btn btn-info" style="color:white"><i class="fa fa-times-circle"></i>&nbsp;&nbsp;Volver</a>
+                <a href="{{ route('checklist.index',$origen ) }}" class="btn btn-info" style="color:white"><i class="fa fa-times-circle"></i>&nbsp;&nbsp;Volver</a>
             @else
                 @if($tipo == 'Propietario')
                         <a href="{{ route('checklist.checkindex',[$id_contrato,0 , 'Propietario', $origen]) }}" class="btn btn-info" style="color:white"><i class="fa fa-times-circle"></i>&nbsp;&nbsp;Volver</a>

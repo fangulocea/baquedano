@@ -299,7 +299,6 @@ class ChecklistController extends Controller
 
     public function savefotos(Request $request, $id_inmueble){
 
-        //dd($request);
         if($request->id_tipo == 'Propietario')
         {
                 $adm_contratofinal = DB::table('adm_contratofinal')
@@ -359,14 +358,8 @@ class ChecklistController extends Controller
         $edr         = $request->edr;
         $id_contrato = $request->id_contrato;
 
-
-        // $checklist = DB::table('chkinmuebles')
-        // ->Where('chkinmuebles.id_inmueble','=',$id)
-        // ->first();
-
         if(isset($request->foto))
         {
-
             $input  = array('image' => Input::file('foto'));
             $reglas = array('image' => 'mimes:jpeg,png');
             $validacion = Validator::make($input,  $reglas);
@@ -386,11 +379,6 @@ class ChecklistController extends Controller
                                 'tipo_chk'             => $request->tipo_chk,
                                 'comentarios'          => $request->comentarios,
                     ]);
-
-                // Checklist::where('id', '=', $imagen->id)->update([
-                //          'comentarios'     => $request->comentarios,
-                //      ]);                    
-
             }
             else
             {
@@ -410,22 +398,21 @@ class ChecklistController extends Controller
                        'tipo_chk'             => $request->tipo_chk,
                        'comentarios'          => $request->comentarios,
                 ]); 
-
-                // Checklist::where('id', '=', $imagen->id)->update([
-                //          'comentarios'     => $request->comentarios,
-                //      ]);
-
             }
 
-            // Checklist::where('id', '=', $id_chk)->update([
-            //             'descripcion'     => $request->descripcion,
-            //             'comentarios'     => $request->comentarios,
-
-            //         ]);
-
+            $act_contrato = ChkInmuebleFoto::where('id_chk','=',$id_chk)
+                                            ->Where('tipo_chk','=',$request->tipo_chk)
+                                            ->update(['comentarios' => $request->comentarios]);
         }
         else
         { 
+
+
+            $cuenta = ChkInmuebleFoto::where('id_chk','=',$id_chk)
+                                            ->Where('tipo_chk','=',$request->tipo_chk)
+                                            ->count();
+            if($cuenta == 0)            
+            {
                 $imagen=ChkInmuebleFoto::create([
                        'id_chk'               => $id_chk,
                        'id_inmueble'          => $id_inmueble,
@@ -433,10 +420,19 @@ class ChecklistController extends Controller
                        'tipo_chk'             => $request->tipo_chk,
                 ]);      
 
-            // Checklist::where('id', '=', $id_chk)->update([
-            //         'descripcion'     => $request->descripcion,
-            //         'comentarios'     => $request->comentarios,
-            // ]);
+            }
+            else
+            {
+                $act_contrato = ChkInmuebleFoto::where('id_chk','=',$id_chk)
+                                ->Where('tipo_chk','=',$request->tipo_chk)
+                                ->update(['comentarios' => $request->comentarios]);    
+
+            }
+
+
+
+
+
 
             return redirect()->route('checklist.create_detalle', [$id_contrato, $id_chk, $tipo, $edr, $request->tipo_chk, $request->origen])->with('status', 'No se ha actualizado ninguna imágen'); 
         }
@@ -444,14 +440,17 @@ class ChecklistController extends Controller
         return redirect()->route('checklist.create_detalle',     [$id_contrato, $id_chk, $tipo, $edr, $request->tipo_chk, $request->origen])->with('status', 'Foto guardada con éxito');
     }
 
-public function eliminararchivo($idf,$id_contrato,$id_chk,$tipo,$edr){
+
+
+public function eliminararchivo($idf,$id_contrato,$id_chk,$tipo,$edr,$tipo_chk,$origen){
 
         $imagen=ChkInmuebleFoto::find($idf);
 
         File::delete($imagen->ruta.'/'.$imagen->nombre);
         $foto = ChkInmuebleFoto::find($idf)->delete();
 
-        return redirect()->route('checklist.edit', [$id_contrato,$id_chk,$tipo,$edr])->with('status', 'Foto eliminada con éxito');
+      //return redirect()->route('checklist.edit',               [$id_contrato, $id_chk, $tipo, $edr, $origen])->with('status', 'Foto eliminada con éxito');
+        return redirect()->route('checklist.create_detalle',     [$id_contrato, $id_chk, $tipo, $edr, $tipo_chk, $origen])->with('status', 'Foto eliminada con éxito');
     }
 
     
