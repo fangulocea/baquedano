@@ -89,6 +89,7 @@ use App\Http\Controllers\ChecklistController;
     </tr>
 </table>
 
+
 <table class="display nowrap" cellspacing="0" width="100%">
     <tr>
         <td width="20%" style="padding: 5px;text-align: center;border: 1px solid black"><strong>CHECKLIST</strong><br></td>
@@ -96,6 +97,7 @@ use App\Http\Controllers\ChecklistController;
     </tr>
     @php
         $contador = 1;
+        $tipo_chk_paso = 0;
     @endphp
     @foreach($listadoCheckList as $pi)
         <tr>
@@ -115,7 +117,24 @@ use App\Http\Controllers\ChecklistController;
                     </tr>
                 </table>
             </td>
-            <td width="80%" style="padding: 5px;text-align: center;border: 1px solid black"><br>  </td>
+
+            @php 
+                if(ChecklistController::validaChk($id_chk,$pi->id) > 0 )
+                {   
+                    echo "<td width='80%' style='padding: 5px;text-align: center;border: 1px solid black'><br>".ChecklistController::obtieneComentarios($id_chk,$pi->id)."  </td>";  
+                } 
+                else
+                {  
+                   echo "<td width='80%' style='padding: 5px;text-align: center;border: 1px solid black'><br> {{ ChecklistController::obtieneComentarios($id_chk,$tipo) }} </td>";
+                } 
+                
+                @endphp            
+        
+            
+
+           
+
+            
         </tr>
         @php
             $contador ++;

@@ -177,6 +177,7 @@ class ChecklistController extends Controller
      */
     public function show($id_chk,$tipo)
     {
+
         $year_now = date ("Y");  
         $month_now = date ("n"); 
 
@@ -202,7 +203,7 @@ class ChecklistController extends Controller
                 ->leftjoin('arrendatarios as a', 'c.id_bor_arr', '=', 'a.id')
                 ->leftjoin('personas as p', 'a.id_arrendatario', '=', 'p.id')
                 ->where('c.id', '=', $id_chk)
-                ->select(DB::raw('p.nombre, p.apellido_paterno, p.telefono, p.email'))
+                ->select(DB::raw('c.id,p.nombre, p.apellido_paterno, p.telefono, p.email'))
                 ->first();
         }
         else
@@ -211,13 +212,18 @@ class ChecklistController extends Controller
                 ->leftjoin('cap_publicaciones as a', 'c.id_cap_pro', '=', 'a.id')
                 ->leftjoin('personas as p', 'a.id_propietario', '=', 'p.id')
                 ->where('c.id', '=', $id_chk)
-                ->select(DB::raw('p.nombre, p.apellido_paterno, p.telefono, p.email'))
+                ->select(DB::raw('c.id,p.nombre, p.apellido_paterno, p.telefono, p.email'))
                 ->first();            
         }
 
+        $todoChk = DB::table('chkinmueblefoto as f')
+        ->where('f.id_chk', '=', $persona->id)
+        ->select(DB::raw('f.id, f.id_chk, f.tipo_chk'))
+        ->get();    
 
 
-        $pdf = PDF::loadView('formatospdf.checklist', compact('ChkInmueble', 'ChkFotos','listadoCheckList','tipo','persona','id_chk'));
+
+        $pdf = PDF::loadView('formatospdf.checklist', compact('todoChk','ChkInmueble', 'ChkFotos','listadoCheckList','tipo','persona','id_chk'));
         return $pdf->download($ChkInmueble->direccion . ' Nro.' . $ChkInmueble->numero . ' Comuna.' . $ChkInmueble->comuna . ' - ' . $month_now . '-' . $year_now . ' - CheckList.pdf');
 
        
@@ -249,8 +255,8 @@ class ChecklistController extends Controller
         //         ->select(DB::raw('p.nombre, p.apellido_paterno, p.telefono, p.email'))
         //         ->first();
 
-             $pdf = PDF::loadView('formatospdf.checklistpropietario', compact('ChkInmueble', 'foto','persona','descripcion','comentarios'));
-             return $pdf->download($ChkInmueble->direccion . ' Nro.' . $ChkInmueble->numero . ' Comuna.' . $ChkInmueble->comuna . ' - ' . $month_now . '-' . $year_now . ' - CheckList Propietario.pdf');
+             // $pdf = PDF::loadView('formatospdf.checklistpropietario', compact('ChkInmueble', 'foto','persona','descripcion','comentarios'));
+             // return $pdf->download($ChkInmueble->direccion . ' Nro.' . $ChkInmueble->numero . ' Comuna.' . $ChkInmueble->comuna . ' - ' . $month_now . '-' . $year_now . ' - CheckList Propietario.pdf');
         // }
     }
 
@@ -636,20 +642,20 @@ static function contrato($id_arr,$id_pro,$tipo){
         return $ValidaCheckOk;
     }
 
-    static function obtieneComentarios($id_chk,$tipo_check){
-
+    static function obtieneComentarios($id_chk,$tipo_chk){
         //mensaje por tipo
         $MensajeCheck = DB::table('chkinmueblefoto as f')
         ->where('f.id_chk', '=', $id_chk)
-        ->where('f.tipo_chk', '=', $tipo_check)
-        ->select(DB::raw('f.comentarios'))
-        ->orderBy('f.id','ASC')
-        ->first();   
+        ->where('f.tipo_chk', '=', $tipo_chk)
+        ->select(DB::raw('CAST(f.comentarios AS CHAR(255)) as comentarios'))
+        ->first();  
 
-        $mensaje = $MensajeCheck;
+        if(isset($MensajeCheck->comentarios))
+        { $resultado = $MensajeCheck->comentarios;  }
+        else
+        { $resultado = ""; }
 
-        return $mensaje;
-
+        return $resultado;
 
     }
 
