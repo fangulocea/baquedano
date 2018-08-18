@@ -1535,4 +1535,31 @@ Route::get('revisioncuentas/{id}/moroso','CuentasArrendatarioController@moroso')
 	Route::get('proveedor/{proveedor}/edit','ProveedoresController@edit')->name('proveedor.edit')
 		->middleware('permission:proveedor.edit');
 
+
+//Presupuesto
+
+
+	Route::post('presupuesto/store','PresupuestoPostVentaController@store')->name('presupuesto.store')
+		->middleware('permission:presupuesto.create');
+
+	Route::get('presupuesto/listadodetalle/{id}','PresupuestoPostVentaController@detalle_presupuesto_ajax')->name('presupuesto.detalle_presupuesto_ajax')
+		->middleware('permission:presupuesto.index');
+
+	Route::post('presupuesto/adddetalle','PresupuestoPostVentaController@agregar')->name('presupuesto.agregar')
+		->middleware('permission:presupuesto.create');
+
+	Route::get('presupuesto/getitems/{id}','ItemMaterialesController@getitem')->name('presupuesto.getitem')
+		->middleware('permission:presupuesto.create');
+
+	Route::get('postventa/eliminarpresupuesto/{id}','PresupuestoPostVentaController@eliminarpresupuesto')->name('presupuesto.eliminarpresupuesto')
+		->middleware('permission:presupuesto.create');
+
+	Route::get('presupuesto/edit/{id}','PresupuestoPostVentaController@edit')->name('presupuesto.edit')
+		->middleware('permission:presupuesto.edit');
+
+	Route::get('presupuestodetalle/borrar/{id}','PresupuestoPostVentaController@eliminardetalle')->name('presupuesto.eliminardetalle')
+		->middleware('permission:presupuesto.edit');
+
+Route::get('presupuesto/export/{id}','PresupuestoPostVentaController@exportarexcel')->name('presupuesto.exportarexcel')
+		->middleware('permission:presupuesto.edit');
 });

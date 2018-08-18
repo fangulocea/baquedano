@@ -14,6 +14,7 @@ use App\Region;
 use App\DocPostVenta;
 use App\ContratoFinalArr;
 use App\Arrendatario;
+use App\FamiliaMateriales;
 use Yajra\Datatables\Datatables;
 use Illuminate\Support\Facades\File;
 use DB;
@@ -191,12 +192,22 @@ class PostVentaController extends Controller
             ->select(DB::raw('g.id , a.name as Gestionador, g.tipo_contacto, g.fecha_gestion, g.hora_gestion, g.contacto_con'))
             ->orderBy("g.id","asc")
             ->get();
+
+        $presupuestos=DB::table('post_presupuesto as g')
+            ->leftjoin('users as a',"a.id",'g.id_creador')
+            ->leftjoin('mensajes as m', function($join){
+                 $join->on('m.nombre_modulo', '=',DB::raw("'Presupuesto'"));
+                 $join->on('m.id_estado', '=', 'g.id_estado');
+            })
+            ->select(DB::raw('g.id , a.name as Creador, g.responsable_pago, g.id_responsable_pago, g.total, g.created_at, m.nombre as estado'))
+            ->orderBy("g.id","asc")
+            ->get();
         $aval=null;
         if(isset($postventa->id_aval)){
             $aval=Persona::find($postventa->id_aval);
         }
         
-       return view('postventa.edit',compact('postventa','propietario','arrendatario','inmueble','empleados','estados','regiones','tab','aval','docs','gestion'));
+       return view('postventa.edit',compact('postventa','propietario','arrendatario','inmueble','empleados','estados','regiones','tab','aval','docs','gestion','presupuestos'));
     }
 
     public function subir_documentos(Request $request,$id){

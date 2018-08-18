@@ -359,6 +359,44 @@ Mensajes::create([
             'id_estado'    => '4',
             'nombre' => 'Pendiente'
         ]);
+
+
+Mensajes::create([
+            'id_modulo'    => '1',
+            'nombre_modulo'    => 'Presupuesto',
+            'id_estado'    => '0',
+            'nombre' => 'Activo'
+        ]);
+          Mensajes::create([
+            'id_modulo'    => '1',
+            'nombre_modulo'    => 'Presupuesto',
+            'id_estado'    => '1',
+            'nombre' => 'Aprobado'
+        ]);
+           Mensajes::create([
+            'id_modulo'    => '1',
+            'nombre_modulo'    => 'Presupuesto',
+            'id_estado'    => '2',
+            'nombre' => 'Rechazado'
+        ]);
+           Mensajes::create([
+            'id_modulo'    => '1',
+            'nombre_modulo'    => 'Presupuesto',
+            'id_estado'    => '3',
+            'nombre' => 'Anulado'
+        ]);
+        Mensajes::create([
+            'id_modulo'    => '1',
+            'nombre_modulo'    => 'Presupuesto',
+            'id_estado'    => '4',
+            'nombre' => 'En Evaluación'
+        ]);
+         Mensajes::create([
+            'id_modulo'    => '1',
+            'nombre_modulo'    => 'Presupuesto',
+            'id_estado'    => '4',
+            'nombre' => 'Pendiente'
+        ]);
     }
 }
 

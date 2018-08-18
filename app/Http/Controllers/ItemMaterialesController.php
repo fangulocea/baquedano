@@ -9,6 +9,12 @@ use DB;
 
 class ItemMaterialesController extends Controller
 {
+
+    public function getitem($id){
+        $item=ItemMateriales::where('id_familia','=',$id)->get();
+        return response()->json($item);
+    }
+
     /**
      * Display a listing of the resource.
      *

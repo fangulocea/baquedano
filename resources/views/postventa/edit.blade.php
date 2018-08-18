@@ -1066,7 +1066,69 @@
                         </div>
                     </section>
                     <section id="section-iconbox-8">
+                        <form id="form1" action="{{ route('presupuesto.store') }}" method="post">
+                              <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                              {!! csrf_field() !!}
+                              <input type="hidden" class="form-control" name="id_postventa_presupuesto" id="id_postventa_presupuesto" value="{{ $postventa->id }}">
+                              <input type="hidden" class="form-control" name="id_inmueble_presupuesto" id="id_inmueble_presupuesto" value="{{ $postventa->id_inmueble }}">
+                              <input type="hidden" class="form-control" name="id_propietario_presupuesto" id="id_propietario_presupuesto" value="{{ $postventa->id_propietario }}">
+                              <input type="hidden" class="form-control" name="id_arrendatario_presupuesto" id="id_arrendatario_presupuesto" value="{{ $postventa->id_arrendatario }}">
+                            <div class="row">
+                                            <div class="col-md-3">
+                                                <label>Responsable del pago</label>
+                                                <select name="id_cobro" id="id_cobro" class="form-control" required="required">
+                                                    <option value="">Seleccione</option>
+                                                    <option value="1" <?= 1 == $postventa->id_cobro ? 'Selected' : ''; ?>>Propietario</option>
+                                                    <option value="2" <?= 2 == $postventa->id_cobro ? 'Selected' : ''; ?>>Arrendatario</option>
+                                                    <option value="3" <?= 3 == $postventa->id_cobro ? 'Selected' : ''; ?>>Baquedano</option>
+                                                </select>
+                                            </div>
 
+                            <div class="col-md-2">
+                                <label>&nbsp;</label>
+                                <button class="btn btn-block btn-info" id='gestion' >Crear Presupuesto</button>
+                            </div>
+                        </div>
+                       </form>
+                        <hr>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <table id="listgestion" class="display nowrap" cellspacing="0" width="100%">
+                                    <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Responsable Pago</th>
+                                            <th>Creador</th>
+                                            <th>Fecha Creación</th>
+                                            <th>Total</th>
+                                            <th>Estado</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach($presupuestos as $p)
+                                        <tr>
+                                            <td>{{ $p->id }}</td>
+                                            <td>{{ $p->responsable_pago }}</td>
+                                            <td>{{ $p->Creador }}</td>
+                                            <td>{{ $p->created_at }}</td>
+                                            <td>{{ $p->total }}</td>
+                                            <td>{{ $p->estado }}</td>
+                                            @can('presupuesto.edit')
+                                            <td >
+                                                    <a href="/presupuesto/edit/{{ $p->id }}"><span class="btn btn-warning btn-circle btn-lg"><i class="ti-pencil"></i></span></a>
+
+                                                    <a href="/postventa/eliminarpresupuesto/{{ $p->id }}"><span class="btn btn-danger btn-circle btn-lg"><i class="ti-trash"></i></span></a>
+                                                <a href="/presupuesto/export/{{ $p->id }}"><span class="btn btn-info btn-circle btn-lg">P</span></a>
+
+                                            </td>
+                                            @endcan
+                                        </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
                     </section>
                 </div>
                 <!-- /content -->
