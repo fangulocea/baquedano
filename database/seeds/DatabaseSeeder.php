@@ -22,7 +22,7 @@ class DatabaseSeeder extends Seeder
          $this->call(UsersTableSeeder::class);
          $this->call(RoleUserTableSeeder::class);
          $this->call(PortalesTableSeeder::class);
-         $this->call(flexibilidadTableSeeder::class);
+         $this->call(flexibilidadTableSeeder::class); 
          $this->call(MensajesSeed::class);
     }
 }

@@ -44,8 +44,8 @@ var table =$('#listusers').DataTable({
 
     dom: 'Bfrtip',
    pageLength: 10,
-    ServerSide: true,
-    deferRender: true,
+       "processing": true,
+        "serverSide": true,
       "ajax": {
        "url": "{{ route('revisionpersona.index_ajax') }}"
     },

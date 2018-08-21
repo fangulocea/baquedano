@@ -94,8 +94,8 @@
         dom: 'Bfrtip',
         ordering: false,
         pageLength: 20,
-        ServerSide: true,
-        deferRender: true,
+       "processing": true,
+        "serverSide": true,
         buttons: [
                     {   text: 'CheckList Entrega',
                         action: function ( e, dt, node, config ) {

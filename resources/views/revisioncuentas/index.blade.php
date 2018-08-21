@@ -51,8 +51,8 @@ var table = $('#listusers').DataTable({
 
         ordering: false,
         pageLength: 10,
-        ServerSide: true,
-        deferRender: true,
+       "processing": true,
+        "serverSide": true,
       "ajax": {
        "url": "{{ route('revisioncuentas.index_ajax') }}"
     },

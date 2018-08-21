@@ -94,6 +94,7 @@ class PostVentaController extends Controller
             $publicacion=Captacion::find($contrato->id_publicacion);
             $contratoarr=DB::table('adm_contratofinalarr as cf')
             ->join('arrendatarios as a',"a.id",'cf.id_publicacion')
+            ->where('a.id_inmueble','=',$publicacion->id_inmueble)
             ->whereIn("a.id_estado",[10,11])
             ->first();
             $id_propietario=$publicacion->id_propietario;
@@ -111,6 +112,7 @@ class PostVentaController extends Controller
             $id_arrendatario=$publicacion->id_arrendatario;
             $contratopro=DB::table('adm_contratofinal as cf')
             ->join('cap_publicaciones as a',"a.id",'cf.id_publicacion')
+            ->where('a.id_inmueble','=',$publicacion->id_inmueble)
             ->whereIn("a.id_estado",[10,11])
             ->first();
              $idaval=$contrato->id_aval;

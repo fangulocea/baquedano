@@ -154,8 +154,8 @@ var listventas = $('#listventas').DataTable({
     dom: 'Bfrtip',
         ordering: false,
         pageLength: 10,
-        ServerSide: true,
-        deferRender: true,
+       "processing": true,
+        "serverSide": true,
       "ajax": {
        "url": "/arrsolservicio/listadodetalle/{{ $nuevo_servicio->id }}"
     },

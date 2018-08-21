@@ -50,8 +50,8 @@ var table = $('#listusers').DataTable({
     dom: 'Bfrtip',
         ordering: false,
         pageLength: 10,
-        ServerSide: true,
-        deferRender: true,
+       "processing": true,
+        "serverSide": true,
       "ajax": {
        "url": "{{ route('solservicio.create_ajax') }}"
     },

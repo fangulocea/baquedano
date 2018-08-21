@@ -406,7 +406,7 @@ class SolicitudServiciosARRController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function index_ajax() {
-        $sol = DB::table('post_solicitudserviciosARR as ss')
+        $sol = DB::table('post_solicitudserviciosarr as ss')
                 ->leftjoin('adm_contratofinalarr as cf', "ss.id_contrato", "=", "cf.id")
                 ->leftjoin('personas as p1', 'ss.id_arrendatario', '=', 'p1.id')
                 ->leftjoin('inmuebles as i', 'ss.id_inmueble', '=', 'i.id')
@@ -452,7 +452,7 @@ class SolicitudServiciosARRController extends Controller {
     }
 
     public function autoriza_index_ajax_arr() {
-        $sol = DB::table('post_solicitudserviciosARR as ss')
+        $sol = DB::table('post_solicitudserviciosarr as ss')
                 ->leftjoin('adm_contratofinalarr as cf', "ss.id_contrato", "=", "cf.id")
                 ->leftjoin('personas as p1', 'ss.id_arrendatario', '=', 'p1.id')
                 ->leftjoin('inmuebles as i', 'ss.id_inmueble', '=', 'i.id')
@@ -769,7 +769,7 @@ class SolicitudServiciosARRController extends Controller {
         $totaluf = DetalleSolicitudServiciosARR::where("id_solicitud", "=", $id)->sum('subtotal_uf');
         $totalpesos = DetalleSolicitudServiciosARR::where("id_solicitud", "=", $id)->sum('subtotal_pesos');
 
-        $detalle = DB::table('post_detallesolserviciosARR as ds')
+        $detalle = DB::table('post_detallesolserviciosarr as ds')
                 ->leftjoin('post_catalogoservicios as cs', 'ds.id_servicio', '=', 'cs.id')
                 ->where("ds.id_solicitud", "=", $id)
                 ->select(DB::raw('ds.id,
