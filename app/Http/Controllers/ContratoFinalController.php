@@ -28,13 +28,14 @@ use DateTime;
 use App\PropietarioFinaliza;
 use App\PropietarioCuadratura;
 use Barryvdh\DomPDF\Facade as PDF;
-use App\propietariopagofin;
+use App\PropietarioPagoFin;
 use App\PropietarioPagoFinDoc;
 use App\Arrendatario;
 use App\ContratoFinalArr;
 use App\PropietarioRegistraFin;
 use App\ArrendatarioGarantia;
 use App\Arr_Reservas;
+
 
 
 
@@ -344,7 +345,16 @@ public function savepagofin(Request $request,$id_contrato,$id_publicacion) {
         ->where("p.id_contrato","=",$id_contrato)
         ->sum('p.valor');
 
-        $totalFinal = (int)$garantia_p->valor + (int)$totalGarantia;
+        if(isset($garantia_p->valor))
+        {
+            $totalFinal = (int)$garantia_p->valor + (int)$totalGarantia;    
+        }
+        else
+        {
+            $totalFinal = (int)$totalGarantia;       
+        }
+
+        
 
         $saldo = (int)$totalFinal - (int)$pagosuma;
 
