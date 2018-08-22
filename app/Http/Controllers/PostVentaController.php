@@ -33,7 +33,7 @@ class PostVentaController extends Controller
         return view('postventa.index');
     }
 
-    public function index_ajax()
+    public function index_ajax(Request $request)
     {
         
         $postventa = DB::table('post_venta as p')

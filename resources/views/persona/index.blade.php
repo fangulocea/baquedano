@@ -43,6 +43,8 @@ var table = $('#listusers').DataTable({
        "processing": true,
         "serverSide": true,
       "ajax": {
+        "dataType": "json",
+        "type": "POST",
        "url": "{{ route('persona.index_ajax') }}"
     },
             "columns": [

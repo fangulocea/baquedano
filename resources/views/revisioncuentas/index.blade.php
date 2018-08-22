@@ -48,12 +48,12 @@
 
 
 var table = $('#listusers').DataTable({
-
-        ordering: false,
-        pageLength: 10,
        "processing": true,
         "serverSide": true,
       "ajax": {
+        "dataType": "json",
+        "type": "POST",
+        "data":{ _token: "{{csrf_token()}}"},
        "url": "{{ route('revisioncuentas.index_ajax') }}"
     },
             "columns": [

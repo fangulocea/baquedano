@@ -68,6 +68,9 @@ var table = $('#listusers').DataTable({
        "processing": true,
         "serverSide": true,
       "ajax": {
+        "dataType": "json",
+        "type": "POST",
+        "data":{ _token: "{{csrf_token()}}"},
        "url": "{{ route('solservicio.index_ajax') }}"
     },
             "columns": [
