@@ -174,7 +174,7 @@ Route::middleware(['auth'])->group(function(){
 	Route::get('inmueble','InmuebleController@index')->name('inmueble.index')
 		->middleware('permission:inmueble.index');
 
-	Route::get('inmueble/index','InmuebleController@index_ajax')->name('inmueble.index_ajax')
+	Route::post('inmueble/index','InmuebleController@index_ajax')->name('inmueble.index_ajax')
 		->middleware('permission:inmueble.index');
 
 	Route::get('inmueble/create','InmuebleController@create')->name('inmueble.create')
@@ -203,7 +203,7 @@ Route::middleware(['auth'])->group(function(){
 	Route::get('persona','PersonaController@index')->name('persona.index')
 		->middleware('permission:persona.index');
 
-	Route::get('persona/index','PersonaController@index_ajax')->name('persona.index_ajax')
+	Route::post('persona/index','PersonaController@index_ajax')->name('persona.index_ajax')
 		->middleware('permission:persona.index');
 
 	Route::get('persona/create','PersonaController@create')->name('persona.create')
@@ -358,7 +358,7 @@ Route::middleware(['auth'])->group(function(){
 	Route::get('captacion','CaptacionController@index')->name('captacion.index')
 		->middleware('permission:captacion.index');
 
-	Route::get('captacion/index','CaptacionController@index_ajax')->name('captacion.index_ajax')
+	Route::post('captacion/index','CaptacionController@index_ajax')->name('captacion.index_ajax')
 		->middleware('permission:captacion.index');
 
 	Route::get('captacion/create','CaptacionController@create')->name('captacion.create')
@@ -398,6 +398,9 @@ Route::middleware(['auth'])->group(function(){
 		->middleware('permission:captacion.create');
 
 	Route::get('captacion/reportes','CaptacionController@reportes')->name('captacion.reportes')
+		->middleware('permission:captacion.edit');
+
+	Route::post('captacion/reportes_a','CaptacionController@reportes_ajax')->name('captacion.reportes_ajax')
 		->middleware('permission:captacion.edit');
 
 	Route::get('captacion/{captacion}','CaptacionController@show')->name('captacion.show')
@@ -705,7 +708,7 @@ Route::middleware(['auth'])->group(function(){
 	Route::get('revisionpersona','RevisionPersonaController@index')->name('revisionpersona.index')
 		->middleware('permission:revisioncomercial.index');
 
-		Route::get('revisionpersona/index','RevisionPersonaController@index_ajax')->name('revisionpersona.index_ajax')
+		Route::post('revisionpersona/index','RevisionPersonaController@index_ajax')->name('revisionpersona.index_ajax')
 		->middleware('permission:revisioncomercial.index');
 
 	Route::get('revisionpersona/create/{id}','RevisionPersonaController@create')->name('revisionpersona.create')
@@ -745,7 +748,7 @@ Route::get('revisionpersona/eliminarfoto/{idf}/{idc}','RevisionPersonaController
 	Route::get('revisioninmueble','RevisionInmuebleController@index')->name('revisioninmueble.index')
 		->middleware('permission:revisioncomercial.index');
 
-	Route::get('revisioninmueble/index','RevisionInmuebleController@index_ajax')->name('revisioninmueble.index_ajax')
+	Route::post('revisioninmueble/index','RevisionInmuebleController@index_ajax')->name('revisioninmueble.index_ajax')
 		->middleware('permission:revisioncomercial.index');
 
 	Route::get('revisioninmueble/create/{id}','RevisionInmuebleController@create')->name('revisioninmueble.create')
@@ -1242,10 +1245,10 @@ Route::get('contratorenovacionpropietario','ContratoRenovacionPropietarioControl
 
 	//Solicitud de Servicios PROPIETARIO
 
-	Route::get('solservicio/prop/index','SolicitudServicioController@index_ajax')->name('solservicio.index_ajax')
+	Route::post('solservicio/prop/index','SolicitudServicioController@index_ajax')->name('solservicio.index_ajax')
 		->middleware('permission:solservicio.index');
 
-		Route::get('solservicio/prop/autoriza_index','SolicitudServicioController@autoriza_index_ajax_pro')->name('solservicio.autoriza_index_ajax')
+		Route::post('solservicio/prop/autoriza_index','SolicitudServicioController@autoriza_index_ajax_pro')->name('solservicio.autoriza_index_ajax')
 		->middleware('permission:solservicio.index');
 
 
@@ -1261,7 +1264,7 @@ Route::get('contratorenovacionpropietario','ContratoRenovacionPropietarioControl
 	Route::get('solservicio/createservicio','SolicitudServicioController@create_servicio')->name('solservicio.createservicio')
 		->middleware('permission:solservicio.create');
 
-		Route::get('solservicio/create/seleccion','SolicitudServicioController@create_ajax')->name('solservicio.create_ajax')
+		Route::post('solservicio/create/seleccion','SolicitudServicioController@create_ajax')->name('solservicio.create_ajax')
 		->middleware('permission:solservicio.create');
 
 	Route::post('solservicio/{solservicio}','SolicitudServicioController@update')->name('solservicio.update')
@@ -1291,7 +1294,7 @@ Route::get('solservicio/{solservicio}/autorizar','SolicitudServicioController@au
 
 		
 //DETALLE SERVICIO PRO
-	Route::get('solservicio/listadodetalle/{id}','SolicitudServicioController@detalle_servicio_ajax')->name('solservicio.detalle_servicio_ajax')
+	Route::post('solservicio/listadodetalle/{id}','SolicitudServicioController@detalle_servicio_ajax')->name('solservicio.detalle_servicio_ajax')
 		->middleware('permission:solservicio.index');
 
 		Route::get('solservicio/borrar/{id}','SolicitudServicioController@borrar_detalleservicio')->name('solservicio.borrar_detalleservicio')
@@ -1300,7 +1303,7 @@ Route::get('solservicio/{solservicio}/autorizar','SolicitudServicioController@au
 
 	//Solicitud de Servicios ARRENDATARIO
 
-	Route::get('arrsolservicio/arr/autoriza_index','SolicitudServiciosARRController@autoriza_index_ajax_arr')->name('arrsolservicio.autoriza_index_ajax_arr')
+	Route::post('arrsolservicio/arr/autoriza_index','SolicitudServiciosARRController@autoriza_index_ajax_arr')->name('arrsolservicio.autoriza_index_ajax_arr')
 		->middleware('permission:solservicio.index');
 
 	Route::get('arrsolservicio/{solservicio}/edit','SolicitudServiciosARRController@edit')->name('arrsolservicio.edit')
@@ -1312,13 +1315,13 @@ Route::get('solservicio/{solservicio}/autorizar','SolicitudServicioController@au
 	Route::get('arrsolservicio','SolicitudServiciosARRController@index')->name('arrsolservicio.index')
 		->middleware('permission:solservicio.index');
 
-	Route::get('arrsolservicio/index','SolicitudServiciosARRController@index_ajax')->name('arrsolservicio.index_ajax')
+	Route::post('arrsolservicio/index','SolicitudServiciosARRController@index_ajax')->name('arrsolservicio.index_ajax')
 		->middleware('permission:solservicio.index');
 
 	Route::get('arrsolservicio/create','SolicitudServiciosARRController@create')->name('arrsolservicio.create')
 		->middleware('permission:solservicio.create');
 
-		Route::get('arrsolservicio/create/seleccion','SolicitudServiciosARRController@create_ajax')->name('arrsolservicio.create_ajax')
+		Route::post('arrsolservicio/create/seleccion','SolicitudServiciosARRController@create_ajax')->name('arrsolservicio.create_ajax')
 		->middleware('permission:solservicio.create');
 
 	Route::post('arrsolservicio/{solservicio}','SolicitudServiciosARRController@update')->name('arrsolservicio.update')
@@ -1352,7 +1355,7 @@ Route::get('arrsolservicio/autoriza_arr/index','SolicitudServicioController@auto
 
 
 //DETALLE SERVICIO ARR
-	Route::get('arrsolservicio/listadodetalle/{id}','SolicitudServiciosARRController@detalle_servicio_ajax')->name('arrsolservicio.detalle_servicio_ajax')
+	Route::post('arrsolservicio/listadodetalle/{id}','SolicitudServiciosARRController@detalle_servicio_ajax')->name('arrsolservicio.detalle_servicio_ajax')
 		->middleware('permission:solservicio.index');
 
 		Route::get('arrsolservicio/borrar/{id}','SolicitudServiciosARRController@borrar_detalleservicio')->name('arrsolservicio.borrar_detalleservicio')
@@ -1362,6 +1365,11 @@ Route::get('arrsolservicio/autoriza_arr/index','SolicitudServicioController@auto
 
 
 	//REVISION DE CUENTAS DE ARRENDATARIO
+
+
+	Route::post('revisioncuentas/index','CuentasArrendatarioController@index_ajax')->name('revisioncuentas.index_ajax')
+		->middleware('permission:revisioncuentas.index');
+
 	Route::get('revisioncuentas/{cuenta}/edit','CuentasArrendatarioController@edit')->name('revisioncuentas.edit')
 		->middleware('permission:revisioncuentas.edit');
 
@@ -1371,19 +1379,16 @@ Route::get('arrsolservicio/autoriza_arr/index','SolicitudServicioController@auto
 	Route::get('revisioncuentas','CuentasArrendatarioController@index')->name('revisioncuentas.index')
 		->middleware('permission:revisioncuentas.index');
 
-	Route::get('revisioncuentas/index','CuentasArrendatarioController@index_ajax')->name('revisioncuentas.index_ajax')
-		->middleware('permission:revisioncuentas.index');
-
 	Route::get('revisioncuentas/{idc}/revisar','CuentasArrendatarioController@create')->name('revisioncuentas.create')
 		->middleware('permission:revisioncuentas.create');
 
-		Route::get('revisioncuentas/create/seleccion','CuentasArrendatarioController@create_ajax')->name('revisioncuentas.create_ajax')
+		Route::post('revisioncuentas/create/seleccion','CuentasArrendatarioController@create_ajax')->name('revisioncuentas.create_ajax')
 		->middleware('permission:revisioncuentas.create');
 
 	Route::post('revisioncuentas/{solservicio}','CuentasArrendatarioController@update')->name('revisioncuentas.update')
 		->middleware('permission:revisioncuentas.edit');
 
-		Route::get('revisioncuentas/listadodetalle/{id}','CuentasArrendatarioController@detalle_servicio_ajax')->name('revisioncuentas.detalle_servicio_ajax')
+		Route::post('revisioncuentas/listadodetalle/{id}','CuentasArrendatarioController@detalle_servicio_ajax')->name('revisioncuentas.detalle_servicio_ajax')
 		->middleware('permission:revisioncuentas.index');
 
 Route::get('revisioncuentas/borrar/{id}','CuentasArrendatarioController@borrar_detalleservicio')->name('revisioncuentas.borrar_detalleservicio')
@@ -1431,7 +1436,7 @@ Route::get('revisioncuentas/{id}/moroso','CuentasArrendatarioController@moroso')
 	Route::post('postventa/update_gestion','PostVentaController@updategestion')->name('postventa.updategestion')
 		->middleware('permission:postventa.edit');
 
-	Route::get('postventa/index','PostVentaController@index_ajax')->name('postventa.index_ajax')
+	Route::post('postventa/index','PostVentaController@index_ajax')->name('postventa.index_ajax')
 		->middleware('permission:postventa.index');
 
 		Route::get('postventa/eliminargestion/{id}','PostVentaController@eliminargestion')->name('postventa.eliminargestion')
@@ -1542,7 +1547,7 @@ Route::get('revisioncuentas/{id}/moroso','CuentasArrendatarioController@moroso')
 	Route::post('presupuesto/store','PresupuestoPostVentaController@store')->name('presupuesto.store')
 		->middleware('permission:presupuesto.create');
 
-	Route::get('presupuesto/listadodetalle/{id}','PresupuestoPostVentaController@detalle_presupuesto_ajax')->name('presupuesto.detalle_presupuesto_ajax')
+	Route::post('presupuesto/listadodetalle/{id}','PresupuestoPostVentaController@detalle_presupuesto_ajax')->name('presupuesto.detalle_presupuesto_ajax')
 		->middleware('permission:presupuesto.index');
 
 	Route::post('presupuesto/adddetalle','PresupuestoPostVentaController@agregar')->name('presupuesto.agregar')

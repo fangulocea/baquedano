@@ -428,7 +428,7 @@ class SolicitudServicioController extends Controller {
      *
      * @return \Illuminate\Http\Response
      */
-    public function index_ajax() {
+    public function index_ajax(Request $request) {
         $sol = DB::table('post_solicitudservicios as ss')
                 ->leftjoin('adm_contratofinal as cf', "ss.id_contrato", "=", "cf.id")
                 ->leftjoin('personas as p1', 'ss.id_propietario', '=', 'p1.id')
@@ -474,7 +474,7 @@ class SolicitudServicioController extends Controller {
                         ->make(true);
     }
 
-    public function autoriza_index_ajax_pro() {
+    public function autoriza_index_ajax_pro(Request $request) {
         $sol = DB::table('post_solicitudservicios as ss')
                 ->leftjoin('adm_contratofinal as cf', "ss.id_contrato", "=", "cf.id")
                 ->leftjoin('personas as p1', 'ss.id_propietario', '=', 'p1.id')
@@ -607,7 +607,7 @@ class SolicitudServicioController extends Controller {
         return response()->json($servicio);
     }
 
-    public function detalle_servicio_ajax($id) {
+    public function detalle_servicio_ajax(Request $request, $id) {
 
         $servicio = DB::table('post_detallesolservicios as ds')
                 ->leftjoin('post_catalogoservicios as cs', 'ds.id_servicio', '=', 'cs.id')

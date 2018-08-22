@@ -69,7 +69,7 @@ class PersonaController extends Controller
     }
 
 
-    public function index_ajax()
+    public function index_ajax(Request $request)
     {
         $personas = DB::table('personas as p')
         ->leftjoin('comunas as c', 'p.id_comuna', '=', 'c.comuna_id')

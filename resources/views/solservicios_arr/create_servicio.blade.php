@@ -157,6 +157,9 @@ var listventas = $('#listventas').DataTable({
        "processing": true,
         "serverSide": true,
       "ajax": {
+        "dataType": "json",
+        "type": "POST",
+        "data":{ _token: "{{csrf_token()}}"},
        "url": "/arrsolservicio/listadodetalle/{{ $nuevo_servicio->id }}"
     },
             "columns": [

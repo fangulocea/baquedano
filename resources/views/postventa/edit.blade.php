@@ -1119,6 +1119,9 @@
                                                     <a href="/presupuesto/edit/{{ $p->id }}"><span class="btn btn-warning btn-circle btn-lg"><i class="ti-pencil"></i></span></a>
 
                                                     <a href="/postventa/eliminarpresupuesto/{{ $p->id }}"><span class="btn btn-danger btn-circle btn-lg"><i class="ti-trash"></i></span></a>
+
+                                                    <a href="/presupuesto/crearsolicitud/{{ $p->id }}"><span class="btn btn-success btn-circle btn-lg">Crear Solicitud</span></a>
+
                                                 <a href="/presupuesto/export/{{ $p->id }}"><span class="btn btn-info btn-circle btn-lg">P</span></a>
 
                                             </td>

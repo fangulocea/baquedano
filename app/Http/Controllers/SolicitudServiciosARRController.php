@@ -405,7 +405,7 @@ class SolicitudServiciosARRController extends Controller {
      *
      * @return \Illuminate\Http\Response
      */
-    public function index_ajax() {
+    public function index_ajax(Request $request) {
         $sol = DB::table('post_solicitudserviciosarr as ss')
                 ->leftjoin('adm_contratofinalarr as cf', "ss.id_contrato", "=", "cf.id")
                 ->leftjoin('personas as p1', 'ss.id_arrendatario', '=', 'p1.id')
@@ -451,7 +451,7 @@ class SolicitudServiciosARRController extends Controller {
                         ->make(true);
     }
 
-    public function autoriza_index_ajax_arr() {
+    public function autoriza_index_ajax_arr(Request $request) {
         $sol = DB::table('post_solicitudserviciosarr as ss')
                 ->leftjoin('adm_contratofinalarr as cf', "ss.id_contrato", "=", "cf.id")
                 ->leftjoin('personas as p1', 'ss.id_arrendatario', '=', 'p1.id')
@@ -514,7 +514,7 @@ class SolicitudServiciosARRController extends Controller {
      *
      * @return \Illuminate\Http\Response
      */
-    public function create_ajax() {
+    public function create_ajax(Request $request) {
         $publica = DB::table('adm_contratofinalarr as co')
                 ->leftjoin('contratoborradorarrendatarios as cb', 'co.id_borrador', '=', 'cb.id')
                 ->leftjoin('inmuebles as i', 'cb.id_inmueble', '=', 'i.id')
@@ -587,7 +587,7 @@ class SolicitudServiciosARRController extends Controller {
         return response()->json($servicio);
     }
 
-    public function detalle_servicio_ajax($id) {
+    public function detalle_servicio_ajax(Request $request, $id) {
 
         $servicio = DB::table('post_detallesolserviciosarr as ds')
                 ->leftjoin('post_catalogoservicios as cs', 'ds.id_servicio', '=', 'cs.id')

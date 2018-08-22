@@ -67,7 +67,7 @@ class InmuebleController extends Controller
         }
 
 
-        public function index_ajax()
+        public function index_ajax(Request $request)
         {
             $inm = DB::table('inmuebles as i')
             ->join('comunas as c', 'i.id_comuna', '=', 'c.comuna_id')

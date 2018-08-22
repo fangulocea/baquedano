@@ -24,6 +24,12 @@ class CaptacionController extends Controller {
 
     public function reportes() {
 
+         return view('reporteCap.index');
+    }
+
+
+    public function reportes_ajax(Request $request) {
+
         $publica = DB::table('cap_publicaciones as c')
                 ->leftjoin('personas as p1', 'c.id_propietario', '=', 'p1.id')
                 ->leftjoin('inmuebles as i', 'c.id_inmueble', '=', 'i.id')
@@ -31,10 +37,28 @@ class CaptacionController extends Controller {
                 ->leftjoin('personas as p3', 'c.id_modificador', '=', 'p3.id')
                 ->leftjoin('comunas as o', 'i.id_comuna', '=', 'o.comuna_id')
                 ->leftjoin('portales as po', 'c.portal', '=', 'po.id')
-                ->select(DB::raw('c.id as id_publicacion,(select count(*) from cap_gestion where id_captacion_gestion=c.id) as cantGes ,DATE_FORMAT(c.created_at, "%d/%m/%Y") as fecha_creacion, c.id_estado as id_estado, CONCAT(p1.nombre," ",p1.apellido_paterno," ",p1.apellido_materno) as Propietario, p2.name as creador, (select count(*) from cap_gestion where id_captacion_gestion=c.id and (tipo_contacto="Sin Respuesta" or tipo_contacto="Reenvío" or tipo_contacto="Correo Eléctronico" or tipo_contacto="Vigente") and (dir = "Información Enviada" or dir = "Ambas")) as cantCorreos'), 'i.id as id_inmueble', 'i.direccion', 'i.numero', 'i.departamento', 'o.comuna_nombre', 'po.nombre as portal', 'p1.nombre as nom_p', 'p1.apellido_paterno as apep_p', 'p1.apellido_materno as apem_p', 'p3.nombre as nom_m', 'p3.apellido_paterno as apep_m', 'p3.apellido_materno as apem_m')
+                ->leftjoin('mensajes as m', function($join){
+                 $join->on('m.nombre_modulo', '=',DB::raw("'Captación'"));
+                 $join->on('m.id_estado', '=', 'c.id_estado');
+            })
+                ->select(DB::raw('c.id as id_publicacion,(select count(*) from cap_gestion where id_captacion_gestion=c.id) as cantGes ,DATE_FORMAT(c.created_at, "%d/%m/%Y") as fecha_creacion, m.nombre as id_estado, CONCAT(p1.nombre," ",p1.apellido_paterno," ",p1.apellido_materno) as Propietario, p2.name as Creador, (select count(*) from cap_gestion where id_captacion_gestion=c.id and (tipo_contacto="Sin Respuesta" or tipo_contacto="Reenvío" or tipo_contacto="Correo Eléctronico" or tipo_contacto="Vigente") and (dir = "Información Enviada" or dir = "Ambas")) as cantCorreos, CONCAT_WS(" ",i.direccion,i.numero," Dpto ",i.departamento) as Direccion'), 'i.id as id_inmueble', 'i.direccion', 'i.numero', 'i.departamento', 'o.comuna_nombre', 'po.nombre as portal', 'p1.nombre as nom_p', 'p1.apellido_paterno as apep_p', 'p1.apellido_materno as apem_p', 'p3.nombre as nom_m', 'p3.apellido_paterno as apep_m', 'p3.apellido_materno as apem_m
+                    
+
+                    ')
+                ->orderBy("c.id","desc")
                 ->get();
 
-        return view('reporteCap.index', compact('publica'));
+     return Datatables::of($publica)
+         ->addColumn('action', function ($publica) {
+                               return  '<a href="/captacion/'.$publica->id_publicacion.'/2/edit"><span class="btn btn-warning btn-circle btn-sm"><i class="ti-pencil-alt"></i></span></a>
+                                    <a href="/captacion/'.$publica->id_publicacion.'/destroy"><span class="btn btn-danger btn-circle btn-sm"><i class="ti-trash"></i></span></a>';
+        })
+        ->addColumn('id_link', function ($publica) {
+                               return  '<a href="/captacion/'.$publica->id_publicacion.'/2/edit"><span class="btn btn-success btn-sm"> '.$publica->id_publicacion.'</span> </a>';
+        })
+        ->rawColumns(['id_link','action'])
+        ->make(true);
+        
     }
 
     public function importExportcap() {
@@ -434,7 +458,7 @@ class CaptacionController extends Controller {
         return view('captaciones.index');
     }
 
-     public function index_ajax() {
+     public function index_ajax(Request $request) {
         $publica = DB::table('cap_publicaciones as c')
                 ->leftjoin('personas as p1', 'c.id_propietario', '=', 'p1.id')
                 ->leftjoin('inmuebles as i', 'c.id_inmueble', '=', 'i.id')

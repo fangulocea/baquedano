@@ -622,6 +622,16 @@ public function savepagofin(Request $request,$id_contrato,$id_publicacion) {
 
         $origen = "Contrato";
 
+
+
+            $cont_inmueble = ContratoInmueblesPropietarios::create([
+                "id_publicacion" => $ContratoBorrador->id_publicacion,
+                "id_contratofinal" => $contratoFinal->id,
+                "id_inmueble" => $borradorPDF->id_inmueble,
+                "id_creador" => Auth::user()->id
+            ]);            
+
+
         return redirect()->route('finalContrato.edit', [$ContratoBorrador->id_publicacion, $request->id_borradorfinal, $ContratoBorradorPDF->id, 1,$origen])
                         ->with('status', 'Contrato Final guardado con éxito');
     }

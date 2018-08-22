@@ -28,7 +28,7 @@ class RevisionInmuebleController extends Controller
             return view('revisioninmueble.index');
     }
 
-    public function index_ajax()
+    public function index_ajax(Request $request)
     {
             $inm = DB::select("SELECT CONCAT_WS(' ', i.direccion,' #',i.numero, ' Dpto ', i.departamento) as direccion, i.id, i.direccion, i.condicion, i.numero, i.departamento, i.observaciones, i.dormitorio, i.bano, i.estacionamiento, i.bodega, i.piscina, i.precio, i.gastosComunes, i.id_comuna, i.id_region, i.id_provincia, i.created_at, i.updated_at, i.estado, i.deleted_at, (select count(*) from adm_revisioninmueble as a where a.id_inmueble= i.id) as cant_revisiones, (select count(*) from adm_fotorevinmueble as a where a.id_inmueble= i.id) as cant_fotos, c.comuna_nombre FROM inmuebles as i left join comunas c on i.id_comuna=c.comuna_id
                  ");

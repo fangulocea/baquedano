@@ -36,7 +36,7 @@ class PresupuestoPostVentaController extends Controller
     }
 
 
-    public function detalle_presupuesto_ajax($id) {
+    public function detalle_presupuesto_ajax(Request $request, $id) {
 
         $detalle = DB::table('post_detallepresupuesto as dp')
                 ->leftjoin('post_itemmateriales as pi', 'dp.id_item', '=', 'pi.id')

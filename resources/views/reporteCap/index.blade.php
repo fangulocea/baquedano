@@ -15,53 +15,18 @@
                             <th>ID</th>
                             <th>Portal</th>
                             <th>Dirección</th>
+                            <th>Comuna</th>
                             <th>Propietario</th>
                             <th>Fecha Creación</th>
                             <th>Creador</th>
                             <th>Estado</th>
                             <th>Cant Correos</th>
                             <th>Cant Gest.</th>
-                            <th></th>
-                            <th></th>
+                            <th>Acción</th>
                         </tr>
                     </thead>
-                    <tfoot>
-                        <tr>
-                            <th>ID</th>
-                            <th>Portal</th>
-                            <th>Dirección</th>
-                            <th>Propietario</th>
-                            <th>Fecha Creación</th>
-                            <th>Creador</th>
-                            <th>Estado</th>
-                            <th>Cant Correos</th>
-                            <th>Cant Gest.</th>
-                            <th></th>
-                            <th></th>
-                        </tr>
-                    </tfoot>
-                    <tbody>
 
-                        @foreach($publica as $p)
-                        <tr>
-                            <td>{{ $p->id_publicacion }}</td>
-                            <td>{{ substr(substr($p->portal, 4),0,10) }}</td>
-                            <td>{{ $p->direccion }} #{{ $p->numero }} , Dpto {{ $p->departamento }}, {{ $p->comuna_nombre }}</td>
-                            <td>{{ $p->nom_p }} {{ $p->apep_p }} {{ $p->apem_p }}</td>
-                            <td>{{ $p->fecha_creacion }}</td>
-                            <td>{{ $p->creador }} </td>
-                            <td>{{ trans_choice('mensajes.captacion', $p->id_estado) }}</td>
-                            <td>{{ $p->cantCorreos }}</td>
-                            <td>{{ $p->cantGes }}</td>
-                            <td width="10px">  </td>
-                            <td width="10px" style="text-align: center;">
-                                
-        
-                                
-                            </td>
-                        </tr>
-                        @endforeach
-                    </tbody>
+                    
                 </table>
 
             </div>
@@ -88,21 +53,30 @@
 
 
       var table = $('#listusers').DataTable({
-        dom: 'Bfrtip',
-    // buttons: [
-    //     'copy', 'csv', 'excel', 'pdf', 'print',{
-    //         text: 'Ingresar Captación',
-    //         action: function ( e, dt, node, config ) {
-    //              window.location.href = '{{ route("captacion.create") }}';
-    //         }
-    //     }
-
-    // ],
-     columnDefs: [{
-             "targets": [8, 9],
-             "orderable": false
-         }],
-         "ordering": false,
+    dom: 'Bfrtip',
+    ordering: false,
+    pageLength: 10,
+       "processing": true,
+        "serverSide": true,
+      "ajax": {
+        "dataType": "json",
+        "type": "POST",
+        "data":{ _token: "{{csrf_token()}}"},
+       "url": "{{ route('captacion.reportes_ajax') }}"
+    },
+     "columns": [
+                {data: 'id_link', name: 'id_link'},
+                {data: 'portal', name: 'portal'},
+                {data: 'Direccion', name: 'Direccion'},
+                {data: 'comuna_nombre', name: 'comuna_nombre'},
+                {data: 'Propietario', name: 'Propietario'},
+                {data: 'fecha_creacion', name: 'fecha_creacion'},
+                {data: 'Creador', name: 'Creador'},
+                {data: 'id_estado', name: 'id_estado'},
+                {data: 'cantCorreos', name: 'cantCorreos'},
+                {data: 'cantGes', name: 'cantGes'},
+                {data: 'action', name: 'action'}
+            ],
     language: {
         "sProcessing": "Procesando...",
         "sLengthMenu": "Mostrar _MENU_ registros",
@@ -136,7 +110,7 @@
     $('#listusers thead th').each( function () {
         var title = $(this).text();
         if(title!='ID' && title!= "" )
-       $(this).html( title+'<br/><input type="text" style="width:100px" placeholder="Buscar" />' );
+       $(this).html( title+'<br/><input type="text" style="width:100px" placeholder="" />' );
     } );
  
 
