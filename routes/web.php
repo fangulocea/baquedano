@@ -337,6 +337,9 @@ Route::middleware(['auth'])->group(function(){
 	Route::get('importExportcap', 'CaptacionController@importExportcap')->name('captacion.importExportcap')
 		->middleware('permission:captacion.edit');
 
+	Route::get('captacion/excel', 'CaptacionController@excel')->name('captacion.excel')
+		->middleware('permission:captacion.edit');
+
 	Route::get('importExportcontact', 'CaptacionController@importExportcontact')->name('captacion.importExportcontact')
 		->middleware('permission:captacion.edit');
 

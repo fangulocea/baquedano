@@ -35,7 +35,7 @@
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label>Estado</label>
-                                        <select class="form-control" name="estado">
+                                        <select class="form-control" name="estado" required="required">
                                             <option value="">Seleccione Estado</option>
                                             <option value="1">Vigente</option>
                                             <option value="0">No Vigente</option>
