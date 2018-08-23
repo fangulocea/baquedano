@@ -45,6 +45,7 @@ var table = $('#listusers').DataTable({
       "ajax": {
         "dataType": "json",
         "type": "POST",
+        "data":{ _token: "{{csrf_token()}}"},
        "url": "{{ route('persona.index_ajax') }}"
     },
             "columns": [
