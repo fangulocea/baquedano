@@ -1570,4 +1570,32 @@ Route::get('revisioncuentas/{id}/moroso','CuentasArrendatarioController@moroso')
 
 Route::get('presupuesto/export/{id}','PresupuestoPostVentaController@exportarexcel')->name('presupuesto.exportarexcel')
 		->middleware('permission:presupuesto.edit');
+
+
+
+
+
+
+// REPORTES
+	Route::get('arriendosdisponibles','ReportesController@ArriendosDisponibles')->name('Reportes.arriendosdisponibles')
+		->middleware('permission:reportes.ArriendosDisponibles');
+
+	// Route::get('mantenedorchecklist/create','MantenedorChecklistController@create')->name('mantenedorchecklist.create')
+	// 	->middleware('permission:mantenedorchecklist.create');
+
+	// Route::post('mantenedorchecklist/{id}','MantenedorChecklistController@update')->name('mantenedorchecklist.update')
+	// 	->middleware('permission:mantenedorchecklist.edit');
+
+	// Route::get('mantenedorchecklist/{id}','MantenedorChecklistController@show')->name('mantenedorchecklist.show')
+	// 	->middleware('permission:mantenedorchecklist.show');
+
+	// Route::delete('mantenedorchecklist/{id}','MantenedorChecklistController@destroy')->name('mantenedorchecklist.destroy')
+	// 	->middleware('permission:mantenedorchecklist.destroy');
+
+	// Route::get('mantenedorchecklist/{id}/edit','MantenedorChecklistController@edit')->name('mantenedorchecklist.edit')
+	// 	->middleware('permission:mantenedorchecklist.edit');
+
+
+
+
 });
