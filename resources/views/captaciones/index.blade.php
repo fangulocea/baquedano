@@ -1,7 +1,7 @@
 @extends('admin.layout')
 
 @section('contenido')
-
+<link href="{{ URL::asset('plugins/bower_components/sweetalert/sweetalert.css')}}" rel="stylesheet" type="text/css">
 <div id="tabla" >
     <div class="white-box">
         <h3 class="box-title m-b-0">Gestión de Captaciones</h3>
@@ -44,15 +44,25 @@
 <script src="{{ URL::asset('plugins/DataTables/Buttons-1.5.1/js/dataTables.buttons.min.js') }}"></script>
 
 <script src="{{ URL::asset('plugins/DataTables/Buttons-1.5.1/js/buttons.html5.min.js') }}"></script>
+<script src="{{ URL::asset('plugins/bower_components/sweetalert/sweetalert.min.js') }}"></script>
 
 <!-- end - This is for export functionality only -->
 <script>
+var SweetAlert = function () {};
+
+//examples 
+SweetAlert.prototype.init = function () {
+
+       
+
+    $.SweetAlert = new SweetAlert, $.SweetAlert.Constructor = SweetAlert
+}(window.jQuery);
+
 
 var table = $('#listusers').DataTable({
 
     dom: 'Bfrtip',
-    ordering: false,
-    pageLength: 10,
+    "ordering": false,
        "processing": true,
         "serverSide": true,
       "ajax": {
@@ -60,6 +70,7 @@ var table = $('#listusers').DataTable({
         "type": "POST",
         "data":{ _token: "{{csrf_token()}}"},
        "url": "{{ route('captacion.index_ajax') }}"
+
     },
             "columns": [
                 {data: 'id_link', name: 'id_link'},
@@ -79,7 +90,13 @@ var table = $('#listusers').DataTable({
                 {data: 'action', name: 'action'}
             ],
     buttons: [
-         'excel', {
+          {
+            text: 'Excel',
+            action: function ( e, dt, node, config ) {
+                 swal("Descargarán todas las captaciones, Un momento por favor");
+                 window.location.href = '{{ route("captacion.excel") }}';
+            }
+        },  {
             text: 'Ingresar Captación',
             action: function ( e, dt, node, config ) {
                  window.location.href = '{{ route("captacion.create") }}';
