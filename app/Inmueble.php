@@ -14,8 +14,8 @@ class Inmueble extends Model
     protected $dates = ['deleted_at'];
 
 public static function inmuebles($text){
-    	// return Inmueble::where('direccion','like','%'.$text.'%')->get();
-    	return DB::table('inmuebles')->where('direccion','like','%'.$text.'%')->join('comunas', 'inmuebles.id_comuna', '=', 'comunas.comuna_id')->get();
+
+       return DB::select(DB::raw('Select i.id , i.direccion, i.numero, i.departamento, c.comuna_nombre from inmuebles as i left join comunas c on c.comuna_id=i.id_comuna where concat_ws(" ",i.direccion,i.numero) like "%'.$text.'%"'));
     }
 
 public static function inmuebles_modulo($text,$modulo){

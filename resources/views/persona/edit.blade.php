@@ -18,8 +18,8 @@
                             <div class="row">
                                 <div class="col-md-2">
                                     <div class="form-group">
-                                        <label class="control-label">Rut</label>
-                                        <input type="text" name="rut" class="form-control" placeholder="" oninput='checkRut(this)' value="{{ $_persona->rut }}" > 
+                                        <label class="control-label">Rut / Pasaporte</label>
+                                        <input type="text" name="rut" class="form-control" placeholder=""  value="{{ $_persona->rut }}" > 
                                     </div>
                                 </div>
                                 
@@ -150,8 +150,8 @@
                             <div class="row"> 
                                 <div class="col-md-4">
                                     <div class="form-group">
-                                        <label>Rut Titular</label>
-                                        <input type="text" name="rut_titular" value="{{ $_persona->rut_titular }}" class="form-control" placeholder="" oninput='checkRut(this)' >
+                                        <label>Rut / Pasaporte Titular</label>
+                                        <input type="text" name="rut_titular" value="{{ $_persona->rut_titular }}" class="form-control" placeholder="" >
                                      </div>
                                 </div>
 

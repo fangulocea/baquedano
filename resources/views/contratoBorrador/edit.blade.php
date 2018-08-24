@@ -420,7 +420,7 @@
                                     <label>
                                         Moneda
                                     </label>
-                                    <input class="form-control" name="monedaborrador" id="monedaborrador" required="required" type="text" disabled="disabled">
+                                    <input class="form-control" name="monedaborrador" id="monedaborrador" required="required" type="text" readonly="readonly">
                                 </div>
                             </div>
                              <div class="row">
@@ -634,7 +634,7 @@
                                                                     <div class="row">
                                                                         <div class="col-md-2">
                                                                             <div class="form-group">
-                                                                                <label class="control-label">Rut</label>
+                                                                                <label class="control-label">Rut / Pasaporte</label>
                                                                                 <input type="text" name="rut" class="form-control" id="pe_rut" > 
                                                                             </div>
                                                                         </div>
@@ -803,8 +803,8 @@
                                                                     <div class="row"> 
                                                                         <div class="col-md-4">
                                                                             <div class="form-group">
-                                                                                <label>Rut Titular</label>
-                                                                                <input type="text" name="rut_titular" id="pe_rut_titular" class="form-control" placeholder="" oninput='checkRut(this)' >
+                                                                                <label>Rut / Pasaporte</label>
+                                                                                <input type="text" name="rut_titular" id="pe_rut_titular" class="form-control" placeholder="" >
                                                                             </div>
                                                                         </div>
 
@@ -1183,29 +1183,6 @@ $("#propuesta").change(function (event) {
 });
 
 
-// function mostrar_modal(obj){
-//     var url= "{{ URL::to('borradorContrato/borradorC')}}"+"/"+obj;
-//     $.ajax({
-//         type:"get",
-//         url:url,
-//         data:"",
-//         success:function(response){
-//             $('#modal-contacto_edit_c').modal('show');
-//             var d = response[0].fecha_gestion.split('-');
-//             $('#datepicker-fecha_contacto1').val(d[2] + '-' + d[1] + '-' + d[0]);
-//             $('#id_servicio_e').val(response[0].id_servicios);
-//             $('#id_notaria_e').val(response[0].id_notaria);
-//             $('#id_comision_e').val(response[0].id_comisiones);
-//             $('#id_flexibilidad_e').val(response[0].id_flexibilidad);
-//             $('#id_estado_e').val(response[0].id_estado);
-//             $('#id_borrador_e').val(response[0].id);
-//             $('#id_publicacion_e').val(response[0].id_publicacion);
-//             $('#id_contrato_e').val(response[0].id_contrato);
-//             $('#detalle_revision_e').val(response[0].detalle_revision);
-//             tinyMCE.activeEditor.setContent(response[0].detalle_revision);
-//         }
-//     });
-// }
 
 function mostrar_modalpersona(obj){
     var url= "{{ URL::to('persona/contratoborrador')}}"+"/"+obj;

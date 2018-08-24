@@ -4,7 +4,7 @@
 <div class="row">
     <div class="col-md-12">
         <div class="panel panel-success">
-            <div class="panel-heading"> REVISION CUENTAS DE SERVICIO - SELECCIONE CONTRATO ARRENDATARIO</div>
+            <div class="panel-heading"> REVISION CUENTAS DE SERVICIO</div>
             <div class="panel-wrapper collapse in" aria-expanded="true">
                 <div class="panel-body">
                         <div id="tabla" >
@@ -18,9 +18,9 @@
                                                 <th>ID</th>
                                                 <th>Dirección</th>
                                                 <th>Comuna</th>
-                                                <th>Arrendatario</th>
                                                 <th>Asignado</th>
-                                                <th>Estado</th>
+                                                <th>Estado Cuenta</th>
+                                                <th>Fecha Revisión</th>
                                                 <th>Opciones</th>
                                                 <th>Acción</th>
                                             </tr>
@@ -60,9 +60,9 @@ var table = $('#listusers').DataTable({
                 {data: 'id_link', name: 'id_link'},
                 {data: 'Direccion', name: 'Direccion'},
                 {data: 'Comuna', name: 'Comuna'},
-                {data: 'Arrendatario', name: 'Arrendatario'},
                 {data: 'Asignado', name: 'Asignado'},
-                {data: 'Estado', name: 'Estado'},
+                {data: 'EstadoCuenta', name: 'EstadoCuenta'},
+                {data: 'fecha_revision', name: 'fecha_revision'},
                  {data: 'opciones', name: 'opciones'},
                 {data: 'action', name: 'action'}
                 
@@ -105,7 +105,7 @@ var table = $('#listusers').DataTable({
     $('#listusers thead th').each( function () {
         var title = $(this).text();
         if(title!='ID' && title!= "")
-        $(this).html( title+'<br/><input type="text" style="width:100px"  />' );
+        $(this).html( title+'<br/><input type="text" style="width:80px"  />' );
     } );
  
 

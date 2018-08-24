@@ -14,6 +14,8 @@
                         <th>ID</th>
                         <th>Tipo</th>
                         <th>Dirección</th>
+                        <th>Número</th>
+                        <th>Dpto</th>
                         <th>Comuna</th>
                         <th>Propietario</th>
                         <th>Email</th>
@@ -75,7 +77,9 @@ var table = $('#listusers').DataTable({
             "columns": [
                 {data: 'id_link', name: 'id_link'},
                 {data: 'tipo', name: 'tipo'},
-                {data: 'Direccion', name: 'Direccion'},
+                {data: 'direccion', name: 'direccion'},
+                {data: 'numero', name: 'numero'},
+                {data: 'departamento', name: 'departamento'},
                 {data: 'comuna_nombre', name: 'comuna_nombre'},
                 {data: 'Propietario', name: 'Propietario'},
                 {data: 'email', name: 'email'},

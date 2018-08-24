@@ -38,9 +38,9 @@
                                     <div class="col-md-2">
                                         <div class="form-group">
                                             <label class="control-label">
-                                                Rut
+                                                Rut / Pasaporte
                                             </label>
-                                            <input class="form-control" name="rut" oninput="checkRut(this)" placeholder="" type="text">
+                                            <input class="form-control" name="rut"  placeholder="" type="text">
                                             </input>
                                         </div>
                                     </div>

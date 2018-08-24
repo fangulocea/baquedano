@@ -258,7 +258,7 @@ class ContratoBorradorController extends Controller
              p1.profesion as profesion_p, p1.telefono as telefono_p, p1.departamento as depto_p,
              CONCAT(s.descripcion, "  $",s.valor) as Servicio, 
              CONCAT(c.descripcion, " ", c.comision, " %") as comision, 
-             f.descripcion as Flexibilidad ,
+             f.descripcion as Flexibilidad , b.valorarriendo,
              i.rol as rol, b.detalle_revision as bodyContrato'))->first();
 
 

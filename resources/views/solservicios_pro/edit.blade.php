@@ -802,8 +802,8 @@
                                                                     <div class="row"> 
                                                                         <div class="col-md-4">
                                                                             <div class="form-group">
-                                                                                <label>Rut Titular</label>
-                                                                                <input type="text" name="rut_titular" id="pe_rut_titular" class="form-control" placeholder="" oninput='checkRut(this)' >
+                                                                                <label>Rut / Pasaporte Titular</label>
+                                                                                <input type="text" name="rut_titular" id="pe_rut_titular" class="form-control" placeholder="">
                                                                             </div>
                                                                         </div>
 

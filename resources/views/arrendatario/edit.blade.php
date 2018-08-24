@@ -44,8 +44,8 @@
                                             <div class="row">
                                                 <div class="col-md-2">
                                                     <div class="form-group">
-                                                        <label class="control-label">Rut</label>
-                                                        <input type="text" name="p_rut" id="p_rut" class="form-control" placeholder=""  oninput='checkRut(this)' value='{{ $persona->rut or '' }}' > 
+                                                        <label class="control-label">Rut / Pasaporte</label>
+                                                        <input type="text" name="p_rut" id="p_rut" class="form-control" placeholder=""  value='{{ $persona->rut or '' }}' > 
                                                     </div>
                                                 </div>
 
@@ -967,7 +967,7 @@ var direcciones = new Bloodhound({
             return $.map(response, function (dir) {
                 var num=dir.numero==null?'':dir.numero;
                 var dpto=dir.departamento==null?'':dir.departamento;
-                return {value: dir.direccion + ' #' + num  + ' Dpto '+ dpto +',  ' + dir.comuna_nombre,
+                return {value: dir.direccion + ' ' + num  + ' Dpto '+ dpto +',  ' + dir.comuna_nombre,
                     option: dir.id};
             });
         }
