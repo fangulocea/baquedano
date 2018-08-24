@@ -235,6 +235,7 @@ class ContratoBorradorController extends Controller
 
         array_set($request, 'tipo_contrato', $tContrato);
         $borrador = ContratoBorrador::create($request->all());
+        
         //PARA PDF
          $borradorPDF = DB::table('borradores as b')
          ->leftjoin('notarias as n', 'b.id_notaria', '=', 'n.id')
@@ -250,7 +251,7 @@ class ContratoBorradorController extends Controller
          ->leftjoin('contratos as con', 'b.id_contrato','=','con.id')
          ->leftjoin('formasdepagos as fp', 'b.id_formadepago','=','fp.id')
          ->leftjoin('multas as mul', 'b.id_multa','=','mul.id')
-         ->where('b.id','=',$request->id_borrador)
+         ->where('b.id','=',$borrador->id)
          ->select(DB::raw(' b.id as id, n.razonsocial as n_n, s.nombre as n_s, c.nombre as n_c, f.nombre as n_f , cp.id as id_publicacion,b.fecha_gestion as fecha,
              CONCAT_WS(" ",p1.nombre,p1.apellido_paterno,p1.apellido_materno) as propietario,
              p1.rut as rut_p, CONCAT(p1.direccion," ", p1.numero) as direccion_p , c1.comuna_nombre as comuna_p, reg.region_nombre as region_p,
@@ -262,7 +263,7 @@ class ContratoBorradorController extends Controller
              CONCAT(c.descripcion, " ", c.comision, " %") as comision, 
              f.descripcion as Flexibilidad ,
              i.rol as rol, b.detalle_revision as bodyContrato,
-             fp.nombre as FormasDePago, mul.nombre as Multas'))->first();
+             fp.nombre as FormasDePago, mul.nombre as Multas'))->first();   
 
          $capSimulacion = DB::table('cap_simulapropietario as s')
          ->where('s.id','=',$request->id_simulacion)->first();
