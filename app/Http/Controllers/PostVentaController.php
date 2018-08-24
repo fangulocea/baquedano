@@ -89,6 +89,7 @@ class PostVentaController extends Controller
      */
     public function store(Request $request)
     {
+        $idaval=null;
         if($request->modulo=='1'){
             $contrato=ContratoFinal::find($request->id_contrato);
             $publicacion=Captacion::find($contrato->id_publicacion);

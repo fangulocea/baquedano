@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Mail;
 use Carbon\Carbon;
 use URL;
 use App\PropietarioGarantia;
+use Auth;
 
 class ContratoBorradorController extends Controller
 {
@@ -250,7 +251,7 @@ class ContratoBorradorController extends Controller
          ->leftjoin('contratos as con', 'b.id_contrato','=','con.id')
          ->leftjoin('formasdepagos as fp', 'b.id_formadepago','=','fp.id')
          ->leftjoin('multas as mul', 'b.id_multa','=','mul.id')
-         ->where('b.id','=',$request->id_borrador)
+         ->where('b.id','=',$borrador->id)
          ->select(DB::raw(' b.id as id, n.razonsocial as n_n, s.nombre as n_s, c.nombre as n_c, f.nombre as n_f , cp.id as id_publicacion,b.fecha_gestion as fecha,
              CONCAT_WS(" ",p1.nombre,p1.apellido_paterno,p1.apellido_materno) as propietario,
              p1.rut as rut_p, CONCAT(p1.direccion," ", p1.numero) as direccion_p , c1.comuna_nombre as comuna_p, reg.region_nombre as region_p,
@@ -261,8 +262,8 @@ class ContratoBorradorController extends Controller
              CONCAT(s.descripcion, "  $",s.valor) as Servicio, 
              CONCAT(c.descripcion, " ", c.comision, " %") as comision, 
              f.descripcion as Flexibilidad , b.valorarriendo,
-             i.rol as rol, b.detalle_revision as bodyContrato,fp.nombre as FormasDePago, mul.nombre as Multas'))->first();
-
+             i.rol as rol, b.detalle_revision as bodyContrato,
+             fp.nombre as FormasDePago, mul.nombre as Multas'))->first();
 
          $capSimulacion = DB::table('cap_simulapropietario as s')
          ->where('s.id','=',$request->id_simulacion)->first();
@@ -345,7 +346,7 @@ class ContratoBorradorController extends Controller
              p1.profesion as profesion_p, p1.telefono as telefono_p, p1.departamento as depto_p,
              CONCAT(s.descripcion, "  $",s.valor) as Servicio, 
              CONCAT(c.descripcion, " ", c.comision, " %") as comision, 
-             f.descripcion as Flexibilidad ,
+             f.descripcion as Flexibilidad , b.valorarriendo,
              i.rol as rol, b.detalle_revision as bodyContrato,
              fp.nombre as FormasDePago, mul.nombre as Multas'))->first();
 
@@ -370,9 +371,15 @@ class ContratoBorradorController extends Controller
 
         $pdf = new PdfController();
 
+
         $pdf->index($borradorPDF,$simulacion);
         // FIN PARA PDF
-
+        $borrpdf=Contratoborradorpdf::where("id_borrador","=",$request->id_borrador)->update([
+                    "id_borrador" => $request->id_borrador,
+                    "nombre"      => $request->id_borrador.$borradorPDF->direccion_i.".pdf",
+                    "ruta"        => "uploads/pdf/",
+                    "id_creador"  => Auth::user()->id
+                ]);
 
    return redirect()->route('borradorContrato.edit', [$request->id_publicacion,3])
             ->with('status', 'Borrador actualizado con éxito');
@@ -419,6 +426,8 @@ public function editargestion2(Request $request)
          ->leftjoin('comunas as c2', 'i.id_comuna','=','c2.comuna_id')
          ->leftjoin('regions as reg', 'p1.id_region','=', 'reg.region_id'  )
          ->leftjoin('contratos as con', 'b.id_contrato','=','con.id')
+         ->leftjoin('formasdepagos as fp', 'b.id_formadepago','=','fp.id')
+         ->leftjoin('multas as mul', 'b.id_multa','=','mul.id')
          ->where('b.id','=',$request->id_borrador)
          ->select(DB::raw(' b.id as id, n.razonsocial as n_n, s.nombre as n_s, c.nombre as n_c, f.nombre as n_f , cp.id as id_publicacion,b.fecha_gestion as fecha,
              CONCAT_WS(" ",p1.nombre,p1.apellido_paterno,p1.apellido_materno) as propietario,
@@ -429,8 +438,9 @@ public function editargestion2(Request $request)
              p1.profesion as profesion_p, p1.telefono as telefono_p, p1.departamento as depto_p,
              CONCAT(s.descripcion, "  $",s.valor) as Servicio, 
              CONCAT(c.descripcion, " ", c.comision, " %") as comision, 
-             f.descripcion as Flexibilidad ,
-             i.rol as rol, b.detalle_revision as bodyContrato'))->first();
+             f.descripcion as Flexibilidad , b.valorarriendo,
+             i.rol as rol, b.detalle_revision as bodyContrato,
+             fp.nombre as FormasDePago, mul.nombre as Multas'))->first();
 
         $pdf = new PdfController();
 

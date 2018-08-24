@@ -14,7 +14,7 @@ class PdfController extends Controller
     public function Index($data,$simulacion) 
     {
         $meses = array("Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre");
-        
+
         $body    = $data->bodyContrato;
 
         $bodymail=str_replace("{fecha}",$data->fecha,$body);
