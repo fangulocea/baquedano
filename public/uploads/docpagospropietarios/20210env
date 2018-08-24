@@ -1,16 +1,16 @@
 APP_NAME=Laravel
 APP_ENV=local
-APP_KEY=base64:0YSRfc/dhQ02ulOhXST5cNUuszH+FpREox/n6EgNylg=
+APP_KEY=base64:WUEb3sLCbSbdSjwYaMB97n4QkA94QYMEGic40WKygcc=
 APP_DEBUG=false
 APP_LOG_LEVEL=debug
-APP_URL=http://localhost
+APP_URL=http://gestion.baquedanorentas.cl
 
 DB_CONNECTION=mysql
 DB_HOST=127.0.0.1
 DB_PORT=3306
-DB_DATABASE=baquedano
-DB_USERNAME=root
-DB_PASSWORD=
+DB_DATABASE=baqueda2_gestion
+DB_USERNAME=baqueda2_gestion
+DB_PASSWORD=ibaquedano2018
 
 BROADCAST_DRIVER=log
 CACHE_DRIVER=file
@@ -22,10 +22,10 @@ REDIS_PASSWORD=null
 REDIS_PORT=6379
 
 MAIL_DRIVER=smtp
-MAIL_HOST=smtp.mailtrap.io
-MAIL_PORT=2525
-MAIL_USERNAME=b0d3bd8fcd2c18
-MAIL_PASSWORD=74d32478af72b4
+MAIL_HOST=mail.baquedanorentas.cl
+MAIL_PORT=26
+MAIL_USERNAME=contactcenter@baquedanorentas.cl
+MAIL_PASSWORD=ibaquedano2018
 MAIL_ENCRYPTION=null
 
 PUSHER_APP_ID=
