@@ -9,9 +9,11 @@ use Yajra\Datatables\Datatables;
 use Carbon\Carbon;
 use App\EmpresasServicios;
 use App\ContratoFinalARR;
+use App\ContratoFinal;
 use App\ContratoBorradorArrendatario;
 use App\DetalleCuentasArrendatario;
 use App\Arrendatario;
+use App\Captacion;
 use App\Inmueble;
 use App\AsignaRevision;
 use App\Persona;
@@ -41,27 +43,28 @@ class CuentasArrendatarioController extends Controller
      */
 
     public function index_ajax(){
-        $publica = DB::table('adm_contratofinalarr as co')
-                ->leftjoin('contratoborradorarrendatarios as cb', 'co.id_borrador', '=', 'cb.id')
+        $publica = DB::table('adm_contratofinal as co')
+                ->leftjoin('cap_publicaciones as cb', 'co.id_publicacion', '=', 'cb.id')
                 ->leftjoin('inmuebles as i', 'cb.id_inmueble', '=', 'i.id')
                 ->leftjoin('comunas as o', 'i.id_comuna', '=', 'o.comuna_id')
-                ->leftjoin('arrendatarios as c', 'c.id', '=', 'co.id_publicacion')
-                ->leftjoin('personas as p1', 'c.id_arrendatario', '=', 'p1.id')
-                ->leftjoin('users as p2', 'c.id_creador', '=', 'p2.id')
-                ->leftjoin('users as p3', 'c.id_modificador', '=', 'p3.id')
+                ->leftjoin('personas as p1', 'cb.id_propietario', '=', 'p1.id')
+                ->leftjoin('users as p2', 'cb.id_creador', '=', 'p2.id')
+                ->leftjoin('users as p3', 'cb.id_modificador', '=', 'p3.id')
                 ->leftjoin('mensajes as m', function($join){
-                 $join->on('m.nombre_modulo', '=',DB::raw("'Arrendatario'"));
-                 $join->on('m.id_estado', '=', 'c.id_estado');
+                 $join->on('m.nombre_modulo', '=',DB::raw("'Captación'"));
+                 $join->on('m.id_estado', '=', 'cb.id_estado');
             })
-                ->whereIn('c.id_estado', [7, 10, 11])
+                ->whereIn('cb.id_estado', [7])
          ->select(DB::raw('co.id as id_contrato, 
                             DATE_FORMAT(co.created_at, "%d/%m/%Y") as FechaCreacion, 
 
-                            CONCAT_WS(" ",p1.nombre,p1.apellido_paterno,p1.apellido_materno) as Arrendatario, 
+                            CONCAT_WS(" ",p1.nombre,p1.apellido_paterno,p1.apellido_materno) as Propietario, 
                             p2.name as Creador,
                             p3.name as Modificador,
                             (select name from users where id=(select id_asignado from post_asignarevision where id_contrato=co.id order by 1 desc limit 1)) as Asignado,
-                        (select nombre from mensajes where nombre_modulo="Revisión Cuentas" and id_estado=(select id_estado from post_asignarevision where id_contrato=co.id order by 1 desc limit 1)) as Estado,
+                            (select created_at from post_asignarevision where id_contrato=co.id order by 1 desc limit 1) as fecha_revision,
+                        (select nombre from mensajes where nombre_modulo="Revisión Cuentas" and id_estado=(select id_estado from post_asignarevision where id_contrato=co.id order by 1 desc limit 1)) as EstadoCuenta,
+                            m.nombre as Estado,
                             CONCAT_WS(" ",i.direccion,i.numero," Dpto ",i.departamento) as Direccion,
                             o.comuna_nombre as Comuna,
                             p1.email,
@@ -92,11 +95,14 @@ class CuentasArrendatarioController extends Controller
                 ->where("fecha", "=", Carbon::now()->format('Y/m/d'))
                 ->first();
         $servicio = EmpresasServicios::all()->where('id_estado','<>','0');
-        $contratofinal=ContratoFinalARR::find($id);
-        $borrador=ContratoBorradorArrendatario::find($contratofinal->id_borrador);
-        $captacion=Arrendatario::find($borrador->id_cap_arr);
+
+        $contratofinal=ContratoFinal::find($id);
+        $captacion=Captacion::find($contratofinal->id_publicacion);
+
+       // $captacionarr=Arrendatario::where("            ");
+
         $inmueble=Inmueble::find($captacion->id_inmueble);
-        $persona=Persona::find($captacion->id_arrendatario);
+        $propietario=Persona::find($captacion->id_propietario);
         $idcontrato=$id;
          return view('revisioncuentas.create',compact('servicio','idcontrato','uf','captacion','inmueble','persona'));
     }

@@ -355,8 +355,8 @@
                                             <div class="row">
                                                 <div class="col-md-2">
                                                     <div class="form-group">
-                                                        <label class="control-label">Rut</label>
-                                                        <input type="text" name="p_rut" id="p_rut" class="form-control" placeholder=""  oninput='checkRut(this)' value='{{ $propietario->rut or '' }}' > 
+                                                        <label class="control-label">Rut / Pasaporte</label>
+                                                        <input type="text" name="p_rut" id="p_rut" class="form-control" placeholder=""   value='{{ $propietario->rut or '' }}' > 
                                                         <input name='i_postventa_p' id='i_postventa_p' type="hidden" value='{{ $postventa->id}}'> 
                                                     </div>
                                                 </div>
@@ -501,8 +501,8 @@
                                             <div class="row">
                                                 <div class="col-md-2">
                                                     <div class="form-group">
-                                                        <label class="control-label">Rut</label>
-                                                        <input type="text" name="a_rut" id="a_rut" class="form-control" placeholder=""  oninput='checkRut(this)' value='{{ $arrendatario->rut or '' }}' > 
+                                                        <label class="control-label">Rut / Pasaporte</label>
+                                                        <input type="text" name="a_rut" id="a_rut" class="form-control" placeholder=""  value='{{ $arrendatario->rut or '' }}' > 
                                                         <input name='i_postventa_a' id='i_postventa_a' type="hidden" value='{{ $postventa->id}}'> 
                                                     </div>
                                                 </div>
@@ -647,8 +647,8 @@
                                             <div class="row">
                                                 <div class="col-md-2">
                                                     <div class="form-group">
-                                                        <label class="control-label">Rut</label>
-                                                        <input type="text" name="v_rut" id="v_rut" class="form-control" placeholder=""  oninput='checkRut(this)' value='{{ $aval->rut or '' }}' > 
+                                                        <label class="control-label">Rut / Pasaporte</label>
+                                                        <input type="text" name="v_rut" id="v_rut" class="form-control" placeholder=""  value='{{ $aval->rut or '' }}' > 
                                                         <input name='i_postventa_v' id='i_postventa_v' type="hidden" value='{{ $postventa->id}}'> 
                                                     </div>
                                                 </div>

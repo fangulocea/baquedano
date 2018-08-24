@@ -281,7 +281,7 @@
                                 @endcan
 
                             <li>
-                                <a href="javascript:void(0)" class="waves-effect"><i data-icon="&#xe008;" class="linea-icon linea-basic fa-fw">A</i><span class="hide-menu">utorización Solicitudes </span><span class="fa arrow"></span></a>
+                                <a href="javascript:void(0)" class="waves-effect"><i data-icon="&#xe008;" class="linea-icon linea-basic fa-fw">A</i><span class="hide-menu">utorización Solicitudes PV</span><span class="fa arrow"></span></a>
                                 <ul class="nav nav-third-level">
                                     @can('solservicio.index')
                                     <li> <a href="{{ route('solservicio.autoriza_prop_index') }}"><i class=" fa-fw"></i><span class="hide-menu">Propietarios</span></a> </li>
@@ -331,7 +331,7 @@
                             <ul class="nav nav-second-level">
                              <li>
                       
-                                <a href="javascript:void(0)" class="waves-effect"><i data-icon="&#xe008;" class="linea-icon linea-basic fa-fw"></i><span class="hide-menu">Solicitudes </span><span class="fa arrow"></span></a>
+                                <a href="javascript:void(0)" class="waves-effect"><i data-icon="&#xe008;" class="linea-icon linea-basic fa-fw"></i><span class="hide-menu">Solicitudes de Pago </span><span class="fa arrow"></span></a>
                                 <ul class="nav nav-third-level">
                                     @can('contratoborradorarrendatario.index')
                                     <li> <a href="{{ route('solservicio.index') }}"><i data-icon="&#xe008;" class="linea-icon linea-basic fa-fw"></i><span class="hide-menu">Propietarios</span></a> </li>

@@ -4,14 +4,13 @@
 <div class="row">
     <div class="col-md-12">
         <div class="panel panel-success">
-            <div class="panel-heading"> CREACIÓN DE SOLICITUD DE SERVICIO ARRENDATARIO</div>
+            <div class="panel-heading">REVISIÓN DE CUENTAS INMUEBLE</div>
             <div class="panel-wrapper collapse in" aria-expanded="true">
                 <div class="panel-body">
 
          <center><h3 class="box-title m-b-0">{{ $inmueble->direccion or null }} # {{ $inmueble->numero or null }} Dpto {{ $inmueble->departamento or null }}, {{ $inmueble->comuna_nombre or null }}</h3></center>
 
-                <center><h3 class="box-title m-b-0">{{ $persona->nombre or null }} {{ $persona->apellido_paterno or null }} {{ $persona->apellido_materno or null }}, {{ $persona->telefono or null }}, {{ $persona->email or null }}</h3></center>
-
+<hr>
                     <form action="{{ route('revisioncuentas.store') }}" method="post" enctype='multipart/form-data'>
                          {!! csrf_field() !!}
                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
@@ -29,7 +28,7 @@
                                     @endforeach
                                 </select>
                             </div>
-                            <div class="col-sm-1">
+                            <div class="col-sm-2">
                                 <label>ID CLIENTE</label>
                                 <input name="idcliente" id="idcliente" type="text" class="form-control"  >
                             </div>
@@ -55,13 +54,57 @@
                                 <label>Año</label>
                                 <input name="anio" id="anio" type="number" class="form-control" required="required" value="<?=date("Y")?>" >
                             </div>
-                             <div class="col-sm-2">
+                             <div class="col-sm-3">
                                 <label>Fecha Vencimiento</label>
                                 <input name="fecha_vencimiento" id="fecha_vencimiento" type="date" class="form-control" required="required"  >
                             </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                        <div class="col-sm-3">
+                                <label>Fecha Contrato</label>
+                                <input name="fecha_contrato" id="fecha_contrato" type="date" class="form-control" readonly="readonly" required="required"  >
+                            </div>
+                        <div class="col-sm-3">
+                                <label>Inicio Lectura</label>
+                                <input name="fecha_contrato" id="fecha_contrato" type="date" class="form-control" required="required"  >
+                            </div>
+                       <div class="col-sm-3">
+                                <label>Fin Lectura</label>
+                                <input name="fecha_contrato" id="fecha_contrato" type="date" class="form-control" required="required"  >
+                            </div>
                          <div class="col-sm-2">
-                                <label>Monto</label>
+                                <label>Valor Medición</label>
+                                <input name="valor_medicion" id="valor_medicion" type="number" class="form-control" step="any" required="required" >
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                         <div class="col-sm-2">
+                                <label>Monto de Boleta</label>
                                 <input name="valor_en_moneda" id="valor_en_moneda" type="number" class="form-control" step="any" required="required" >
+                            </div>
+
+                             <div class="col-sm-3">
+                                <label style="color:red">Monto a Pagar Responsable</label>
+                                <input name="monto_responsable" id="monto_responsable" type="number" class="form-control" step="any" readonly="readonly" >
+                            </div>
+
+                             <div class="col-sm-3">
+                                <label style="color:red">Responsable</label>
+                                <select name="responsable" id="responsable" class="form-control"  >
+                                    <option value="Propietario">Propietario</option>
+                                    <option value="Arrendatario">Arrendatario</option>
+                                </select>
+                                   
+                            </div>
+                             <div class="col-sm-2">
+                                <label style="color:red"><strong>Solicitud de Pago</strong></label>
+                                <select name="itempago" id="itempago" class="form-control"  >
+                                    <option value="NO">NO</option>
+                                    <option value="SI">SI</option>
+                                </select>
+                                   
                             </div>
                         </div>
                         
@@ -77,8 +120,9 @@
                             <div class="col-sm-6">
                                  <div class="white-box"> 
                                  <div class="form-actions">
-                                       <center> <button type="submit" class="btn btn-success"> <i class="fa fa-check"></i> Guardar Servicio</button>
-                                       <a href="{{ route('revisioncuentas.index') }}" class="btn btn-info" style="color:white"><i class="fa fa-times-circle"></i>&nbsp;&nbsp;Volver</a></center>
+                                       <center> <button type="submit" class="btn btn-success"> <i class="fa fa-check"></i> Guardar</button>
+                                       <a href="{{ route('revisioncuentas.index') }}" class="btn btn-info" style="color:white"><i class="fa fa-times-circle"></i>&nbsp;&nbsp;Volver</a>
+                                       <a  class="btn btn-warning" style="color:white">Calcular Proporcional</a></center>
 
                                 </div>
                                 

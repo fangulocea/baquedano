@@ -221,7 +221,7 @@ var direcciones = new Bloodhound({
             return $.map(response, function (dir) {
                 var num=dir.numero==null?'':dir.numero;
                 var dpto=dir.departamento==null?'':dir.departamento;
-                return {value: dir.direccion + ' #' + num  + ' Dpto '+ dpto +',  ' + dir.comuna_nombre,
+                return {value: dir.direccion + ' ' + num  + ' Dpto '+ dpto +',  ' + dir.comuna_nombre,
                     option: dir.id, modulo:1};
             });
         }
@@ -301,7 +301,7 @@ var direcciones1 = new Bloodhound({
             return $.map(response, function (dir) {
                 var num=dir.numero==null?'':dir.numero;
                 var dpto=dir.departamento==null?'':dir.departamento;
-                return {value: dir.direccion + ' #' + num  + ' Dpto '+ dpto +',  ' + dir.comuna_nombre,
+                return {value: dir.direccion + ' ' + num  + ' Dpto '+ dpto +',  ' + dir.comuna_nombre,
                     option: dir.id};
             });
         }

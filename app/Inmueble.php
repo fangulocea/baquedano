@@ -14,34 +14,35 @@ class Inmueble extends Model
     protected $dates = ['deleted_at'];
 
 public static function inmuebles($text){
-    	// return Inmueble::where('direccion','like','%'.$text.'%')->get();
-    	return DB::table('inmuebles')->where('direccion','like','%'.$text.'%')->join('comunas', 'inmuebles.id_comuna', '=', 'comunas.comuna_id')->get();
+
+       return DB::select(DB::raw('Select i.id , i.direccion, i.numero, i.departamento, c.comuna_nombre from inmuebles as i left join comunas c on c.comuna_id=i.id_comuna where concat_ws(" ",i.direccion,i.numero) like "%'.$text.'%"'));
     }
 
 public static function inmuebles_modulo($text,$modulo){
     	// return Inmueble::where('direccion','like','%'.$text.'%')->get();
 
 	if($modulo==1){
-    	return DB::table('adm_contratofinal as cf')
-    	->join('cap_publicaciones as p', 'cf.id_publicacion', '=', 'p.id')
-    	->join('inmuebles as i', 'p.id_inmueble', '=', 'i.id')
-    	->join('comunas as c', 'i.id_comuna', '=', 'c.comuna_id')
-    	->whereIn("cf.id_estado",[7,10,6])
-    	->where('i.direccion','like','%'.$text.'%')
-    	->select(DB::raw('cf.id, i.direccion, i.numero, i.departamento, c.comuna_nombre'))
-    	->get();
+
+        return DB::select(DB::raw('Select cf.id , i.direccion, i.numero, i.departamento, c.comuna_nombre 
+            from adm_contratofinal as cf
+            left join cap_publicaciones as p on cf.id_publicacion = p.id 
+            left join inmuebles as i on i.id=p.id_inmueble
+            left join comunas c on c.comuna_id=i.id_comuna
+            where concat_ws(" ",i.direccion,i.numero) like "%'.$text.'%"
+            and cf.id_estado in (7,10,6)'));
 
 
     	
 	}else{
-		return DB::table('adm_contratofinalarr as cf')
-    	->join('arrendatarios as p', 'cf.id_publicacion', '=', 'p.id')
-    	->join('inmuebles as i', 'p.id_inmueble', '=', 'i.id')
-    	->where('i.direccion','like','%'.$text.'%')
-    	->whereIn("cf.id_estado",[7,10,6])
-    	->join('comunas as c', 'i.id_comuna', '=', 'c.comuna_id')
-    	->select(DB::raw('cf.id, i.direccion, i.numero, i.departamento, c.comuna_nombre'))
-    	->get();
+       return DB::select(DB::raw('Select cf.id , i.direccion, i.numero, i.departamento, c.comuna_nombre 
+            from adm_contratofinalarr as cf
+            left join arrendatarios as p on cf.id_publicacion = p.id 
+            left join inmuebles as i on i.id=p.id_inmueble
+            left join comunas c on c.comuna_id=i.id_comuna
+            where concat_ws(" ",i.direccion,i.numero) like "%'.$text.'%"
+            and cf.id_estado in (7,10,6)'));
+
+
 	}
     }
 

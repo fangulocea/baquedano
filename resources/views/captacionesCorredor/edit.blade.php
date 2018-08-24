@@ -358,8 +358,8 @@
                                             <div class="row">
                                                 <div class="col-md-2">
                                                     <div class="form-group">
-                                                        <label class="control-label">Rut</label>
-                                                        <input type="text" name="p_rut" id="p_rut_c" class="form-control" placeholder=""  oninput='checkRut(this)' value='{{ $persona->rut or '' }}' > 
+                                                        <label class="control-label">Rut / Pasaporte</label>
+                                                        <input type="text" name="p_rut" id="p_rut_c" class="form-control" placeholder=""   value='{{ $persona->rut or '' }}' > 
                                                     </div>
                                                 </div>
 
