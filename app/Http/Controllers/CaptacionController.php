@@ -508,7 +508,7 @@ class CaptacionController extends Controller {
          return Datatables::of($publica)
          ->addColumn('action', function ($publica) {
                                return  '<a href="/captacion/'.$publica->id_publicacion.'/2/edit"><span class="btn btn-warning btn-circle btn-sm"><i class="ti-pencil-alt"></i></span></a>
-                                    <a href="/captacion/'.$publica->id_publicacion.'/destroy"><span class="btn btn-danger btn-circle btn-sm"><i class="ti-pencil-alt"></i></span></a>';
+                                    <a href="/captacion/'.$publica->id_publicacion.'/destroy"><span class="btn btn-danger btn-circle btn-sm"><i class="ti-trash"></i></span></a>';
         })
         ->addColumn('id_link', function ($publica) {
                                return  '<a href="/captacion/'.$publica->id_publicacion.'/2/edit"><span class="btn btn-success btn-sm"> '.$publica->id_publicacion.'</span> </a>';

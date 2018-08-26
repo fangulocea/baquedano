@@ -88,7 +88,7 @@ class PagosMensualesArrendatariosController extends Controller {
 
 
         $publicacion = Arrendatario::find($pago->id_publicacion);
-        $persona = Persona::find($publicacion->id_propietario);
+        $persona = Persona::find($publicacion->id_arrendatario);
         $inmueble = DB::table('inmuebles')
                 ->join('comunas', 'inmuebles.id_comuna', '=', 'comunas.comuna_id')
                 ->where("inmuebles.id", "=", $pago->id_inmueble)
@@ -119,7 +119,7 @@ class PagosMensualesArrendatariosController extends Controller {
         $valor_original=$pago->pago_a_rentas_moneda;
         $pdf = PDF::loadView('formatospdf.recibopagoarrendatario', compact('pago', 'persona', 'inmueble', 'mes', 'valor_pagado', 'documentos', 'uf', 'saldo_pesos', 'saldo_moneda', 'pagospropietarios','valor_original'));
 
-        return $pdf->download($inmueble->direccion . ' Nro.' . $inmueble->numero . ' Dpto.' . $inmueble->departamento . ', ' . $inmueble->comuna_nombre . ' - ' . $mes . '-' . $pago->anio . ' - Comprobante de Pago a Propietario.pdf');
+        return $pdf->download($inmueble->direccion . ' Nro.' . $inmueble->numero . ' Dpto.' . $inmueble->departamento . ', ' . $inmueble->comuna_nombre . ' - ' . $mes . '-' . $pago->anio . ' - Comprobante de Pago a Arrendatario.pdf');
     }
 
     public function efectuarpago(Request $request, $id) {

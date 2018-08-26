@@ -60,8 +60,9 @@
                 <tbody>
                     @foreach($publica as $p)
                             <tr>
-                                <td>{{ $p->id_cap_arr }}</td>
-                                <td>{{ $p->direccion }} #{{ $p->numero }}</td>
+                                 <td><a href="{{ route('finalContratoArr.edit', [$p->id_cap_arr,0,0,1,"contrato"]) }}">
+                                    <span class="btn btn-success btn-sm"> {{ $p->id_cap_arr }}</span> </a></td>
+                                <td><a href="{{ route('finalContratoArr.edit', [$p->id_cap_arr,0,0,1,"contrato"]) }}">{{ $p->direccion }} #{{ $p->numero }}</a></td>
                                 <td>{{ $p->comuna }}</td>
                                 <td>{{ $p->arrendatario }}</td>
                                 <td>{{ $p->dia_pago }}</td>

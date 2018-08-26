@@ -314,6 +314,51 @@ class PrimeraGestionController extends Controller
         return $d;
     }
 
+//ARRENDATARIOS
+
+    static function arr_cantidadmesual(){
+        $cc = DB::table('arrendatarios')
+         ->where('created_at','>',date('Y-m-d',strtotime('-30 day', strtotime(date("Y-m-d")))))
+        ->count();
+        return $cc;   
+    }
+
+    static function arr_cantidadanual(){
+        $cc = DB::table('arrendatarios')
+        ->where('created_at','>',date('Y-m-d',strtotime('-365 day', strtotime(date("Y-m-d")))))
+        ->count();
+        return $cc;   
+    }
+
+    static function arr_cantidaddescartada(){
+        $cc = DB::table('arrendatarios')
+        ->wherein('id_estado',[0])
+        ->count();
+        return $cc;   
+    }
+
+
+    static function arr_cantidadborrador(){
+        $cc = DB::table('arrendatarios')
+        ->wherein('id_estado',[6,10])
+        ->count();
+        return $cc;   
+    }
+
+    static function arr_cantidadfinal(){
+        $cc = DB::table('arrendatarios')
+        ->wherein('id_estado',[11])
+        ->count();
+        return $cc;   
+    }
+
+
+//PROPIETARIOS
+
+
+
+
+
     static function cantCorreos(){
         $cc = DB::table('cap_gestion')
         ->where('tipo_contacto','=','Sin Respuesta')
@@ -324,6 +369,34 @@ class PrimeraGestionController extends Controller
 
     static function cantGestiones(){
         $canGes = DB::table('cap_gestion')
+        ->count();
+        return $canGes;   
+    }
+
+
+     static function cantborradores(){
+        $canGes = DB::table('cap_publicaciones')
+        ->whereIn('id_estado',[5,6,7])
+        ->count();
+        return $canGes;   
+    }
+
+         static function cantactivos(){
+        $canGes = DB::table('cap_publicaciones')
+        ->whereIn('id_estado',[10])
+        ->count();
+        return $canGes;   
+    }
+
+        static function cantCaptacionesAnuales(){
+        $canGes = DB::table('cap_publicaciones')
+         ->where('created_at','>',date('Y-m-d',strtotime('-365 day', strtotime(date("Y-m-d")))))
+        ->count();
+        return $canGes;   
+    }
+    static function cantCaptacionesMensuales(){
+        $canGes = DB::table('cap_publicaciones')
+         ->where('created_at','>',date('Y-m-d',strtotime('-30 day', strtotime(date("Y-m-d")))))
         ->count();
         return $canGes;   
     }

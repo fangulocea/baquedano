@@ -870,7 +870,7 @@ public function savepagofin(Request $request,$id_contrato,$id_publicacion) {
 
     public function savedocs(Request $request, $id) {
         if (!isset($request->foto)) {
-            return redirect()->route('finalContratoArr.edit', $id)->with('error', 'Debe seleccionar archivo');
+            return redirect()->route('finalContratoArr.edit', [$request->id_publicacion, 0, 0, 2,"Contrato"])->with('error', 'Debe seleccionar archivo');
         }
 
         $destinationPath = 'uploads/contratoarrfinaldocs';
@@ -980,7 +980,7 @@ public function savepagofin(Request $request,$id_contrato,$id_publicacion) {
 
 
         if (count($canMPagos) > 0 || count($canPagos) > 0) {
-            return redirect()->route('finalContratoArr.edit', [$idp, 0, 0, 4])->with('error', 'Debe eliminar pagos antes de volver a crear');
+            return redirect()->route('finalContratoArr.edit', [$idp, 0, 0, 4,"Contrato"])->with('error', 'Debe eliminar pagos antes de volver a crear');
         }
 
 

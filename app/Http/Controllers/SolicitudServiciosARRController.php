@@ -209,10 +209,11 @@ class SolicitudServiciosARRController extends Controller {
                 ]);
             }
         } else {
+
             $saldo_a_favor = PagosArrendatarios::where("mes", '=', $mes)
                     ->where("anio", '=', $anio)
                     ->whereIn("idtipopago", [10])
-                    ->where("id_contratofinal", '=', $idcontratofinal)
+                    ->where("id_contratofinal", '=', $idcontrato)
                     ->where("id_inmueble", '=', $idinmueble)
                     ->sum('precio_en_pesos');
 
@@ -355,18 +356,19 @@ class SolicitudServiciosARRController extends Controller {
                     ->where("fecha", "=", Carbon::now()->format('Y/m/d'))
                     ->first();
 
-            $pm = PagosMensualesArrendatarios::where("id_contratofinal", "=", $idcontrato)
+            $pmm = PagosMensualesArrendatarios::where("id_contratofinal", "=", $idcontrato)
                     ->where("id_publicacion", "=", $contrato->id_publicacion)
                     ->where("id_inmueble", "=", $idinmueble)
                     ->where("mes", "=", $mes)
                     ->where("anio", "=", $anio)
                     ->first();
-            if ($pm->moneda == "UF") {
-                $valormoneda = $uf->valor;
-            } else {
-                $valormoneda = 1;
-            }
 
+            if(isset($pmm->moneda)){
+                    if($pmm->moneda=='UF'){
+                        $valormoneda = $uf->valor;
+                    }else{
+                        $valormoneda = 1;
+                    }
 
             $delete = PagosMensualesArrendatarios::where("id_contratofinal", "=", $idcontrato)
                     ->where("id_publicacion", "=", $contrato->id_publicacion)
@@ -374,7 +376,7 @@ class SolicitudServiciosARRController extends Controller {
                     ->where("mes", "=", $mes)
                     ->where("anio", "=", $anio)
                     ->update([
-                'moneda' => $pm->moneda,
+                'moneda' => $pmm->moneda,
                 'valor_moneda' => $valormoneda,
                 'fecha_moneda' => Carbon::now()->format('Y-m-d'),
                 'subtotal_entrada_moneda' => $pagos_mensuales_e / $valormoneda,
@@ -386,6 +388,7 @@ class SolicitudServiciosARRController extends Controller {
                 'pago_a_arrendatario' => 0,
                 'pago_a_rentas' => $pagos_mensuales_e,
             ]);
+                }
         }
 
 

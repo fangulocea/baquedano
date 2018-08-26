@@ -134,7 +134,7 @@ class MensajesSeed extends Seeder
             'id'    => '8',
         	'id_modulo'    => '1',
         	'nombre_modulo'    => 'Captación',
-        	'id_estado'    => '7',
+        	'id_estado'    => '10',
         	'nombre' => 'Contrato Firmado'
         ]);
          Mensajes::create([
@@ -155,7 +155,7 @@ class MensajesSeed extends Seeder
             'id'    => '11',
         	'id_modulo'    => '1',
         	'nombre_modulo'    => 'Captación',
-        	'id_estado'    => '10',
+        	'id_estado'    => '7',
         	'nombre' => 'Contrato Proceso Firma'
         ]);
           Mensajes::create([

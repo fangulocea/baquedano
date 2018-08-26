@@ -17,171 +17,137 @@ use App\Http\Controllers\PrimeraGestionController;
     <div class="row">
         <div class="col-sm-12">
             <div class="white-box">
-                <div class="row row-in">
 
-                    <div class="col-lg-3 col-sm-12 row-in-br">
-                        <ul class="col-in">
-                            <li>
-                                <span class="circle circle-md bg-danger"><i class="ti ti-files"></i></span>
-                            </li>
-                            <li class="col-last">
-                                <h3 class="counter text-right m-t-15">{{ PrimeraGestionController::cantGesDia() }}</h3>
-                            </li>
-                            <li class="col-middle">
-                                <h4>Gestión Hoy<h1></h4>
-                                <div class="progress">
-                                    <div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
-                                        <span class="sr-only"></span>
+                        <div class="panel panel-info">
+                            <div class="panel-heading"> Gestiones Captación Propietarios
+                                <div class="pull-right"><a href="#" data-perform="panel-collapse"><i class="ti-minus"></i></a> <a href="#" data-perform="panel-dismiss"><i class="ti-close"></i></a> </div>
+                            </div>
+                            <div class="panel-wrapper collapse in" aria-expanded="true">
+                                <div class="panel-body">
+                                    <div class="row">
+                                        <div class="col-sm-2">
+                                             <center>
+                                                    <h1 class="counter m-t-15">{{ PrimeraGestionController::cantGesDia() }}</h1>
+                                                    <a href="{{ route('reporteGestion.index','0') }}"> <span class="btn btn-block btn-primary btn-rounded">Gestión <br> Hoy</span></a>
+                                            </center>
+                                        </div>
+                                        <div class="col-sm-2">
+                                            <center>
+                                                <h1 class="counter m-t-15">{{ PrimeraGestionController::cantGesMes() }}</h1>
+                                                <a href="{{ route('reporteGestion.index',30) }}"> <span class="btn btn-block btn-primary btn-rounded">Gestión<br> Mes</span></a>
+                                            </center>
+                                        </div>
+                                        <div class="col-sm-2">
+                                                    <center>
+                                                        <h1 class="counter m-t-15">{{ PrimeraGestionController::cantGesAnio() }}</h1>
+                                                       <a href="{{ route('reporteGestion.index',365) }}"> <span class="btn btn-block btn-primary btn-rounded">Gestión <br>Anual</span></a>
+                                                   </center>
+                                        </div>
+                                        <div class="col-sm-2">
+                                                    <center>
+                                                        <h1 class="counter m-t-15">{{ PrimeraGestionController::cantGestiones() }}</h1>
+                                                       <a href="{{ route('reporteGestion.index',99) }}"> <span class="btn btn-block btn-primary btn-rounded">Total de<br> Gestiones</span></a>
+                                                   </center>
+                                        </div>
+                                        <div class="col-sm-2">
+                                                    <center>
+                                                        <h1 class="counter m-t-15">{{ PrimeraGestionController::cantCaptacionesMensuales() }}</h1>
+                                                       <a href="#"> <span class="btn btn-block btn-primary btn-rounded">Total Mensual<br>de Captaciones</span></a>
+                                                   </center>
+                                        </div>
+                                       <div class="col-sm-2">
+                                                    <center>
+                                                        <h1 class="counter m-t-15">{{ PrimeraGestionController::cantCaptacionesAnuales() }}</h1>
+                                                       <a href="#"> <span class="btn btn-block btn-primary btn-rounded">Total Anual<br>de Captaciones</span></a>
+                                                   </center>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-2">
+                                                    <center>
+                                                        <h1 class="counter m-t-15">{{ PrimeraGestionController::Descartados() }}</h1>
+                                                       <a href="{{ route('reporteGestion.index',0) }}"> <span class="btn btn-block btn-danger btn-rounded">Captaciones<br> Descatradas</span></a>
+                                                   </center>
+                                        </div>
+                                        <div class="col-sm-2">
+                                                    <center>
+                                                        <h1 class="counter m-t-15">{{ PrimeraGestionController::SinRespuesta() }}</h1>
+                                                       <a href="{{ route('reporteGestion.index',99) }}"> <span class="btn btn-block btn-danger btn-rounded">Captación<br> Sin Respuesta</span></a>
+                                                   </center>
+                                        </div>
+                                        <div class="col-sm-2">
+                                                    <center>
+                                                        <h1 class="counter m-t-15">{{ PrimeraGestionController::PrimeraGestion() }}</h1>
+                                                       <a href="{{ route('reporteCaptaciones.index',3) }}"> <span class="btn btn-block btn-danger btn-rounded">Primera <br>Gestión</span></a>
+                                                   </center>
+                                        </div>
+                                        <div class="col-sm-2">
+                                                    <center>
+                                                        <h1 class="counter m-t-15">{{ PrimeraGestionController::SinGestion() }}</h1>
+                                                       <a href="{{ route('reporteCaptaciones.index',99) }}"> <span class="btn btn-block btn-danger btn-rounded">Captaciones <br>Sin Gestión</span></a>
+                                                   </center>
+                                        </div>
+                                        <div class="col-sm-2">
+                                                    <center>
+                                                        <h1 class="counter m-t-15">{{ PrimeraGestionController::cantborradores() }}</h1>
+                                                       <a href="#"> <span class="btn btn-block btn-success btn-rounded">En Contrato<br>Borrador</span></a>
+                                                   </center>
+                                        </div>
+                                        <div class="col-sm-2">
+                                                    <center>
+                                                        <h1 class="counter m-t-15">{{ PrimeraGestionController::cantactivos() }}</h1>
+                                                       <a href="#"> <span class="btn btn-block btn-success btn-rounded">Contrato<br>Activo</span></a>
+                                                   </center>
+                                        </div>
                                     </div>
                                 </div>
-                                <a href="{{ route('reporteGestion.index','0') }}" class="btn btn-info" style="color:white"><i class="fa fa-check"></i>&nbsp;&nbsp;&nbsp;Ver&nbsp;&nbsp;&nbsp;</a>
-                            </li>
-                        </ul>
-                    </div>
-
-                    <div class="col-lg-3 col-sm-12 row-in-br">
-                        <ul class="col-in">
-                            <li>
-                                <span class="circle circle-md bg-danger"><i class="ti-files"></i></span>
-                            </li>
-                            <li class="col-last">
-                                <h3 class="counter text-right m-t-15">{{ PrimeraGestionController::cantGesMes() }}</h3></li>
-                                <li class="col-middle">
-                                    <h4>Gestión Mes</h4>
-                                    <div class="progress">
-                                        <div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
-                                            <span class="sr-only"></span>
-                                        </div>
-                                    </div>
-                                    <a href="{{ route('reporteGestion.index',30) }}" class="btn btn-info" style="color:white"><i class="fa fa-check"></i>&nbsp;&nbsp;&nbsp;Ver&nbsp;&nbsp;&nbsp;</a>
-                                </li>
-                            </ul>
-                        </div>                                
-
-                        <div class="col-lg-3 col-sm-12 row-in-br  b-r-none">
-                            <ul class="col-in">
-                                <li>
-                                    <span class="circle circle-md bg-danger"><i class="ti-files"></i></span>
-                                </li>
-                                <li class="col-last">
-                                    <h3 class="counter text-right m-t-15">{{ PrimeraGestionController::cantGesAnio() }}</h3></li>
-                                    <li class="col-middle">
-                                        <h4>Gestión Año</h4>
-                                        <div class="progress">
-                                            <div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
-                                                <span class="sr-only"></span>
-                                            </div>
-                                        </div>
-                                        <a href="{{ route('reporteGestion.index',365) }}" class="btn btn-info" style="color:white"><i class="fa fa-check"></i>&nbsp;&nbsp;&nbsp;Ver&nbsp;&nbsp;&nbsp;</a>
-                                    </li>
-                                </ul>
                             </div>
-
-                        <div class="col-lg-3 col-sm-12 row-in-br  b-r-none">
-                            <ul class="col-in">
-                                <li>
-                                    <span class="circle circle-md bg-danger"><i class="ti-files"></i></span>
-                                </li>
-                                <li class="col-last">
-                                    <h3 class="counter text-right m-t-15">{{ PrimeraGestionController::cantGestiones() }}</h3></li>
-                                    <li class="col-middle">
-                                        <h4>Total Gestión</h4>
-                                        <div class="progress">
-                                            <div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
-                                                <span class="sr-only"></span>
-                                            </div>
-                                        </div>
-                                        <a href="{{ route('reporteGestion.index',99) }}" class="btn btn-info" style="color:white"><i class="fa fa-check"></i>&nbsp;&nbsp;&nbsp;Ver&nbsp;&nbsp;&nbsp;</a>
-                                    </li>
-                                </ul>
-                            </div>
-
-
                         </div>
 
-                <br><br>
-
-                <div class="row row-in">
-
-                    <div class="col-lg-3 col-sm-12 row-in-br">
-                        <ul class="col-in">
-                            <li>
-                                <span class="circle circle-md bg-danger"><i class="ti ti-files"></i></span>
-                            </li>
-                            <li class="col-last">
-                                <h3 class="counter text-right m-t-15">{{ PrimeraGestionController::SinRespuesta() }}</h3>
-                            </li>
-                            <li class="col-middle">
-                                <h4>Gestión S/Resp.</h4>
-                                <div class="progress">
-                                    <div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
-                                        <span class="sr-only"></span>
+                        <div class="panel panel-inverse">
+                            <div class="panel-heading"> Gestiones Captación Arrendatarios
+                                <div class="pull-right"><a href="#" data-perform="panel-collapse"><i class="ti-minus"></i></a> <a href="#" data-perform="panel-dismiss"><i class="ti-close"></i></a> </div>
+                            </div>
+                            <div class="panel-wrapper collapse in" aria-expanded="true">
+                                <div class="panel-body">
+                                    <div class="row">
+                                        <div class="col-sm-2">
+                                             <center>
+                                                     <h1 class="counter m-t-15">{{ PrimeraGestionController::arr_cantidadmesual() }}</h1>
+                                                    <a href="#"> <span class="btn btn-block btn-primary btn-rounded">Captación<br> Mensual</span></a>
+                                            </center>
+                                        </div>
+                                        <div class="col-sm-2">
+                                            <center>
+                                                    <h1 class="counter m-t-15">{{ PrimeraGestionController::arr_cantidadanual() }}</h1>
+                                                    <a href="#"> <span class="btn btn-block btn-primary btn-rounded">Captación<br> Anual</span></a>
+                                            </center>
+                                        </div>
+                                        <div class="col-sm-2">
+                                                    <center>
+                                                    <h1 class="counter m-t-15">{{ PrimeraGestionController::arr_cantidaddescartada() }}</h1>
+                                                    <a href="#"> <span class="btn btn-block btn-danger btn-rounded">Captaciones<br> Descartadas</span></a>
+                                                   </center>
+                                        </div>
+                                        <div class="col-sm-2">
+                                                    <center>
+                                                    <h1 class="counter m-t-15">{{ PrimeraGestionController::arr_cantidadborrador() }}</h1>
+                                                    <a href="#"> <span class="btn btn-block btn-success btn-rounded">En Contrato<br> Borrador</span></a>
+                                                   </center>
+                                        </div>
+                                        <div class="col-sm-2">
+                                                    <center>
+                                                    <h1 class="counter m-t-15">{{ PrimeraGestionController::arr_cantidadfinal() }}</h1>
+                                                    <a href="#"> <span class="btn btn-block btn-success btn-rounded">Contratos<br> Activos</span></a>
+                                                   </center>
+                                        </div>
                                     </div>
                                 </div>
-                                <a href="{{ route('reporteCaptaciones.index',2) }}" class="btn btn-info" style="color:white"><i class="fa fa-check"></i>&nbsp;&nbsp;&nbsp;Ver&nbsp;&nbsp;&nbsp;</a>
-                            </li>
-                        </ul>
-                    </div>
-
-                    <div class="col-lg-3 col-sm-12 row-in-br">
-                        <ul class="col-in">
-                            <li>
-                                <span class="circle circle-md bg-danger"><i class="ti-files"></i></span>
-                            </li>
-                            <li class="col-last">
-                                <h3 class="counter text-right m-t-15">{{ PrimeraGestionController::Descartados() }}</h3></li>
-                                <li class="col-middle">
-                                    <h4>Gestión Descartadas</h4>
-                                    <div class="progress">
-                                        <div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
-                                            <span class="sr-only"></span>
-                                        </div>
-                                    </div>
-                                    <a href="{{ route('reporteCaptaciones.index',0) }}" class="btn btn-info" style="color:white"><i class="fa fa-check"></i>&nbsp;&nbsp;&nbsp;Ver&nbsp;&nbsp;&nbsp;</a>
-                                </li>
-                            </ul>
-                        </div>                                
-
-                        <div class="col-lg-3 col-sm-12 row-in-br  b-r-none">
-                            <ul class="col-in">
-                                <li>
-                                    <span class="circle circle-md bg-danger"><i class="ti-files"></i></span>
-                                </li>
-                                <li class="col-last">
-                                    <h3 class="counter text-right m-t-15">{{ PrimeraGestionController::PrimeraGestion() }}</h3></li>
-                                    <li class="col-middle">
-                                        <h4>Primera Gestión</h4>
-                                        <div class="progress">
-                                            <div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
-                                                <span class="sr-only"></span>
-                                            </div>
-                                        </div>
-                                        <a href="{{ route('reporteCaptaciones.index',3) }}" class="btn btn-info" style="color:white"><i class="fa fa-check"></i>&nbsp;&nbsp;&nbsp;Ver&nbsp;&nbsp;&nbsp;</a>
-                                    </li>
-                                </ul>
                             </div>
-
-                        <div class="col-lg-3 col-sm-12 row-in-br  b-r-none">
-                            <ul class="col-in">
-                                <li>
-                                    <span class="circle circle-md bg-danger"><i class="ti-files"></i></span>
-                                </li>
-                                <li class="col-last">
-                                    <h3 class="counter text-right m-t-15">{{ PrimeraGestionController::SinGestion() }}</h3></li>
-                                    <li class="col-middle">
-                                        <h4>Sin Gestión</h4>
-                                        <div class="progress">
-                                            <div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
-                                                <span class="sr-only"></span>
-                                            </div>
-                                        </div>
-                                        <a href="{{ route('reporteCaptaciones.index',99) }}" class="btn btn-info" style="color:white"><i class="fa fa-check"></i>&nbsp;&nbsp;&nbsp;Ver&nbsp;&nbsp;&nbsp;</a>
-                                    </li>
-                                </ul>
-                            </div>
-
-
                         </div>
+
+
+    
 
                     </div>
                 </div>
