@@ -17,16 +17,28 @@ class ReportesController extends Controller
 {
     
 
-    public function ArriendosDisponibles()
+    public function index_inmueble()
     {
-        $ArrDisp = DB::table('inmuebles as i')
-         ->leftjoin('comunas as co', 'i.id_comuna', '=', 'co.comuna_id')
-         ->select(DB::raw('i.*, co.comuna_nombre as comuna'))
-         ->Where('i.estado','=',1)
-         ->orderBy('i.id')
-         ->get();
+        $Inmuebles = null;
+        return view('reportes.inmuebles')->with(compact('Inmuebles'));
+    }
 
-        return view('reportes.arriendosdisponibles',compact('ArrDisp'));
+
+    public function inmueble(Request $request)
+    {
+        if($request->estado == 'Todos')
+        {
+            $estado = $request->estado;
+            $Inmuebles = DB::table('inmuebles as i')
+             ->leftjoin('comunas as co', 'i.id_comuna', '=', 'co.comuna_id')
+             ->select(DB::raw('i.*, co.comuna_nombre as comuna'))
+             ->Where('i.estado','=','*')
+             ->orderBy('i.id')
+             ->get();            
+        }
+
+
+        return view('reportes.inmuebles',compact('Inmuebles','estado'));
 
     }
 

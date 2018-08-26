@@ -236,6 +236,7 @@ class ContratoBorradorController extends Controller
 
         array_set($request, 'tipo_contrato', $tContrato);
         $borrador = ContratoBorrador::create($request->all());
+        
         //PARA PDF
          $borradorPDF = DB::table('borradores as b')
          ->leftjoin('notarias as n', 'b.id_notaria', '=', 'n.id')
@@ -263,7 +264,7 @@ class ContratoBorradorController extends Controller
              CONCAT(c.descripcion, " ", c.comision, " %") as comision, 
              f.descripcion as Flexibilidad , b.valorarriendo,
              i.rol as rol, b.detalle_revision as bodyContrato,
-             fp.nombre as FormasDePago, mul.nombre as Multas'))->first();
+             fp.nombre as FormasDePago, mul.nombre as Multas'))->first();   
 
          $capSimulacion = DB::table('cap_simulapropietario as s')
          ->where('s.id','=',$request->id_simulacion)->first();

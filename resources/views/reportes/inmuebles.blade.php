@@ -6,9 +6,42 @@
 @endphp
 <div id="tabla" >
     <div class="white-box">
-        <h3 class="box-title m-b-0">Arriendos Disponibles</h3>
+        <h3 class="box-title m-b-0">Reporte de Inmuebles</h3>
         <p class="text-muted m-b-30">Reporte de propiedades Vigentes Disponibles.</p>
         <div class="table-responsive" style="padding-bottom: 50px;">
+
+<form action="{{ route('reportes.inmuebles') }}" method="post">
+    {!! csrf_field() !!}
+    
+    <div class="row">
+        
+        <div class="col-sm-2">
+            <label>Estados ({{ $estado or null }})</label>
+            <select name="estado" id=dir class='form-control' required="required">
+                <option value="Todos">Todos</option>
+                <option value="Vigentes">Vigentes</option>
+                <option value="No Vigentes">No Vigentes</option>
+            </select>
+        </div>
+
+        <div class="col-sm-2">
+            <label>Estados ()</label>
+            <select name="dir" id=dir class='form-control' required="required">
+                <option value="Todos">Todos</option>
+                <option value="Vigentes">Vigentes</option>
+                <option value="No Vigentes">No Vigentes</option>
+            </select>
+        </div>
+
+        <div class="col-sm-1">
+            <label>Acción</label>
+            <button type="submit" class="btn btn-success"> <i class="fa fa-check"></i> Generar</button>
+        </div>
+    </div>
+</form>
+
+
+<hr>
             <table id="listusers" class="display compact" cellspacing="0" width="200%">
 
                 <thead>
@@ -23,16 +56,18 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach($ArrDisp as $a)
-                        <tr>
-                            <td>{{ $a->id }}</td>
-                            <td>{{ $a->direccion }}, N°{{ $a->numero }}, {{ $a->comuna }}</td>
-                            <td>{{ $a->dormitorio }}</td>
-                            <td>{{ $a->bano }}</td>
-                            <td>{{ trans_choice('mensajes.sino', $a->bodega ) }}</td>
-                            <td>{{ trans_choice('mensajes.sino', $a->piscina ) }}</td>
-                        </tr>
-                    @endforeach
+                    @if (!(empty($Inmuebles)))
+                        @foreach($Inmuebles as $a)
+                            <tr>
+                                <td>{{ $a->id }}</td>
+                                <td>{{ $a->direccion }}, N°{{ $a->numero }}, {{ $a->comuna }}</td>
+                                <td>{{ $a->dormitorio }}</td>
+                                <td>{{ $a->bano }}</td>
+                                <td>{{ trans_choice('mensajes.sino', $a->bodega ) }}</td>
+                                <td>{{ trans_choice('mensajes.sino', $a->piscina ) }}</td>
+                            </tr>
+                        @endforeach
+                    @endif
                 </tbody>
             </table>
         </div>
@@ -104,4 +139,4 @@ $('#listusers').DataTable({
 </script>
 
 
-@endsection
+@endsection 

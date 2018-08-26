@@ -1585,8 +1585,11 @@ Route::get('presupuesto/export/{id}','PresupuestoPostVentaController@exportarexc
 
 
 // REPORTES
-	Route::get('arriendosdisponibles','ReportesController@ArriendosDisponibles')->name('Reportes.arriendosdisponibles')
-		->middleware('permission:reportes.ArriendosDisponibles');
+	Route::get('indexinmuebles','ReportesController@index_inmueble')->name('reportes.indexinmuebles')
+		->middleware('permission:reportes.indexinmuebles');
+
+	Route::post('inmuebles','ReportesController@inmueble')->name('reportes.inmuebles')
+		->middleware('permission:reportes.indexinmuebles');
 
 	// Route::get('mantenedorchecklist/create','MantenedorChecklistController@create')->name('mantenedorchecklist.create')
 	// 	->middleware('permission:mantenedorchecklist.create');
