@@ -51,6 +51,36 @@ class MensajesSeed extends Seeder
             'id_estado'        => '1'
         ]);
 
+       CatalogoServicios::create([
+            'id'            => '3', 
+            'id_creador'   => '1',
+            'id_modificador'        => '1',
+            'moneda'        => 'CLP',
+            'detalle'        => 'Presupuesto Propietario',
+            'fecha_moneda'        => '2018-08-01',
+            'valor_moneda'        => '1',
+            'valor_en_pesos'        => '1',
+            'valor_en_moneda'        => '1',
+            'nombre_servicio'        => 'Presupuesto Propietario',
+            'unidad_medida'        => 'C/U',
+            'id_estado'        => '1'
+        ]);
+
+                CatalogoServicios::create([
+            'id'            => '4', 
+            'id_creador'   => '1',
+            'id_modificador'        => '1',
+            'moneda'        => 'CLP',
+            'detalle'        => 'Presupuesto Arrendatario',
+            'fecha_moneda'        => '2018-08-01',
+            'valor_moneda'        => '1',
+            'valor_en_pesos'        => '1',
+            'valor_en_moneda'        => '1',
+            'nombre_servicio'        => 'Presupuesto Arrendatario',
+            'unidad_medida'        => 'C/U',
+            'id_estado'        => '1'
+        ]);
+
         Mensajes::create([
             'id'    => '1',
         	'id_modulo'    => '1',
@@ -412,8 +442,22 @@ Mensajes::create([
          Mensajes::create([
             'id_modulo'    => '1',
             'nombre_modulo'    => 'Post Venta',
-            'id_estado'    => '4',
+            'id_estado'    => '5',
             'nombre' => 'Pendiente'
+        ]);
+
+         Mensajes::create([
+            'id_modulo'    => '1',
+            'nombre_modulo'    => 'Post Venta',
+            'id_estado'    => '6',
+            'nombre' => 'Presupuesto En Evaluación'
+        ]);
+
+         Mensajes::create([
+            'id_modulo'    => '1',
+            'nombre_modulo'    => 'Post Venta',
+            'id_estado'    => '7',
+            'nombre' => 'Presupuesto En Aprobado'
         ]);
 
 

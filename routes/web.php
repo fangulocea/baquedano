@@ -1484,7 +1484,11 @@ Route::get('arrsolservicio/autoriza_arr/index','SolicitudServicioController@auto
 	Route::get('postventa/gestion/{idg}','PostVentaController@mostrargestion')->name('postventa.mostrargestion')
 		->middleware('permission:postventa.edit');
 
+	Route::get('postventa/generarsolp/{idc}/{idp}','PostVentaController@generarsolp')->name('postventa.generarsolp')
+		->middleware('permission:postventa.edit');
 
+	Route::get('postventa/generarsola/{idc}/{idp}','PostVentaController@generarsola')->name('postventa.generarsola')
+	->middleware('permission:postventa.edit');
 
 //FAMILIA
 

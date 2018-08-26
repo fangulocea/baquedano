@@ -313,7 +313,7 @@
                                     <li> <a href="{{ route('cbararrendatario.index') }}"><i class=" fa-fw">CB</i><span class="hide-menu">Contrato Borrador</span></a> </li>
                                     @endcan
                                     @can('finalContratoArr.index')
-                                    <li> <a href="{{ route('finalContratoArr.index') }}"><i class=" fa-fw">CF</i><span class="hide-menu">Contrato Final</span></a> </li>
+                                    <li> <a href="{{ route('finalContratoArr.index') }}"><i class=" fa-fw">CF</i><span class="hide-menu">Contrato Final / Pagos</span></a> </li>
                                     @endcan
                                     @can('contratorenovacionarrendatario.index')
                                     <li> <a href="{{ route('contratorenovacionarrendatario.index') }}"><i class=" fa-fw">RA</i><span class="hide-menu">Renovación Arrendatario</span></a> </li>

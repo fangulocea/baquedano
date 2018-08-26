@@ -26,6 +26,7 @@ class PostVenta extends Migration
             $table->integer('id_creador')->nullable();
             $table->integer('id_modificador')->nullable();
             $table->integer('id_asignacion')->nullable();
+            $table->integer('id_solicitud')->nullable();
             $table->integer('id_estado')->nullable();
             $table->integer('meses_contrato')->nullable();
             $table->date('fecha_contrato')->nullable();

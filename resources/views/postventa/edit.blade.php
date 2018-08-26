@@ -37,9 +37,10 @@
                         <li id="li_3"><a id="3" href="#section-iconbox-3" class="sticon ti-user"><span>Propietario</span></a></li>
                         <li id="li_4"><a id="4" href="#section-iconbox-4" class="sticon ti-user"><span>Arrendatario</span></a></li>
                         <li id="li_5"><a id="5" href="#section-iconbox-5" class="sticon ti-user"><span>Aval</span></a></li>
-                        <li id="li_6"><a id="6" href="#section-iconbox-7" class="sticon ti-clip"><span>Documentos</span></a></li>
-                        <li id="li_7"><a id="7" href="#section-iconbox-8" class="sticon ti-agenda"><span>Gestiones</span></a></li>
-                        <li id="li_8"><a id="8" href="#section-iconbox-9" class="sticon ti-money"><span>Presupuestos</span></a></li>
+                        <li id="li_6"><a id="6" href="#section-iconbox-6" class="sticon ti-clip"><span>Documentos</span></a></li>
+                        <li id="li_7"><a id="7" href="#section-iconbox-7" class="sticon ti-agenda"><span>Gestiones</span></a></li>
+                        <li id="li_8"><a id="8" href="#section-iconbox-8" class="sticon ti-money"><span>Presupuestos</span></a></li>
+                        <li id="li_9"><a id="8" href="#section-iconbox-9" class="sticon ti-id-badge"><span>ID Clientes</span></a></li>
                     </ul>
                 </nav>
                 <div class="content-wrap">
@@ -1119,10 +1120,21 @@
                                                     <a href="/presupuesto/edit/{{ $p->id }}"><span class="btn btn-warning btn-circle btn-lg"><i class="ti-pencil"></i></span></a>
 
                                                     <a href="/postventa/eliminarpresupuesto/{{ $p->id }}"><span class="btn btn-danger btn-circle btn-lg"><i class="ti-trash"></i></span></a>
+                                                    
+                                                    <a href="/presupuesto/export/{{ $p->id }}"><span class="btn btn-info btn-circle btn-lg"><i class="ti-download"></i></span></a>
+                                                    
+                                                    @if($p->responsable_pago=='Propietario')
 
-                                                    <a href="/presupuesto/crearsolicitud/{{ $p->id }}"><span class="btn btn-success btn-circle btn-lg">Crear Solicitud</span></a>
+                                                    <a href="/postventa/generarsolp/{{ $postventa->id_contrato }}/{{ $p->id }}"><span class="btn btn-success">Solicitar Pago</span></a>
 
-                                                <a href="/presupuesto/export/{{ $p->id }}"><span class="btn btn-info btn-circle btn-lg">P</span></a>
+                                                    @endif
+                                                     @if($p->responsable_pago=='Arrendatario')
+
+                                                    <a href="/postventa/generarsola/{{ $postventa->id_contrato }}/{{ $p->id }}s"><span class="btn btn-success">Solicitar Pago</span></a>
+
+                                                    @endif
+
+                                                
 
                                             </td>
                                             @endcan
@@ -1132,6 +1144,36 @@
                                 </table>
                             </div>
                         </div>
+                    </section>
+                    <section id="section-iconbox-9">
+                        <h2>ID DE CLIENTES DE EMPRESAS DE SERVICIOS</h2>
+                    <div class="row">
+                            <div class="col-md-12">
+                                <table id="listgestion" class="display nowrap" cellspacing="0" width="100%">
+                                    <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Empresa Servicio</th>
+                                            <th>Detalle</th>
+                                            <th>ID Cliente</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach($idclientes as $p)
+                                        <tr>
+                                            <td>{{ $p->id }}</td>
+                                            <td>{{ $p->nombre }}</td>
+                                            <td>{{ $p->descripcion }}</td>
+                                            <td>{{ $p->idcliente }}</td>
+
+                                        </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+
                     </section>
                 </div>
                 <!-- /content -->
@@ -1364,7 +1406,19 @@ if($tab==8){
 <?php
 }
 ?>
+<?php
+if($tab==9){
+    ?>
+    $(function() {
 
+            $("#li_1").removeClass("tab-current");
+            $("#li_9").addClass("tab-current");
+            $("#section-iconbox-1").removeClass("content-current");
+            $("#section-iconbox-9").addClass("content-current");
+           }); 
+<?php
+}
+?>
 
 $("#li_1").click(function (event) {
             $("#li_1").addClass("tab-current");
@@ -1375,6 +1429,7 @@ $("#li_1").click(function (event) {
             $("#li_6").removeClass("tab-current");
             $("#li_7").removeClass("tab-current");
             $("#li_8").removeClass("tab-current");
+            $("#li_9").removeClass("tab-current");
             $("#section-iconbox-1").addClass("content-current");
             $("#section-iconbox-2").removeClass("content-current");
             $("#section-iconbox-3").removeClass("content-current");
@@ -1383,6 +1438,7 @@ $("#li_1").click(function (event) {
             $("#section-iconbox-6").removeClass("content-current");
             $("#section-iconbox-7").removeClass("content-current"); 
             $("#section-iconbox-8").removeClass("content-current");
+            $("#section-iconbox-9").removeClass("content-current");
 
            
 });
@@ -1395,6 +1451,7 @@ $("#li_2").click(function (event) {
             $("#li_6").removeClass("tab-current");
             $("#li_7").removeClass("tab-current");
             $("#li_8").removeClass("tab-current");
+             $("#li_9").removeClass("tab-current");
             $("#section-iconbox-1").removeClass("content-current");
             $("#section-iconbox-2").addClass("content-current");
             $("#section-iconbox-3").removeClass("content-current");
@@ -1403,6 +1460,7 @@ $("#li_2").click(function (event) {
             $("#section-iconbox-6").removeClass("content-current");
             $("#section-iconbox-7").removeClass("content-current"); 
             $("#section-iconbox-8").removeClass("content-current");
+            $("#section-iconbox-9").removeClass("content-current");
            
 });
 $("#li_3").click(function (event) {
@@ -1414,6 +1472,8 @@ $("#li_3").click(function (event) {
             $("#li_6").removeClass("tab-current");
             $("#li_7").removeClass("tab-current");
             $("#li_8").removeClass("tab-current");
+            $("#li_9").removeClass("tab-current");
+            $("#section-iconbox-9").removeClass("content-current");
             $("#section-iconbox-1").removeClass("content-current");
             $("#section-iconbox-2").removeClass("content-current");
             $("#section-iconbox-3").addClass("content-current");
@@ -1422,6 +1482,7 @@ $("#li_3").click(function (event) {
             $("#section-iconbox-6").removeClass("content-current");
             $("#section-iconbox-7").removeClass("content-current"); 
             $("#section-iconbox-8").removeClass("content-current");
+            
            
 });
 $("#li_4").click(function (event) {
@@ -1433,6 +1494,8 @@ $("#li_4").click(function (event) {
             $("#li_6").removeClass("tab-current");
             $("#li_7").removeClass("tab-current");
             $("#li_8").removeClass("tab-current");
+                        $("#li_9").removeClass("tab-current");
+            $("#section-iconbox-9").removeClass("content-current");
             $("#section-iconbox-1").removeClass("content-current");
             $("#section-iconbox-2").removeClass("content-current");
             $("#section-iconbox-3").removeClass("content-current");
@@ -1452,6 +1515,8 @@ $("#li_5").click(function (event) {
             $("#li_6").removeClass("tab-current");
             $("#li_7").removeClass("tab-current");
             $("#li_8").removeClass("tab-current");
+                        $("#li_9").removeClass("tab-current");
+            $("#section-iconbox-9").removeClass("content-current");
             $("#section-iconbox-1").removeClass("content-current");
             $("#section-iconbox-2").removeClass("content-current");
             $("#section-iconbox-3").removeClass("content-current");
@@ -1472,6 +1537,8 @@ $("#li_6").click(function (event) {
             $("#li_6").addClass("tab-current");
             $("#li_7").removeClass("tab-current");
             $("#li_8").removeClass("tab-current");
+                        $("#li_9").removeClass("tab-current");
+            $("#section-iconbox-9").removeClass("content-current");
             $("#section-iconbox-1").removeClass("content-current");
             $("#section-iconbox-2").removeClass("content-current");
             $("#section-iconbox-3").removeClass("content-current");
@@ -1492,6 +1559,8 @@ $("#li_7").click(function (event) {
             $("#li_6").removeClass("tab-current");
             $("#li_7").addClass("tab-current");
             $("#li_8").removeClass("tab-current");
+                        $("#li_9").removeClass("tab-current");
+            $("#section-iconbox-9").removeClass("content-current");
             $("#section-iconbox-1").removeClass("content-current");
             $("#section-iconbox-2").removeClass("content-current");
             $("#section-iconbox-3").removeClass("content-current");
@@ -1511,6 +1580,8 @@ $("#li_8").click(function (event) {
             $("#li_6").removeClass("tab-current");
             $("#li_7").removeClass("tab-current");
             $("#li_8").addClass("tab-current");
+           $("#li_9").removeClass("tab-current");
+            $("#section-iconbox-9").removeClass("content-current");
             $("#section-iconbox-1").removeClass("content-current");
             $("#section-iconbox-2").removeClass("content-current");
             $("#section-iconbox-3").removeClass("content-current");
@@ -1518,9 +1589,28 @@ $("#li_8").click(function (event) {
             $("#section-iconbox-5").removeClass("content-current");
             $("#section-iconbox-6").removeClass("content-current");
             $("#section-iconbox-7").removeClass("content-current"); 
-
-
-
+             $("#section-iconbox-8").addClass("content-current");
+           
+});
+$("#li_9").click(function (event) {
+            $("#li_1").removeClass("tab-current");
+            $("#li_2").removeClass("tab-current");
+            $("#li_3").removeClass("tab-current");
+            $("#li_4").removeClass("tab-current");
+            $("#li_5").removeClass("tab-current");
+            $("#li_6").removeClass("tab-current");
+            $("#li_7").removeClass("tab-current");
+            $("#li_8").removeClass("tab-current");
+           $("#li_9").addClass("tab-current");
+            $("#section-iconbox-9").addClass("content-current");
+            $("#section-iconbox-1").removeClass("content-current");
+            $("#section-iconbox-2").removeClass("content-current");
+            $("#section-iconbox-3").removeClass("content-current");
+            $("#section-iconbox-4").removeClass("content-current"); 
+            $("#section-iconbox-5").removeClass("content-current");
+            $("#section-iconbox-6").removeClass("content-current");
+            $("#section-iconbox-7").removeClass("content-current"); 
+            $("#section-iconbox-8").removeClass("content-current");
            
 });
 

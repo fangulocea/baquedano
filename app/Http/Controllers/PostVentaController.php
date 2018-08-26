@@ -15,10 +15,19 @@ use App\DocPostVenta;
 use App\ContratoFinalArr;
 use App\Arrendatario;
 use App\FamiliaMateriales;
+use App\PresupuestoPostVenta;
 use Yajra\Datatables\Datatables;
 use Illuminate\Support\Facades\File;
 use DB;
 use Auth;
+use Carbon\Carbon;
+use App\ContratoBorrador;
+use App\SolicitudServicio;
+use App\DetallePresupuestoPostVenta;
+use App\DetalleSolicitudServicio;
+use App\ContratoBorradorArrendatario;
+use App\SolicitudServicioArr;
+use App\DetalleSolicitudServiciosARR;
 
 class PostVentaController extends Controller
 {
@@ -117,7 +126,7 @@ class PostVentaController extends Controller
             ->whereIn("a.id_estado",[10,11])
             ->first();
              $idaval=$contrato->id_aval;
-            if(count($contrato)>0){
+            if(count($contratopro)>0){
                 $id_propietario=$contratopro->id_propietario;
             }else{
                  $id_propietario=null;
@@ -192,6 +201,7 @@ class PostVentaController extends Controller
 
         $gestion=DB::table('post_gestion as g')
             ->leftjoin('users as a',"a.id",'g.id_gestionador')
+            ->where("g.id_postventa","=",$id)
             ->select(DB::raw('g.id , a.name as Gestionador, g.tipo_contacto, g.fecha_gestion, g.hora_gestion, g.contacto_con'))
             ->orderBy("g.id","asc")
             ->get();
@@ -202,6 +212,7 @@ class PostVentaController extends Controller
                  $join->on('m.nombre_modulo', '=',DB::raw("'Presupuesto'"));
                  $join->on('m.id_estado', '=', 'g.id_estado');
             })
+           ->where("g.id_postventa","=",$id)
             ->select(DB::raw('g.id , a.name as Creador, g.responsable_pago, g.id_responsable_pago, g.total, g.created_at, m.nombre as estado'))
             ->orderBy("g.id","asc")
             ->get();
@@ -209,8 +220,13 @@ class PostVentaController extends Controller
         if(isset($postventa->id_aval)){
             $aval=Persona::find($postventa->id_aval);
         }
+
+        $idclientes=DB::table('post_idcliente as i')
+            ->leftjoin('post_empresasservicios as e',"i.id_empresaservicio",'e.id')
+            ->where("i.id_inmueble","=",$postventa->id_inmueble)
+            ->select(DB::raw('i.id , e.nombre, e.descripcion, i.idcliente'))->get();
         
-       return view('postventa.edit',compact('postventa','propietario','arrendatario','inmueble','empleados','estados','regiones','tab','aval','docs','gestion','presupuestos'));
+       return view('postventa.edit',compact('postventa','propietario','arrendatario','inmueble','empleados','estados','regiones','tab','aval','docs','gestion','presupuestos','idclientes'));
     }
 
     public function subir_documentos(Request $request,$id){
@@ -330,5 +346,137 @@ class PostVentaController extends Controller
     public function destroy(PostVenta $postVenta)
     {
         //
+    }
+
+ public function generarsolp($id,$idp) {
+       $uf = DB::table('adm_uf')
+                  ->where("fecha", "=", Carbon::now()->format('Y/m/d'))
+                  ->first();
+        if (count($uf) == 0) {
+            return back()->with('error', 'No hay UF registrada para el día de hoy');
+        }
+
+          $contratofinal = ContratoFinal::find($id);
+          $borrador = ContratoBorrador::find($contratofinal->id_borrador);
+          $captacion = Captacion::find($borrador->id_publicacion);
+          $nuevo_servicio = SolicitudServicio::create([
+                      "id_contrato" => $id,
+                      "id_inmueble" => $captacion->id_inmueble,
+                      "id_propietario" => $captacion->id_propietario,
+                      "id_creador" => Auth::user()->id,
+                      "id_modificador" => Auth::user()->id,
+                      "fecha_uf" => Carbon::now()->format('Y/m/d'),
+                      "detalle" => "Pago  por concepto de presupuesto Limpieza y Reparaciones",
+                      "valor_uf" => $uf->valor,
+                      "valor_en_uf" => 0,
+                      "valor_en_pesos" => 0,
+                      "id_estado" => 1
+          ]);
+          $totaluf = 0;
+          $totalpesos = 0;
+
+            $proc_propietario=DetallePresupuestoPostVenta::where("id_presupuesto","=",$idp)->sum("subtotal");
+
+
+
+          $subtotaluf = ($proc_propietario / $uf->valor) * 1;
+            $subtotalpesos = $proc_propietario * 1;
+            $valorenuf = $proc_propietario / $uf->valor;
+            $valorenpesos = $proc_propietario;
+        
+        $detalle = DetalleSolicitudServicio::create([
+                    "id_solicitud" => $nuevo_servicio->id,
+                    "id_contrato" => $id,
+                    "id_inmueble" => $captacion->id_inmueble,
+                    "id_propietario" => $captacion->id_propietario,
+                    "id_creador" => Auth::user()->id,
+                    "id_servicio" => 3,
+                    "fecha_uf" => Carbon::now()->format('Y/m/d'),
+                    "valor_uf" => $uf->valor,
+                    "valor_en_uf" => $valorenuf,
+                    "valor_en_pesos" => $valorenpesos,
+                    "cantidad" => 1,
+                    "subtotal_uf" => $subtotaluf,
+                    "subtotal_pesos" => $subtotalpesos,
+                    "nombre" => null,
+                    "ruta" => null,
+                    "id_estado" => 1
+        ]);
+
+        $presu=PresupuestoPostVenta::find($idp);
+        $editp = PostVenta::find($presu->id_postventa)->update(["id_solicitud" => $nuevo_servicio->id, "id_estado"  => 6]);
+        $edit = SolicitudServicio::find($nuevo_servicio->id)->update(["id_estado" => 2]);
+        $editp = PresupuestoPostVenta::find($idp)->update(["id_solicitud" => $nuevo_servicio->id, "id_estado"  => 4]);
+
+        return redirect()->route('solservicio.edit', $nuevo_servicio->id)
+                        ->with('status', 'Solicitud ingresado con éxito');
+    }
+
+
+
+     public function generarsola($id,$idp) {
+      $uf = DB::table('adm_uf')
+                  ->where("fecha", "=", Carbon::now()->format('Y/m/d'))
+                  ->first();
+        if (count($uf) == 0) {
+            return back()->with('error', 'No hay UF registrada para el día de hoy');
+        }
+
+          $contratofinalarr = ContratoFinalARR::find($id);
+
+
+          $borrador = ContratoBorradorArrendatario::find($contratofinalarr->id_borrador);
+          $captacion = Arrendatario::find($contratofinalarr->id_publicacion);
+          $nuevo_servicio = SolicitudServicioArr::create([
+                      "id_contrato" => $contratofinalarr->id,
+                      "id_inmueble" => $captacion->id_inmueble,
+                      "id_arrendatario" => $captacion->id_arrendatario,
+                      "id_creador" => Auth::user()->id,
+                      "id_modificador" => Auth::user()->id,
+                      "fecha_uf" => Carbon::now()->format('Y/m/d'),
+                      "valor_uf" => $uf->valor,
+                      "detalle" => "Pago  por concepto de presupuesto Limpieza y Reparaciones",
+                      "valor_en_uf" => 0,
+                      "valor_en_pesos" => 0,
+                      "id_estado" => 1
+          ]);
+          $totaluf = 0;
+          $totalpesos = 0;
+
+            $proc_arrendatario=DetallePresupuestoPostVenta::where("id_presupuesto","=",$idp)->sum("subtotal");
+
+
+
+          $subtotaluf = ($proc_arrendatario / $uf->valor) * 1;
+            $subtotalpesos = $proc_arrendatario * 1;
+            $valorenuf = $proc_arrendatario / $uf->valor;
+            $valorenpesos = $proc_arrendatario;
+        
+        $detalle = DetalleSolicitudServiciosARR::create([
+                    "id_solicitud" => $nuevo_servicio->id,
+                    "id_contrato" => $id,
+                    "id_inmueble" => $captacion->id_inmueble,
+                    "id_arrendatario" => $captacion->id_arrendatario,
+                    "id_creador" => Auth::user()->id,
+                    "id_servicio" => 4,
+                    "fecha_uf" => Carbon::now()->format('Y/m/d'),
+                    "valor_uf" => $uf->valor,
+                    "valor_en_uf" => $valorenuf,
+                    "valor_en_pesos" => $valorenpesos,
+                    "cantidad" => 1,
+                    "subtotal_uf" => $subtotaluf,
+                    "subtotal_pesos" => $subtotalpesos,
+                    "nombre" => null,
+                    "ruta" => null,
+                    "id_estado" => 1
+        ]);
+        $presu=PresupuestoPostVenta::find($idp);
+        $editp = PostVenta::find($presu->id_postventa)->update(["id_solicitud" => $nuevo_servicio->id, "id_estado"  => 6]);
+        $edit = SolicitudServicioArr::find($nuevo_servicio->id)->update(["id_estado" => 2]);
+        
+        $editp = PresupuestoPostVenta::find($idp)->update(["id_solicitud" => $nuevo_servicio->id, "id_estado"  => 4]);
+
+        return redirect()->route('arrsolservicio.edit', $nuevo_servicio->id)
+                        ->with('status', 'Solicitud ingresado con éxito');
     }
 }

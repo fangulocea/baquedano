@@ -14,9 +14,11 @@ USE App\PagosPropietarios;
 use App\DetalleSolicitudServicio;
 use App\PagosMensualesPropietarios;
 use App\Captacion;
+use App\PresupuestoPostVenta;
 use Barryvdh\DomPDF\Facade as PDF;
 use App\Inmueble;
 use App\Persona;
+use App\PostVenta;
 use Auth;
 
 class SolicitudServicioController extends Controller {
@@ -40,6 +42,7 @@ class SolicitudServicioController extends Controller {
 
     public function autorizar($id) {
         $solicitud = SolicitudServicio::find($id);
+  
         $contrato = ContratoFinal::find($solicitud->id_contrato);
         $montouf = DetalleSolicitudServicio::where("id_solicitud", "=", $id)->sum("subtotal_uf");
         $montopesos = DetalleSolicitudServicio::where("id_solicitud", "=", $id)->sum("subtotal_pesos");
@@ -412,7 +415,8 @@ class SolicitudServicioController extends Controller {
         }
 
 
-
+      $aut=PresupuestoPostVenta::where("id_solicitud","=",$id)->update(["id_estado"  => 1]);
+        $aut=PostVenta::where("id_solicitud","=",$id)->update(["id_estado"  => 7]);
 
         $edit = SolicitudServicio::find($id)->update(["id_estado" => 3]);
         return back()->with("status", "Solicitud Autorizada, se ha generado el item de pago");
@@ -631,7 +635,7 @@ class SolicitudServicioController extends Controller {
                             if (isset($servicio->ruta)) {
                                 $boton = '<a href="/' . $servicio->ruta . '/' . $servicio->nombre . '" target="_blank"> <span class="btn btn-success btn-circle btn-sm">D</span></a>';
                             }
-                            return $boton . ' <a href="/solservicio/borrar/' . $servicio->id . '"><span class="btn btn-danger btn-circle btn-sm"><i class="ti-pencil-alt"></i></span></a>
+                            return $boton . ' <a href="/solservicio/borrar/' . $servicio->id . '"><span class="btn btn-danger btn-circle btn-sm"><i class="ti-trash"></i></span></a>
                                     ';
                         })
                         ->rawColumns(['action'])

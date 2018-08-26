@@ -21,6 +21,7 @@ class PresupuestoPostVenta extends Migration
                 $table->integer('id_propietario')->nullable();
                 $table->integer('id_arrendatario')->nullable();
                 $table->integer('id_creador')->nullable();
+                $table->integer('id_solicitud')->nullable();
                 $table->integer('id_modificador')->nullable();
                 $table->string('responsable_pago')->nullable();
                 $table->integer('id_responsable_pago')->nullable();
