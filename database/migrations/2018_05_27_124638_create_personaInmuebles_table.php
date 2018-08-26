@@ -13,8 +13,8 @@ class CreatePersonaInmueblesTable extends Migration
      */
     public function up()
     {
-        Schema::dropIfExists('personaInmuebles');
-        Schema::create('personaInmuebles', function (Blueprint $table) {
+        Schema::dropIfExists('personainmuebles');
+        Schema::create('personainmuebles', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('id_persona')->unsigned();
             $table->foreign('id_persona')->references('id')->on('personas');

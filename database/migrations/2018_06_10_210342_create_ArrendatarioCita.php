@@ -13,8 +13,8 @@ class CreateArrendatarioCita extends Migration
      */
     public function up()
     {
-        Schema::dropIfExists('Arrendatariocitas');
-        Schema::create('Arrendatariocitas', function (Blueprint $table) {
+        Schema::dropIfExists('arrendatariocitas');
+        Schema::create('arrendatariocitas', function (Blueprint $table) {
             $table->increments('id');
             $table->string('nombre')->nullable();
             $table->string('telefono')->nullable();
@@ -43,6 +43,6 @@ class CreateArrendatarioCita extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('Arrendatariocitas');
+        Schema::dropIfExists('arrendatariocitas');
     }
 }

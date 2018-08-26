@@ -29,6 +29,7 @@ class SolicitudServiciosARR extends Migration
             $table->double('valor_en_uf',20,8);
             $table->double('valor_en_pesos',20,2);
             $table->integer('id_estado')->nullable();
+            $table->string('detalle')->nullable();
             $table->timestamps();
         });
     }

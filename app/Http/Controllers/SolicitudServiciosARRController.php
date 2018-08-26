@@ -465,6 +465,7 @@ class SolicitudServiciosARRController extends Controller {
                     $join->on('m.nombre_modulo', '=', DB::raw("'Solicitud Servicio'"));
                     $join->on('m.id_estado', '=', 'ss.id_estado');
                 })
+                ->wherenotin("ss.id_estado",[3,5])
                 ->select(DB::raw('ss.id as id_solicitud, 
                             DATE_FORMAT(ss.created_at, "%d/%m/%Y") as FechaCreacion, 
                             m.nombre as Estado,

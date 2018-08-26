@@ -28,7 +28,11 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 Route::get('inmuebles/{text}','InmuebleController@getInmuebles');
 
+Route::get('idcliente/{ids}/{idi}','IDClienteInmuebleController@getid');
+
 Route::get('inmuebles/{modulo}/{text}','InmuebleController@getInmuebles_modulo');
+
+Route::get('inmuebles/contratos/{modulo}/{text}','InmuebleController@getInmuebles_modulo_contrato');
 
 Route::get('test','CargosAbonosArrendatariosController@cargos');
 
@@ -619,7 +623,7 @@ Route::middleware(['auth'])->group(function(){
 	Route::get('arrendatario/edit/{id}/{tab}','ArrendatarioController@edit')->name('arrendatario.edit')
 		->middleware('permission:arrendatario.edit');
 
-	Route::get('arrendatario/destroy/{id}','ArrendatarioController@destroy')->name('arrendatario.destroy')
+	Route::delete('arrendatario/destroy/{id}','ArrendatarioController@destroy')->name('arrendatario.destroy')
 		->middleware('permission:arrendatario.destroy');
 
 	Route::post('arrendatario/{captacionArrendador}','ArrendatarioController@update')->name('arrendatario.update')
@@ -1394,17 +1398,21 @@ Route::get('arrsolservicio/autoriza_arr/index','SolicitudServicioController@auto
 		Route::post('revisioncuentas/listadodetalle/{id}','CuentasArrendatarioController@detalle_servicio_ajax')->name('revisioncuentas.detalle_servicio_ajax')
 		->middleware('permission:revisioncuentas.index');
 
-Route::get('revisioncuentas/borrar/{id}','CuentasArrendatarioController@borrar_detalleservicio')->name('revisioncuentas.borrar_detalleservicio')
+	Route::get('revisioncuentas/borrar/{id}','CuentasArrendatarioController@borrar_detalleservicio')->name('revisioncuentas.borrar_detalleservicio')
 		->middleware('permission:revisioncuentas.index');
 
-Route::get('revisioncuentas/{id}/pagado','CuentasArrendatarioController@pagado')->name('revisioncuentas.pagado')
+	Route::get('revisioncuentas/{id}/pagado','CuentasArrendatarioController@pagado')->name('revisioncuentas.pagado')
 		->middleware('permission:revisioncuentas.index');
 
-Route::get('revisioncuentas/{id}/moroso','CuentasArrendatarioController@moroso')->name('revisioncuentas.moroso')
+	Route::get('revisioncuentas/{id}/moroso','CuentasArrendatarioController@moroso')->name('revisioncuentas.moroso')
 		->middleware('permission:revisioncuentas.index');
 
+	Route::get('revisioncuentas/{solservicio}/comprobante','CuentasArrendatarioController@comprobantesolicitud')->name('revisioncuentas.comprobante')
+		->middleware('permission:revisioncuentas.edit');
 
-		Route::get('revisioncuentas/{solservicio}/comprobante','CuentasArrendatarioController@comprobantesolicitud')->name('revisioncuentas.comprobante')
+	Route::get('revisioncuentas/generarsolp/{idc}','CuentasArrendatarioController@generarsolp')->name('revisioncuentas.generarsolp')
+		->middleware('permission:revisioncuentas.edit');
+	Route::get('revisioncuentas/generarsola/{idc}','CuentasArrendatarioController@generarsola')->name('revisioncuentas.generarsola')
 		->middleware('permission:revisioncuentas.edit');
 //EMPRESA DE SERVICIO
 

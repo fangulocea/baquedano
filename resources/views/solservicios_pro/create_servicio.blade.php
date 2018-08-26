@@ -71,7 +71,10 @@
                                 <br/>
                                  <div class="form-actions">
                                        <center> <button type="submit" class="btn btn-success"> <i class="fa fa-check"></i> Guardar Servicio</button>
-                                       <a href="{{ route('solservicio.index') }}" class="btn btn-info" style="color:white"><i class="fa fa-times-circle"></i>&nbsp;&nbsp;Volver</a></center>
+                                       <a href="{{ route('solservicio.index') }}" class="btn btn-info" style="color:white"><i class="fa fa-times-circle"></i>&nbsp;&nbsp;Volver</a>
+                                    <a href="/solservicio/{{ $nuevo_servicio->id }}/comprobante"><span class="btn btn-primary">COMPROBANTE</span></a>
+                                   </center>
+
 
                                 </div>
                                 <div class="white-box"> 

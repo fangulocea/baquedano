@@ -507,7 +507,7 @@
 
                                                             <label>Referencia</label>
                                                             <div id="direcciones">
-                                                                <input name='i_referencia' id='i_referencia' class="typeahead form-control" type="text" placeholder="Referencia"  value='{{ $inmueble->referencia or '' }}'> 
+                                                                <input name='i_referencia' id='i_referencia' class="form-control" type="text" placeholder="Referencia"  value='{{ $inmueble->referencia or '' }}'> 
                                                             </div>
                                                             
                                                         </div>
@@ -747,13 +747,13 @@
                                                 <div class="col-md-3 ">
                                                     <div class="form-group">
                                                         <label>Número</label>
-                                                        <input name='numero' id='numero' class="typeahead form-control" type="text" placeholder="Dirección" value="{{ $citas->numero or '' }}" > 
+                                                        <input name='numero' id='numero' class="form-control" type="text" placeholder="Dirección" value="{{ $citas->numero or '' }}" > 
                                                     </div>
                                                 </div>
                                                 <div class="col-md-3 ">
                                                     <div class="form-group">
                                                         <label>Departamento</label>
-                                                        <input name='departamento' id='departamento' class="typeahead form-control" type="text" value="{{ $citas->departamento or ''}}" placeholder="Dirección" > 
+                                                        <input name='departamento' id='departamento' class="form-control" type="text" value="{{ $citas->departamento or ''}}" placeholder="Dirección" > 
                                                     </div>
                                                 </div>
                                             </div>
@@ -876,13 +876,13 @@
                                                 <div class="col-md-3 ">
                                                     <div class="form-group">
                                                         <label>Número</label>
-                                                        <input name='numero' id='numero_e' class="typeahead form-control" type="text" placeholder="Dirección"  > 
+                                                        <input name='numero' id='numero_e' class="form-control" type="text" placeholder="Dirección"  > 
                                                     </div>
                                                 </div>
                                                 <div class="col-md-3 ">
                                                     <div class="form-group">
                                                         <label>Departamento</label>
-                                                        <input name='departamento' id='departamento_e' class="typeahead form-control" type="text"  placeholder="Dirección" > 
+                                                        <input name='departamento' id='departamento_e' class="form-control" type="text"  placeholder="Dirección" > 
                                                     </div>
                                                 </div>
                                             </div>
@@ -962,7 +962,7 @@ var direcciones = new Bloodhound({
     },
     remote: {
         wildcard: '%QUERY',
-        url: "/inmuebles/%QUERY",
+        url: "/inmuebles/contratos/1/%QUERY",
         transform: function (response) {
             return $.map(response, function (dir) {
                 var num=dir.numero==null?'':dir.numero;

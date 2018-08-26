@@ -29,6 +29,7 @@ class SolicitudServicio extends Migration
             $table->double('valor_en_uf',20,8);
             $table->integer('valor_en_pesos');
             $table->integer('id_estado')->nullable();
+            $table->string('detalle')->nullable();
             $table->timestamps();
         });
     }

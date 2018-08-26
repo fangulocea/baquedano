@@ -13,8 +13,8 @@ class CreateArrendatarioImg extends Migration
      */
     public function up()
     {
-        Schema::dropIfExists('ArrendatarioImgs');
-        Schema::create('ArrendatarioImgs', function (Blueprint $table) {
+        Schema::dropIfExists('arrendatarioimgs');
+        Schema::create('arrendatarioimgs', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('id_arrendatario')->unsigned();
             $table->foreign('id_arrendatario')->references('id')->on('arrendatarios');
@@ -34,6 +34,6 @@ class CreateArrendatarioImg extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('ArrendatarioImgs');
+        Schema::dropIfExists('arrendatarioimgs');
     }
 }

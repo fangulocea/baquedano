@@ -8,18 +8,19 @@
             <div class="panel-wrapper collapse in" aria-expanded="true">
                 <div class="panel-body">
 
-         <center><h3 class="box-title m-b-0">{{ $inmueble->direccion or null }} # {{ $inmueble->numero or null }} Dpto {{ $inmueble->departamento or null }}, {{ $inmueble->comuna_nombre or null }}</h3></center>
-
-<hr>
+         <h3 class="box-title m-b-0">INMUEBLE&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;{{ $inmueble->direccion or null }} # {{ $inmueble->numero or null }} Dpto {{ $inmueble->departamento or null }}, {{ $comuna->comuna_nombre or null }}</h3>
+         <h3 class="box-title m-b-0">PROPIETARIO&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;{{ $propietario->nombre or null }} {{ $propietario->apellido_paterno or null }} </h3>
+         <h3 class="box-title m-b-0">ARRENDATARIO&nbsp;&nbsp;:{{ $arrendatario->nombre or null }} {{ $arrendatario->apellido_paterno or null }} </h3>
+                    <hr>
                     <form action="{{ route('revisioncuentas.store') }}" method="post" enctype='multipart/form-data'>
                          {!! csrf_field() !!}
                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
                         <div class="row">
                             <div class="col-sm-3">
-
                                 <input type="hidden" name="id_contrato" id="id_contrato" value="{{ $idcontrato }}">
                                 <input type="hidden" name="id_inmueble" id="id_inmueble" value="{{ $inmueble->id }}">
-                                <input type="hidden" name="id_arrendatario" id="id_arrendatario" value="{{ $captacion->id_arrendatario }}">
+                                <input type="hidden" name="id_arrendatario" id="id_arrendatario" value="{{ $arrendatario->id or null}}">
+                                <input type="hidden" name="id_propietario" id="id_propietario" value="{{ $propietario->id or null}}">
                                 <label>Empresas de Servicios</label>
                                 <select name="servicio" id="servicio" class="form-control" required="required" >
                                     <option value="">Seleccione Empresa</option>
@@ -63,30 +64,33 @@
                         <div class="row">
                         <div class="col-sm-3">
                                 <label>Fecha Contrato</label>
-                                <input name="fecha_contrato" id="fecha_contrato" type="date" class="form-control" readonly="readonly" required="required"  >
+                                <input name="fecha_contrato" id="fecha_contrato" type="date" class="form-control" readonly="readonly" required="required" value="{{ $contratofinal->fecha_firma }}" >
                             </div>
                         <div class="col-sm-3">
                                 <label>Inicio Lectura</label>
-                                <input name="fecha_contrato" id="fecha_contrato" type="date" class="form-control" required="required"  >
+                                <input name="inicio_lectura" id="inicio_lectura" type="date" class="form-control"  >
                             </div>
                        <div class="col-sm-3">
                                 <label>Fin Lectura</label>
-                                <input name="fecha_contrato" id="fecha_contrato" type="date" class="form-control" required="required"  >
+                                <input name="fin_lectura" id="fin_lectura" type="date" class="form-control"   >
                             </div>
                          <div class="col-sm-2">
                                 <label>Valor Medición</label>
-                                <input name="valor_medicion" id="valor_medicion" type="number" class="form-control" step="any" required="required" >
+                                <input name="valor_medicion" id="valor_medicion" type="number" class="form-control" step="any" >
                             </div>
                         </div>
                         <hr>
                         <div class="row">
                          <div class="col-sm-2">
                                 <label>Monto de Boleta</label>
-                                <input name="valor_en_moneda" id="valor_en_moneda" type="number" class="form-control" step="any" required="required" >
+                                <input name="monto_boleta" id="monto_boleta" type="number" class="form-control" step="any" required="required" >
                             </div>
-
-                             <div class="col-sm-3">
-                                <label style="color:red">Monto a Pagar Responsable</label>
+                             <div class="col-sm-2">
+                                <label style="color:red">Días Proporcionales</label>
+                                <input name="dias_proporcionales" id="dias_proporcionales" type="number" class="form-control" step="any" readonly="readonly" >
+                            </div>
+                             <div class="col-sm-2">
+                                <label style="color:red">$ Pagar Responsable</label>
                                 <input name="monto_responsable" id="monto_responsable" type="number" class="form-control" step="any" readonly="readonly" >
                             </div>
 
@@ -118,15 +122,37 @@
                                     </div>
                                 </div>
                             <div class="col-sm-6">
-                                 <div class="white-box"> 
-                                 <div class="form-actions">
-                                       <center> <button type="submit" class="btn btn-success"> <i class="fa fa-check"></i> Guardar</button>
-                                       <a href="{{ route('revisioncuentas.index') }}" class="btn btn-info" style="color:white"><i class="fa fa-times-circle"></i>&nbsp;&nbsp;Volver</a>
-                                       <a  class="btn btn-warning" style="color:white">Calcular Proporcional</a></center>
+                                <div class="row">
+                                         <div class="white-box"> 
+                                         <div class="form-actions">
+                                               <center> <button type="submit" class="btn btn-success"> <i class="fa fa-check"></i> Guardar</button>
+                                               <a href="{{ route('revisioncuentas.index') }}" class="btn btn-info" style="color:white"><i class="fa fa-times-circle"></i>&nbsp;&nbsp;Volver</a>
+                                               <a  class="btn btn-warning" style="color:white" id="calcular">Calcular Proporcional</a></center>
 
+                                        </div>
+                                    </div>
                                 </div>
-                                
-                            </div>
+                                <div class="row">
+                                    <div class="form-group"> 
+                                        <div class="col-sm-6">
+                                            <center><h3 class="box-title" style="background-color: #F2F3F4">Monto a Propietario no Procesado</h3>
+                                            <label for="input-file-now-custom-1"> $ {{ $proc_propietario }}</label></center>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <center>
+                                            <h3 class="box-title" style="background-color: #F2F3F4">Monto a Arrendatario no Procesado</h3>
+                                            <label for="input-file-now-custom-1"> $ {{ $proc_arrendatario }}</label></center>
+                                        </div>
+                                    </div>
+                                        <div class="form-group"> 
+                                        <div class="col-sm-6">
+                                            <a href="{{ route('revisioncuentas.generarsolp', $idcontrato) }}" class="btn btn-primary" style="color:white"><i class="fa fa-check"></i>&nbsp;&nbsp;Generar Solicitud Propietario</a>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <a href="{{ route('revisioncuentas.generarsola', $idcontrato) }}" class="btn btn-primary" style="color:white"><i class="fa fa-check"></i>&nbsp;&nbsp;Generar Solicitud Arrendatario</a>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </form>
@@ -144,10 +170,12 @@
                                                 <th>Detalle</th>
                                                 <th>Mes</th>
                                                 <th>Año</th>
-                                                <th>Valor</th>
-                                                <th>Fecha Vencimiento</th>
-                                                 <th>Estado</th>
-                                                  
+                                                <th>Fecha Ven.</th>
+                                                <th>Monto Boleta</th>
+                                                <th>Responsable</th>
+                                                <th>Monto Respon.</th>
+                                                <th>Solicitud de pago</th>
+                                                <th>Procesado</th>
                                                 <th>Acción</th>
                                             </tr>
                                         </thead>
@@ -173,14 +201,50 @@
 
 <link href = "{{ URL::asset('plugins/bower_components/datatables/jquery.dataTables.min.css')   }}" rel="stylesheet" type="text/css"   />
 <link href = "{{ URL::asset('plugins/DataTables/Buttons-1.5.1/css/buttons.dataTables.min.css') }}" rel="stylesheet" type="text/css"   />
+<link href="{{ URL::asset('plugins/bower_components/sweetalert/sweetalert.css')}}" rel="stylesheet" type="text/css">
 <script  src="{{ URL::asset('plugins/DataTables/datatables.min.js') }}"></script>
 <script src="{{ URL::asset('plugins/DataTables/DataTables-1.10.16/js/jquery.dataTables.min.js') }}"></script>
 <script src="{{ URL::asset('plugins/DataTables/Buttons-1.5.1/js/dataTables.buttons.min.js') }}"></script>
 <script src="{{ URL::asset('plugins/DataTables/Buttons-1.5.1/js/buttons.html5.min.js') }}"></script>
+<script src="{{ URL::asset('plugins/bower_components/sweetalert/sweetalert.min.js') }}"></script>
 
 <script>
 
+var SweetAlert = function () {};
 
+SweetAlert.prototype.init = function () {
+    $("#calcular").click(function (event) {
+        var fecha1 = $("#inicio_lectura").val();
+        var fecha2 = $("#fecha_contrato").val();
+        var monto = $("#monto_boleta").val();
+        var valorlectura = $("#valor_medicion").val();
+        if(fecha2=='' || monto=='' ||  valorlectura==''){
+            swal("Debe completar los campos de lectura y montos");
+            return false;
+        }
+
+        let fecha11 = new Date(fecha1);
+        let fecha22 = new Date(fecha2);
+        let resta = fecha22.getTime() - fecha11.getTime();
+        dias_proporcionales=Math.round(resta/ (1000*60*60*24));
+        dias_del_mes= new Date(fecha11.getFullYear(), fecha11.getMonth()+1, 0).getDate();
+        valor_diario=Math.round(monto/dias_del_mes);
+        valor_proporcional=valor_diario*dias_proporcionales;
+        if(dias_del_mes==dias_proporcionales){
+            valor_proporcional=monto;
+        }
+        if(valor_proporcional<1){
+            valor_proporcional=0;
+        }
+        if(dias_proporcionales<1){
+            dias_proporcionales=0;
+        }   
+        $("#monto_responsable").val(valor_proporcional);  
+        $("#dias_proporcionales").val(dias_proporcionales);
+
+    });
+
+}(window.jQuery);
 
 
 var listventas = $('#listventas').DataTable({
@@ -202,9 +266,13 @@ var listventas = $('#listventas').DataTable({
                 {data: 'detalle', name: 'detalle'},
                 {data: 'mes', name: 'mes'},
                 {data: 'anio', name: 'anio'},
-                {data: 'valor_en_pesos', name: 'valor_en_pesos'},
                 {data: 'fecha_vencimiento', name: 'fecha_vencimiento'},
-                 {data: 'estado', name: 'estado'},
+                {data: 'monto_boleta', name: 'monto_boleta'},
+                {data: 'responsable', name: 'responsable'},
+                {data: 'monto_responsable', name: 'monto_responsable'},
+                 {data: 'solicitudpago', name: 'solicitudpago'},
+                 {data: 'procesado', name: 'procesado'},
+                 
                 {data: 'action', name: 'action'}
             ],
     buttons: [
@@ -242,32 +310,17 @@ var listventas = $('#listventas').DataTable({
     }
 });
 
-
-
-
-
 $("#servicio").change(function (event) {
-    $.get("/solservicio/" + event.target.value + "", function (response, state) {
-
-        if(response.moneda=='UF'){
-            $("#moneda").val('UF');
-            $("#valor_moneda").val({{ $uf->valor or 0 }});
-            
-        }else{
-            $("#moneda").val('CLP');
-            $("#valor_moneda").val(1);
+    $.get("/idcliente/" + event.target.value + "/"+$("#id_inmueble").val(), function (response, state) {
+console.log(response);
+        if(response.idcliente!=null){
+            $("#idcliente").val(response.idcliente);
         }
-        $("#valor_en_moneda").val(response.valor_en_moneda!=''?response.valor_en_moneda:0);
 
     });
 });
 
-$("#cantidad").keyup(function (event) {
 
-        $("#subtotal").val($("#valor_en_moneda").val()*this.value);
-
-
-});
 
 </script>
 

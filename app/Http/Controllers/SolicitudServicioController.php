@@ -216,7 +216,7 @@ class SolicitudServicioController extends Controller {
             $saldo_a_favor = PagosPropietarios::where("mes", '=', $mes)
                     ->where("anio", '=', $anio)
                     ->whereIn("idtipopago", [1, 2, 8, 11, 17, 10])
-                    ->where("id_contratofinal", '=', $idcontratofinal)
+                    ->where("id_contratofinal", '=', $idcontrato)
                     ->where("id_inmueble", '=', $idinmueble)
                     ->sum('precio_en_pesos');
 
@@ -484,7 +484,7 @@ class SolicitudServicioController extends Controller {
                 ->leftjoin('users as p4', 'ss.id_autorizador', '=', 'p4.id')
                 ->leftjoin('users as p5', 'ss.id_asignacion', '=', 'p4.id')
                 ->leftjoin('comunas as o', 'i.id_comuna', '=', 'o.comuna_id')
-                ->where("ss.id_estado", "<>", 3)
+                ->wherenotin("ss.id_estado", [3,5])
                 ->leftjoin('mensajes as m', function($join) {
                     $join->on('m.nombre_modulo', '=', DB::raw("'Solicitud Servicio'"));
                     $join->on('m.id_estado', '=', 'ss.id_estado');

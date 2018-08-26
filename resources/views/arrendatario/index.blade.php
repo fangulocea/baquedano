@@ -13,6 +13,8 @@
                     <tr>
                         <th>ID</th>
                         <th>Arrendatario</th>
+                        <th>Dirección</th>
+                        <th>Comuna</th>
                         <th>Creador</th>
                         <th>Fecha</th>
                         <th>Estado</th>
@@ -24,6 +26,8 @@
                     <tr>
                         <th>ID</th>
                         <th>Arrendatario</th>
+                        <th>Dirección</th>
+                        <th>Comuna</th>
                         <th>Creador</th>
                         <th>Fecha</th>
                         <th>Estado</th>
@@ -36,6 +40,8 @@
                             <tr>
                                 <td>{{ $arr->id }}</td>
                                 <td>{{ $arr->Arrendador }}</td>
+                                <td>{{ $arr->Direccion }}</td>
+                                <td>{{ $arr->comuna_nombre }}</td>
                                 <td>{{ $arr->Creador }}</td>
                                 <td>{{ $arr->fecha_creacion }}</td>
                                 <td>{{ trans_choice('mensajes.arrendatario', $arr->id_estado) }} </td>

@@ -7,6 +7,12 @@ use Illuminate\Http\Request;
 
 class IDClienteInmuebleController extends Controller
 {
+
+
+    public function getid($id_empresaservicio,$idinmueble){
+        $id=IDClienteInmueble::where("id_inmueble","=",$idinmueble)->where("id_empresaservicio","=",$id_empresaservicio)->first();
+        return response()->json($id);
+    }
     /**
      * Display a listing of the resource.
      *

@@ -110,7 +110,7 @@
 
 <div style="text-align: center">
 
-           <strong>DETALLE DE SERVICIOS</strong>
+           <strong>DETALLE DE SERVICIOS<br><br>{{ $servicio->detalle }}<br><br></strong>
         <table id="listusers1" class="display nowrap" cellspacing="0" width="80%" style="display: table;
   margin: 0 auto;">
                             

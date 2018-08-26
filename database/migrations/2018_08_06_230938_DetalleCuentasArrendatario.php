@@ -13,20 +13,33 @@ class DetalleCuentasArrendatario extends Migration
      */
     public function up()
     {
-          Schema::dropIfExists('post_detallecuentasARR');
-        Schema::create('post_detallecuentasARR', function (Blueprint $table) {
+          Schema::dropIfExists('post_detallecuentas');
+        Schema::create('post_detallecuentas', function (Blueprint $table) {
             $table->increments('id');
+            $table->integer('id_cuenta')->nullable();
+            $table->integer('id_idcliente')->nullable();
+            $table->string('idcliente')->nullable();
+             $table->double('valor_medicion',20,8)->nullable();
             $table->integer('id_contrato');
             $table->integer('id_inmueble');
-            $table->integer('id_arrendatario');
+            $table->integer('id_arrendatario')->nullable();
+             $table->integer('id_propietario')->nullable();
             $table->integer('id_creador');
             $table->integer('id_serviciobasico');
-            $table->integer('mes');
-            $table->integer('anio');
-            $table->date('fecha_vencimiento');
+            $table->integer('mes')->nullable();
+            $table->integer('anio')->nullable();
+             $table->integer('diasproporcionales')->nullable();
+            $table->date('fecha_vencimiento')->nullable();
+            $table->date('fecha_contrato');
+             $table->date('fecha_iniciolectura')->nullable();
+             $table->date('fecha_finlectura')->nullable();
             $table->string('nombre')->nullable();
             $table->string('ruta')->nullable();
-            $table->integer('valor_en_pesos');
+            $table->integer('monto_boleta');
+            $table->integer('monto_responsable')->nullable();
+            $table->integer('procesado')->nullable();
+            $table->string('responsable')->nullable();
+             $table->string('solicitudpago')->nullable();
             $table->integer('id_estado');
             $table->timestamps();
         });
@@ -39,6 +52,6 @@ class DetalleCuentasArrendatario extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('post_detallecuentasARR');
+        Schema::dropIfExists('post_detallecuentas');
     }
 }

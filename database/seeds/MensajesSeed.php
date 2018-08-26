@@ -3,6 +3,7 @@
 use Illuminate\Database\Seeder;
 use App\Mensajes;
 use App\Condicion;
+use App\CatalogoServicios;
 
 class MensajesSeed extends Seeder
 {
@@ -13,11 +14,41 @@ class MensajesSeed extends Seeder
      */
     public function run()
     {
-        Condicion::create([
+      /*  Condicion::create([
             'id'            => '1', 
             'descripcion'   => 'Traspaso Reserva',
             'nombre'        => 'Traspaso Reserva',
             'estado'        => '1'
+        ]); */
+
+        CatalogoServicios::create([
+            'id'            => '1', 
+            'id_creador'   => '1',
+            'id_modificador'        => '1',
+            'moneda'        => 'CLP',
+            'detalle'        => 'Cargo por Servicio Post Venta Propietario',
+            'fecha_moneda'        => '2018-08-01',
+            'valor_moneda'        => '1',
+            'valor_en_pesos'        => '1',
+            'valor_en_moneda'        => '1',
+            'nombre_servicio'        => 'Post Venta Propietario',
+            'unidad_medida'        => 'C/U',
+            'id_estado'        => '1'
+        ]);
+
+                CatalogoServicios::create([
+            'id'            => '2', 
+            'id_creador'   => '1',
+            'id_modificador'        => '1',
+            'moneda'        => 'CLP',
+            'detalle'        => 'Cargo por Servicio Post Venta Arrendatario',
+            'fecha_moneda'        => '2018-08-01',
+            'valor_moneda'        => '1',
+            'valor_en_pesos'        => '1',
+            'valor_en_moneda'        => '1',
+            'nombre_servicio'        => 'Post Venta Arrendatario',
+            'unidad_medida'        => 'C/U',
+            'id_estado'        => '1'
         ]);
 
         Mensajes::create([
@@ -325,6 +356,31 @@ Mensajes::create([
 
 Mensajes::create([
             'id_modulo'    => '1',
+            'nombre_modulo'    => 'Borrador Arrendatario',
+            'id_estado'    => '0',
+            'nombre' => 'Rechazado'
+        ]);
+          Mensajes::create([
+            'id_modulo'    => '1',
+            'nombre_modulo'    => 'Borrador Arrendatario',
+            'id_estado'    => '1',
+            'nombre' => 'Vigente'
+        ]);
+           Mensajes::create([
+            'id_modulo'    => '1',
+            'nombre_modulo'    => 'Borrador Arrendatario',
+            'id_estado'    => '2',
+            'nombre' => 'Correo Enviado'
+        ]);
+           Mensajes::create([
+            'id_modulo'    => '1',
+            'nombre_modulo'    => 'Borrador Arrendatario',
+            'id_estado'    => '3',
+            'nombre' => 'Reenvío Correo'
+        ]);
+
+Mensajes::create([
+            'id_modulo'    => '1',
             'nombre_modulo'    => 'Post Venta',
             'id_estado'    => '0',
             'nombre' => 'Activo'
@@ -394,10 +450,201 @@ Mensajes::create([
          Mensajes::create([
             'id_modulo'    => '1',
             'nombre_modulo'    => 'Presupuesto',
-            'id_estado'    => '4',
+            'id_estado'    => '5',
             'nombre' => 'Pendiente'
         ]);
-    }
+
+
+
+// CONTRATO FINAL
+
+
+          Mensajes::create([
+            'id_modulo'    => '1',
+            'nombre_modulo'    => 'Contrato Final Propietario',
+            'id_estado'    => '1',
+            'nombre' => 'Proceso de Firma'
+        ]);
+           Mensajes::create([
+            'id_modulo'    => '1',
+            'nombre_modulo'    => 'Contrato Final Propietario',
+            'id_estado'    => '2',
+            'nombre' => 'Contrato Activo'
+        ]);
+           Mensajes::create([
+            'id_modulo'    => '1',
+            'nombre_modulo'    => 'Contrato Final Propietario',
+            'id_estado'    => '3',
+            'nombre' => 'Contrato Vencido'
+        ]);
+        Mensajes::create([
+            'id_modulo'    => '1',
+            'nombre_modulo'    => 'Contrato Final Propietario',
+            'id_estado'    => '4',
+            'nombre' => 'Anexo Contrato'
+        ]);
+         Mensajes::create([
+            'id_modulo'    => '1',
+            'nombre_modulo'    => 'Contrato Final Propietario',
+            'id_estado'    => '5',
+            'nombre' => 'Menor 60 días para vencer'
+        ]);
+         Mensajes::create([
+            'id_modulo'    => '1',
+            'nombre_modulo'    => 'Contrato Final Propietario',
+            'id_estado'    => '6',
+            'nombre' => 'Cerrado por Propietario'
+        ]);
+         Mensajes::create([
+            'id_modulo'    => '1',
+            'nombre_modulo'    => 'Contrato Final Propietario',
+            'id_estado'    => '13',
+            'nombre' => ' Finalizado Propietario'
+        ]);
+         Mensajes::create([
+            'id_modulo'    => '1',
+            'nombre_modulo'    => 'Contrato Final Propietario',
+            'id_estado'    => '14',
+            'nombre' => ' Finalizado Arrendatario'
+        ]);
+    
+
+//PAGO PROPIETARIO
+
+          Mensajes::create([
+            'id_modulo'    => '1',
+            'nombre_modulo'    => 'Pago Propietario',
+            'id_estado'    => '1',
+            'nombre' => 'No Pagado'
+        ]);
+           Mensajes::create([
+            'id_modulo'    => '1',
+            'nombre_modulo'    => 'Pago Propietario',
+            'id_estado'    => '2',
+            'nombre' => 'Pago Parcial'
+        ]);
+           Mensajes::create([
+            'id_modulo'    => '1',
+            'nombre_modulo'    => 'Pago Propietario',
+            'id_estado'    => '3',
+            'nombre' => 'Pagado'
+        ]);
+        Mensajes::create([
+            'id_modulo'    => '1',
+            'nombre_modulo'    => 'Pago Propietario',
+            'id_estado'    => '4',
+            'nombre' => 'Vencido'
+        ]);
+
+//TIPOS DE PAGO
+
+          Mensajes::create([
+            'id_modulo'    => '1',
+            'nombre_modulo'    => 'Tipos de Pago',
+            'id_estado'    => '8',
+            'nombre' => 'Días Proporcionales'
+        ]);
+           Mensajes::create([
+            'id_modulo'    => '1',
+            'nombre_modulo'    => 'Tipos de Pago',
+            'id_estado'    => '1',
+            'nombre' => 'Canon de Arriendo'
+        ]);
+           Mensajes::create([
+            'id_modulo'    => '1',
+            'nombre_modulo'    => 'Tipos de Pago',
+            'id_estado'    => '2',
+            'nombre' => 'Gasto Común'
+        ]);
+        Mensajes::create([
+            'id_modulo'    => '1',
+            'nombre_modulo'    => 'Tipos de Pago',
+            'id_estado'    => '3',
+            'nombre' => 'Cuota'
+        ]);
+
+          Mensajes::create([
+            'id_modulo'    => '1',
+            'nombre_modulo'    => 'Tipos de Pago',
+            'id_estado'    => '4',
+            'nombre' => 'IVA'
+        ]);
+           Mensajes::create([
+            'id_modulo'    => '1',
+            'nombre_modulo'    => 'Tipos de Pago',
+            'id_estado'    => '5',
+            'nombre' => 'Notaria'
+        ]);
+           Mensajes::create([
+            'id_modulo'    => '1',
+            'nombre_modulo'    => 'Tipos de Pago',
+            'id_estado'    => '6',
+            'nombre' => 'Pago Personalizado 1'
+        ]);
+        Mensajes::create([
+            'id_modulo'    => '1',
+            'nombre_modulo'    => 'Tipos de Pago',
+            'id_estado'    => '7',
+            'nombre' => 'Pago Personalizado 2'
+        ]);
+
+          Mensajes::create([
+            'id_modulo'    => '1',
+            'nombre_modulo'    => 'Tipos de Pago',
+            'id_estado'    => '10',
+            'nombre' => 'Reserva'
+        ]);
+           Mensajes::create([
+            'id_modulo'    => '1',
+            'nombre_modulo'    => 'Tipos de Pago',
+            'id_estado'    => '11',
+            'nombre' => 'Garantía'
+        ]);
+           Mensajes::create([
+            'id_modulo'    => '1',
+            'nombre_modulo'    => 'Tipos de Pago',
+            'id_estado'    => '15',
+            'nombre' => 'Pago Pendiente'
+        ]);
+        Mensajes::create([
+            'id_modulo'    => '1',
+            'nombre_modulo'    => 'Tipos de Pago',
+            'id_estado'    => '20',
+            'nombre' => 'Total Costos Propietario'
+        ]);
+
+          Mensajes::create([
+            'id_modulo'    => '1',
+            'nombre_modulo'    => 'Tipos de Pago',
+            'id_estado'    => '21',
+            'nombre' => 'Saldo a depositar'
+        ]);
+           Mensajes::create([
+            'id_modulo'    => '1',
+            'nombre_modulo'    => 'Tipos de Pago',
+            'id_estado'    => '34',
+            'nombre' => 'Total Costos Arrendatario'
+        ]);
+           Mensajes::create([
+            'id_modulo'    => '1',
+            'nombre_modulo'    => 'Tipos de Pago',
+            'id_estado'    => '35',
+            'nombre' => 'Saldo a depositar'
+        ]);
+        Mensajes::create([
+            'id_modulo'    => '1',
+            'nombre_modulo'    => 'Tipos de Pago',
+            'id_estado'    => '16',
+            'nombre' => 'Otros Cargos'
+        ]);
+
+          Mensajes::create([
+            'id_modulo'    => '1',
+            'nombre_modulo'    => 'Tipos de Pago',
+            'id_estado'    => '17',
+            'nombre' => 'Otros Abonos'
+        ]);
+
 }
 
-
+}

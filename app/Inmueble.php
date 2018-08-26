@@ -46,4 +46,34 @@ public static function inmuebles_modulo($text,$modulo){
 	}
     }
 
+
+
+public static function inmuebles_modulo_contrato($text,$modulo){
+        // return Inmueble::where('direccion','like','%'.$text.'%')->get();
+
+    if($modulo==1){
+
+        return DB::select(DB::raw('Select i.id , i.direccion, i.numero, i.departamento, c.comuna_nombre 
+            from adm_contratofinal as cf
+            left join cap_publicaciones as p on cf.id_publicacion = p.id 
+            left join inmuebles as i on i.id=p.id_inmueble
+            left join comunas c on c.comuna_id=i.id_comuna
+            where concat_ws(" ",i.direccion,i.numero) like "%'.$text.'%"
+            and cf.id_estado in (7,10,6)'));
+
+
+        
+    }else{
+       return DB::select(DB::raw('Select i.id , i.direccion, i.numero, i.departamento, c.comuna_nombre 
+            from adm_contratofinalarr as cf
+            left join arrendatarios as p on cf.id_publicacion = p.id 
+            left join inmuebles as i on i.id=p.id_inmueble
+            left join comunas c on c.comuna_id=i.id_comuna
+            where concat_ws(" ",i.direccion,i.numero) like "%'.$text.'%"
+            and cf.id_estado in (7,10,6)'));
+
+
+    }
+    }
+
 }

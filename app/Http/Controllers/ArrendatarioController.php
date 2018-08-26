@@ -53,7 +53,10 @@ class ArrendatarioController extends Controller
          ->leftjoin('personas as p1', 'a.id_arrendatario', '=', 'p1.id')
          ->leftjoin('users as p2', 'a.id_creador', '=', 'p2.id')
          ->leftjoin('personas as p3', 'a.id_modificador', '=', 'p3.id')
-         ->select(DB::raw('a.id, DATE_FORMAT(a.created_at, "%d/%m/%Y") as fecha_creacion, a.id_estado, CONCAT_WS(" ", p1.nombre, p1.apellido_paterno, p1.apellido_materno) as Arrendador, p2.name as Creador'))->get();
+        ->leftjoin('inmuebles as i', 'a.id_inmueble', '=', 'i.id')
+        ->leftjoin('comunas as o', 'i.id_comuna', '=', 'o.comuna_id')
+         ->select(DB::raw('a.id, DATE_FORMAT(a.created_at, "%d/%m/%Y") as fecha_creacion, a.id_estado, CONCAT_WS(" ", p1.nombre, p1.apellido_paterno, p1.apellido_materno) as Arrendador, p2.name as Creador,
+           CASE WHEN i.direccion IS NULL THEN "" ELSE  CONCAT_WS(" ",i.direccion,i.numero," Dpto ",i.departamento) END as Direccion, o.comuna_nombre'))->get();
 
          return view('arrendatario.index',compact('arrendador',1));
     }
@@ -435,7 +438,7 @@ class ArrendatarioController extends Controller
             'id_estado' => '0'
         ]);
 
-        return redirect()->route('arrendatario.edit', [$id,1])->with('status', 'Arrendatario desactivado con éxito');
+        return redirect()->route('arrendatario.index')->with('status', 'Arrendatario desactivado con éxito');
     }
 
 

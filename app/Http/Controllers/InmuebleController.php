@@ -55,6 +55,14 @@ class InmuebleController extends Controller
         
     }
 
+
+    public function getInmuebles_modulo_contrato($modulo,$text){
+
+        $inmuebles=Inmueble::inmuebles_modulo_contrato($text,$modulo);
+        return response()->json($inmuebles);
+        
+    }
+
         /**
      * Display a listing of the resource.
      *

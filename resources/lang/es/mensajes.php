@@ -26,7 +26,7 @@ return [
 
 		'TipoContrato' => '{N}Nuevo|{A}Anexo|{R}Renovación',
 
-		'tipospagos' => '{8}Días Proporcionales|{1}Canon de Arriendo|{2}Gasto Común|{3}Cuota|{4}IVA|{5}Notaria|{6}Pago Personalizado 1|{7}Pago Personalizado 2|{10}Reserva|{11}Garantía|{15}Pago Pendiente|{20}Total Costos Propietario|{21}Saldo a depositar|{34}Total Costos Arrendatario|{35}Saldo a depositar|{21}Pie|{34}Cuotas|{35}Pago Pendiente|{16}Otros Cargos|{17}Otros Abonos',
+		'tipospagos' => '{8}Días Proporcionales|{1}Canon de Arriendo|{2}Gasto Común|{3}Cuota|{4}IVA|{5}Notaria|{6}Pago Personalizado 1|{7}Pago Personalizado 2|{10}Reserva|{11}Garantía|{15}Pago Pendiente|{20}Total Costos Propietario|{21}Saldo a depositar|{34}Total Costos Arrendatario|{35}Saldo a depositar|{16}Otros Cargos|{17}Otros Abonos',
 
 		'chk' => '{}Sin CheckList|{1}Con CheckList',
 
