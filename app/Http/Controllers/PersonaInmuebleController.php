@@ -19,10 +19,10 @@ class PersonaInmuebleController extends Controller
      */
     public function index()
     {
-        $pi = DB::table('personaInmuebles')->join('inmuebles', 'personaInmuebles.id_inmueble', '=', 'inmuebles.id')
-                                           ->join('personas' , 'personaInmuebles.id_persona',  '=', 'personas.id')
+        $pi = DB::table('personainmuebles')->join('inmuebles', 'personainmuebles.id_inmueble', '=', 'inmuebles.id')
+                                           ->join('personas' , 'personainmuebles.id_persona',  '=', 'personas.id')
                                            ->join('comunas'  , 'inmuebles.id_comuna',          '=', 'comunas.comuna_id')
-                                           ->select('personaInmuebles.id','inmuebles.direccion','inmuebles.numero','personas.nombre','personas.apellido_paterno','personas.apellido_materno','comunas.comuna_nombre')
+                                           ->select('personainmuebles.id','inmuebles.direccion','inmuebles.numero','personas.nombre','personas.apellido_paterno','personas.apellido_materno','comunas.comuna_nombre')
                                            ->get();
         return view('personaInmueble.index',compact('pi'));
     }
@@ -64,8 +64,8 @@ class PersonaInmuebleController extends Controller
      */
     public function show($id)
     {
-        $ip = PersonaInmueble::where('personaInmuebles.id', $id)->join('inmuebles', 'personaInmuebles.id_inmueble', '=', 'inmuebles.id')
-                                               ->join('personas' , 'personaInmuebles.id_persona',  '=', 'personas.id')
+        $ip = PersonaInmueble::where('personainmuebles.id', $id)->join('inmuebles', 'personainmuebles.id_inmueble', '=', 'inmuebles.id')
+                                               ->join('personas' , 'personainmuebles.id_persona',  '=', 'personas.id')
                                                ->join('comunas'  , 'inmuebles.id_comuna',          '=', 'comunas.comuna_id')
                                                ->first();
 
@@ -80,10 +80,10 @@ class PersonaInmuebleController extends Controller
      */
     public function edit($id)
     {
-        $pi = PersonaInmueble::where('personaInmuebles.id', $id)->join('inmuebles', 'personaInmuebles.id_inmueble', '=', 'inmuebles.id')
-                                               ->join('personas' , 'personaInmuebles.id_persona',  '=', 'personas.id')
+        $pi = PersonaInmueble::where('personainmuebles.id', $id)->join('inmuebles', 'personainmuebles.id_inmueble', '=', 'inmuebles.id')
+                                               ->join('personas' , 'personainmuebles.id_persona',  '=', 'personas.id')
                                                ->join('comunas'  , 'inmuebles.id_comuna',          '=', 'comunas.comuna_id')
-                                               ->select('personaInmuebles.id','inmuebles.direccion','inmuebles.numero','personas.nombre','personas.apellido_paterno','personas.apellido_materno','comunas.comuna_nombre')
+                                               ->select('personainmuebles.id','inmuebles.direccion','inmuebles.numero','personas.nombre','personas.apellido_paterno','personas.apellido_materno','comunas.comuna_nombre')
                                                ->first();
         $pers = Persona::all();
         $inmu = DB::table('inmuebles')->join('comunas', 'inmuebles.id_comuna', '=', 'comunas.comuna_id')->get();
