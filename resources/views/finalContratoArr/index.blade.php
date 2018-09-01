@@ -114,7 +114,7 @@
 $('.sorting_desc').hide();
 
 var table = $('#listusers').DataTable({
-
+"ordering": false,
     dom: 'Bfrtip',
     buttons: [
 'excel'
@@ -156,7 +156,7 @@ var table = $('#listusers').DataTable({
     $('#listusers thead th').each( function () {
         var title = $(this).text();
         if(title!='ID' && title!= "")
-        $(this).html( title+'<br/><input type="text" style="width:100px" placeholder="Buscar" />' );
+        $(this).html( title+'<br/><input type="text" style="width:70px" placeholder="" />' );
     } );
  
 
@@ -165,7 +165,7 @@ var table = $('#listusers').DataTable({
     table.columns().every( function () {
         var that = this;
  
-        $( 'input', this.footer() ).on( 'keyup change', function () {
+        $( 'input', this.header() ).on( 'keyup change', function () {
             if ( that.search() !== this.value ) {
                 that
                     .search( this.value )

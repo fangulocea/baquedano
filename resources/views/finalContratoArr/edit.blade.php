@@ -6,15 +6,24 @@
 @php 
 use App\Http\Controllers\ContratoFinalArrController;
 @endphp
-
+<div class="row">
+<div class="col-sm-6">
+<center><h3>CONTRATO FINAL ARRENDATARIO</h3></center>
+</div>
+<div class="col-sm-6">
+    @if(isset($borrador->direccion_full))
+        <center><h3 class="box-title m-b-0">{{ $borrador->direccion_full or null }}</h3></center>
+        @endif
+        @if( isset($borrador->arrendatario) )
+        <center><h3 class="box-title m-b-0">{{ $borrador->arrendatario or null }} </h3></center>
+        @endif
+</div>
+</div>
 
 <div class="row">
     <div class="col-md-12"> 
-        @if(isset($borrador->direccion))
-        <center><h3 class="box-title m-b-0">{{ $borrador->direccion or null }}</h3></center>
-        @endif
-        @if( isset($borrador->propietario) )
-        <center><h3 class="box-title m-b-0">{{ $borrador->propietario or null }} </h3></center>
+  
+        
         <br><br>
         @endif
         <section>
@@ -40,7 +49,7 @@ use App\Http\Controllers\ContratoFinalArrController;
                                     <th>Ver Pdf</th>
                                     <th>Alias</th>
                                     <th>Notaria</th>
-                                    <th>Fecha Firma</th>
+                                    <th>Fecha Inicio</th>
                                     <th>Opciones</th>
                                 </tr>
                             </thead>
@@ -137,6 +146,8 @@ use App\Http\Controllers\ContratoFinalArrController;
                                             <option value="Gastos Notario">Gastos Notario </option>
                                             <option value="Documentos Garantías">Documentos Garantías </option>
                                             <option value="Comprobantes de Pagos">Comprobantes de Pagos </option>
+                                            <option value="Recibo">Recibo </option>
+                                        <option value="Pagaré">Pagaré </option>
                                             <option value="Otros Documentos">Otros Documentos </option>
                                         </select>
                                         <label for="input-file-now-custom-1">Archivo del contrato</label>

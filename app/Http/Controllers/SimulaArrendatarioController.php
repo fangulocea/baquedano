@@ -688,7 +688,7 @@ if($request->moneda=='UF' && $request->arriendo_sim>300){
                 $dias_mes = cal_days_in_month(CAL_GREGORIAN, date("m", strtotime($fecha_ini)), date("Y", strtotime($fecha_ini)));
                 $pagomensual = SimulaPagoArrendatario::where("mes", '=', $mes)
                         ->where("anio", '=', $anio)
-                        ->whereIn("idtipopago", [1,2, 3, 4, 5, 6, 7, 8,9,10,11,15])
+                        ->whereIn("idtipopago", [1,2, 3, 4, 5, 6, 7, 8,9,11,15])
                         ->where("id_simulacion", '=', $idsimulacion)
                         ->sum('precio_en_pesos');
 
@@ -732,11 +732,16 @@ if($request->moneda=='UF' && $request->arriendo_sim>300){
                 $anio = date("Y", strtotime($fecha_ini));
                 $dias_mes = cal_days_in_month(CAL_GREGORIAN, date("m", strtotime($fecha_ini)), date("Y", strtotime($fecha_ini)));
 
-                $saldo_a_favor = 0;
+                $saldo_a_favor = SimulaPagoArrendatario::where("mes", '=', $mes)
+                        ->where("anio", '=', $anio)
+                        ->whereIn("idtipopago", [10])
+                        ->where("id_simulacion", '=', $idsimulacion)
+                        ->where("id_inmueble", '=', $idinmueble)
+                        ->sum('precio_en_pesos');
 
                 $pago_a_rentas = SimulaPagoArrendatario::where("mes", '=', $mes)
                         ->where("anio", '=', $anio)
-                        ->whereIn("idtipopago", [1,2,3, 4, 5, 6, 7,8,10,11, 15])
+                        ->whereIn("idtipopago", [1,2,3, 4, 5, 6, 7,8,11,15])
                         ->where("id_simulacion", '=', $idsimulacion)
                         ->where("id_inmueble", '=', $idinmueble)
                         ->sum('precio_en_pesos');
@@ -910,7 +915,7 @@ if($request->moneda=='UF' && $request->arriendo_sim>300){
             $dias_mes = cal_days_in_month(CAL_GREGORIAN, date("m", strtotime($fecha_ini)), date("Y", strtotime($fecha_ini)));
             $pagomensual = SimulaPagoArrendatario::where("mes", '=', $mes)
                     ->where("anio", '=', $anio)
-                    ->whereIn("idtipopago", [1,2,5, 6, 7,8, 9,10,11,31, 32, 33])
+                    ->whereIn("idtipopago", [1,2,5, 6, 7,8, 9,11,31, 32, 33])
                     ->where("id_simulacion", '=', $idsimulacion)
                     ->sum('precio_en_pesos');
             $pago = SimulaPagoArrendatario::create([
@@ -951,11 +956,17 @@ if($request->moneda=='UF' && $request->arriendo_sim>300){
             $mes = date("m", strtotime($fecha_ini));
             $anio = date("Y", strtotime($fecha_ini));
             $dias_mes = cal_days_in_month(CAL_GREGORIAN, date("m", strtotime($fecha_ini)), date("Y", strtotime($fecha_ini)));
-            $saldo_a_favor =0;
+            $saldo_a_favor =SimulaPagoArrendatario::where("mes", '=', $mes)
+                    ->where("anio", '=', $anio)
+                    ->whereIn("idtipopago", [10])
+                    ->where("id_simulacion", '=', $idsimulacion)
+                    ->where("id_inmueble", '=', $idinmueble)
+                    ->sum('precio_en_pesos');
+
 
             $pago_a_rentas = SimulaPagoArrendatario::where("mes", '=', $mes)
                     ->where("anio", '=', $anio)
-                    ->whereIn("idtipopago", [1, 2, 5, 6, 7, 8, 9, 10, 11, 31, 32, 33])
+                    ->whereIn("idtipopago", [1, 2, 5, 6, 7, 8, 9,11, 31, 32, 33])
                     ->where("id_simulacion", '=', $idsimulacion)
                     ->where("id_inmueble", '=', $idinmueble)
                     ->sum('precio_en_pesos');

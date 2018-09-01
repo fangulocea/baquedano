@@ -350,7 +350,17 @@ class SolicitudServiciosARRController extends Controller {
                     ->where("mes", "=", $mes)
                     ->where("anio", "=", $anio)
                     ->sum('precio_en_pesos');
-            $pagos_mensuales_s = 0;
+                    
+            $pagos_mensuales_s = DB::table('adm_pagosarrendatarios')
+                    ->where("id_publicacion", "=", $idp)
+                    ->whereIn("idTipoPago", [10])
+                    ->where("id_contratofinal", '=', $idcontrato)
+                    ->where("id_inmueble", "=", $idinmueble)
+                    ->where("mes", "=", $mes)
+                    ->where("anio", "=", $anio)
+                    ->sum('precio_en_pesos');
+
+            $subt=$pagos_mensuales_e - $pagos_mensuales_s;
 
             $uf = DB::table('adm_uf')
                     ->where("fecha", "=", Carbon::now()->format('Y/m/d'))
@@ -379,14 +389,14 @@ class SolicitudServiciosARRController extends Controller {
                 'moneda' => $pmm->moneda,
                 'valor_moneda' => $valormoneda,
                 'fecha_moneda' => Carbon::now()->format('Y-m-d'),
-                'subtotal_entrada_moneda' => $pagos_mensuales_e / $valormoneda,
+                'subtotal_entrada_moneda' => $subt / $valormoneda,
                 'subtotal_salida_moneda' => 0,
                 'pago_a_arrendatario_moneda' => 0,
-                'pago_a_rentas_moneda' => $pagos_mensuales_e / $valormoneda,
-                'subtotal_entrada' => $pagos_mensuales_e,
+                'pago_a_rentas_moneda' => $subt / $valormoneda,
+                'subtotal_entrada' => $subt,
                 'subtotal_salida' => $pagos_mensuales_s,
                 'pago_a_arrendatario' => 0,
-                'pago_a_rentas' => $pagos_mensuales_e,
+                'pago_a_rentas' => $subt,
             ]);
                 }
         }

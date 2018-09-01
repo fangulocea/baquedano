@@ -1610,7 +1610,8 @@ Route::get('presupuesto/export/{id}','PresupuestoPostVentaController@exportarexc
 	// Route::get('mantenedorchecklist/{id}/edit','MantenedorChecklistController@edit')->name('mantenedorchecklist.edit')
 	// 	->middleware('permission:mantenedorchecklist.edit');
 
-
+Route::get('repfinal/captaciones/propietarios','ReportesController@captacion_pro')->name('repfinal.captacion_pro')
+		->middleware('permission:reportes.index');
 
 
 });

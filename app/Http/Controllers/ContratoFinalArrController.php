@@ -622,60 +622,60 @@ public function savepagofin(Request $request,$id_contrato,$id_publicacion) {
                 ->Orwhere('c.id_estado', '=', "11")
                 ->select(DB::raw('cb.dia_pago, c.id as id_publicacion, DATE_FORMAT(c.created_at, "%d/%m/%Y") as fecha_creacion, c.id_estado as id_estado, CONCAT_WS(" ",p1.nombre,p1.apellido_paterno,p1.apellido_materno) as Arrendatario, p2.name as Creador,
 
-                  (select pago_a_rentas from adm_pagosmensualesarrendatarios where mes=MONTH(DATE_ADD(now(), INTERVAL -6 MONTH)) and anio=YEAR(DATE_ADD(now(), INTERVAL -6 MONTH)) and id_publicacion=c.id and id_inmueble=i.id ) as valoranterior6,
+                  (select CASE WHEN sum(pago_a_rentas) IS NULL THEN 0 ELSE sum(pago_a_rentas) END pago_a_rentas from adm_pagosmensualesarrendatarios where mes=MONTH(DATE_ADD(now(), INTERVAL -6 MONTH)) and anio=YEAR(DATE_ADD(now(), INTERVAL -6 MONTH)) and id_publicacion=c.id and id_inmueble=i.id ) as valoranterior6,
 
-                    (select sum(valor_pagado) from adm_detallepagosarrendatarios dt inner join adm_pagosmensualesarrendatarios pm on dt.id_pagomensual=pm.id where pm.mes=MONTH(DATE_ADD(now(), INTERVAL -6 MONTH)) and pm.anio=YEAR(DATE_ADD(now(), INTERVAL -6 MONTH)) and pm.id_publicacion=c.id and pm.id_inmueble=i.id ) as valorpagadoanterior6,
+                    (select CASE WHEN sum(valor_pagado) IS NULL THEN 0 ELSE sum(valor_pagado) END valor_pagado from adm_detallepagosarrendatarios dt inner join adm_pagosmensualesarrendatarios pm on dt.id_pagomensual=pm.id where pm.mes=MONTH(DATE_ADD(now(), INTERVAL -6 MONTH)) and pm.anio=YEAR(DATE_ADD(now(), INTERVAL -6 MONTH)) and pm.id_publicacion=c.id and pm.id_inmueble=i.id ) as valorpagadoanterior6,
 
-                  (select pago_a_rentas from adm_pagosmensualesarrendatarios where mes=MONTH(DATE_ADD(now(), INTERVAL -5 MONTH)) and anio=YEAR(DATE_ADD(now(), INTERVAL -5 MONTH)) and id_publicacion=c.id and id_inmueble=i.id ) as valoranterior5,
+                  (select CASE WHEN sum(pago_a_rentas) IS NULL THEN 0 ELSE sum(pago_a_rentas) END pago_a_rentas from adm_pagosmensualesarrendatarios where mes=MONTH(DATE_ADD(now(), INTERVAL -5 MONTH)) and anio=YEAR(DATE_ADD(now(), INTERVAL -5 MONTH)) and id_publicacion=c.id and id_inmueble=i.id ) as valoranterior5,
 
-                    (select sum(valor_pagado) from adm_detallepagosarrendatarios dt inner join adm_pagosmensualesarrendatarios pm on dt.id_pagomensual=pm.id where pm.mes=MONTH(DATE_ADD(now(), INTERVAL -5 MONTH)) and pm.anio=YEAR(DATE_ADD(now(), INTERVAL -5 MONTH)) and pm.id_publicacion=c.id and pm.id_inmueble=i.id ) as valorpagadoanterior5,
+                    (select CASE WHEN sum(valor_pagado) IS NULL THEN 0 ELSE sum(valor_pagado) END valor_pagado from adm_detallepagosarrendatarios dt inner join adm_pagosmensualesarrendatarios pm on dt.id_pagomensual=pm.id where pm.mes=MONTH(DATE_ADD(now(), INTERVAL -5 MONTH)) and pm.anio=YEAR(DATE_ADD(now(), INTERVAL -5 MONTH)) and pm.id_publicacion=c.id and pm.id_inmueble=i.id ) as valorpagadoanterior5,
 
-                  (select pago_a_rentas from adm_pagosmensualesarrendatarios where mes=MONTH(DATE_ADD(now(), INTERVAL -4 MONTH)) and anio=YEAR(DATE_ADD(now(), INTERVAL -4 MONTH)) and id_publicacion=c.id and id_inmueble=i.id ) as valoranterior4,
+                  (select CASE WHEN sum(pago_a_rentas) IS NULL THEN 0 ELSE sum(pago_a_rentas) END pago_a_rentas from adm_pagosmensualesarrendatarios where mes=MONTH(DATE_ADD(now(), INTERVAL -4 MONTH)) and anio=YEAR(DATE_ADD(now(), INTERVAL -4 MONTH)) and id_publicacion=c.id and id_inmueble=i.id ) as valoranterior4,
 
-                    (select sum(valor_pagado) from adm_detallepagosarrendatarios dt inner join adm_pagosmensualesarrendatarios pm on dt.id_pagomensual=pm.id where pm.mes=MONTH(DATE_ADD(now(), INTERVAL -4 MONTH)) and pm.anio=YEAR(DATE_ADD(now(), INTERVAL -4 MONTH)) and pm.id_publicacion=c.id and pm.id_inmueble=i.id ) as valorpagadoanterior4,
+                    (select CASE WHEN sum(valor_pagado) IS NULL THEN 0 ELSE sum(valor_pagado) END valor_pagado from adm_detallepagosarrendatarios dt inner join adm_pagosmensualesarrendatarios pm on dt.id_pagomensual=pm.id where pm.mes=MONTH(DATE_ADD(now(), INTERVAL -4 MONTH)) and pm.anio=YEAR(DATE_ADD(now(), INTERVAL -4 MONTH)) and pm.id_publicacion=c.id and pm.id_inmueble=i.id ) as valorpagadoanterior4,
 
-                  (select pago_a_rentas from adm_pagosmensualesarrendatarios where mes=MONTH(DATE_ADD(now(), INTERVAL -3 MONTH)) and anio=YEAR(DATE_ADD(now(), INTERVAL -3 MONTH)) and id_publicacion=c.id and id_inmueble=i.id ) as valoranterior3,
+                  (select CASE WHEN sum(pago_a_rentas) IS NULL THEN 0 ELSE sum(pago_a_rentas) END pago_a_rentas from adm_pagosmensualesarrendatarios where mes=MONTH(DATE_ADD(now(), INTERVAL -3 MONTH)) and anio=YEAR(DATE_ADD(now(), INTERVAL -3 MONTH)) and id_publicacion=c.id and id_inmueble=i.id ) as valoranterior3,
 
-                    (select sum(valor_pagado) from adm_detallepagosarrendatarios dt inner join adm_pagosmensualesarrendatarios pm on dt.id_pagomensual=pm.id where pm.mes=MONTH(DATE_ADD(now(), INTERVAL -3 MONTH)) and pm.anio=YEAR(DATE_ADD(now(), INTERVAL -3 MONTH)) and pm.id_publicacion=c.id and pm.id_inmueble=i.id ) as valorpagadoanterior3,
+                    (select CASE WHEN sum(valor_pagado) IS NULL THEN 0 ELSE sum(valor_pagado) END valor_pagado from adm_detallepagosarrendatarios dt inner join adm_pagosmensualesarrendatarios pm on dt.id_pagomensual=pm.id where pm.mes=MONTH(DATE_ADD(now(), INTERVAL -3 MONTH)) and pm.anio=YEAR(DATE_ADD(now(), INTERVAL -3 MONTH)) and pm.id_publicacion=c.id and pm.id_inmueble=i.id ) as valorpagadoanterior3,
 
-                  (select pago_a_rentas from adm_pagosmensualesarrendatarios where mes=MONTH(DATE_ADD(now(), INTERVAL -2 MONTH)) and anio=YEAR(DATE_ADD(now(), INTERVAL -2 MONTH)) and id_publicacion=c.id and id_inmueble=i.id ) as valoranterior2,
+                  (select CASE WHEN sum(pago_a_rentas) IS NULL THEN 0 ELSE sum(pago_a_rentas) END pago_a_rentas from adm_pagosmensualesarrendatarios where mes=MONTH(DATE_ADD(now(), INTERVAL -2 MONTH)) and anio=YEAR(DATE_ADD(now(), INTERVAL -2 MONTH)) and id_publicacion=c.id and id_inmueble=i.id ) as valoranterior2,
 
-                    (select sum(valor_pagado) from adm_detallepagosarrendatarios dt inner join adm_pagosmensualesarrendatarios pm on dt.id_pagomensual=pm.id where pm.mes=MONTH(DATE_ADD(now(), INTERVAL -2 MONTH)) and pm.anio=YEAR(DATE_ADD(now(), INTERVAL -2 MONTH)) and pm.id_publicacion=c.id and pm.id_inmueble=i.id ) as valorpagadoanterior2,
+                    (select CASE WHEN sum(valor_pagado) IS NULL THEN 0 ELSE sum(valor_pagado) END valor_pagado from adm_detallepagosarrendatarios dt inner join adm_pagosmensualesarrendatarios pm on dt.id_pagomensual=pm.id where pm.mes=MONTH(DATE_ADD(now(), INTERVAL -2 MONTH)) and pm.anio=YEAR(DATE_ADD(now(), INTERVAL -2 MONTH)) and pm.id_publicacion=c.id and pm.id_inmueble=i.id ) as valorpagadoanterior2,
 
 
-                  (select pago_a_rentas from adm_pagosmensualesarrendatarios where mes=MONTH(DATE_ADD(now(), INTERVAL -1 MONTH)) and anio=YEAR(DATE_ADD(now(), INTERVAL -1 MONTH)) and id_publicacion=c.id and id_inmueble=i.id ) as valoranterior1,
+                  (select CASE WHEN sum(pago_a_rentas) IS NULL THEN 0 ELSE sum(pago_a_rentas) END pago_a_rentas from adm_pagosmensualesarrendatarios where mes=MONTH(DATE_ADD(now(), INTERVAL -1 MONTH)) and anio=YEAR(DATE_ADD(now(), INTERVAL -1 MONTH)) and id_publicacion=c.id and id_inmueble=i.id ) as valoranterior1,
 
-                    (select sum(valor_pagado) from adm_detallepagosarrendatarios dt inner join adm_pagosmensualesarrendatarios pm on dt.id_pagomensual=pm.id where pm.mes=MONTH(DATE_ADD(now(), INTERVAL -1 MONTH)) and pm.anio=YEAR(DATE_ADD(now(), INTERVAL -1 MONTH)) and pm.id_publicacion=c.id and pm.id_inmueble=i.id ) as valorpagadoanterior1,
+                    (select CASE WHEN sum(valor_pagado) IS NULL THEN 0 ELSE sum(valor_pagado) END valor_pagado from adm_detallepagosarrendatarios dt inner join adm_pagosmensualesarrendatarios pm on dt.id_pagomensual=pm.id where pm.mes=MONTH(DATE_ADD(now(), INTERVAL -1 MONTH)) and pm.anio=YEAR(DATE_ADD(now(), INTERVAL -1 MONTH)) and pm.id_publicacion=c.id and pm.id_inmueble=i.id ) as valorpagadoanterior1,
 
                     
-                    (select pago_a_rentas from adm_pagosmensualesarrendatarios where mes=MONTH(now()) and anio=YEAR(now()) and id_publicacion=c.id and id_inmueble=i.id ) as valoractual,
+                    (select CASE WHEN sum(pago_a_rentas) IS NULL THEN 0 ELSE sum(pago_a_rentas) END pago_a_rentas from adm_pagosmensualesarrendatarios where mes=MONTH(now()) and anio=YEAR(now()) and id_publicacion=c.id and id_inmueble=i.id ) as valoractual,
 
-                    (select sum(valor_pagado) from adm_detallepagosarrendatarios dt inner join adm_pagosmensualesarrendatarios pm on dt.id_pagomensual=pm.id where pm.mes=MONTH(now()) and pm.anio=YEAR(now()) and pm.id_publicacion=c.id and pm.id_inmueble=i.id ) as valorpagadoactual,
+                    (select CASE WHEN sum(valor_pagado) IS NULL THEN 0 ELSE sum(valor_pagado) END valor_pagado from adm_detallepagosarrendatarios dt inner join adm_pagosmensualesarrendatarios pm on dt.id_pagomensual=pm.id where pm.mes=MONTH(now()) and pm.anio=YEAR(now()) and pm.id_publicacion=c.id and pm.id_inmueble=i.id ) as valorpagadoactual,
 
 
-                      (select pago_a_rentas from adm_pagosmensualesarrendatarios where mes=MONTH(DATE_ADD(now(), INTERVAL 1 MONTH)) and anio=YEAR(DATE_ADD(now(), INTERVAL 1 MONTH)) and id_publicacion=c.id and id_inmueble=i.id ) as valorsiguiente1,
+                      (select CASE WHEN sum(pago_a_rentas) IS NULL THEN 0 ELSE sum(pago_a_rentas) END pago_a_rentas from adm_pagosmensualesarrendatarios where mes=MONTH(DATE_ADD(now(), INTERVAL 1 MONTH)) and anio=YEAR(DATE_ADD(now(), INTERVAL 1 MONTH)) and id_publicacion=c.id and id_inmueble=i.id ) as valorsiguiente1,
 
-                    (select sum(valor_pagado) from adm_detallepagosarrendatarios dt inner join adm_pagosmensualesarrendatarios pm on dt.id_pagomensual=pm.id where pm.mes=MONTH(DATE_ADD(now(), INTERVAL 1 MONTH)) and pm.anio=YEAR(DATE_ADD(now(), INTERVAL 1 MONTH)) and pm.id_publicacion=c.id and pm.id_inmueble=i.id ) as valorpagadosiguiente1,
+                    (select CASE WHEN sum(valor_pagado) IS NULL THEN 0 ELSE sum(valor_pagado) END valor_pagado from adm_detallepagosarrendatarios dt inner join adm_pagosmensualesarrendatarios pm on dt.id_pagomensual=pm.id where pm.mes=MONTH(DATE_ADD(now(), INTERVAL 1 MONTH)) and pm.anio=YEAR(DATE_ADD(now(), INTERVAL 1 MONTH)) and pm.id_publicacion=c.id and pm.id_inmueble=i.id ) as valorpagadosiguiente1,
 
-                                       (select pago_a_rentas from adm_pagosmensualesarrendatarios where mes=MONTH(DATE_ADD(now(), INTERVAL 2 MONTH)) and anio=YEAR(DATE_ADD(now(), INTERVAL 2 MONTH)) and id_publicacion=c.id and id_inmueble=i.id ) as valorsiguiente2,
+                                       (select CASE WHEN sum(pago_a_rentas) IS NULL THEN 0 ELSE sum(pago_a_rentas) END pago_a_rentas from adm_pagosmensualesarrendatarios where mes=MONTH(DATE_ADD(now(), INTERVAL 2 MONTH)) and anio=YEAR(DATE_ADD(now(), INTERVAL 2 MONTH)) and id_publicacion=c.id and id_inmueble=i.id ) as valorsiguiente2,
 
-                    (select sum(valor_pagado) from adm_detallepagosarrendatarios dt inner join adm_pagosmensualesarrendatarios pm on dt.id_pagomensual=pm.id where pm.mes=MONTH(DATE_ADD(now(), INTERVAL 2 MONTH)) and pm.anio=YEAR(DATE_ADD(now(), INTERVAL 2 MONTH)) and pm.id_publicacion=c.id and pm.id_inmueble=i.id ) as valorpagadosiguiente2,
+                    (select CASE WHEN sum(valor_pagado) IS NULL THEN 0 ELSE sum(valor_pagado) END valor_pagado from adm_detallepagosarrendatarios dt inner join adm_pagosmensualesarrendatarios pm on dt.id_pagomensual=pm.id where pm.mes=MONTH(DATE_ADD(now(), INTERVAL 2 MONTH)) and pm.anio=YEAR(DATE_ADD(now(), INTERVAL 2 MONTH)) and pm.id_publicacion=c.id and pm.id_inmueble=i.id ) as valorpagadosiguiente2,
 
-                                       (select pago_a_rentas from adm_pagosmensualesarrendatarios where mes=MONTH(DATE_ADD(now(), INTERVAL 3 MONTH)) and anio=YEAR(DATE_ADD(now(), INTERVAL 3 MONTH)) and id_publicacion=c.id and id_inmueble=i.id ) as valorsiguiente3,
+                                       (select CASE WHEN sum(pago_a_rentas) IS NULL THEN 0 ELSE sum(pago_a_rentas) END pago_a_rentas from adm_pagosmensualesarrendatarios where mes=MONTH(DATE_ADD(now(), INTERVAL 3 MONTH)) and anio=YEAR(DATE_ADD(now(), INTERVAL 3 MONTH)) and id_publicacion=c.id and id_inmueble=i.id ) as valorsiguiente3,
 
-                    (select sum(valor_pagado) from adm_detallepagosarrendatarios dt inner join adm_pagosmensualesarrendatarios pm on dt.id_pagomensual=pm.id where pm.mes=MONTH(DATE_ADD(now(), INTERVAL 3 MONTH)) and pm.anio=YEAR(DATE_ADD(now(), INTERVAL 3 MONTH)) and pm.id_publicacion=c.id and pm.id_inmueble=i.id ) as valorpagadosiguiente3,
+                    (select CASE WHEN sum(valor_pagado) IS NULL THEN 0 ELSE sum(valor_pagado) END valor_pagado from adm_detallepagosarrendatarios dt inner join adm_pagosmensualesarrendatarios pm on dt.id_pagomensual=pm.id where pm.mes=MONTH(DATE_ADD(now(), INTERVAL 3 MONTH)) and pm.anio=YEAR(DATE_ADD(now(), INTERVAL 3 MONTH)) and pm.id_publicacion=c.id and pm.id_inmueble=i.id ) as valorpagadosiguiente3,
 
-                                       (select pago_a_rentas from adm_pagosmensualesarrendatarios where mes=MONTH(DATE_ADD(now(), INTERVAL 4 MONTH)) and anio=YEAR(DATE_ADD(now(), INTERVAL 4 MONTH)) and id_publicacion=c.id and id_inmueble=i.id ) as valorsiguiente4,
+                                       (select CASE WHEN sum(pago_a_rentas) IS NULL THEN 0 ELSE sum(pago_a_rentas) END pago_a_rentas from adm_pagosmensualesarrendatarios where mes=MONTH(DATE_ADD(now(), INTERVAL 4 MONTH)) and anio=YEAR(DATE_ADD(now(), INTERVAL 4 MONTH)) and id_publicacion=c.id and id_inmueble=i.id ) as valorsiguiente4,
 
-                    (select sum(valor_pagado) from adm_detallepagosarrendatarios dt inner join adm_pagosmensualesarrendatarios pm on dt.id_pagomensual=pm.id where pm.mes=MONTH(DATE_ADD(now(), INTERVAL 4 MONTH)) and pm.anio=YEAR(DATE_ADD(now(), INTERVAL 4 MONTH)) and pm.id_publicacion=c.id and pm.id_inmueble=i.id ) as valorpagadosiguiente4,
+                    (select CASE WHEN sum(valor_pagado) IS NULL THEN 0 ELSE sum(valor_pagado) END valor_pagado from adm_detallepagosarrendatarios dt inner join adm_pagosmensualesarrendatarios pm on dt.id_pagomensual=pm.id where pm.mes=MONTH(DATE_ADD(now(), INTERVAL 4 MONTH)) and pm.anio=YEAR(DATE_ADD(now(), INTERVAL 4 MONTH)) and pm.id_publicacion=c.id and pm.id_inmueble=i.id ) as valorpagadosiguiente4,
 
-                                       (select pago_a_rentas from adm_pagosmensualesarrendatarios where mes=MONTH(DATE_ADD(now(), INTERVAL 5 MONTH)) and anio=YEAR(DATE_ADD(now(), INTERVAL 5 MONTH)) and id_publicacion=c.id and id_inmueble=i.id ) as valorsiguiente5,
+                                       (select CASE WHEN sum(pago_a_rentas) IS NULL THEN 0 ELSE sum(pago_a_rentas) END pago_a_rentas from adm_pagosmensualesarrendatarios where mes=MONTH(DATE_ADD(now(), INTERVAL 5 MONTH)) and anio=YEAR(DATE_ADD(now(), INTERVAL 5 MONTH)) and id_publicacion=c.id and id_inmueble=i.id ) as valorsiguiente5,
 
-                    (select sum(valor_pagado) from adm_detallepagosarrendatarios dt inner join adm_pagosmensualesarrendatarios pm on dt.id_pagomensual=pm.id where pm.mes=MONTH(DATE_ADD(now(), INTERVAL 5 MONTH)) and pm.anio=YEAR(DATE_ADD(now(), INTERVAL 5 MONTH)) and pm.id_publicacion=c.id and pm.id_inmueble=i.id ) as valorpagadosiguiente5,
+                    (select CASE WHEN sum(valor_pagado) IS NULL THEN 0 ELSE sum(valor_pagado) END valor_pagado from adm_detallepagosarrendatarios dt inner join adm_pagosmensualesarrendatarios pm on dt.id_pagomensual=pm.id where pm.mes=MONTH(DATE_ADD(now(), INTERVAL 5 MONTH)) and pm.anio=YEAR(DATE_ADD(now(), INTERVAL 5 MONTH)) and pm.id_publicacion=c.id and pm.id_inmueble=i.id ) as valorpagadosiguiente5,
 
-                                       (select pago_a_rentas from adm_pagosmensualesarrendatarios where mes=MONTH(DATE_ADD(now(), INTERVAL 6 MONTH)) and anio=YEAR(DATE_ADD(now(), INTERVAL 6 MONTH)) and id_publicacion=c.id and id_inmueble=i.id ) as valorsiguiente6,
+                                       (select CASE WHEN sum(pago_a_rentas) IS NULL THEN 0 ELSE sum(pago_a_rentas) END pago_a_rentas from adm_pagosmensualesarrendatarios where mes=MONTH(DATE_ADD(now(), INTERVAL 6 MONTH)) and anio=YEAR(DATE_ADD(now(), INTERVAL 6 MONTH)) and id_publicacion=c.id and id_inmueble=i.id ) as valorsiguiente6,
 
-                    (select sum(valor_pagado) from adm_detallepagosarrendatarios dt inner join adm_pagosmensualesarrendatarios pm on dt.id_pagomensual=pm.id where pm.mes=MONTH(DATE_ADD(now(), INTERVAL 6 MONTH)) and pm.anio=YEAR(DATE_ADD(now(), INTERVAL 6 MONTH)) and pm.id_publicacion=c.id and pm.id_inmueble=i.id ) as valorpagadosiguiente6,
+                    (select CASE WHEN sum(valor_pagado) IS NULL THEN 0 ELSE sum(valor_pagado) END valor_pagado from adm_detallepagosarrendatarios dt inner join adm_pagosmensualesarrendatarios pm on dt.id_pagomensual=pm.id where pm.mes=MONTH(DATE_ADD(now(), INTERVAL 6 MONTH)) and pm.anio=YEAR(DATE_ADD(now(), INTERVAL 6 MONTH)) and pm.id_publicacion=c.id and pm.id_inmueble=i.id ) as valorpagadosiguiente6,
 
                     c.id as id_cap_arr, CONCAT_WS(" ",p1.nombre,p1.apellido_paterno,p1.apellido_materno) as arrendatario,i.direccion,i.numero,o.comuna_nombre as comuna,c.id_estado, c.id_arrendatario as id_arrendatario
 
@@ -754,7 +754,9 @@ public function savepagofin(Request $request,$id_contrato,$id_publicacion) {
                 ->leftjoin('inmuebles as i', 'a.id_inmueble', 'i.id')
                 ->leftjoin('comunas as c', 'i.id_comuna', '=', 'c.comuna_id')
                 ->where('a.id', '=', $idc)
-                ->select(DB::raw('a.id id_cap_arr, CONCAT_WS(" ",pa.nombre,pa.apellido_paterno,pa.apellido_materno) as arrendatario,i.direccion,i.numero,c.comuna_nombre as comuna,a.id_estado, a.id_arrendatario as id_arrendatario,i.id as id_inmueble'))
+                ->select(DB::raw('a.id id_cap_arr, CONCAT_WS(" ",pa.nombre,pa.apellido_paterno,pa.apellido_materno) as arrendatario,
+                CONCAT_WS(" ",i.direccion,i.numero," Dpto: ",i.departamento) as direccion_full,
+                i.direccion,i.numero,c.comuna_nombre as comuna,a.id_estado, a.id_arrendatario as id_arrendatario,i.id as id_inmueble'))
                 ->first();
 
         $finalIndex = DB::table('adm_contratofinalarr  as b')
@@ -1583,17 +1585,22 @@ $pago = PagosArrendatarios::create([
             }
         }
 
-
-$reservas = Arr_Reservas::where("id_arr_ges", "=", $idp)->first();
+   $fecha_ini = date('Y-m-j', strtotime(date("Y", strtotime($fechafirma)) . '-' . date("m", strtotime($fechafirma)) . '-' . 1));
+         
+$reservas = Arr_Reservas::where("id_arr_ges", "=", $idp)->get();
 
         if (count($reservas) > 0) {
-            foreach ($garantias as $g) {
-                $mes = $g->mes;
-                $anio = $g->ano;
-                $dias_mes = cal_days_in_month(CAL_GREGORIAN, $mes, $anio);
+            
+            foreach ($reservas as $re) {
+         
+            $dia = date("d", strtotime($fecha_ini));
+            $mes = date("m", strtotime($fecha_ini));
+            $anio = date("Y", strtotime($fecha_ini));
+            $dias_mes = cal_days_in_month(CAL_GREGORIAN, date("m", strtotime($fecha_ini)), date("Y", strtotime($fecha_ini)));
+             $fecha_ini = date("d-m-Y", strtotime("+1 month", strtotime($fecha_ini)));
                 $idtipopago = 10;
-                $precio_proporcional = $g->valor;
-                $valor_en_pesos = $g->valor;
+                $precio_proporcional = $re->monto_reserva;
+                $valor_en_pesos = $re->monto_reserva;
                 $pago = PagosArrendatarios::create([
                             'id_contratofinal' => $idcontrato,
                             'id_publicacion' => $idp,
@@ -1614,8 +1621,8 @@ $reservas = Arr_Reservas::where("id_arr_ges", "=", $idp)->first();
                             'valormoneda' => $valormoneda,
                             'fecha_moneda' => Carbon::now()->format('Y/m/d'),
                             'valordia' => 1,
-                            'precio_en_moneda' => $reservas->monto_reserva,
-                            'precio_en_pesos' => $reservas->monto_reserva / $valormoneda,
+                            'precio_en_moneda' => $valor_en_pesos,
+                            'precio_en_pesos' => $valor_en_pesos,
                             'id_creador' => $id_creador,
                             'id_modificador' => $id_creador,
                             'id_estado' => 1,
@@ -2095,11 +2102,11 @@ $reservas = Arr_Reservas::where("id_arr_ges", "=", $idp)->first();
             }
         }
         if ($tipopropuesta == 1 || $tipopropuesta == 3) {
-            $tipos = [1, 2, 3, 4, 5, 6, 7, 8, 10, 11, 15];
+            $tipos = [1, 2, 3, 4, 5, 6, 7, 8, 11, 15];
         } elseif ($tipopropuesta == 2 || $tipopropuesta == 4) {
-            $tipos = [1, 2, 5, 6, 7, 8, 10, 11, 31, 32, 33];
+            $tipos = [1, 2, 5, 6, 7, 8, 11, 31, 32, 33];
         } else {
-            $tipos = [1, 2, 5, 6, 7, 8, 10, 11, 31, 32, 33];
+            $tipos = [1, 2, 5, 6, 7, 8, 11, 31, 32, 33];
         }
 
 
@@ -2108,6 +2115,17 @@ $reservas = Arr_Reservas::where("id_arr_ges", "=", $idp)->first();
             $mes = date("m", strtotime($fecha_ini));
             $anio = date("Y", strtotime($fecha_ini));
             $fecha_ini = date("d-m-Y", strtotime("+1 month", strtotime($fecha_ini)));
+            
+             $pagos_mensuales_s = DB::table('adm_pagosarrendatarios')
+                    ->where("id_publicacion", "=", $idp)
+                    ->whereIn("idTipoPago", [10])
+                    ->where("id_contratofinal", '=', $idcontrato)
+                    ->where("id_inmueble", "=", $idinmueble)
+                    ->where("mes", "=", $mes)
+                    ->where("anio", "=", $anio)
+                    ->sum('precio_en_pesos');
+  
+            
             $pagos_mensuales_e = DB::table('adm_pagosarrendatarios')
                     ->where("id_publicacion", "=", $idp)
                     ->whereIn("idTipoPago", $tipos)
@@ -2116,7 +2134,8 @@ $reservas = Arr_Reservas::where("id_arr_ges", "=", $idp)->first();
                     ->where("mes", "=", $mes)
                     ->where("anio", "=", $anio)
                     ->sum('precio_en_pesos');
-            $pagos_mensuales_s = 0;
+     
+            $subt=$pagos_mensuales_e - $pagos_mensuales_s;
 
 
             $delete = PagosMensualesArrendatarios::where("id_contratofinal", "=", $idcontrato)
@@ -2136,14 +2155,14 @@ $reservas = Arr_Reservas::where("id_arr_ges", "=", $idp)->first();
                         'moneda' => $tipomoneda,
                         'valor_moneda' => $valormoneda,
                         'fecha_moneda' => Carbon::now()->format('Y-m-d'),
-                        'subtotal_entrada_moneda' => $pagos_mensuales_e / $valormoneda,
+                        'subtotal_entrada_moneda' => $subt / $valormoneda,
                         'subtotal_salida_moneda' => 0,
                         'pago_a_arrendatario_moneda' => 0,
-                        'pago_a_rentas_moneda' => $pagos_mensuales_e / $valormoneda,
-                        'subtotal_entrada' => $pagos_mensuales_e,
+                        'pago_a_rentas_moneda' => $subt / $valormoneda,
+                        'subtotal_entrada' => $subt,
                         'subtotal_salida' => $pagos_mensuales_s,
                         'pago_a_arrendatario' => 0,
-                        'pago_a_rentas' => $pagos_mensuales_e,
+                        'pago_a_rentas' => $subt,
                         'id_creador' => Auth::user()->id,
                         'id_modificador' => Auth::user()->id,
                         'id_estado' => 1

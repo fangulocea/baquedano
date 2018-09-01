@@ -384,7 +384,7 @@ if($tipopropuesta->tipopropuesta==1 || $tipopropuesta->tipopropuesta==3 ){
 
                 $pago_a_rentas = PagosArrendatarios::where("mes", '=', $mes)
                         ->where("anio", '=', $anio)
-                        ->whereIn("idtipopago", [1,2,3, 4, 5, 6, 7,8,9,10,11, 15,16,18])
+                        ->whereIn("idtipopago", [1,2,3, 4, 5, 6, 7,8,11, 15,16,18])
                         ->where("id_contratofinal", '=', $idcontrato)
                         ->where("id_inmueble", '=', $idinmueble)
                         ->sum('precio_en_pesos');
@@ -403,7 +403,7 @@ if($tipopropuesta->tipopropuesta==1 || $tipopropuesta->tipopropuesta==3 ){
 
                   $pagomensual = PagosArrendatarios::where("mes", '=', $mes)
                         ->where("anio", '=', $anio)
-                        ->whereIn("idtipopago", [1,2,3, 4, 5, 6, 7,8,10,11, 15,16,18])
+                        ->whereIn("idtipopago", [1,2,3, 4, 5, 6, 7,8,11, 15,16,18])
                         ->where("id_contratofinal", '=', $idcontrato)
                         ->where("id_inmueble", '=', $idinmueble)
                         ->sum('precio_en_pesos');
@@ -428,7 +428,7 @@ if($tipopropuesta->tipopropuesta==1 || $tipopropuesta->tipopropuesta==3 ){
 
                 $pago_a_rentas = PagosArrendatarios::where("mes", '=', $mes)
                         ->where("anio", '=', $anio)
-                        ->whereIn("idtipopago", [1,2,5, 6, 7,8,10,11,15, 31, 32, 33,16,18])
+                        ->whereIn("idtipopago", [1,2,5, 6, 7,8,11,15, 31, 32, 33,16,18])
                         ->where("id_contratofinal", '=', $pago->id_contratofinal)
                         ->where("id_inmueble", '=', $pago->id_inmueble)
                         ->sum('precio_en_pesos');
@@ -447,7 +447,7 @@ if($tipopropuesta->tipopropuesta==1 || $tipopropuesta->tipopropuesta==3 ){
 
                 $pagomensual = PagosArrendatarios::where("mes", '=', $mes)
                         ->where("anio", '=', $anio)
-                        ->whereIn("idtipopago", [1,2,5, 6, 7,8,9,10,11,15, 31, 32, 33,16,18])
+                        ->whereIn("idtipopago", [1,2,5, 6, 7,8,9,11,15, 31, 32, 33,16,18])
                         ->where("id_contratofinal", '=', $idcontrato)
                         ->sum('precio_en_pesos');
 

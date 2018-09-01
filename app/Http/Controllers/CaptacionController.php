@@ -988,7 +988,7 @@ class CaptacionController extends Controller {
             'id_estado' => '0'
         ]);
 
-        return redirect()->route('captacion.edit', [$id, 2])->with('status', 'Captacion desactivado con éxito');
+        return redirect()->route('captacion.index')->with('status', 'Captacion desactivado con éxito');
     }
 
 }

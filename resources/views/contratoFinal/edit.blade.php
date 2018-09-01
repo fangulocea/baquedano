@@ -45,7 +45,7 @@ use App\Http\Controllers\ContratoFinalController;
                                     <th>Ver Pdf</th>
                                     <th>Alias</th>
                                     <th>Notaria</th>
-                                    <th>Fecha Firma</th>
+                                    <th>Fecha Inicio</th>
                                     <th>Opciones</th>
                                 </tr>
                             </thead>

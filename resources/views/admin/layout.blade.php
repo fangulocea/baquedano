@@ -153,7 +153,7 @@
                                     </form></li>
                             </ul>
                         </li>
-                        <li> <a href="#" class="waves-effect"><i class="mdi mdi-settings fa-fw" data-icon="v"></i> <span class="hide-menu"> Administrador <span class="fa arrow"></span> <span class="label label-rouded label-primary pull-right">2</span></span></a>
+                        <li> <a href="#" class="waves-effect"><i class="mdi mdi-security fa-fw" data-icon="v"></i> <span class="hide-menu"> Administrador <span class="fa arrow"></span> <span class="label label-rouded label-primary pull-right">2</span></span></a>
                             <ul class="nav nav-second-level">
 
                                 @can('users.index')
@@ -232,7 +232,7 @@
 
                             </ul>
                         </li>
-                        <li> <a href="#" class="waves-effect"><i class="mdi mdi-settings fa-fw" data-icon="v"></i> <span class="hide-menu"> Captaciones <span class="fa arrow"></span> <span class="label label-rouded label-primary pull-right">7</span></span></a>
+                        <li> <a href="#" class="waves-effect"><i class="mdi mdi-contacts fa-fw" data-icon="v"></i> <span class="hide-menu"> Captaciones <span class="fa arrow"></span> <span class="label label-rouded label-primary pull-right">7</span></span></a>
                             <ul class="nav nav-second-level">
                                 @can('captacion.index')
                                     <li> 
@@ -271,28 +271,10 @@
 
                             </ul>
                         </li>
-                        <li> <a href="#" class="waves-effect"><i class="mdi mdi-settings fa-fw" data-icon="v"></i> <span class="hide-menu"> Administración <span class="fa arrow"></span> <span class="label label-rouded label-primary pull-right">5</span></span></a>
+                        <li> <a href="#" class="waves-effect"><i class="mdi mdi-cash-usd fa-fw" data-icon="v"></i> <span class="hide-menu"> Administración <span class="fa arrow"></span> <span class="label label-rouded label-primary pull-right">5</span></span></a>
                             <ul class="nav nav-second-level">
-                                @can('revisioncomercial.index')
-                                <li> <a href="{{ route('revisioninmueble.index') }}"><i class=" fa-fw">CP</i><span class="hide-menu">Revisión Comercial Inmueble</span></a> </li>
-                                @endcan
-                                @can('revisioncomercial.index')
-                                <li> <a href="{{ route('revisionpersona.index') }}"><i class=" fa-fw">CA</i><span class="hide-menu">Revisión Comercial Persona</span></a> </li>
-                                @endcan
-
                             <li>
-                                <a href="javascript:void(0)" class="waves-effect"><i data-icon="&#xe008;" class="linea-icon linea-basic fa-fw">A</i><span class="hide-menu">utorización Solicitudes PV</span><span class="fa arrow"></span></a>
-                                <ul class="nav nav-third-level">
-                                    @can('solservicio.index')
-                                    <li> <a href="{{ route('solservicio.autoriza_prop_index') }}"><i class=" fa-fw"></i><span class="hide-menu">Propietarios</span></a> </li>
-                                    @endcan
-                                    @can('solservicio.index')
-                                    <li> <a href="{{ route('arrsolservicio.autoriza_arr_index') }}"><i class=" fa-fw"></i><span class="hide-menu">Arrendatarios</span></a> </li>
-                                    @endcan
-                                </ul>
-                            </li>
-                            <li>
-                                <a href="javascript:void(0)" class="waves-effect"><i data-icon="&#xe008;" class="linea-icon linea-basic fa-fw">P</i><span class="hide-menu">ropietario </span><span class="fa arrow"></span></a>
+                                <a href="javascript:void(0)" class="waves-effect"><i class="linea-icon linea-basic fa-fw">PROPIETARIOS</i><span class="hide-menu"></span><span class="fa arrow"></span></a>
                                 <ul class="nav nav-third-level">
                                     @can('borradorContrato.index')
                                     <li> <a href="{{ route('borradorContrato.index') }}"><i class=" fa-fw">CB</i><span class="hide-menu">Contrato Borrador</span></a> </li>
@@ -307,7 +289,7 @@
                             </li>
 
                             <li>
-                                <a href="javascript:void(0)" class="waves-effect"><i data-icon="&#xe008;" class="linea-icon linea-basic fa-fw">A</i><span class="hide-menu">rrendatario </span><span class="fa arrow"></span></a>
+                                <a href="javascript:void(0)" class="waves-effect"><i  class="linea-icon linea-basic fa-fw">ARRENDATARIOS</i><span class="hide-menu"> </span><span class="fa arrow"></span></a>
                                 <ul class="nav nav-third-level">
                                     @can('contratoborradorarrendatario.index')
                                     <li> <a href="{{ route('cbararrendatario.index') }}"><i class=" fa-fw">CB</i><span class="hide-menu">Contrato Borrador</span></a> </li>
@@ -320,37 +302,66 @@
                                     @endcan
                                 </ul>
                             </li>
+                            <li>
+                                <a href="javascript:void(0)" class="waves-effect"><i class=" fa-fw">AUTORIZACIÓN SOLPV</i><span class="hide-menu"></span><span class="fa arrow"></span></a>
+                                <ul class="nav nav-third-level">
+                                    @can('solservicio.index')
+                                    <li> <a href="{{ route('solservicio.autoriza_prop_index') }}"><i class=" fa-fw">AP</i><span class="hide-menu">Propietarios</span></a> </li>
+                                    @endcan
+                                    @can('solservicio.index')
+                                    <li> <a href="{{ route('arrsolservicio.autoriza_arr_index') }}"><i class=" fa-fw">AA</i><span class="hide-menu">Arrendatarios</span></a> </li>
+                                    @endcan
+                                </ul>
+                            </li>
                             
                             
+                                @can('revisioncomercial.index')
+                                <li> <a href="{{ route('revisioninmueble.index') }}"><i class=" fa-fw">CP</i><span class="hide-menu">Revisión Comercial Inmueble</span></a> </li>
+                                @endcan
+                                @can('revisioncomercial.index')
+                                <li> <a href="{{ route('revisionpersona.index') }}"><i class=" fa-fw">CA</i><span class="hide-menu">Revisión Comercial Persona</span></a> </li>
+                                @endcan
 
                             </ul>
 
                         </li>
-                        <li> <a href="#" class="waves-effect"><i class="mdi mdi-settings fa-fw" data-icon="v"></i> <span class="hide-menu"> POST Atención <span class="fa arrow"></span> <span class="label label-rouded label-primary pull-right">4</span></span></a>
+                        <li> <a href="#" class="waves-effect"><i class="mdi mdi-alert-octagram fa-fw" data-icon="v"></i> <span class="hide-menu"> POST Atención <span class="fa arrow"></span> <span class="label label-rouded label-primary pull-right">4</span></span></a>
                         
                             <ul class="nav nav-second-level">
-                             <li>
-                      
-                                <a href="javascript:void(0)" class="waves-effect"><i data-icon="&#xe008;" class="linea-icon linea-basic fa-fw"></i><span class="hide-menu">Solicitudes de Pago </span><span class="fa arrow"></span></a>
+
+                                @can('postventa.index')
+                                <li> <a href="{{ route('postventa.index') }}"><i class=" fa-fw">SOLICITUDES POST-ATENCIÓN</i><span class="hide-menu"></span></a> </li>
+                                @endcan
+                                   @can('revisioncuentas.index')
+                                <li> <a href="{{ route('revisioncuentas.index') }}"><i class=" fa-fw">REVISIÓN CUENTAS</i><span class="hide-menu"></span></a> </li>
+                                @endcan
+                            <li>
+                                <a href="javascript:void(0)" class="waves-effect"><i class="linea-icon linea-basic fa-fw">SOLICITUDES PAGO</i><span class="hide-menu"></span><span class="fa arrow"></span></a>
                                 <ul class="nav nav-third-level">
-                                    @can('contratoborradorarrendatario.index')
-                                    <li> <a href="{{ route('solservicio.index') }}"><i data-icon="&#xe008;" class="linea-icon linea-basic fa-fw"></i><span class="hide-menu">Propietarios</span></a> </li>
+                                    @can('borradorContrato.index')
+                                    <li> <a href="{{ route('solservicio.index') }}"><i class=" fa-fw">SP</i><span class="hide-menu">PROPIETARIO</span></a> </li>
                                     @endcan
-                                    @can('finalContratoArr.index')
-                                    <li> <a href="{{ route('arrsolservicio.index') }}"><i data-icon="&#xe008;" class="linea-icon linea-basic fa-fw"></i><span class="hide-menu">Arrendatarios</span></a> </li>
+                                    @can('finalContrato.index')
+                                    <li> <a href="{{ route('arrsolservicio.index') }}"><i class=" fa-fw">SA</i><span class="hide-menu">ARRENDATARIOS</span></a> </li>
                                     @endcan
                                 </ul>
                             </li>
+ 
 
                                  @can('checklist.index')
-                                <li> <a href="{{ route('checklist.index','menu' ) }}"><i class=" fa-fw">CH</i><span class="hide-menu">eckList Inmueble</span></a> </li>
+                                <li> <a href="{{ route('checklist.index','menu' ) }}"><i class=" fa-fw">CHECKIN</i><span class="hide-menu"></span></a> </li>
                                 @endcan
-                                @can('revisioncuentas.index')
-                                <li> <a href="{{ route('revisioncuentas.index') }}"><i class=" fa-fw">RC</i><span class="hide-menu">Revisión de Cuentas Básicas</span></a> </li>
+
+                            </ul>
+                        </li>
+                        <li> <a href="#" class="waves-effect"><i class="mdi mdi-file-excel fa-fw" data-icon="v"></i> <span class="hide-menu"> Reportes <span class="fa arrow"></span> <span class="label label-rouded label-primary pull-right">1</span></span></a>
+                        
+                            <ul class="nav nav-second-level">
+           
+                                 @can('repfinal.index')
+                                <li> <a href="{{ route('repfinal.captacion_pro' ) }}"><i class=" fa-fw">RC</i><span class="hide-menu">Reporte Captaciones Propietarios</span></a> </li>
                                 @endcan
-                                @can('postventa.index')
-                                <li> <a href="{{ route('postventa.index') }}"><i class=" fa-fw">RC</i><span class="hide-menu">Solicitud de Post Atención</span></a> </li>
-                                @endcan
+
                             </ul>
                         </li>
                         <li><a href="{{ route('logout') }}"

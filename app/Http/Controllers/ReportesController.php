@@ -42,7 +42,10 @@ class ReportesController extends Controller
 
     }
 
-
+    public function captacion_pro()
+    {
+        return view('reportesfinales.index');
+    }
 
 
 
