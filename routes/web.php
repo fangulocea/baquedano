@@ -1589,29 +1589,30 @@ Route::get('presupuesto/export/{id}','PresupuestoPostVentaController@exportarexc
 
 
 // REPORTES
+
+	Route::post('repfinal/captaciones/propietarios','ReportesController@genera_captacion_pro')->name('repfinal.genera_captacion_pro')
+		->middleware('permission:reportes.index');
+
 	Route::get('indexinmuebles','ReportesController@index_inmueble')->name('reportes.indexinmuebles')
 		->middleware('permission:reportes.indexinmuebles');
 
 	Route::post('inmuebles','ReportesController@inmueble')->name('reportes.inmuebles')
 		->middleware('permission:reportes.indexinmuebles');
 
-	// Route::get('mantenedorchecklist/create','MantenedorChecklistController@create')->name('mantenedorchecklist.create')
-	// 	->middleware('permission:mantenedorchecklist.create');
+	Route::get('repfinal/captaciones/propietarios','ReportesController@captacion_pro')->name('repfinal.captacion_pro')
+		->middleware('permission:reportes.captacion_propietario');
 
-	// Route::post('mantenedorchecklist/{id}','MantenedorChecklistController@update')->name('mantenedorchecklist.update')
-	// 	->middleware('permission:mantenedorchecklist.edit');
+	Route::get('repfinal/captaciones/arrendatarios','ReportesController@captacion_arr')->name('repfinal.captacion_arr')
+		->middleware('permission:reportes.captacion_arrendatario');
 
-	// Route::get('mantenedorchecklist/{id}','MantenedorChecklistController@show')->name('mantenedorchecklist.show')
-	// 	->middleware('permission:mantenedorchecklist.show');
+	Route::get('repfinal/contratos/propietarios','ReportesController@contrato_pro')->name('repfinal.contrato_pro')
+		->middleware('permission:reportes.contrato_propietario');
 
-	// Route::delete('mantenedorchecklist/{id}','MantenedorChecklistController@destroy')->name('mantenedorchecklist.destroy')
-	// 	->middleware('permission:mantenedorchecklist.destroy');
+	Route::get('repfinal/contratos/arrendatarios','ReportesController@contrato_arr')->name('repfinal.contrato_arr')
+		->middleware('permission:reportes.contrato_arrendatario');
 
-	// Route::get('mantenedorchecklist/{id}/edit','MantenedorChecklistController@edit')->name('mantenedorchecklist.edit')
-	// 	->middleware('permission:mantenedorchecklist.edit');
 
-Route::get('repfinal/captaciones/propietarios','ReportesController@captacion_pro')->name('repfinal.captacion_pro')
-		->middleware('permission:reportes.index');
+
 
 
 });

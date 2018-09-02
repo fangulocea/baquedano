@@ -358,10 +358,18 @@
                         
                             <ul class="nav nav-second-level">
            
-                                 @can('repfinal.index')
-                                <li> <a href="{{ route('repfinal.captacion_pro' ) }}"><i class=" fa-fw">RC</i><span class="hide-menu">Reporte Captaciones Propietarios</span></a> </li>
+                                 @can('repfinal.captacion_propietario')
+                                <li> <a href="{{ route('repfinal.captacion_pro' ) }}"><i class="mdi mdi-file-excel fa-fw" data-icon="v"></i><span class="hide-menu">Reporte Captaciones Propietarios</span></a> </li>
                                 @endcan
-
+                                @can('repfinal.captacion_arrendatario')
+                                <li> <a href="{{ route('repfinal.captacion_arr' ) }}"><i class="mdi mdi-file-excel fa-fw" data-icon="v"></i><span class="hide-menu">Reporte Captaciones Arrendatarios</span></a> </li>
+                                @endcan
+                                @can('repfinal.contrato_propietario')
+                                <li> <a href="{{ route('repfinal.contrato_pro' ) }}"><i class="mdi mdi-file-excel fa-fw" data-icon="v"></i><span class="hide-menu">Reporte Contratos Propietarios</span></a> </li>
+                                @endcan
+                                @can('repfinal.contrato_arrendatario')
+                                <li> <a href="{{ route('repfinal.contrato_arr' ) }}"><i class="mdi mdi-file-excel fa-fw" data-icon="v"></i><span class="hide-menu">Reporte Contratos Arrendatarios</span></a> </li>
+                                @endcan
                             </ul>
                         </li>
                         <li><a href="{{ route('logout') }}"
