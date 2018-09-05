@@ -2,36 +2,48 @@
 
 @section('contenido')
 
-<div id="tabla" class="col-sm-12">
+<div id="tabla" >
     <div class="white-box">
-        <h3 class="box-title m-b-0">Reporte Seguimiento de Captaciones</h3>
-        <p class="text-muted m-b-30"></p>
-        <hr>
+        <h3 class="box-title m-b-0">Inmuebles con Historial de Contratos</h3>
+        <div class="table-responsive" style="padding-bottom: 50px;">
+            <table id="listusers" class="display compact" cellspacing="0" width="200%">
+      
+                <thead>
+                    <tr>
+                        <th>ID Contrato</th>
+                        <th>ID Inmueble</th>
+                        <th>Dirección</th>
+                        <th>Número</th>
+                        <th>Departamento</th>
+                        <th>Comuna</th>
+                        <th>Estado Contrato</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach($publica as $p)
+                            <tr>
+                                <td>{{ $p->id}}</td>
+                                <td>{{ $p->id_inmueble}}</td>
+                                
+                                <td >
+                                    {{ $p->direccion }} 
+                                </td>
+                                <td>{{ $p->numero }} </td>
+                                <td>{{ $p->departamento }}</td> 
+                                <td>{{ $p->comuna_nombre }}</td>
+                                <td>{{ $p->estado }}</td>
+   
+                                <td width="10px">
+                                    <a href="{{ route('repfinal.historial_direccion', $p->id_inmueble) }}"><span class="btn  btn-primary btn-lg">Reporte Historial</span></a>
+                                </td>
+                            </tr>
+                            @endforeach
 
-            <div class="table-responsive" style="padding-bottom: 50px;">
-                <table id="listusers" class="display compact" cellspacing="0" width="100%">
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Portal</th>
-                            <th>Dirección</th>
-                            <th>Comuna</th>
-                            <th>Propietario</th>
-                            <th>Fecha Creación</th>
-                            <th>Creador</th>
-                            <th>Estado</th>
-                            <th>Cant Correos</th>
-                            <th>Cant Gest.</th>
-                            <th>Acción</th>
-                        </tr>
-                    </thead>
-
-                    
-                </table>
-
-            </div>
-
-     </div>
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>
 
 
@@ -50,32 +62,21 @@
 <script src="{{ URL::asset('plugins/DataTables/Buttons-1.5.1/js/buttons.print.min.js') }}"></script>
 <!-- end - This is for export functionality only -->
 <script>
+$('.sorting_desc').hide();
 
-
-      var table = $('#listusers').DataTable({
+var table = $('#listusers').DataTable({
+"ordering": false,
     dom: 'Bfrtip',
-    "ordering": false,
-       "processing": true,
-        "serverSide": true,
-      "ajax": {
-        "dataType": "json",
-        "type": "POST",
-        "data":{ _token: "{{csrf_token()}}"},
-       "url": "{{ route('captacion.reportes_ajax') }}"
-    },
-     "columns": [
-                {data: 'id_link', name: 'id_link'},
-                {data: 'portal', name: 'portal'},
-                {data: 'Direccion', name: 'Direccion'},
-                {data: 'comuna_nombre', name: 'comuna_nombre'},
-                {data: 'Propietario', name: 'Propietario'},
-                {data: 'fecha_creacion', name: 'fecha_creacion'},
-                {data: 'Creador', name: 'Creador'},
-                {data: 'id_estado', name: 'id_estado'},
-                {data: 'cantCorreos', name: 'cantCorreos'},
-                {data: 'cantGes', name: 'cantGes'},
-                {data: 'action', name: 'action'}
-            ],
+    buttons: [
+        'excel',{
+            text: 'Reporte Historia General',
+            action: function ( e, dt, node, config ) {
+                 window.location.href = '{{ route("repfinal.historia_general") }}';
+            }
+        }
+    ],
+
+   
     language: {
         "sProcessing": "Procesando...",
         "sLengthMenu": "Mostrar _MENU_ registros",
@@ -99,17 +100,20 @@
             "copy": 'Copiar',
             "csv": 'Exportar a CSV',
             "print": 'Imprimir'},
-            "oAria": {
-                "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
-                "sSortDescending": ": Activar para ordenar la columna de manera descendente"
-            }
+        "oAria": {
+            "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+            "sSortDescending": ": Activar para ordenar la columna de manera descendente"
         }
-    });
+    }
+});
+
+
+
     // Setup - add a text input to each footer cell
     $('#listusers thead th').each( function () {
         var title = $(this).text();
-        if(title!='ID' && title!= "" )
-       $(this).html( title+'<br/><input type="text" style="width:100px" placeholder="" />' );
+        if(title!='ID' && title!= "")
+        $(this).html( title+'<br/><input type="text" style="width:70px" placeholder="" />' );
     } );
  
 

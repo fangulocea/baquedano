@@ -4,10 +4,10 @@
 <div class="row">
     <div class="col-md-12">
         <div class="panel panel-info">
-            <div class="panel-heading"> REPORTE CONTRATOS ARRENDATARIOS</div>
+            <div class="panel-heading"> REPORTE CONTRATOS PROPIETARIOS</div>
             <div class="panel-wrapper collapse in" aria-expanded="true">
                 <div class="panel-body">
-                  <form action="{{ route('repfinal.genera_captacion_pro') }}" method="post" enctype='multipart/form-data'>
+                  <form action="{{ route('repfinal.genera_contrato_pro') }}" method="post" enctype='multipart/form-data'>
                     {!! csrf_field() !!}
                         <div id="tabla" >
                             <div class="white-box">
@@ -32,17 +32,7 @@
                                             <input type="date" name="fechafin" id="fechafin" class="form-control" required="required">
                                         </div>
                                     </div>
-                                    <div class="col-md-3">
-                                        <div class="form-group">
-                                            <label>Captador</label>
-                                            <select name="captador[]" id="captador" class="form-control" required="required" multiple>
-                                                <option value="todos">Todos</option>
-                                                @foreach($captadores as $c)
-                                                    <option value="{{ $c->id }}">{{ $c->captador }}</option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                    </div>
+
                                     <div class="col-md-3">
                                         <div class="form-group">
                                             <label>Estado</label>
@@ -61,7 +51,6 @@
                                             <label>Ordenados Por</label>
                                             <select name="orden" id="orden" class="form-control" required="required">
                                                 <option value="c.id">ID</option>
-                                                <option value="p2.name">Captador</option>
                                                 <option value="i.direccion">Dirección</option>
                                                 <option value="c.created_at">Fecha Creación</option>
                                                 <option value="c.fecha_publicacion">Fecha Publicación</option>

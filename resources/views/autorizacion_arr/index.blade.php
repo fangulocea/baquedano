@@ -61,8 +61,7 @@ var table = $('#listusers').DataTable({
         'excel'
         
     ],
-    ordering: false,
-    pageLength: 10,
+        "ordering": false,
        "processing": true,
         "serverSide": true,
       "ajax": {

@@ -153,8 +153,7 @@
 var listventas = $('#listventas').DataTable({
 
     dom: 'Bfrtip',
-        ordering: false,
-        pageLength: 10,
+    "ordering": false,
        "processing": true,
         "serverSide": true,
       "ajax": {

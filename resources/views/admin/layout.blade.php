@@ -370,6 +370,10 @@
                                 @can('repfinal.contrato_arrendatario')
                                 <li> <a href="{{ route('repfinal.contrato_arr' ) }}"><i class="mdi mdi-file-excel fa-fw" data-icon="v"></i><span class="hide-menu">Reporte Contratos Arrendatarios</span></a> </li>
                                 @endcan
+
+                                @can('repfinal.historial_direccion')
+                                <li> <a href="{{ route('repfinal.historial_direccion_inicio' ) }}"><i class="mdi mdi-file-excel fa-fw" data-icon="v"></i><span class="hide-menu">Reporte Historial Dirección</span></a> </li>
+                                @endcan
                             </ul>
                         </li>
                         <li><a href="{{ route('logout') }}"

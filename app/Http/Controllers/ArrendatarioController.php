@@ -20,7 +20,7 @@ use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\File;
 use App\Arr_Reservas;
 use App\Arr_ReservasDocs;
-
+use Auth;
 use App\ArrReservaGes;
 use App\ArrReservaGesDocs;
 
@@ -148,8 +148,8 @@ class ArrendatarioController extends Controller
 
         $arrendatario=Arrendatario::create([                      
                             'id_arrendatario'   => $persona->id,
-                            'id_creador'        => $request->id_creador,
-                            'id_modificador'    => $request->id_creador,
+                            'id_creador'        => Auth::user()->id,
+                            'id_modificador'    => Auth::user()->id,
                             'preferencias'      => $request->preferencias,
                             'id_estado'         => '1',
                     ]);

@@ -43,7 +43,7 @@
 var table =$('#listusers').DataTable({
 
     dom: 'Bfrtip',
-   pageLength: 10,
+    "ordering": false,
        "processing": true,
         "serverSide": true,
       "ajax": {

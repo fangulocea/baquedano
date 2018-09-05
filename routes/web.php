@@ -1590,6 +1590,9 @@ Route::get('presupuesto/export/{id}','PresupuestoPostVentaController@exportarexc
 
 // REPORTES
 
+Route::get('repfinal/historial/direccion/inicio','ReportesController@historial_direccion_inicio')->name('repfinal.historial_direccion_inicio')
+		->middleware('permission:reportes.historial_direccion');
+
 	Route::post('repfinal/captaciones/propietarios','ReportesController@genera_captacion_pro')->name('repfinal.genera_captacion_pro')
 		->middleware('permission:reportes.index');
 
@@ -1611,8 +1614,19 @@ Route::get('presupuesto/export/{id}','PresupuestoPostVentaController@exportarexc
 	Route::get('repfinal/contratos/arrendatarios','ReportesController@contrato_arr')->name('repfinal.contrato_arr')
 		->middleware('permission:reportes.contrato_arrendatario');
 
+Route::get('repfinal/historial/direccion/{id}','ReportesController@historial_direccion')->name('repfinal.historial_direccion')
+		->middleware('permission:reportes.historial_direccion');
 
+Route::post('repfinal/captaciones/arrendatarios','ReportesController@genera_captacion_arr')->name('repfinal.genera_captacion_arr')
+		->middleware('permission:reportes.index');
+		
+Route::post('repfinal/contratos/propietarios','ReportesController@genera_contrato_pro')->name('repfinal.genera_contrato_pro')
+		->middleware('permission:reportes.index');
 
+Route::post('repfinal/contratos/arrendatarios','ReportesController@genera_contrato_arr')->name('repfinal.genera_contrato_arr')
+		->middleware('permission:reportes.index');
 
+Route::get('repfinal/historial/direccion/general','ReportesController@historia_general')->name('repfinal.historia_general')
+		->middleware('permission:reportes.historia_general');
 
 });
