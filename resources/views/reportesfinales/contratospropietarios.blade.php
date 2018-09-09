@@ -9,6 +9,7 @@
                 <div class="panel-body">
                   <form action="{{ route('repfinal.genera_contrato_pro') }}" method="post" enctype='multipart/form-data'>
                     {!! csrf_field() !!}
+                    <input type="hidden" name="_token" value="{{ csrf_token() }}">
                         <div id="tabla" >
                             <div class="white-box">
                             <div class="row">

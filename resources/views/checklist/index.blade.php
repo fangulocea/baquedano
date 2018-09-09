@@ -21,22 +21,8 @@
                         <th>Estado</th>
                         <th></th>
                         <th></th>
-                        <th></th>
                     </tr>
                 </thead>
-                <tfoot>
-                    <tr>
-                        <th>ID</th>
-                        <th>Dirección</th>
-                        <th>Id Contrato</th>
-                        <th>Tipo CheckList</th>
-                        <th>Entrega/Devolución/Revisión</th>
-                        <th>Estado</th>
-                        <th></th>
-                        <th></th>
-                        <th></th>
-                    </tr>
-                </tfoot>
                 <tbody>
                     @foreach($publica as $p)
                         @php 
@@ -62,14 +48,9 @@
                         @can('checklist.edit')
                         <td width="10px">
                             <a href="{{ route('checklist.create', [$p->id_contrato, $p->id, $p->tipo,"otro",$origen]) }}"><span class="btn btn-warning btn-circle btn-lg"><i class="ti-pencil-alt"></i></span></a>
-
                                    
                         </td>
                         @endcan
-                        
-                        <td width="10px">
-                            
-                        </td>
                         
                     </tr>
                     @endforeach
@@ -81,24 +62,30 @@
 </div>
 
 
-<link href = "{{ URL::asset('plugins/bower_components/datatables/jquery.dataTables.min.css')   }}" rel="stylesheet" type="text/css" />
-<link href = "{{ URL::asset('plugins/DataTables/Buttons-1.5.1/css/buttons.dataTables.min.css') }}" rel="stylesheet" type="text/css" />
-<script src= "{{ URL::asset('plugins/DataTables/datatables.min.js') }}"> </script>
-<script src= "{{ URL::asset('plugins/DataTables/DataTables-1.10.16/js/jquery.dataTables.min.js') }}"> </script>
-<script src= "{{ URL::asset('plugins/DataTables/Buttons-1.5.1/js/dataTables.buttons.min.js') }}"> </script>
-<script src= "{{ URL::asset('plugins/DataTables/Buttons-1.5.1/js/buttons.html5.min.js') }}"> </script>
+<link href = "{{ URL::asset('plugins/bower_components/datatables/jquery.dataTables.min.css')   }}" rel="stylesheet" type="text/css"   />
+<link href = "{{ URL::asset('plugins/DataTables/Buttons-1.5.1/css/buttons.dataTables.min.css') }}" rel="stylesheet" type="text/css"   />
+
+
+<script  src="{{ URL::asset('plugins/DataTables/datatables.min.js') }}"></script>
+<script src="{{ URL::asset('plugins/DataTables/DataTables-1.10.16/js/jquery.dataTables.min.js') }}"></script>
+<script src="{{ URL::asset('plugins/DataTables/Buttons-1.5.1/js/dataTables.buttons.min.js') }}"></script>
+<script src="{{ URL::asset('plugins/DataTables/Buttons-1.5.1/js/buttons.flash.min.js') }}"></script>
+<script src="{{ URL::asset('plugins/DataTables/JSZip-2.5.0/jszip.min.js') }}"></script>
+<script src="{{ URL::asset('plugins/DataTables/pdfmake-0.1.32/pdfmake.min.js') }}"></script>
+<script src="{{ URL::asset('plugins/DataTables/pdfmake-0.1.32/vfs_fonts.js') }}"></script>
+<script src="{{ URL::asset('plugins/DataTables/Buttons-1.5.1/js/buttons.html5.min.js') }}"></script>
+<script src="{{ URL::asset('plugins/DataTables/Buttons-1.5.1/js/buttons.print.min.js') }}"></script>
 <!-- end - This is for export functionality only -->
 <script>
     var table = $('#listusers').DataTable({
-        dom: 'Bfrtip',
-        ordering: false,
-        pageLength: 20,
-         "processing": true,
-        "serverSide": true,
-        buttons: [
+"ordering": false,
+    dom: 'Bfrtip',
+        buttons: ['excel', 'pdf'
+,
                     {   text: 'CheckList Propietario',
                         action: function ( e, dt, node, config ) {
                         window.location.href = '{{ route('checklist.creachkportipo','Propietario' ) }}'; } },
+
                     {   text: 'CheckList Arrendatario',
                         action: function ( e, dt, node, config ) {
                         window.location.href = '{{ route('checklist.creachkportipo','Arrendatario' ) }}'; } }
@@ -135,25 +122,27 @@
         }
     });
 
-// Setup - add a text input to each footer cell
-$('#listusers thead th').each( function () {
-    var title = $(this).text();
-    if(title!='ID' && title!= "") {
-       $(this).html( title+'<br/><input type="text" style="width:70px" placeholder="" />' );
-   }
-} );
-
-// Apply the search
-table.columns().every( function () {
-    var that = this;
-    $( 'input', this.header() ).on( 'keyup change', function () {
-        if ( that.search() !== this.value ) {
-            that
-            .search( this.value )
-            .draw();
-        }
+    // Setup - add a text input to each footer cell
+    $('#listusers thead th').each( function () {
+        var title = $(this).text();
+        if(title!='ID' && title!= "")
+        $(this).html( title+'<br/><input type="text" style="width:70px" placeholder="" />' );
     } );
-} );
+ 
+
+ 
+    // Apply the search
+    table.columns().every( function () {
+        var that = this;
+ 
+        $( 'input', this.header() ).on( 'keyup change', function () {
+            if ( that.search() !== this.value ) {
+                that
+                    .search( this.value )
+                    .draw();
+            }
+        } );
+    } );
 
 </script>
 

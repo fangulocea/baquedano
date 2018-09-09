@@ -601,7 +601,8 @@ use App\Http\Controllers\ContratoFinalController;
                                 <div class="form-body">
                                     <div class="row">
                                         <form action="{{ route('finalContrato.eliminartipopago') }}" method="post">
-                                            {!! csrf_field() !!}
+                                        {!! csrf_field() !!}
+                                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                             <div class="col-md-4">
                                                 <label for="input-file-now-custom-1">Contrato</label>
                                                 <input type="hidden" name="tab" value="3">

@@ -1327,7 +1327,7 @@ public function savepagofin(Request $request,$id_contrato,$id_publicacion) {
         ]);
 
 
-
+ $fecha_ini = date('Y-m-j', strtotime(date("Y", strtotime($fechafirma)) . '-' . date("m", strtotime($fechafirma)) . '-' . 1));
         for ($i = 0; $i < $meses_contrato+1; $i++) {
                 $dia = date("d", strtotime($fecha_ini));
                 $mes = date("m", strtotime($fecha_ini));

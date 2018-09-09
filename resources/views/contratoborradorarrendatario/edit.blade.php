@@ -173,6 +173,7 @@
                         @endphp
                         <form action="{{ route('persona.update_borrador_v',$publica->id_cap_arr) }}" method="post">
                             {!! csrf_field() !!}
+                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="panel panel-warning">

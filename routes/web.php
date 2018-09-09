@@ -13,10 +13,10 @@
 
 Route::get('/', function () {
 	if(Auth::check()){
-	return view('home');
-	   }else{
-	return view('auth.login');
-	}
+		return view('home');
+		   }else{
+		return view('auth.login');
+		}
     
 });
 
@@ -863,6 +863,9 @@ Route::get('borradorContrato/garantia/eliminar/{id}/{pub}','ContratoBorradorCont
 
 // COntratos final
 
+		Route::post('pagospropietario/eliminarpagos','ContratoFinalController@eliminartipopago')->name('finalContrato.eliminartipopago')
+		->middleware('permission:finalContrato.edit');
+
 		Route::any('pagospropietario/efectuarpago/{id}','PagosMensualesPropietariosController@efectuarpago')->name('pagospropietario.efectuarpago')
 		->middleware('permission:finalContrato.edit');
 
@@ -884,13 +887,11 @@ Route::get('borradorContrato/garantia/eliminar/{id}/{pub}','ContratoBorradorCont
 		Route::get('pagospropietario/mostrardirecciones/{id}','ContratoFinalController@mostrardirecciones')->name('finalContrato.mostrardirecciones')
 		->middleware('permission:finalContrato.update');
 
-		Route::post('pagospropietario/eliminarpagos','ContratoFinalController@eliminartipopago')->name('finalContrato.eliminartipopago')
-		->middleware('permission:finalContrato.update');
 
 		Route::get('finalContrato','ContratoFinalController@index')->name('finalContrato.index')
 		->middleware('permission:finalContrato.index');
 
-		Route::get('finalContrato/create','ContratoFinalController@create')->name('finalContrato.create')
+		Route::get('finalContrato/create','ContratoFinalController@createservicio')->name('finalContrato.create')
 		->middleware('permission:finalContrato.create');
 
 		Route::get('finalContrato/edit/{idp}/{idc}/{idpdf}/{tab}/{origen}','ContratoFinalController@edit')->name('finalContrato.edit')
@@ -1218,21 +1219,21 @@ Route::get('contratorenovacionpropietario','ContratoRenovacionPropietarioControl
 		->middleware('permission:checklist.check');
 
 	Route::get('checklist/index/{origen}','ChecklistController@index')->name('checklist.index')
-		->middleware('permission:uf.index');
+		->middleware('permission:checklist.index');
 
 	Route::get('checklist/pdf/{id_chk}/{tipo_chk}','ChecklistController@show')->name('checklist.show')
-		->middleware('permission:uf.show');
+		->middleware('permission:checklist.edit');
 
 
 	Route::get('checklist/{tipo}','ChecklistController@creachkportipo')->name('checklist.creachkportipo')
-		->middleware('permission:uf.show');
+		->middleware('permission:checklist.edit');
 
 	Route::get('checklist/{id_contrato}/{id_chk}/{tipo}/{edr}','ChecklistController@chkmanual')->name('checklist.chkmanual')
-		->middleware('permission:uf.show');
+		->middleware('permission:checklist.edit');
 
 
 	Route::get('checklist/{id_c}/{id_chk}/{tipo}/{edr}/{origen}/edit','ChecklistController@edit')->name('checklist.edit')
-		->middleware('permission:uf.edit');	
+		->middleware('permission:checklist.edit');	
 
 	Route::get('checklist/create_detalle/{id_contrato}/{id_chk}/{tipo}/{edr}/{id_tipo_chk}/{origen}','ChecklistController@create_detalle')->name('checklist.create_detalle')
 		->middleware('permission:checklist.edit');
@@ -1582,11 +1583,6 @@ Route::get('arrsolservicio/autoriza_arr/index','SolicitudServicioController@auto
 
 Route::get('presupuesto/export/{id}','PresupuestoPostVentaController@exportarexcel')->name('presupuesto.exportarexcel')
 		->middleware('permission:presupuesto.edit');
-
-
-
-
-
 
 // REPORTES
 

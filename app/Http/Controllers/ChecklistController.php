@@ -57,6 +57,7 @@ class ChecklistController extends Controller
                         ->first();       
         }
 
+
         $listadoCheckList = DB::table('checklist')
                     ->where('estado', '=', 1)->get(); 
 

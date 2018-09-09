@@ -689,6 +689,39 @@ Mensajes::create([
             'nombre' => 'Otros Abonos'
         ]);
 
+//INMUEBLE
+        Mensajes::create([
+            'id_modulo'    => '1',
+            'nombre_modulo'    => 'Inmueble',
+            'id_estado'    => '0',
+            'nombre' => 'Desactivado'
+        ]);
+           Mensajes::create([
+            'id_modulo'    => '1',
+            'nombre_modulo'    => 'Inmueble',
+            'id_estado'    => '1',
+            'nombre' => 'Disponible'
+        ]);
+           Mensajes::create([
+            'id_modulo'    => '1',
+            'nombre_modulo'    => 'Inmueble',
+            'id_estado'    => '2',
+            'nombre' => 'Reservado'
+        ]);
+        Mensajes::create([
+            'id_modulo'    => '1',
+            'nombre_modulo'    => 'Inmueble',
+            'id_estado'    => '3',
+            'nombre' => 'Arrendado'
+        ]);
+
+          Mensajes::create([
+            'id_modulo'    => '1',
+            'nombre_modulo'    => 'Inmueble',
+            'id_estado'    => '4',
+            'nombre' => 'En Proceso de Captación'
+        ]);
+
 }
 
 }
