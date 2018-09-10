@@ -15,7 +15,6 @@
                         <th>Estado</th>
                         <th ></th>
                         <th></th>
-                        <th></th>
                     </tr>
                 </thead>
                 <tfoot>
@@ -23,7 +22,6 @@
                         <th>ID</th>
                         <th>Nombre</th>
                         <th>Estado</th>
-                        <th></th>
                         <th></th>
                         <th></th>
                     </tr>
@@ -34,14 +32,6 @@
                                 <td>{{ $chk->id }}</td>
                                 <td>{{ $chk->nombre }}</td>
                                 <td>{{ trans_choice('mensajes.vigencia', $chk->estado ) }}</td>
-                                @can('mantenedorchecklist.show')
-                                <td width="10px">
-                                    <a href="{{ route('mantenedorchecklist.show', $chk->id) }}" 
-                                    class="btn btn-success btn-circle btn-lg">
-                                      <i class="fa fa-check"></i>
-                                    </a>
-                                </td>
-                                @endcan
                                 @can('mantenedorchecklist.edit')
                                 <td width="10px">
                                     <a href="{{ route('mantenedorchecklist.edit', $chk->id) }}"><span class="btn btn-warning btn-circle btn-lg"><i class="ti-pencil-alt"></i></span></a>
@@ -86,8 +76,9 @@
 
 $('#listusers').DataTable({
     dom: 'Bfrtip',
+    ordering : false,
     buttons: [
-        'copy', 'csv', 'excel', 'pdf', 'print',{
+     'excel',{
             text: 'Crear Ítem Checklist',
             action: function ( e, dt, node, config ) {
                  window.location.href = '{{ route("mantenedorchecklist.create") }}';
@@ -96,10 +87,6 @@ $('#listusers').DataTable({
 
     ],
 
-    columnDefs: [{
-            "targets": [3, 4, 5],
-            "orderable": false
-        }],
 
     language: {
         "sProcessing": "Procesando...",

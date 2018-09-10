@@ -68,7 +68,7 @@
                                 <td>{{ $p->comuna_nombre }}</td>
                                 <td>{{ $p->nom_p }} {{ $p->apep_p }} {{ $p->apem_p }}</td>
                                 <td>{{ $p->dia_pago }}</td>
-                                <td>{{ trans_choice('mensajes.captacion', $p->id_estado) }}</td>
+                                <td>{{$p->id_estado }}</td>
                                 <td> {{ $p->valoranterior6 - $p->valorpagadoanterior6 }} </td>
                                 <td> {{ $p->valoranterior5 - $p->valorpagadoanterior5 }} </td>
                                 <td> {{ $p->valoranterior4 - $p->valorpagadoanterior4 }} </td>

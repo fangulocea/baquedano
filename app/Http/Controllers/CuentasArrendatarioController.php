@@ -62,7 +62,7 @@ class CuentasArrendatarioController extends Controller
                  $join->on('m.nombre_modulo', '=',DB::raw("'Captación'"));
                  $join->on('m.id_estado', '=', 'cb.id_estado');
             })
-                ->whereIn('cb.id_estado', [7,10])
+                ->whereIn('co.id_estado', [7])
          ->select(DB::raw('co.id as id_contrato, 
                             DATE_FORMAT(co.created_at, "%d/%m/%Y") as FechaCreacion, 
 

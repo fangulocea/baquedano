@@ -666,8 +666,12 @@ public function savepagofin(Request $request,$id_contrato,$id_publicacion) {
                 ->leftjoin('personas as p1', 'c.id_propietario', '=', 'p1.id')
                 ->leftjoin('users as p2', 'c.id_creador', '=', 'p2.id')
                 ->leftjoin('users as p3', 'c.id_modificador', '=', 'p3.id')
+                ->leftjoin('mensajes as m', function($join){
+                 $join->on('m.nombre_modulo', '=',DB::raw("'Captación'"));
+                 $join->on('m.id_estado', '=', 'c.id_estado');
+            })
                 ->whereIn('c.id_estado', [7, 10, 6])
-                ->select(DB::raw('cb.dia_pago,c.id as id_publicacion, DATE_FORMAT(c.created_at, "%d/%m/%Y") as fecha_creacion, c.id_estado as id_estado, CONCAT_WS(" ",p1.nombre,p1.apellido_paterno,p1.apellido_materno) as Propietario, p2.name as Creador,
+                ->select(DB::raw('cb.dia_pago,c.id as id_publicacion, DATE_FORMAT(c.created_at, "%d/%m/%Y") as fecha_creacion, m.nombre as id_estado, CONCAT_WS(" ",p1.nombre,p1.apellido_paterno,p1.apellido_materno) as Propietario, p2.name as Creador,
 
                   (select pago_propietario from adm_pagosmensualespropietarios where mes=MONTH(DATE_ADD(now(), INTERVAL -6 MONTH)) and anio=YEAR(DATE_ADD(now(), INTERVAL -6 MONTH)) and id_publicacion=c.id and id_inmueble=i.id and id_contratofinal=co.id ) as valoranterior6,
 
@@ -860,7 +864,7 @@ public function savepagofin(Request $request,$id_contrato,$id_publicacion) {
         ]);
 
         $captacion = Captacion::find($request->id_publicacion)->update([
-            "id_estado" => 7
+            "id_estado" => 10
         ]);
 
         $captacion = Captacion::find($request->id_publicacion);
@@ -2358,11 +2362,36 @@ $pago = PagosPropietarios::create([
 
     public function destroy($id, $idpdf) {
 
-        $borrach = PropietarioCheques::where('id_contrato', '=', $id)->delete();
+
+        
+
+        $mensual = PagosMensualesPropietarios::where("id_contratofinal", "=", $id)
+                ->get();
+        $pago = PagosPropietarios::where("id_contratofinal", "=", $id)
+                ->get();
+
+        if(count($mensual)>0 || count($pago)){
+            return back()->with('error', 'Debe Eliminar registros de pago, antes de eliminar el contrato');
+        }
+
+        $final=PropietarioCuadratura::where("id_contrato","=",$id)->delete();
 
         $pdf = ContratoFinalPdf::find($idpdf);
-        File::delete($pdf->ruta . '/' . $pdf->nombre);
+
+        $borrach = PropietarioCheques::where('id_contrato', '=', $id)->delete();
+
+        
+
+        if(isset($pdf)){
+
+      if(file_exists($pdf->ruta . '/' . $pdf->nombre)){
+            File::delete($pdf->ruta . '/' . $pdf->nombre);
+        }
         $pdf = ContratoFinalPdf::find($idpdf)->delete();
+    }
+        
+        
+        
         $contrato = ContratoFinal::find($id);
         $condir = ContratoInmueblesPropietarios::where('id_contratofinal', '=', $id)->delete();
         $borrar = ContratoFinal::find($id)->delete();
@@ -2375,7 +2404,7 @@ $pago = PagosPropietarios::create([
                 ->first();
 
         $chkFoto = DB::table('chkinmueblefoto')
-                   ->where('id_chk' , '=' , $chk->id)
+                   ->where('id_chk' , '=' , isset($chk->id)?$chk->id:0)
                    ->delete();
 
         $chk = DB::table('chkinmuebles')

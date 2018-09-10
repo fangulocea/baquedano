@@ -61,7 +61,7 @@
                 </thead>
                 
                 <tbody>
-                    @foreach($contratos as $p)
+                    @foreach($reporte as $p)
                             <tr>
                                 <td> {{ $p->id_publicacion }}</td>
                                 

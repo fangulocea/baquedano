@@ -109,10 +109,15 @@ use App\Http\Controllers\ContratoFinalController;
 
                                     @php
                                         }
+                                        if($p->id_pdf == '' || $p->id_pdf == null){
+                                            $idpdf=0;
+                                        }else{
+                                            $idpdf=$p->id_pdf;
+                                        }
+
                                     @endphp
-                                    
-                                
-                                       <a class="mytooltip"href="{{ route('finalContrato.destroy',[$p->id,$p->id_pdf]) }}"> <button  class="btn btn-danger btn-circle btn-lg"> <a class="mytooltip" href="{{ route('finalContrato.destroy',[$p->id,$p->id_pdf]) }}" style="color:white"><i class="fa fa-trash-o"></i> <span class="tooltip-content3" style="font-size: medium;color:white">Eliminar <br> Contrato</span></a></button></a>
+                                 
+                                       <a class="mytooltip" href="{{ route('finalContrato.destroy',[$p->id, $idpdf]) }}"> <button  class="btn btn-danger btn-circle btn-lg"> <a class="mytooltip" href="{{ route('finalContrato.destroy',[$p->id,$idpdf ]) }}" style="color:white"><i class="fa fa-trash-o"></i> <span class="tooltip-content3" style="font-size: medium;color:white">Eliminar <br> Contrato</span></a></button></a>
 
                          
                                 </td>
