@@ -36,7 +36,7 @@ class CreatePersonasTable extends Migration
             $table->foreign('cargo_id')->references('id')->on('cargos');
             $table->string('banco')->nullable();
             $table->string('tipo_cuenta')->nullable();
-            $table->integer('cuenta')->nullable();
+            $table->string('cuenta')->nullable();
             $table->string('titular')->nullable();
             $table->string('rut_titular')->nullable();
             $table->softDeletes();

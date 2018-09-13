@@ -390,12 +390,14 @@ class PrimeraGestionController extends Controller
 
         static function cantCaptacionesAnuales(){
         $canGes = DB::table('cap_publicaciones')
+        ->where("id_estado","<>",0)
          ->where('created_at','>',date('Y-m-d',strtotime('-365 day', strtotime(date("Y-m-d")))))
         ->count();
         return $canGes;   
     }
     static function cantCaptacionesMensuales(){
         $canGes = DB::table('cap_publicaciones')
+        ->where("id_estado","<>",0)
          ->where('created_at','>',date('Y-m-d',strtotime('-30 day', strtotime(date("Y-m-d")))))
         ->count();
         return $canGes;   
@@ -445,7 +447,7 @@ class PrimeraGestionController extends Controller
 
     static  function SinGestion(){
 
-        $asg = DB::selectOne('SELECT count(*) as cantidad FROM cap_publicaciones p where (select count(*) from cap_gestion g where g.id_captacion_gestion = p.id) = 0');
+        $asg = DB::selectOne('SELECT count(*) as cantidad FROM cap_publicaciones p where (select count(*) from cap_gestion g where g.id_captacion_gestion = p.id) = 0 and p.id_estado<>0');
         return $asg->cantidad;
     }  
 
