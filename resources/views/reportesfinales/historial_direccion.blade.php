@@ -65,18 +65,7 @@
 $('.sorting_desc').hide();
 
 var table = $('#listusers').DataTable({
-"ordering": false,
-    dom: 'Bfrtip',
-    buttons: [
-        'excel',{
-            text: 'Reporte Historia General',
-            action: function ( e, dt, node, config ) {
-                 window.location.href = '{{ route("repfinal.historia_general") }}';
-            }
-        }
-    ],
-
-   
+"ordering": false,   
     language: {
         "sProcessing": "Procesando...",
         "sLengthMenu": "Mostrar _MENU_ registros",
