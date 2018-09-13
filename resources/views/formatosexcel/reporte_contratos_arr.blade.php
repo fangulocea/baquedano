@@ -9,6 +9,7 @@
                     </tr>
                     <tr>
                         <th style="background-color: #F2F4F4;text-align: center;border: 1px solid red;">ID</th>
+                        <th style="background-color: #F2F4F4;text-align: center;border: 1px solid black;">Fecha Firma</th>
                         <th style="background-color: #F2F4F4;text-align: center;border: 1px solid black;">Dirección</th>
                          <th style="background-color: #F2F4F4;text-align: center;border: 1px solid black;">Número</th>
                           <th style="background-color: #F2F4F4;text-align: center;border: 1px solid black;">Departamento</th>
@@ -67,7 +68,7 @@
                     @foreach($reporte as $p)
                             <tr>
                                 <td> {{ $p->id_publicacion }}</td>
-                                
+                                <td> {{ $p->fecha_firma }}</td>
                                 <td >
                                     {{ $p->direccion }}
                                 </td>

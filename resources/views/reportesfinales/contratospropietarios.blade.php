@@ -23,13 +23,13 @@
                                 <div class="row">
                                     <div class="col-md-3">
                                         <div class="form-group">
-                                            <label>Fecha Inicio</label>
+                                            <label>Fecha Firma Inicio</label>
                                             <input type="date" name="fechainicio" id="fechainicio" class="form-control" required="required">
                                         </div>
                                     </div>
                                     <div class="col-md-3">
                                         <div class="form-group">
-                                            <label>Fecha Fin</label>
+                                            <label>Fecha Firma Fin</label>
                                             <input type="date" name="fechafin" id="fechafin" class="form-control" required="required">
                                         </div>
                                     </div>

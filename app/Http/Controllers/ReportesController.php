@@ -358,10 +358,10 @@ public function genera_contrato_pro(Request $request){
                  $join->on('m.id_estado', '=', 'c.id_estado');
             })
                 ->whereIn('c.id_estado', [7, 10, 6])
-                ->where("c.created_at",">=",$request->fechainicio)
-               ->where("c.created_at","<=",$request->fechafin)
+                ->where("co.fecha_firma",">=",$request->fechainicio)
+               ->where("co.fecha_firma","<=",$request->fechafin)
                ->where("i.direccion","like",'%'.$request->direccion.'%')
-                ->select(DB::raw('m.nombre as estado, cb.dia_pago,c.id as id_publicacion, DATE_FORMAT(c.created_at, "%d/%m/%Y") as fecha_creacion, c.id_estado as id_estado, CONCAT_WS(" ",p1.nombre,p1.apellido_paterno,p1.apellido_materno) as Propietario, p2.name as Creador, p1.rut, p1.email, p1.telefono,
+                ->select(DB::raw('co.fecha_firma, m.nombre as estado, cb.dia_pago,c.id as id_publicacion, DATE_FORMAT(c.created_at, "%d/%m/%Y") as fecha_creacion, c.id_estado as id_estado, CONCAT_WS(" ",p1.nombre,p1.apellido_paterno,p1.apellido_materno) as Propietario, p2.name as Creador, p1.rut, p1.email, p1.telefono,
 
 (select pago_propietario from adm_pagosmensualespropietarios where mes=MONTH(DATE_ADD(now(), INTERVAL -18 MONTH)) and anio=YEAR(DATE_ADD(now(), INTERVAL -18 MONTH)) and id_publicacion=c.id and id_inmueble=i.id and id_contratofinal=co.id ) as valoranterior18,
 
@@ -519,6 +519,7 @@ public function genera_contrato_pro(Request $request){
                     (select sum(valor_pagado) from adm_detallepagospropietarios dt inner join adm_pagosmensualespropietarios pm on dt.id_pagomensual=pm.id where pm.mes=MONTH(DATE_ADD(now(), INTERVAL 18 MONTH)) and pm.anio=YEAR(DATE_ADD(now(), INTERVAL 18 MONTH)) and pm.id_publicacion=c.id and pm.id_inmueble=i.id and pm.id_contratofinal=co.id) as valorpagadosiguiente18
 
                     '), 'p1.id as id_propietario', 'i.id as id_inmueble', 'i.direccion', 'i.numero', 'i.departamento', 'o.comuna_nombre', 'p1.nombre as nom_p', 'p1.apellido_paterno as apep_p', 'p1.apellido_materno as apem_p', 'p3.name as modifcador')
+                ->orderby("co.fecha_firma","asc")
                 ->get();
 
        if(!in_array('todos', $request->estado)){
@@ -609,7 +610,7 @@ public function genera_contrato_pro(Request $request){
                 ->where("c.created_at",">=",$request->fechainicio)
                ->where("c.created_at","<=",$request->fechafin)
                ->where("i.direccion","like",'%'.$request->direccion.'%')
-                ->select(DB::raw('m.nombre as estado, p1.telefono as fono_arr, p1.email as email_arr, p4.telefono as fono_aval, p4.email as email_aval, cb.dia_pago,c.id as id_publicacion, DATE_FORMAT(c.created_at, "%d/%m/%Y") as fecha_creacion, c.id_estado as id_estado, CONCAT_WS(" ",p1.nombre,p1.apellido_paterno,p1.apellido_materno) as Arrendatario, p2.name as Creador,CONCAT_WS(" ",p4.nombre,p4.apellido_paterno,p4.apellido_materno) as Aval, p4.rut as rut_aval, p1.rut as rut_arr,
+                ->select(DB::raw('co.fecha_firma, m.nombre as estado, p1.telefono as fono_arr, p1.email as email_arr, p4.telefono as fono_aval, p4.email as email_aval, cb.dia_pago,c.id as id_publicacion, DATE_FORMAT(c.created_at, "%d/%m/%Y") as fecha_creacion, c.id_estado as id_estado, CONCAT_WS(" ",p1.nombre,p1.apellido_paterno,p1.apellido_materno) as Arrendatario, p2.name as Creador,CONCAT_WS(" ",p4.nombre,p4.apellido_paterno,p4.apellido_materno) as Aval, p4.rut as rut_aval, p1.rut as rut_arr,
 
 (select pago_a_rentas from adm_pagosmensualesarrendatarios where mes=MONTH(DATE_ADD(now(), INTERVAL -18 MONTH)) and anio=YEAR(DATE_ADD(now(), INTERVAL -18 MONTH)) and id_publicacion=c.id and id_inmueble=i.id and id_contratofinal=co.id ) as valoranterior18,
 
@@ -767,6 +768,7 @@ public function genera_contrato_pro(Request $request){
                     (select sum(valor_pagado) from adm_detallepagosarrendatarios dt inner join adm_pagosmensualesarrendatarios pm on dt.id_pagomensual=pm.id where pm.mes=MONTH(DATE_ADD(now(), INTERVAL 18 MONTH)) and pm.anio=YEAR(DATE_ADD(now(), INTERVAL 18 MONTH)) and pm.id_publicacion=c.id and pm.id_inmueble=i.id and pm.id_contratofinal=co.id) as valorpagadosiguiente18
 
                     '), 'p1.id as id_arr', 'i.id as id_inmueble', 'i.direccion', 'i.numero', 'i.departamento', 'o.comuna_nombre', 'p1.nombre as nom_p', 'p1.apellido_paterno as apep_p', 'p1.apellido_materno as apem_p', 'p3.name as modifcador')
+                ->orderby("co.fecha_firma","asc")
                 ->get();
 
        if(!in_array('todos', $request->estado)){
