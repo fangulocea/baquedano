@@ -78,6 +78,11 @@ class PermissionsTableSeeder extends Seeder
         	'slug'			=>	'users.destroy',
         	'description'	=>	'Desactivar usuarios del sistema',
         ]);
+        Permission::create([
+            'name'          =>  'Reset Password',
+            'slug'          =>  'users.reset',
+            'description'   =>  'Reset Password del sistema',
+        ]);
         //Roles
         Permission::create([
         	'name'			=>	'Listado de Roles',
@@ -642,7 +647,7 @@ class PermissionsTableSeeder extends Seeder
         ]);
 
 
-//Contrato Final Arrendatario
+//UF
         Permission::create([
             'name'          =>  'Listado de UFs',
             'slug'          =>  'uf.index',
@@ -723,5 +728,292 @@ class PermissionsTableSeeder extends Seeder
             'description'   =>  'Desactiva  Solicitud de Servicios del sistema',
         ]);
 
+
+//Alertas
+        Permission::create([
+            'name'          =>  'Alertas de Captaciones',
+            'slug'          =>  'alerta.captaciones',
+            'description'   =>  'Alertas de Captaciones',
+        ]);
+//Reportes
+        Permission::create([
+            'name'          =>  'Reportes de Captación',
+            'slug'          =>  'reportes.captaciones',
+            'description'   =>  'Reportes de Captaciones',
+        ]);
+        Permission::create([
+            'name'          =>  'Reportes de Administración',
+            'slug'          =>  'reportes.administracion',
+            'description'   =>  'Reportes de Administración',
+        ]);
+        Permission::create([
+            'name'          =>  'Reportes de Post Venta',
+            'slug'          =>  'reportes.postventa',
+            'description'   =>  'Reportes de Post Venta',
+        ]);
+
+//Presupouesto
+        Permission::create([
+            'name'          =>  'Crear presupuesto',
+            'slug'          =>  'presupuesto.create',
+            'description'   =>  'Crear presupuesto',
+        ]);
+        Permission::create([
+            'name'          =>  'Editar Presupuesto',
+            'slug'          =>  'presupuesto.edit',
+            'description'   =>  'Editar Presupuesto',
+        ]);
+        Permission::create([
+            'name'          =>  'Lista de Presupuestos',
+            'slug'          =>  'presupuesto.index',
+            'description'   =>  'Lista de Presupuestos',
+        ]);
+
+//Proveedores
+        Permission::create([
+            'name'          =>  'Listado de Proveedores',
+            'slug'          =>  'proveedor.index',
+            'description'   =>  'Despliega Proveedores',
+        ]);
+        Permission::create([
+            'name'          =>  'Ver detalle Proveedores',
+            'slug'          =>  'proveedor.show',
+            'description'   =>  'Despliega el detalle Proveedores ',
+        ]);
+        Permission::create([
+            'name'          =>  'Crea Proveedores',
+            'slug'          =>  'proveedor.create',
+            'description'   =>  'Crear Proveedores',
+        ]);
+        Permission::create([
+            'name'          =>  'Edición de Proveedores',
+            'slug'          =>  'proveedor.edit',
+            'description'   =>  'Editar Proveedores del sistema',
+        ]);
+        Permission::create([
+            'name'          =>  'Desactiva Proveedores',
+            'slug'          =>  'proveedor.destroy',
+            'description'   =>  'Desactiva Proveedores del sistema',
+        ]);
+
+
+//ITEM
+        Permission::create([
+            'name'          =>  'Listado de item',
+            'slug'          =>  'item.index',
+            'description'   =>  'Despliega item',
+        ]);
+        Permission::create([
+            'name'          =>  'Ver detalle de item',
+            'slug'          =>  'item.show',
+            'description'   =>  'Despliega el detalle del item ',
+        ]);
+        Permission::create([
+            'name'          =>  'Crea item',
+            'slug'          =>  'item.create',
+            'description'   =>  'Crear item del sistema',
+        ]);
+        Permission::create([
+            'name'          =>  'Edición de item',
+            'slug'          =>  'item.edit',
+            'description'   =>  'Editar item del sistema',
+        ]);
+        Permission::create([
+            'name'          =>  'Desactiva item',
+            'slug'          =>  'item.destroy',
+            'description'   =>  'Desactiva item del sistema',
+        ]);
+
+
+//familia
+        Permission::create([
+            'name'          =>  'Listado de familia',
+            'slug'          =>  'familia.index',
+            'description'   =>  'Despliega familia',
+        ]);
+        Permission::create([
+            'name'          =>  'Ver detalle de familia',
+            'slug'          =>  'familia.show',
+            'description'   =>  'Despliega el detalle del familia ',
+        ]);
+        Permission::create([
+            'name'          =>  'Crea familia',
+            'slug'          =>  'familia.create',
+            'description'   =>  'Crear familia del sistema',
+        ]);
+        Permission::create([
+            'name'          =>  'Edición de familia',
+            'slug'          =>  'familia.edit',
+            'description'   =>  'Editar familia del sistema',
+        ]);
+        Permission::create([
+            'name'          =>  'Desactiva familia',
+            'slug'          =>  'familia.destroy',
+            'description'   =>  'Desactiva familia del sistema',
+        ]);
+
+
+//postventa
+        Permission::create([
+            'name'          =>  'Listado de postventa',
+            'slug'          =>  'postventa.index',
+            'description'   =>  'Despliega postventa',
+        ]);
+        Permission::create([
+            'name'          =>  'Ver detalle de postventa',
+            'slug'          =>  'postventa.show',
+            'description'   =>  'Despliega el detalle del postventa ',
+        ]);
+        Permission::create([
+            'name'          =>  'Crea postventa',
+            'slug'          =>  'postventa.create',
+            'description'   =>  'Crear postventa del sistema',
+        ]);
+        Permission::create([
+            'name'          =>  'Edición de postventa',
+            'slug'          =>  'postventa.edit',
+            'description'   =>  'Editar postventa del sistema',
+        ]);
+        Permission::create([
+            'name'          =>  'Desactiva postventa',
+            'slug'          =>  'postventa.destroy',
+            'description'   =>  'Desactiva postventa del sistema',
+        ]);
+
+
+//empresas
+        Permission::create([
+            'name'          =>  'Listado de empresas',
+            'slug'          =>  'empresas.index',
+            'description'   =>  'Despliega empresas',
+        ]);
+        Permission::create([
+            'name'          =>  'Ver detalle de empresas',
+            'slug'          =>  'empresas.show',
+            'description'   =>  'Despliega el detalle del empresas ',
+        ]);
+        Permission::create([
+            'name'          =>  'Crea empresas',
+            'slug'          =>  'empresas.create',
+            'description'   =>  'Crear empresas del sistema',
+        ]);
+        Permission::create([
+            'name'          =>  'Edición de empresas',
+            'slug'          =>  'empresas.edit',
+            'description'   =>  'Editar empresas del sistema',
+        ]);
+        Permission::create([
+            'name'          =>  'Desactiva empresas',
+            'slug'          =>  'empresas.destroy',
+            'description'   =>  'Desactiva empresas del sistema',
+        ]);
+
+
+//revisioncuentas
+        Permission::create([
+            'name'          =>  'Listado de revision cuentas',
+            'slug'          =>  'revisioncuentas.index',
+            'description'   =>  'Despliega revision cuentas',
+        ]);
+        Permission::create([
+            'name'          =>  'Ver detalle de revision cuentas',
+            'slug'          =>  'revisioncuentas.show',
+            'description'   =>  'Despliega el detalle del revision cuentas ',
+        ]);
+        Permission::create([
+            'name'          =>  'Crea revision cuentas',
+            'slug'          =>  'revisioncuentas.create',
+            'description'   =>  'Crear revisionc uentas del sistema',
+        ]);
+        Permission::create([
+            'name'          =>  'Edición de revision cuentas',
+            'slug'          =>  'revisioncuentas.edit',
+            'description'   =>  'Editar revision cuentas del sistema',
+        ]);
+        Permission::create([
+            'name'          =>  'Desactiva revision cuentas',
+            'slug'          =>  'revisioncuentas.destroy',
+            'description'   =>  'Desactiva revision cuentas del sistema',
+        ]);
+
+//Check List
+        Permission::create([
+            'name'          =>  'Listado de checklist checklist',
+            'slug'          =>  'checklist.checklist',
+            'description'   =>  'Despliega checklist checklist',
+        ]);
+        Permission::create([
+            'name'          =>  'Ver detalle de checklist checklist',
+            'slug'          =>  'checklist.show',
+            'description'   =>  'Despliega el detalle del checklist checklist ',
+        ]);
+        Permission::create([
+            'name'          =>  'Crea checklist checklist',
+            'slug'          =>  'checklist.create',
+            'description'   =>  'Crear checklist checklist del sistema',
+        ]);
+        Permission::create([
+            'name'          =>  'Edición de checklist checklist',
+            'slug'          =>  'checklist.edit',
+            'description'   =>  'Editar checklist checklist del sistema',
+        ]);
+        Permission::create([
+            'name'          =>  'Desactiva checklist checklist',
+            'slug'          =>  'checklist.destroy',
+            'description'   =>  'Desactiva checklist checklist del sistema',
+        ]);
+
+//Mantenedor Check List
+        Permission::create([
+            'name'          =>  'Listado de mantenedor checklist',
+            'slug'          =>  'mantenedorchecklist.index',
+            'description'   =>  'Despliega mantenedor checklist',
+        ]);
+        Permission::create([
+            'name'          =>  'Ver detalle de mantenedor checklist',
+            'slug'          =>  'mantenedorchecklist.show',
+            'description'   =>  'Despliega el detalle del mantenedor checklist ',
+        ]);
+        Permission::create([
+            'name'          =>  'Crea mantenedor checklist',
+            'slug'          =>  'mantenedorchecklist.create',
+            'description'   =>  'Crear mantenedor checklist del sistema',
+        ]);
+        Permission::create([
+            'name'          =>  'Edición de mantenedor checklist',
+            'slug'          =>  'mantenedorchecklist.edit',
+            'description'   =>  'Editar mantenedor checklist del sistema',
+        ]);
+        Permission::create([
+            'name'          =>  'Desactiva mantenedor checklist',
+            'slug'          =>  'mantenedorchecklist.destroy',
+            'description'   =>  'Desactiva mantenedor checklist del sistema',
+        ]);
+
+//contratorenovacionarrendatario
+        Permission::create([
+            'name'          =>  'Listado contrato renovacion arrendatario',
+            'slug'          =>  'contratorenovacionarrendatario.index',
+            'description'   =>  'Despliega contrato renovacion arrendatario',
+        ]);
+        Permission::create([
+            'name'          =>  'Editar detalle de contrato renovacion arrendatario',
+            'slug'          =>  'contratorenovacionarrendatario.edit',
+            'description'   =>  'Editar el detalle del contrato renovacion arrendatario ',
+        ]);
+
+
+
+//HOME
+        Permission::create([
+            'name'          =>  'HOME PROPIETARIO',
+            'slug'          =>  'propietario.home',
+            'description'   =>  'HOME PROPIETARIO',
+        ]);
+        Permission::create([
+            'name'          =>  'HOME ARRENDATARIO',
+            'slug'          =>  'arrendatario.home',
+            'description'   =>  'HOME ARRENDATARIO ',
+        ]);
     }
 }

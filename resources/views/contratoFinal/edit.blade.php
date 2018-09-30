@@ -118,6 +118,7 @@ use App\Http\Controllers\ContratoFinalController;
                                     @endphp
                                  
                                        <a class="mytooltip" href="{{ route('finalContrato.destroy',[$p->id, $idpdf]) }}"> <button  class="btn btn-danger btn-circle btn-lg"> <a class="mytooltip" href="{{ route('finalContrato.destroy',[$p->id,$idpdf ]) }}" style="color:white"><i class="fa fa-trash-o"></i> <span class="tooltip-content3" style="font-size: medium;color:white">Eliminar <br> Contrato</span></a></button></a>
+                                        <a class="mytooltip" href="{{ route('finalContrato.crear_propietario',$p->id) }}"> <button  class="btn btn-primary btn-circle btn-lg"> <a class="mytooltip" href="{{ route('finalContrato.crear_propietario',$p->id) }}" style="color:white"><i class="fa fa-key"></i> <span class="tooltip-content3" style="font-size: medium;color:white">Crear <br> Cuenta</span></a></button></a>
 
                          
                                 </td>

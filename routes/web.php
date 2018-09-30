@@ -13,6 +13,12 @@
 
 Route::get('/', function () {
 	if(Auth::check()){
+		if(Auth::user()->roles[0]->name=='Propietario'){
+            return redirect('/login_propietario');
+        }
+        if(Auth::user()->roles[0]->name=='Arrendatario'){
+            return redirect('/login_arrendatario');
+        }
 		return view('home');
 		   }else{
 		return view('auth.login');
@@ -20,9 +26,12 @@ Route::get('/', function () {
     
 });
 
+
+
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+
 
 // SERVICIOS DE COMUNA/REGION
 
@@ -76,9 +85,18 @@ Route::get('captaciones/gestion/{id}','CaptacionController@getCaptacionesGestion
 
 Route::get('comunas/{id}','ProvinciaController@getComunas');
 
+Route::post('cambiopassword','UsersController@cambiopassword')->name('cambiopassword');
+Route::get('cambiopassword','UsersController@cambiopassword_form')->name('cambiopassword_form');
+
 //RUTAS
 Route::middleware(['auth'])->group(function(){
 	
+	Route::get('/home/propietario', 'HomeController@home_propietario')->name('home_propietario')
+	->middleware('permission:propietario.home');
+
+	Route::get('/home/arrendatario', 'HomeController@home_arrendatario')->name('home_arrendatario')
+	->middleware('permission:arrendatario.home');
+
 	//Roles
 	Route::post('roles/store','RoleController@store')->name('roles.store')
 		->middleware('permission:roles.create');
@@ -125,6 +143,8 @@ Route::middleware(['auth'])->group(function(){
 
 
 //Usuario
+	
+
 	Route::post('users/store','UsersController@store')->name('users.store')
 		->middleware('permission:users.create');
 
@@ -145,6 +165,11 @@ Route::middleware(['auth'])->group(function(){
 
 	Route::get('users/{user}/edit','UsersController@edit')->name('users.edit')
 		->middleware('permission:users.edit');
+
+		Route::get('users/{user}/reset','UsersController@reset')->name('users.reset')
+		->middleware('permission:users.reset');
+
+
 
 
 
@@ -953,7 +978,8 @@ Route::get('borradorContrato/garantia/eliminar/{id}/{pub}','ContratoBorradorCont
 		Route::get('finalContrato/eliminardocfinal/{id_documento}/{id_contrato}/{id_publicacion}','ContratoFinalController@eliminardocfinal')->name('finalContrato.eliminardocfinal')
 		->middleware('permission:finalContrato.edit');		
 
-
+		Route::get('finalContrato/usuario/{id}','UsersController@crear_propietario')->name('finalContrato.crear_propietario')
+		->middleware('permission:finalContrato.edit');	
 
 
 		Route::get('finalContrato/cuadratura/crear/{id_contrato}/{id_publicacion}','ContratoFinalController@indexcuadratura')->name('finalContrato.indexcuadratura')->middleware('permission:finalContrato.edit');
@@ -1139,6 +1165,9 @@ Route::get('cbararrendatario/garantia/eliminar/{id}/{pub}','ContratoBorradorArre
 		->middleware('permission:finalContratoArr.edit');
 
 
+
+		Route::get('finalContratoArr/usuario/{id}','UsersController@crear_arrendatario')->name('finalContratoArr.crear_arrendatario')
+		->middleware('permission:finalContratoArr.edit');	
 
 
 
@@ -1587,43 +1616,43 @@ Route::get('presupuesto/export/{id}','PresupuestoPostVentaController@exportarexc
 // REPORTES
 
 Route::get('repfinal/historial/direccion/inicio','ReportesController@historial_direccion_inicio')->name('repfinal.historial_direccion_inicio')
-		->middleware('permission:reportes.historial_direccion');
+		->middleware('permission:reportes.administracion');
 
 	Route::post('repfinal/captaciones/propietarios','ReportesController@genera_captacion_pro')->name('repfinal.genera_captacion_pro')
-		->middleware('permission:reportes.index');
+		->middleware('permission:reportes.captaciones');
 
 	Route::get('indexinmuebles','ReportesController@index_inmueble')->name('reportes.indexinmuebles')
-		->middleware('permission:reportes.indexinmuebles');
+		->middleware('permission:reportes.captaciones');
 
 	Route::post('inmuebles','ReportesController@inmueble')->name('reportes.inmuebles')
-		->middleware('permission:reportes.indexinmuebles');
+		->middleware('permission:reportes.captaciones');
 
 	Route::get('repfinal/captaciones/propietarios','ReportesController@captacion_pro')->name('repfinal.captacion_pro')
-		->middleware('permission:reportes.captacion_propietario');
+		->middleware('permission:reportes.captaciones');
 
 	Route::get('repfinal/captaciones/arrendatarios','ReportesController@captacion_arr')->name('repfinal.captacion_arr')
-		->middleware('permission:reportes.captacion_arrendatario');
+		->middleware('permission:reportes.captaciones');
 
 	Route::get('repfinal/contratos/propietarios','ReportesController@contrato_pro')->name('repfinal.contrato_pro')
-		->middleware('permission:reportes.contrato_propietario');
+		->middleware('permission:reportes.administracion');
 
 	Route::get('repfinal/contratos/arrendatarios','ReportesController@contrato_arr')->name('repfinal.contrato_arr')
-		->middleware('permission:reportes.contrato_arrendatario');
+		->middleware('permission:reportes.administracion');
 
 Route::get('repfinal/historial/direccion/{id}','ReportesController@historial_direccion')->name('repfinal.historial_direccion')
-		->middleware('permission:reportes.historial_direccion');
+		->middleware('permission:reportes.administracion');
 
 Route::post('repfinal/captaciones/arrendatarios','ReportesController@genera_captacion_arr')->name('repfinal.genera_captacion_arr')
-		->middleware('permission:reportes.index');
+		->middleware('permission:reportes.captaciones');
 		
 Route::post('repfinal/contratos/propietarios','ReportesController@genera_contrato_pro')->name('repfinal.genera_contrato_pro')
-		->middleware('permission:reportes.index');
+		->middleware('permission:reportes.administracion');
 
 Route::post('repfinal/contratos/arrendatarios','ReportesController@genera_contrato_arr')->name('repfinal.genera_contrato_arr')
-		->middleware('permission:reportes.index');
+		->middleware('permission:reportes.administracion');
 
 Route::get('repfinal/historial/direccion/general','ReportesController@historia_general')->name('repfinal.historia_general')
-		->middleware('permission:reportes.historia_general');
+		->middleware('permission:reportes.administracion');
 
 
 
@@ -1631,70 +1660,70 @@ Route::get('repfinal/historial/direccion/general','ReportesController@historia_g
 
 
 	Route::get('alerta/cap/gestion/hoy','ReporteGestionController@gestion_hoy')->name('alertas.gestion_hoy')
-		->middleware('permission:alerta.gestion_hoy');
+		->middleware('permission:alerta.captaciones');
 
 	Route::post('alerta/cap/gestion/hoy_ajax','ReporteGestionController@gestion_hoy_ajax')->name('alertas.gestion_hoy_ajax')
-		->middleware('permission:alerta.gestion_hoy');
+		->middleware('permission:alerta.captaciones');
 
-	Route::get('alerta/cap/gestion/mes','ReporteGestionController@gestion_mes')->name('alertas.gestion_mes')
+	Route::get('alerta/cap/gestion/mes','captaciones@gestion_mes')->name('alertas.gestion_mes')
 		->middleware('permission:alerta.gestion_mes');
 
 	Route::post('alerta/cap/gestion/mes_ajax','ReporteGestionController@gestion_mes_ajax')->name('alertas.gestion_mes_ajax')
-		->middleware('permission:alerta.gestion_mes');
+		->middleware('permission:alerta.captaciones');
 
 	Route::get('alerta/cap/gestion/anual','ReporteGestionController@gestion_anual')->name('alertas.gestion_anual')
-		->middleware('permission:alerta.gestion_anual');
+		->middleware('permission:alerta.captaciones');
 
 	Route::post('alerta/cap/gestion/anual_ajax','ReporteGestionController@gestion_anual_ajax')->name('alertas.gestion_anual_ajax')
-		->middleware('permission:alerta.gestion_anual_ajax');
+		->middleware('permission:alerta.captaciones');
 
 	Route::get('alerta/cap/gestion/total','ReporteGestionController@gestion_total')->name('alertas.gestion_total')
-		->middleware('permission:alerta.gestion_total');
+		->middleware('permission:alerta.captaciones');
 
 	Route::get('alerta/cap/mes','ReporteGestionController@cap_mes')->name('alertas.cap_mes')
-		->middleware('permission:alerta.cap_mes');
+		->middleware('permission:alerta.captaciones');
 
 	Route::post('alerta/cap/mes_ajax','ReporteGestionController@cap_mes_ajax')->name('alertas.cap_mes_ajax')
-		->middleware('permission:alerta.cap_mes');
+		->middleware('permission:alerta.captaciones');
 
 	Route::get('alerta/cap/anual','ReporteGestionController@cap_anual')->name('alertas.cap_anual')
-		->middleware('permission:alerta.cap_anual');
+		->middleware('permission:alerta.captaciones');
 
 	Route::get('alerta/cap/descartadas','ReporteGestionController@cap_descartadas')->name('alertas.cap_descartadas')
-		->middleware('permission:alerta.cap_descartadas');
+		->middleware('permission:alerta.captaciones');
 
 	Route::post('alerta/cap/descartadas_ajax','ReporteGestionController@cap_descartadas_ajax')->name('alertas.cap_descartadas_ajax')
-		->middleware('permission:alerta.cap_descartadas');
+		->middleware('permission:alerta.captaciones');
 
 	Route::get('alerta/cap/sin_respuesta','ReporteGestionController@cap_sin_respuesta')->name('alertas.cap_sin_respuesta')
-		->middleware('permission:alerta.cap_sin_respuesta');
+		->middleware('permission:alerta.captaciones');
 
 Route::post('alerta/cap/sin_respuesta_ajax','ReporteGestionController@cap_sin_respuesta_ajax')->name('alertas.cap_sin_respuesta_ajax')
-		->middleware('permission:alerta.cap_sin_respuesta');
+		->middleware('permission:alerta.captaciones');
 
 	Route::get('alerta/cap/primera_gestion','ReporteGestionController@cap_primera_gestion')->name('alertas.cap_primera_gestion')
-		->middleware('permission:alerta.cap_primera_gestion');
+		->middleware('permission:alerta.captaciones');
 
 	Route::post('alerta/cap/primera_gestion_ajax','ReporteGestionController@cap_primera_gestion_ajax')->name('alertas.cap_primera_gestion_ajax')
-		->middleware('permission:alerta.cap_primera_gestion');
+		->middleware('permission:alerta.captaciones');
 
 	Route::get('alerta/cap/sin_gestion','ReporteGestionController@cap_sin_gestion')->name('alertas.cap_sin_gestion')
-		->middleware('permission:alerta.cap_sin_gestion');
+		->middleware('permission:alerta.captaciones');
 
 	Route::post('alerta/cap/cap_sin_gestion_ajax','ReporteGestionController@cap_sin_gestion_ajax')->name('alertas.cap_sin_gestion_ajax')
-		->middleware('permission:alerta.cap_sin_gestion');
+		->middleware('permission:alerta.captaciones');
 
 	Route::get('alerta/cap/borrador','ReporteGestionController@cap_borrador')->name('alertas.cap_borrador')
-		->middleware('permission:alerta.cap_borrador');
+		->middleware('permission:alerta.captaciones');
 
 	Route::post('alerta/cap/borrador_ajax','ReporteGestionController@cap_borrador_ajax')->name('alertas.cap_borrador_ajax')
-		->middleware('permission:alerta.cap_borrador');
+		->middleware('permission:alerta.captaciones');
 
 	Route::get('alerta/cap/contrato','ReporteGestionController@cap_contrato')->name('alertas.cap_contrato')
-		->middleware('permission:alerta.cap_contrato');
+		->middleware('permission:alerta.captaciones');
 
 	Route::post('alerta/cap/contrato_ajax','ReporteGestionController@cap_contrato_ajax')->name('alertas.cap_contrato_ajax')
-		->middleware('permission:alerta.cap_contrato');
+		->middleware('permission:alerta.captaciones');
 
 
 
@@ -1702,32 +1731,32 @@ Route::post('alerta/cap/sin_respuesta_ajax','ReporteGestionController@cap_sin_re
 
 
 	Route::get('alerta/cap/mes_arr','ReporteGestionController@cap_mes_arr')->name('alertas.cap_mes_arr')
-		->middleware('permission:alerta.cap_mes_arr');
+		->middleware('permission:alerta.captaciones');
 
 	Route::post('alerta/cap/mes_arr_ajax','ReporteGestionController@cap_mes_arr_ajax')->name('alertas.cap_mes_arr_ajax')
-		->middleware('permission:alerta.cap_mes_arr');
+		->middleware('permission:alerta.captaciones');
 
 	Route::get('alerta/cap/anual_arr','ReporteGestionController@cap_anual_arr')->name('alertas.cap_anual_arr')
-		->middleware('permission:alerta.cap_anual_arr');
+		->middleware('permission:alerta.captaciones');
 
 	Route::post('alerta/cap/anual_arr_ajax','ReporteGestionController@cap_anual_arr_ajax')->name('alertas.cap_anual_arr_ajax')
-		->middleware('permission:alerta.cap_anual_arr');
+		->middleware('permission:alerta.captaciones');
 
 	Route::get('alerta/cap/descartadas_arr','ReporteGestionController@cap_descartadas_arr')->name('alertas.cap_descartadas_arr')
-		->middleware('permission:alerta.cap_descartadas_arr');
+		->middleware('permission:alerta.captaciones');
 
 	Route::post('alerta/cap/descartadas_arr_ajax','ReporteGestionController@cap_descartadas_arr_ajax')->name('alertas.cap_descartadas_arr_ajax')
-		->middleware('permission:alerta.cap_descartadas_arr');
+		->middleware('permission:alerta.captaciones');
 
 	Route::get('alerta/cap/borrador_arr','ReporteGestionController@cap_borrador_arr')->name('alertas.cap_borrador_arr')
-		->middleware('permission:alerta.cap_borrador_arr');
+		->middleware('permission:alerta.captaciones');
 
 	Route::post('alerta/cap/borrador_arr_ajax','ReporteGestionController@cap_borrador_arr_ajax')->name('alertas.cap_borrador_arr_ajax')
-		->middleware('permission:alerta.cap_borrador_arr');
+		->middleware('permission:alerta.captaciones');
 
 	Route::get('alerta/cap/contrato_arr','ReporteGestionController@cap_contrato_arr')->name('alertas.cap_contrato_arr')
-		->middleware('permission:alerta.cap_contrato_arr');
+		->middleware('permission:alerta.captaciones');
 
 	Route::post('alerta/cap/contrato_arr_ajax','ReporteGestionController@cap_contrato_arr_ajax')->name('alertas.cap_contrato_arr_ajax')
-		->middleware('permission:alerta.cap_contrato_arr');
+		->middleware('permission:alerta.captaciones');
 });

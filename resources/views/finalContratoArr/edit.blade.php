@@ -15,17 +15,13 @@ use App\Http\Controllers\ContratoFinalArrController;
         <center><h3 class="box-title m-b-0">{{ $borrador->direccion_full or null }}</h3></center>
         @endif
         @if( isset($borrador->arrendatario) )
-        <center><h3 class="box-title m-b-0">{{ $borrador->arrendatario or null }} </h3></center>
+        <center><h3 class="box-title m-b-0">{{ $borrador->arrendatario or null }}  </h3></center>
         @endif
 </div>
 </div>
 
 <div class="row">
     <div class="col-md-12"> 
-  
-        
-        <br><br>
-        @endif
         <section>
             <div class="sttabs tabs-style-iconbox">
                 <nav>
@@ -111,7 +107,7 @@ use App\Http\Controllers\ContratoFinalArrController;
                                         }
                                     @endphp
                                      <a class="mytooltip"href="{{ route('finalContratoArr.destroy',[$p->id,$p->id_pdf]) }}"> <button  class="btn btn-danger btn-circle btn-lg"> <a class="mytooltip" href="{{ route('finalContratoArr.destroy',[$p->id,$p->id_pdf]) }}" style="color:white"><i class="fa fa-trash-o"></i> <span class="tooltip-content3" style="font-size: medium;color:white">Eliminar <br> Contrato</span></a></button></a>
-
+                                    <a class="mytooltip" href="{{ route('finalContratoArr.crear_arrendatario',$p->id) }}"> <button  class="btn btn-primary btn-circle btn-lg"> <a class="mytooltip" href="{{ route('finalContratoArr.crear_arrendatario',$p->id) }}" style="color:white"><i class="fa fa-key"></i> <span class="tooltip-content3" style="font-size: medium;color:white">Crear <br> Cuenta</span></a></button></a>
                                 </td>
                             </form>
                             </tr>

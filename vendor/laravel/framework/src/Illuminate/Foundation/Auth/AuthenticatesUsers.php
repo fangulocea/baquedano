@@ -50,6 +50,78 @@ trait AuthenticatesUsers
         return $this->sendFailedLoginResponse($request);
     }
 
+
+  public function showLoginFormPropietario()
+    {
+        return view('auth.login_propietario');
+    }
+
+    /**
+     * Handle a login request to the application.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\Response
+     */
+    public function login_propietario(Request $request)
+    {
+
+        $this->validateLogin($request);
+
+        // If the class is using the ThrottlesLogins trait, we can automatically throttle
+        // the login attempts for this application. We'll key this by the username and
+        // the IP address of the client making these requests into this application.
+        if ($this->hasTooManyLoginAttempts($request)) {
+            $this->fireLockoutEvent($request);
+
+            return $this->sendLockoutResponse($request);
+        }
+
+        if ($this->attemptLogin($request)) {
+            return $this->sendLoginResponse($request);
+        }
+
+        // If the login attempt was unsuccessful we will increment the number of attempts
+        // to login and redirect the user back to the login form. Of course, when this
+        // user surpasses their maximum number of attempts they will get locked out.
+        $this->incrementLoginAttempts($request);
+
+        return $this->sendFailedLoginResponse($request);
+    }
+public function showLoginFormArrendatario()
+    {
+        return view('auth.login_arrendatario');
+    }
+
+    /**
+     * Handle a login request to the application.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\Response
+     */
+    public function login_arrendatario(Request $request)
+    {
+        $this->validateLogin($request);
+
+        // If the class is using the ThrottlesLogins trait, we can automatically throttle
+        // the login attempts for this application. We'll key this by the username and
+        // the IP address of the client making these requests into this application.
+        if ($this->hasTooManyLoginAttempts($request)) {
+            $this->fireLockoutEvent($request);
+
+            return $this->sendLockoutResponse($request);
+        }
+
+        if ($this->attemptLogin($request)) {
+            return $this->sendLoginResponse($request);
+        }
+
+        // If the login attempt was unsuccessful we will increment the number of attempts
+        // to login and redirect the user back to the login form. Of course, when this
+        // user surpasses their maximum number of attempts they will get locked out.
+        $this->incrementLoginAttempts($request);
+
+        return $this->sendFailedLoginResponse($request);
+    }
     /**
      * Validate the user login request.
      *
@@ -153,6 +225,23 @@ trait AuthenticatesUsers
      */
     public function logout(Request $request)
     {
+
+        if(Auth::user()->roles[0]->name=='Propietario'){
+                    $this->guard()->logout();
+
+                    $request->session()->invalidate();
+
+                    return redirect('/login_propietario');
+        }
+
+        if(Auth::user()->roles[0]->name=='Arrendatario'){
+                    $this->guard()->logout();
+
+                    $request->session()->invalidate();
+
+                    return redirect('/login_arrendatario');
+        }
+
         $this->guard()->logout();
 
         $request->session()->invalidate();
@@ -160,6 +249,25 @@ trait AuthenticatesUsers
         return redirect('/');
     }
 
+
+    public function logout_propietario(Request $request)
+    {
+       
+        $this->guard()->logout();
+
+        $request->session()->invalidate();
+
+        return redirect('/login_propietario');
+    }
+
+        public function logout_arrendatario(Request $request)
+    {
+        $this->guard()->logout();
+
+        $request->session()->invalidate();
+
+        return redirect('/login_arrendatario');
+    }
     /**
      * Get the guard to be used during authentication.
      *

@@ -1,6 +1,10 @@
 <div class="form-group">
-	{{ Form::label('name', 'Nombre de la etiqueta') }}
+	{{ Form::label('name', 'Nombre de usuario') }}
 	{{ Form::text('name', null, ['class' => 'form-control', 'id' => 'name']) }}
+</div>
+<div class="form-group">
+	{{ Form::label('email', 'Email') }}
+	{{ Form::text('email', null, ['class' => 'form-control', 'id' => 'email']) }}
 </div>
 <hr>
 <h3>Lista de roles</h3>

@@ -1011,6 +1011,16 @@ class Router implements RegistrarContract, BindingRegistrar
         $this->post('login', 'Auth\LoginController@login');
         $this->post('logout', 'Auth\LoginController@logout')->name('logout');
 
+        $this->get('login_propietario', 'Auth\LoginController@showLoginFormPropietario')->name('login_propietario');
+        $this->post('login_propietario', 'Auth\LoginController@login_propietario');
+        $this->any('logout_propietario', 'Auth\LoginController@logout_propietario')->name('logout_propietario');
+        //$this->get('logout_propietario', 'Auth\LoginController@logout_propietario')->name('logout_propietario');
+
+        $this->get('login_arrendatario', 'Auth\LoginController@showLoginFormArrendatario')->name('login_arrendatario');
+        $this->post('login_arrendatario', 'Auth\LoginController@login_arrendatario');
+        $this->post('logout_arrendatario', 'Auth\LoginController@logout_arrendatario')->name('logout_arrendatario');
+
+
         // Registration Routes...
         $this->get('register', 'Auth\RegisterController@showRegistrationForm')->name('register');
         $this->post('register', 'Auth\RegisterController@register');

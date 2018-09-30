@@ -16,7 +16,9 @@
                     <tr>
                         <th>ID</th>
                         <th>Nombre</th>
+                        <th>Email</th>
                         <th ></th>
+                        <th></th>
                         <th></th>
                         <th></th>
                     </tr>
@@ -25,6 +27,8 @@
                     <tr>
                         <th>ID</th>
                         <th>Nombre</th>
+                        <th>Email</th>
+                        <th></th>
                         <th></th>
                         <th></th>
                         <th></th>
@@ -35,6 +39,15 @@
                     <tr>
                         <td>{{ $user->id }}</td>
                         <td>{{ $user->name }}</td>
+                        <td>{{ $user->email }}</td>
+                        @can('users.reset')
+                        <td width="10px">
+                                    <a href="{{ route('users.reset', $user->id) }}" 
+                                    class="btn btn-primary btn-circle btn-lg">
+                                      <i class="fa fa-key"></i>
+                                    </a>
+                        </td>
+                        @endcan
                         @can('users.show')
                         <td width="10px">
                                     <a href="{{ route('users.show', $user->id) }}" 

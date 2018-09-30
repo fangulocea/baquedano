@@ -99,9 +99,7 @@
                                 <li role="separator" class="divider"></li>
 
                                 <li><a href="{{ route('persona.edithome',Auth::user()->id_persona) }}"><i class="ti-user"></i> Mi Perfil</a></li>
-                                <li><a href="#"><i class="ti-email"></i> Bandeja de Entrada</a></li>
-                                <li role="separator" class="divider"></li>
-                                <li><a href="#"><i class="ti-settings"></i>Configuración de Cuenta</a></li>
+                                <li><a href="{{ route('cambiopassword_form') }}"><i class="ti-settings"></i>Cambiar Contraseña</a></li>
                                 <li role="separator" class="divider"></li>
                                 <li>
                                     <a href="{{ route('logout') }}"
@@ -135,18 +133,17 @@
             <!-- Left Sidebar - style you can find in sidebar.scss  -->
             <!-- ============================================================== -->
 
-            <div class="navbar-default sidebar" role="navigation">
-                <div class="sidebar-nav slimscrollsidebar">
+            <div class="navbar-default sidebar" role="navigation"  >
+                <div class="sidebar-nav " >
                     <div class="sidebar-head">
                         <h3><span class="fa-fw open-close"><i class="ti-close ti-menu"></i></span> <span class="hide-menu">Navigation</span></h3> </div>
-                    <ul class="nav" id="side-menu">
+                    <ul class="nav" id="side-menu" style="overflow-y: scroll;">
 
                          <li> <a href="#" class="waves-effect"><i class="mdi mdi-account-card-details fa-fw" data-icon="v"></i> <span class="hide-menu"> Mis Datos <span class="fa arrow"></span> <span class="label label-rouded label-primary pull-right">4</span></span></a>
                             <ul class="nav nav-second-level">
                                  
                                 <li><a href="{{ route('persona.edithome',Auth::user()->id_persona) }}"><i class="ti-user"></i> <span class="hide-menu">Mi Información</span></a></li>
-                                <li><a href="javascript:void(0)"><i class="ti-email"></i> <span class="hide-menu">Bandeja de Entrada</span></a></li>
-                                <li><a href="javascript:void(0)"><i class="ti-settings"></i> <span class="hide-menu">Configuración de Cuenta</span></a></li>
+                                <li><a href="{{ route('cambiopassword_form') }}"><i class="ti-settings"></i> <span class="hide-menu">Cambiar Contraseña</span></a></li>
                                <li><a href="{{ route('logout') }}"
                                        onclick="event.preventDefault();
                                                document.getElementById('logout-form').submit();"><i class="fa fa-power-off"></i> <span class="hide-menu">Cerrar Sesión</span></a><form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
@@ -260,7 +257,7 @@
                                  @can('captacion.index')
                                 <li> <a href="{{ route('captacion.reportes') }}" ><i class=" fa-fw">RS</i><span class="hide-menu">Reporte de seguimiento</span></a> </li>
                                 @endcan
-                                @can('primeraGestion.index')
+                                @can('captacion.index')
                                 <li> <a href="{{ route('primeraGestion.index',1) }}" ><i class=" fa-fw">EC</i> <span class="hide-menu">Envío de Correos</span></a> </li>
                                 @endcan
                                   @can('borradorContrato.index')
@@ -339,10 +336,10 @@
                             <li>
                                 <a href="javascript:void(0)" class="waves-effect"><i class="linea-icon linea-basic fa-fw">SOLICITUDES PAGO</i><span class="hide-menu"></span><span class="fa arrow"></span></a>
                                 <ul class="nav nav-third-level">
-                                    @can('borradorContrato.index')
+                                    @can('postventa.index')
                                     <li> <a href="{{ route('solservicio.index') }}"><i class=" fa-fw">SP</i><span class="hide-menu">PROPIETARIO</span></a> </li>
                                     @endcan
-                                    @can('finalContrato.index')
+                                    @can('postventa.index')
                                     <li> <a href="{{ route('arrsolservicio.index') }}"><i class=" fa-fw">SA</i><span class="hide-menu">ARRENDATARIOS</span></a> </li>
                                     @endcan
                                 </ul>
@@ -359,20 +356,20 @@
                         
                             <ul class="nav nav-second-level">
            
-                                 @can('repfinal.captacion_propietario')
+                                 @can('reportes.captaciones')
                                 <li> <a href="{{ route('repfinal.captacion_pro' ) }}"><i class="mdi mdi-file-excel fa-fw" data-icon="v"></i><span class="hide-menu">Reporte Captaciones Propietarios</span></a> </li>
                                 @endcan
-                                @can('repfinal.captacion_arrendatario')
+                                @can('reportes.captaciones')
                                 <li> <a href="{{ route('repfinal.captacion_arr' ) }}"><i class="mdi mdi-file-excel fa-fw" data-icon="v"></i><span class="hide-menu">Reporte Captaciones Arrendatarios</span></a> </li>
                                 @endcan
-                                @can('repfinal.contrato_propietario')
+                                @can('reportes.administracion')
                                 <li> <a href="{{ route('repfinal.contrato_pro' ) }}"><i class="mdi mdi-file-excel fa-fw" data-icon="v"></i><span class="hide-menu">Reporte Contratos Propietarios</span></a> </li>
                                 @endcan
-                                @can('repfinal.contrato_arrendatario')
+                                @can('reportes.administracion')
                                 <li> <a href="{{ route('repfinal.contrato_arr' ) }}"><i class="mdi mdi-file-excel fa-fw" data-icon="v"></i><span class="hide-menu">Reporte Contratos Arrendatarios</span></a> </li>
                                 @endcan
 
-                                @can('repfinal.historial_direccion')
+                                @can('reportes.administracion')
                                 <li> <a href="{{ route('repfinal.historial_direccion_inicio' ) }}"><i class="mdi mdi-file-excel fa-fw" data-icon="v"></i><span class="hide-menu">Reporte Historial Dirección</span></a> </li>
                                 @endcan
                             </ul>
@@ -383,10 +380,7 @@
                             Cerrar Sesión</a><form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                                         {{ csrf_field() }}
                                     </form></li>
-                        <li class="devider"></li>
-                        <li><a href="#" class="waves-effect"><i class="fa fa-circle-o text-danger"></i> <span class="hide-menu">Documentación</span></a></li>
-                        <li><a href="#" class="waves-effect"><i class="fa fa-circle-o text-info"></i> <span class="hide-menu">Galería de imágenes</span></a></li>
-                        <li><a href="#" class="waves-effect"><i class="fa fa-circle-o text-success"></i> <span class="hide-menu">Preguntas frecuentes</span></a></li>
+                       
                     </ul>
                 </div>
             </div>
@@ -412,36 +406,9 @@
                     @yield('contenido')
 
 
-                    <div class="right-sidebar">
-                        <div class="slimscrollright">
-                            <div class="rpanel-title"> Service Panel <span><i class="ti-close right-side-toggle"></i></span> </div>
-                            <div class="r-panel-body">
-                                <ul id="themecolors" class="m-t-20">
-                                    <li><b>With Light sidebar</b></li>
-                                    <li><a href="javascript:void(0)" data-theme="default" class="default-theme">1</a></li>
-                                    <li><a href="javascript:void(0)" data-theme="green" class="green-theme">2</a></li>
-                                    <li><a href="javascript:void(0)" data-theme="gray" class="yellow-theme">3</a></li>
-                                    <li><a href="javascript:void(0)" data-theme="blue" class="blue-theme">4</a></li>
-                                    <li><a href="javascript:void(0)" data-theme="purple" class="purple-theme">5</a></li>
-                                    <li><a href="javascript:void(0)" data-theme="megna" class="megna-theme">6</a></li>
-                                    <li class="full-width"><b>With Dark sidebar</b></li>
-                                    <li><a href="javascript:void(0)" data-theme="default-dark" class="default-dark-theme">7</a></li>
-                                    <li><a href="javascript:void(0)" data-theme="green-dark" class="green-dark-theme">8</a></li>
-                                    <li><a href="javascript:void(0)" data-theme="gray-dark" class="yellow-dark-theme">9</a></li>
-                                    <li><a href="javascript:void(0)" data-theme="blue-dark" class="blue-dark-theme">10</a></li>
-                                    <li><a href="javascript:void(0)" data-theme="purple-dark" class="purple-dark-theme">11</a></li>
-                                    <li><a href="javascript:void(0)" data-theme="megna-dark" class="megna-dark-theme working">12</a></li>
-                                </ul>
-                            
-                            </div>
-                        </div>
-                    </div>
-                    <!-- ============================================================== -->
-                    <!-- end right sidebar -->
-                    <!-- ============================================================== -->
                 </div>
                 <!-- /.container-fluid -->
-                <footer class="footer text-center"> 2018 &copy; EsquemaWeb </footer>
+                <footer class="footer text-center"> 2018 &copy; Desarrollado por FAC </footer>
             </div>
             <!-- ============================================================== -->
             <!-- End Page Content -->
