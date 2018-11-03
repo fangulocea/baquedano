@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Auth;
+use App\User;
+use App\Persona;
+use App\ContratoFinal;
 
 class HomeController extends Controller
 {
@@ -36,7 +39,11 @@ class HomeController extends Controller
 
     public function home_propietario()
     {
-        return view('interfaz_propietario.home_propietario');
+        $user = User::find(Auth::id());
+        $id_persona=$user->id_persona;
+        $_persona=Persona::find($id_persona);
+        $contratos=ContratoFinal::contratos_activos_propietarios($id_persona);
+        return view('interfaz_propietario.home_propietario',compact('contratos','_persona'));
      }
 
     public function home_arrendatario()

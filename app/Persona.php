@@ -28,4 +28,5 @@ public static function personasFono($text){
         // return Inmueble::where('direccion','like','%'.$text.'%')->get();
         return DB::table('personas')->where('telefono','like','%'.$text.'%')->get();
     }
+
 }

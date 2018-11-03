@@ -88,11 +88,43 @@ Route::get('comunas/{id}','ProvinciaController@getComunas');
 Route::post('cambiopassword','UsersController@cambiopassword')->name('cambiopassword');
 Route::get('cambiopassword','UsersController@cambiopassword_form')->name('cambiopassword_form');
 
+
+Route::get('cambiopassword_form_prop','UsersController@cambiopassword_form_prop')->name('cambiopassword_form_prop');
+Route::get('cambiopassword_form_arr','UsersController@cambiopassword_form_arr')->name('cambiopassword_form_arr');
+
 //RUTAS
 Route::middleware(['auth'])->group(function(){
+
+
+//HOME PROPIETARIO
 	
 	Route::get('/home/propietario', 'HomeController@home_propietario')->name('home_propietario')
 	->middleware('permission:propietario.home');
+
+	Route::get('/home/propietario/documentos', 'HomePropietario@mostrar_documentos')->name('mostrar_documentos_propietario')
+	->middleware('permission:propietario.home');
+
+	Route::get('/home/propietario/datospropiedad', 'HomePropietario@datos_propiedad')->name('datos_propiedad_propietario')
+	->middleware('permission:propietario.home');
+
+	Route::get('/home/propietario/pagospendientes', 'HomePropietario@pagos_pendientes')->name('pagos_pendientes_propietario')
+	->middleware('permission:propietario.home');
+
+
+	Route::get('/home/propietario/ver_contrato/{id}', 'ContratoFinalController@vercontrato_home')->name('propietario.vercontrato')
+	->middleware('permission:propietario.home');
+
+Route::get('home/propietario/comprobantedepago/{id}','PagosMensualesPropietariosController@comprobantedepago')->name('comprobantedepago_propietario')
+		->middleware('permission:propietario.home');
+
+Route::get('home/propietario/consultapagos/{id}/{mes}/{anio}','HomePropietario@getpagos')
+->middleware('permission:propietario.home');
+
+Route::get('home/propietario/consultameses/{id}','HomePropietario@getmeses')
+->middleware('permission:propietario.home');
+
+
+//HOME ARRENDATARIO
 
 	Route::get('/home/arrendatario', 'HomeController@home_arrendatario')->name('home_arrendatario')
 	->middleware('permission:arrendatario.home');

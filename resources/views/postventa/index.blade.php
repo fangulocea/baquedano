@@ -10,13 +10,16 @@
                         <div id="tabla" >
                             <div class="white-box">
                                 <div class="table-responsive" style="padding-bottom: 50px;">
-                                    <table id="listusers" class="display compact" cellspacing="0" width="200%">
+                                    <table id="listusers" class="display compact" >
                               
                                         <thead>
                                             <tr>
                                                 <th>ID</th>
                                                 <th>Tipo Contrato</th>
                                                 <th>Dirección</th>
+                                                <th>Número</th>
+                                                <th>Departamento</th>
+                                                <th>Comuna</th>
                                                 <th>Asignado</th>
                                                 <th>Estado</th>
                                                 <th>Fecha Ultima Revisión</th>
@@ -60,7 +63,10 @@ var table = $('#listusers').DataTable({
                 {data: 'id_link', name: 'id_link'},
                 {data: 'tipo_contrato', name: 'tipo_contrato'},
                 
-                {data: 'direccion', name: 'direccion'},
+                {data: 'calle', name: 'calle'},
+                {data: 'numero', name: 'numero'},
+                {data: 'departamento', name: 'departamento'},
+                {data: 'comuna', name: 'comuna'},
                 {data: 'asignacion', name: 'asignacion'},
                 {data: 'estado', name: 'estado'},
                 {data: 'ultima_modificacion', name: 'ultima_modificacion'},

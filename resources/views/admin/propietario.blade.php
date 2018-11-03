@@ -62,9 +62,17 @@
                         <!-- Logo -->
                         <a class="logo" href="{{ route('home_propietario') }}">
                           <img src="{{ URL::asset('plugins/images/logo-Baquedano-small.png') }}" width="80" height="50" alt="home" class="dark-logo" /><!--This is light logo icon--><img src="{{ URL::asset('plugins/images/logo-Baquedano-small.png') }}" alt="home" class="light-logo" width="80" height="50" />
+
                              </a>
+
                     </div>
                     
+                    <ul class="nav navbar-top-links navbar-left">
+                        <center>
+                            <a class="logo" href="{{ route('home_propietario') }}">
+                    <img class="img-responsive mb-lg hidden-xs hidden-sm" alt="baquedano rentas" width="300" height="200" src="{{ URL::asset('plugins/images/subpropietario.png') }}" > </a>
+                </center>
+                    </ul>
                     <ul class="nav navbar-top-links navbar-right pull-right">
                        
 
@@ -83,6 +91,7 @@
                                             <p class="text-muted">{{ Auth::user()->email }}</p></div>
                                     </div>
                                 </li>
+                                <li><a href="{{ route('cambiopassword_form_prop') }}"><i class="ti-settings"></i>Cambiar Contraseña</a></li>
                                 <li role="separator" class="divider"></li>
                                 <li>
                                     <a 

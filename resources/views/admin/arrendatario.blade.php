@@ -61,25 +61,19 @@
                     <div class="top-left-part">
                         <!-- Logo -->
                         <a class="logo" href="{{ route('home_arrendatario') }}">
-                            <!-- Logo icon image, you can use font-icon also --><b>
-                                <!--This is dark logo icon--><img src="{{ URL::asset('plugins/images/logo-Baquedano-small.png') }}" width="80" height="50" alt="home" class="dark-logo" /><!--This is light logo icon--><img src="{{ URL::asset('plugins/images/logo-Baquedano-small.png') }}" alt="home" class="light-logo" width="80" height="50" />
-                                <img src="{{ URL::asset('plugins/images/inicio.png') }}" alt="home" class="light-logo" width="80" height="50" />
-                            </b> </a>
-                    </div>
-                    <!-- /Logo -->
-                    <!-- Search input and Toggle icon -->
-                    <ul class="nav navbar-top-links navbar-left">
-                        <li><a href="javascript:void(0)" class="open-close waves-effect waves-light"><i class="ti-menu"></i></a></li>
-                        
-                        
-                    </ul>
-                    <button class="right-side-toggle waves-effect waves-light btn-info btn-circle pull-right m-l-20"><i class="ti-settings text-white"></i></button>
-                    <ul class="nav navbar-top-links navbar-right pull-right">
-                        <li>
-                            <form role="search" class="app-search hidden-sm hidden-xs m-r-10">
+                          <img src="{{ URL::asset('plugins/images/logo-Baquedano-small.png') }}" width="80" height="50" alt="home" class="dark-logo" /><!--This is light logo icon--><img src="{{ URL::asset('plugins/images/logo-Baquedano-small.png') }}" alt="home" class="light-logo" width="80" height="50" />
 
-                                <input type="text" placeholder="Buscar" class="form-control"> <a href=""><i class="fa fa-search"></i></a> </form>
-                        </li>
+                             </a>
+
+                    </div>
+                    
+                    <ul class="nav navbar-top-links navbar-left">
+                        <center>
+                    <img class="img-responsive mb-lg hidden-xs hidden-sm" alt="baquedano rentas" width="300" height="200" src="{{ URL::asset('plugins/images/subpropietario.png') }}" >
+                </center>
+                    </ul>
+                    <ul class="nav navbar-top-links navbar-right pull-right">
+                       
 
                         @if (Auth::guest())
                         <li><a href="{{ route('login_arrendatario') }}">Login</a></li>
@@ -96,9 +90,10 @@
                                             <p class="text-muted">{{ Auth::user()->email }}</p></div>
                                     </div>
                                 </li>
+                                <li><a href="{{ route('cambiopassword_form_arr') }}"><i class="ti-settings"></i>Cambiar Contraseña</a></li>
                                 <li role="separator" class="divider"></li>
                                 <li>
-                                    <a href="{{ route('logout') }}"
+                                    <a 
                                        onclick="event.preventDefault();
                                                document.getElementById('logout-form').submit();">
                                         Cerrar Sesión
@@ -138,36 +133,10 @@
                     @yield('contenido')
 
 
-                    <div class="right-sidebar">
-                        <div class="slimscrollright">
-                            <div class="rpanel-title"> Service Panel <span><i class="ti-close right-side-toggle"></i></span> </div>
-                            <div class="r-panel-body">
-                                <ul id="themecolors" class="m-t-20">
-                                    <li><b>With Light sidebar</b></li>
-                                    <li><a href="javascript:void(0)" data-theme="default" class="default-theme">1</a></li>
-                                    <li><a href="javascript:void(0)" data-theme="green" class="green-theme">2</a></li>
-                                    <li><a href="javascript:void(0)" data-theme="gray" class="yellow-theme">3</a></li>
-                                    <li><a href="javascript:void(0)" data-theme="blue" class="blue-theme">4</a></li>
-                                    <li><a href="javascript:void(0)" data-theme="purple" class="purple-theme">5</a></li>
-                                    <li><a href="javascript:void(0)" data-theme="megna" class="megna-theme">6</a></li>
-                                    <li class="full-width"><b>With Dark sidebar</b></li>
-                                    <li><a href="javascript:void(0)" data-theme="default-dark" class="default-dark-theme">7</a></li>
-                                    <li><a href="javascript:void(0)" data-theme="green-dark" class="green-dark-theme">8</a></li>
-                                    <li><a href="javascript:void(0)" data-theme="gray-dark" class="yellow-dark-theme">9</a></li>
-                                    <li><a href="javascript:void(0)" data-theme="blue-dark" class="blue-dark-theme">10</a></li>
-                                    <li><a href="javascript:void(0)" data-theme="purple-dark" class="purple-dark-theme">11</a></li>
-                                    <li><a href="javascript:void(0)" data-theme="megna-dark" class="megna-dark-theme working">12</a></li>
-                                </ul>
-                            
-                            </div>
-                        </div>
-                    </div>
-                    <!-- ============================================================== -->
-                    <!-- end right sidebar -->
-                    <!-- ============================================================== -->
+                    
                 </div>
                 <!-- /.container-fluid -->
-                <footer class="footer text-center"> 2018 &copy; EsquemaWeb </footer>
+                <footer class="footer text-center"> 2018 &copy; Desarrollado por FAC</footer>
             </div>
             <!-- ============================================================== -->
             <!-- End Page Content -->

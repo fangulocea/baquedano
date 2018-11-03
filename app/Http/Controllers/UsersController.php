@@ -38,6 +38,16 @@ class UsersController extends Controller
         return view('users.password');
     }
 
+            public function cambiopassword_form_prop()
+    {
+        return view('interfaz_propietario.password');
+    }
+
+            public function cambiopassword_form_arr()
+    {
+        return view('interfaz_arrendatario.password');
+    }
+
     /**
      * Store a newly created resource in storage.
      *
@@ -92,13 +102,14 @@ class UsersController extends Controller
 
         $role = User::create([
             'name' => $propietario_propiedad->nombre.' '.$propietario_propiedad->apellido_paterno.' '.$propietario_propiedad->apellido_materno,
+            'id_persona'=>$propietario_propiedad->id_propietario,
             'email' => $propietario_propiedad->email,
             'password' => bcrypt('123456'),
         ]);
 
 
         $ru=Role_User::create([
-            'role_id' => 3,
+            'role_id' => 4,
             'user_id' => $role->id
         ]);
         return redirect()->back()->with('status', 'Se ha creado la cuenta de propietario con éxito, debe ingresar con su Email y contraseña 123456');
@@ -148,7 +159,7 @@ class UsersController extends Controller
 
 
         $ru=Role_User::create([
-            'role_id' => 4,
+            'role_id' => 5,
             'user_id' => $role->id
         ]);
         return redirect()->back()->with('status', 'Se ha creado la cuenta de arrendatario con éxito, debe ingresar con su Email y contraseña 123456');

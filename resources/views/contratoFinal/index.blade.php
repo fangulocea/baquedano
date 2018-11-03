@@ -13,6 +13,8 @@
                     <tr>
                         <th>ID</th>
                         <th>Dirección</th>
+                        <th>Número</th>
+                        <th>Departamento</th>
                         <th>Comuna</th>
                         <th>Propietario</th>
                         <th>Día Pago</th>
@@ -37,6 +39,8 @@
                     <tr>
                         <th>ID</th>
                         <th>Dirección</th>
+                        <th>Número</th>
+                        <th>Departamento</th>
                         <th>Comuna</th>
                         <th>Propietario</th>
                         <th>Día Pago</th>
@@ -64,7 +68,11 @@
                                     <span class="btn btn-success btn-sm"> {{ $p->id_publicacion }}</span> </a></td>
                                 
                                 <td ><a href="{{ route('finalContrato.edit', [$p->id_publicacion,0,0,1,"contrato"]) }}" >
-                                    {{ $p->direccion }} #{{ $p->numero }} , Dpto {{ $p->departamento }}</a></td>
+                                    {{ $p->direccion }}</a></td>
+                                <td ><a href="{{ route('finalContrato.edit', [$p->id_publicacion,0,0,1,"contrato"]) }}" >
+                                    {{ $p->numero }} </a></td>
+                                <td ><a href="{{ route('finalContrato.edit', [$p->id_publicacion,0,0,1,"contrato"]) }}" >
+                                    {{ $p->departamento }}</a></td>
                                 <td>{{ $p->comuna_nombre }}</td>
                                 <td>{{ $p->nom_p }} {{ $p->apep_p }} {{ $p->apem_p }}</td>
                                 <td>{{ $p->dia_pago }}</td>

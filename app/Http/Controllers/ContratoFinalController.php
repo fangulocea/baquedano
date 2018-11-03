@@ -490,7 +490,7 @@ public function savepagofin(Request $request,$id_contrato,$id_publicacion) {
                 ->leftjoin('adm_contratofinal as cp', 'c.id_contratofinal', '=', 'cp.id')
                 ->where('c.id_contratofinal', '=', $id)
                 ->where('c.id_inmueble', '=', $idi)
-                ->select(DB::raw(' c.id, c.E_S, c.fecha_iniciocontrato, c.mes, c.anio, c.valor_a_pagar, cp.meses_contrato,c.subtotal_entrada, c.subtotal_salida, c.pago_propietario, c.pago_rentas,c.subtotal_entrada_moneda, c.subtotal_salida_moneda, c.pago_propietario_moneda, c.pago_rentas_moneda, c.id_estado'))
+                ->select(DB::raw(' cp.id as id_contrato, c.id, c.E_S, c.fecha_iniciocontrato, c.mes, c.anio, c.valor_a_pagar, cp.meses_contrato,c.subtotal_entrada, c.subtotal_salida, c.pago_propietario, c.pago_rentas,c.subtotal_entrada_moneda, c.subtotal_salida_moneda, c.pago_propietario_moneda, c.pago_rentas_moneda, c.id_estado'))
                 ->orderBy('c.id', 'asc')
                 ->get();
         return response()->json($contrato);
