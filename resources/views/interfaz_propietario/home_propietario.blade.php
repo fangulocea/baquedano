@@ -4,7 +4,7 @@
 
 @section('contenido')
 
-
+<link rel="stylesheet" href="{{ URL::asset('bootstrap/dist/css/bootstrap.min.css') }}">
 <div class="responsive">
     <div class="row">
         <div class="col-sm-12">
@@ -79,11 +79,7 @@
 <div class="row" style="padding: 10px">
 <div class="col-md-12 col-lg-6 col-sm-12" style="padding-right: 30px; border-right: 1px solid #F0FFF0;">
                         <div style="background-color: #F0FFF0;" >
-                            <div class="col-md-3 col-sm-4 col-xs-6 pull-right">
-                                <select class="form-control pull-right row b-none">
-
-                                </select>
-                            </div>
+                   
                             <h3 class="box-title">LIQUIDACIÓN MENSUAL</h3>
                             <div class="row">
                                     <div class="col-md-6">
@@ -105,27 +101,13 @@
                                                 <option value="">Seleccione Contrato</option>
                                             </select>
                                         </div>
-                                    </div>
-
-
-
-
-                            <div class="row" style="background-color: #F0FFF0;" >
-
-                                <div class="col-md-6 col-sm-6 col-xs-6" >
-                                    <h2>Mes Actual</h2>
-                                    <p>ESTADO</p>
-                                </div>
-                                <div class="col-md-6 col-sm-6 col-xs-6 ">
-                                    <h1 class="text-right text-info m-t-20">$3,690</h1>
-                                </div>
                             </div>
-                            <div class="table-responsive">
-                                   <div id="tabla" >
-                            <div class="white-box">
-                                <div class="form-body">
-                                    
-                                    <div class="row">
+
+
+
+
+
+                            <div class="row">
                                         <div class="col-md-12">
                                             <div class="table-responsive" id="tablearea">
 
@@ -134,12 +116,6 @@
                                         </div>
 
                                     </div>
-
-
-                                </div>
-                            </div>
-                        </div>
-                            </div>
                         </div>
                     </div>
 
@@ -171,44 +147,7 @@
                             </div>
                         </div>
                         <hr>
-                        <div class="row" style="background-color: #E0FFFF">
-                         <h3 class="box-title">AUTORIZACIONES POST ATENCIÓN</h3>
-                            <div class="table-responsive">
-                                <table class="table">
-                                    <thead>
-                                        <tr>
-                                            <th>#</th>
-                                            <th>NAME</th>
-                                            <th>STATUS</th>
-                                            <th>DATE</th>
-                                            <th>PRICE</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>1</td>
-                                            <td class="txt-oflo">Elite admin</td>
-                                            <td><span class="label label-success label-rouded">SALE</span> </td>
-                                            <td class="txt-oflo">April 18, 2017</td>
-                                            <td><span class="text-success">$24</span></td>
-                                        </tr>
-                                        <tr>
-                                            <td>2</td>
-                                            <td class="txt-oflo">Real Homes WP Theme</td>
-                                            <td><span class="label label-info label-rouded">EXTENDED</span></td>
-                                            <td class="txt-oflo">April 19, 2017</td>
-                                            <td><span class="text-info">$1250</span></td>
-                                        </tr>
-                                        
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-
-                    </div>
-</div>
-<hr>
-                 <div class="row"  >
+          <div class="row"  >
                             <div class="panel" >
                             <div class="panel-heading">DATOS PARA TRANSFERENCIAS</div>
                             <div class="table-compact" >
@@ -242,6 +181,12 @@
                             </div>
                             </div>
                         </div>
+
+                    </div>
+                    
+</div>
+<hr>
+                 
                         <div class="row">
                             <div class="panel">
                             <div class="panel-heading">CONTACTOS BAQUEDANO</div>
@@ -348,7 +293,7 @@
 <script src="{{ URL::asset('bootstrap/dist/js/bootstrap.min.js') }}"></script>
 
 <script>
-
+$(function() {
  $("#id_contrato").change(function (event) {
         if(event.target.value!=""){
                 $("#meses").empty();
@@ -368,6 +313,7 @@
 
 $("#meses").change(function (event) {
 
+
         if($("#id_contrato").val()==''){
 
             return false;
@@ -375,6 +321,10 @@ $("#meses").change(function (event) {
         }
 
         $.get("/home/propietario/consultapagos/" + $("#id_contrato").val() + "/" + event.target.value ,function(response,state){
+                   
+
+                        
+
                         var meses = ["Ene","Feb","Mar","Abr","May","Jun","Jul","Ago","Sep","Oct","Nov","Dic"];
 
                         document.getElementById("tablearea").innerHTML="";
@@ -382,11 +332,14 @@ $("#meses").change(function (event) {
                             var tablearea = document.getElementById('tablearea'),
                                 tbl = document.createElement('table');
 
-                            tbl.className='table';
-                            tbl.style.border="1px solid black";
-                            tbl.style.padding="10px";
-                            tbl.style.marginTop="50px";
+                            tbl.className='table table-hover manage-u-table';
+                             $.get("/home/propietario/uf/",function(response,state){
+                                valoruf=response.valor;
+                                fechauf=response.fecha;
+                             });
 
+                            
+                             
                             var header = tbl.createTHead();
            
 
@@ -399,130 +352,127 @@ $("#meses").change(function (event) {
                                   
                                         head_fecha.setDate(1);
                                         var cell = document.createElement("th");
-                                        cell.style.border="1px solid black";
-                                        cell.style.padding="8px";
                                         cell.innerHTML = 'Tipo de Pago';
                                         rowheader.appendChild(cell);
 
-                                     for (var r = 0; r < meses_contrato+1; r++) {
                                         var cell = document.createElement("th");
-                                        cell.style.border="1px solid black";
-                                        cell.style.padding="8px";
-
-                                         cell.innerHTML = '<b>'+meses[head_fecha.getMonth()]+"/"+head_fecha.getFullYear()+'</b>';
-
-                                        head_fecha.setMonth(head_fecha.getMonth()+1);
+                                        cell.className='txt-oflo';
+                                        cell.innerHTML = 'Moneda';
                                         rowheader.appendChild(cell);
 
-                                     }
+                                        var cell = document.createElement("th");
+                                        cell.className='txt-oflo';
+                                        cell.innerHTML = 'Valor en Moneda';
+                                        rowheader.appendChild(cell);
+
+                                        var cell = document.createElement("th");
+                                        cell.className='txt-oflo';
+                                        cell.innerHTML = 'Subtotal Pesos';
+                                        rowheader.appendChild(cell);
+
                                      tbl.appendChild(rowheader);
+                                     var fields = event.target.value.split('/');
+                                     var mes = fields[0];
+                                     var anio = fields[1];
+
 
                                     // LINEAS
-                                    for (var r = 0; r < 50; r++) 
+                                    for (var r = 0; r < 100; r++) 
                                     {
-                                        var row = document.createElement("tr");
+                                        
                                         var newArray = response.filter(function (el) {
-                                              return el.idtipopago==r;
+                                              return el.idtipopago==r && el.mes==mes && el.anio==anio;
                                             });
+
+
 
                                         
                                      // CONTENIDO
                                          if(newArray.length>0)
                                          {
+
+
+                                            var row = document.createElement("tr");
                                                var cell = document.createElement("td");
                                                     var cellText = document.createTextNode(newArray[0].tipopago);
                                                     cell.appendChild(cellText);
-                                                    cell.style.border="1px solid black";
-                                                    cell.style.padding="8px"
+                                                    cell.className='txt-oflo';
                                                     row.appendChild(cell);
-                                                 if(newArray[0].idtipopago==6){
-                                                            var cell = document.createElement("td");
-                                                            cell.style.border="1px solid black";
-                                                            cell.style.padding="8px"
-                                                            cell.style.textAlign="center"
-                                                            row.appendChild(cell);
-                                                 }
                                                 $subtotal=0;
-                                                 var fecha_inicio=new Date(response[0].fecha_iniciocontrato+'T00:00:00');
-                                                            fecha_inicio.setDate(1);
-                                                 for (var c = 0; c < meses_contrato+1; c++) 
-                                                 {
+                                                var cell = document.createElement("td");
+                                                    var cellText = document.createTextNode(newArray[0].moneda);
+                                                    cell.appendChild(cellText);
+                                                    cell.className='txt-oflo';
+                                                    row.appendChild(cell);
+
+                                                var cell = document.createElement("td");
+                                                    var cellText = document.createTextNode(newArray[0].precio_en_moneda);
+                                                    cell.appendChild(cellText);
+                                                    cell.className='txt-oflo';
+                                                    row.appendChild(cell);
 
 
-                                                    if (!$.isEmptyObject(newArray[c])) 
-                                                    {
-                                                            var newArray2 = response.filter(function (el) {
-                                                                  return el.idtipopago==newArray[c].idtipopago && el.mes==fecha_inicio.getMonth()+1 && el.anio==fecha_inicio.getFullYear();
-                                                                });
-
-
-                                                                 
-                                                            if (!$.isEmptyObject(newArray2)) 
-                                                            {
-
-                                                                    var total_precio_en_moneda = 0;
-                                                                    for (var i = 0; i < newArray2.length; i++) {total_precio_en_moneda += newArray2[i].precio_en_moneda;
-
-                                                                    }
-                                                                    
-                                                                    var idtp=newArray2.idtipopago;
-                                                                    $subtotal+=newArray2[0].precio_en_moneda;
-                                                                    var a = document.createElement("button");
-                                                                    var linkText = document.createTextNode(total_precio_en_moneda);
-                                                                    a.appendChild(linkText);
-                                                                    if(newArray2[0].E_S=='e'){
-                                                                        a.className="btn btn-block btn-outline btn-success";
-                                                                    }else{
-                                                                        if(newArray2[0].idtipopago==11){
-                                                                            a.className="btn btn-block btn-outline btn-info";
-                                                                        }else{
-                                                                           a.className="btn btn-block btn-outline btn-danger"; 
-                                                                        }
-                                                                        
-                                                                    }
-                                                                    if(newArray2[0].idtipopago==20 || newArray2[0].idtipopago==21 || newArray2[0].idtipopago==34 || newArray2[0].idtipopago==35 )
-                                                                        a.className="btn btn-block btn-outline btn-default";
-                                                                    var id=newArray2[0].id;
-                                                                    a.id=id;
-                                                                    if(newArray2[0].idtipopago!=20 && newArray2[0].idtipopago!=21  && newArray2[0].idtipopago!=34 && newArray2[0].idtipopago!=35 && newArray2[0].idtipopago!=11)
-                                                                    a.addEventListener('click', function(){
-                                                                            mostrar_modal(this);
-                                                                        });
-                                                                    var cell = document.createElement("td");
-                                                                    cell.appendChild(a);
-                                                                    cell.style.border="1px solid black";
-                                                                    cell.style.padding="8px"
-                                                                    cell.style.textAlign="center"
-                                                                    row.appendChild(cell);
-                                                                }else{
-                                                                    var a = document.createElement("button");
-                                                                    a.className="btn btn-block btn-outline btn-default";
-                                                                    var linkText = document.createTextNode(0);
-                                                                    a.appendChild(linkText);
-                                                                    var cell = document.createElement("td");
-                                                                    cell.appendChild(a);
-                                                                    cell.style.border="1px solid black";
-                                                                    cell.style.padding="8px"
-                                                                    cell.style.textAlign="center"
-                                                                    row.appendChild(cell);
-                                                                }
-                                                            
+                                                if(newArray[0].moneda=='UF'){
+                                                    subtotal= newArray[0].precio_en_moneda * valoruf;
+                                                }else{
+                                                   subtotal= newArray[0].precio_en_moneda *1;
+                                                }
+                                                var cell = document.createElement("td");
+                                                    var cellText = document.createTextNode(Math.ceil(subtotal));
+                                                    cell.appendChild(cellText);
+                                                    if(newArray[0].idtipopago==35 || newArray[0].idtipopago==21 ){
+                                                        cell.style="font-weight: bold;";
                                                     }
-                                                    
-                                                        
-                                                  fecha_inicio.setMonth(fecha_inicio.getMonth()+1);  
+                                                    cell.className='txt-oflo';
+                                                    row.appendChild(cell);
+
+                                            if(newArray[0].idtipopago==35 || newArray[0].idtipopago==21 ){
+                                                div_pago = document.createElement('div');
+                                                div_pago.className='text-center text-info m-t-20';
+                                                h1_pago = document.createElement('h1');
+                                                br_pago = document.createElement('br');
+                                                
+                                                h1_pago.appendChild(document.createTextNode("Saldo a Depositar : $ " + subtotal));
+                                                div_pago.appendChild(h1_pago);
+                                                div_pago.appendChild(br_pago);
+               
+                                                var a = document.createElement("button");
+                                                            var linkText1 = document.createTextNode("Descargar Comrpobante");
+                                                            a.className=" btn btn-success  btn-lg";
+                                                            a.id=newArray[0].id_pm;
+                                                            a.addEventListener('click', function(){
+                                                                    comprobante(this);
+                                                                });
+                                                            a.appendChild(linkText1);
+                                                            a.style="font-size:small"
+                                                            var div_boton = document.createElement("div");
+                                                            div_boton.appendChild(a);
+
+                                                div_pago.appendChild(div_boton);
+                                                div_pago.appendChild(h1_pago); 
+
+
+                                            }
+                                                tbl.appendChild(row); // AGREGA EL PAGO
                                                 }           
                                                            
-                                                tbl.appendChild(row); // AGREGA EL PAGO
+                                                
                                         }
-                                    }
-                                
+                                    
+                                tablearea.appendChild(div_pago);
+                                tablearea.appendChild(br_pago);
                                  tablearea.appendChild(tbl);
+
                         }
                 
             });
 
 
     });
+
+function comprobante(obj){
+    window.location.href = '/home/propietario/comprobantedepago/'+obj.id;
+}
+});
 </script>
 @endsection

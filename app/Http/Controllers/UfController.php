@@ -31,6 +31,15 @@ class UfController extends Controller
          return view('uf.create');
     }
 
+
+    public function ultimo_valor()
+    {
+         $uf = Uf::all();
+
+        return $uf->last();
+    }
+
+
     /**
      * Store a newly created resource in storage.
      *

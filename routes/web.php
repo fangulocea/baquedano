@@ -37,6 +37,8 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 Route::get('inmuebles/{text}','InmuebleController@getInmuebles');
 
+
+
 Route::get('idcliente/{ids}/{idi}','IDClienteInmuebleController@getid');
 
 Route::get('inmuebles/{modulo}/{text}','InmuebleController@getInmuebles_modulo');
@@ -120,8 +122,11 @@ Route::get('home/propietario/comprobantedepago/{id}','PagosMensualesPropietarios
 Route::get('home/propietario/consultapagos/{id}/{mes}/{anio}','HomePropietario@getpagos')
 ->middleware('permission:propietario.home');
 
+
 Route::get('home/propietario/consultameses/{id}','HomePropietario@getmeses')
 ->middleware('permission:propietario.home');
+
+Route::get('home/propietario/uf','UfController@ultimo_valor')->middleware('permission:propietario.home');
 
 
 //HOME ARRENDATARIO
