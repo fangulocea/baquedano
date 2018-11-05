@@ -833,7 +833,7 @@
 
 <script src="{{ URL::asset('plugins/bower_components/jquery/dist/jquery.min.js') }}"></script>
 <!-- Bootstrap Core JavaScript -->
-<script src="{{ URL::asset('bootstrap/dist/js/bootstrap.min.js') }}"></script>
+
 
 <script src="{{ URL::asset('plugins/bower_components/typeahead.js-master/dist/typeahead.bundle.min.js') }}"></script>
 

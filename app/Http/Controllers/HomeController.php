@@ -7,6 +7,7 @@ use Auth;
 use App\User;
 use App\Persona;
 use App\ContratoFinal;
+use App\PagosPropietarios;
 
 class HomeController extends Controller
 {
@@ -43,7 +44,15 @@ class HomeController extends Controller
         $id_persona=$user->id_persona;
         $_persona=Persona::find($id_persona);
         $contratos=ContratoFinal::contratos_activos_propietarios($id_persona);
-        return view('interfaz_propietario.home_propietario',compact('contratos','_persona'));
+        $idcontratos=ContratoFinal::id_contratos($id_persona);
+        $ids=[];
+        foreach ($idcontratos as $k) {
+            array_push($ids, $k->id);
+        }
+
+        $pagos_actual = PagosPropietarios::pagomensual($ids,date("m"),date("Y"));
+
+        return view('interfaz_propietario.home_propietario',compact('contratos','_persona','pagos_actual'));
      }
 
     public function home_arrendatario()

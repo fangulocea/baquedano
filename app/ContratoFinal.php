@@ -35,4 +35,26 @@ class ContratoFinal extends Model
     }
 
 
+
+    public static function id_contratos($id_propietario) {
+
+          $direcciones = DB::table('adm_contratodirpropietarios as c')
+                ->leftjoin('cap_publicaciones as p','p.id','=','c.id_publicacion')
+                ->leftjoin('inmuebles as i', 'c.id_inmueble', '=', 'i.id')
+                ->leftjoin('comunas as o', 'i.id_comuna', '=', 'o.comuna_id')
+                ->leftjoin('adm_contratofinal as cf', 'c.id_contratofinal', '=', 'cf.id')
+                ->leftjoin('notarias as n', 'cf.id_notaria', '=', 'n.id')
+                 ->leftjoin('cap_simulapropietario as sp', 'cf.id_propuesta', '=', 'sp.id')
+            ->leftjoin('mensajes as m', function($join){
+                 $join->on('m.nombre_modulo', '=',DB::raw("'Contrato Final Propietario'"));
+                 $join->on('m.id_estado', '=', 'cf.id_estado');
+            })
+                ->where("p.id_propietario", "=", $id_propietario)
+                ->select(DB::raw("cf.id"))
+                ->get()->toArray();
+
+                return $direcciones;
+    }
+
+
 }

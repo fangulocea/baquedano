@@ -280,6 +280,8 @@
                             <p>Compra y venta de <br>inmuebles.</p>
                             <button class="btn btn-success btn-rounded waves-effect waves-light m-t-20"><a href="http://ibaquedano.cl/baquedano-propiedades" target="_blank" style="color:white">Ver más</a></button>
                         </div>
+                        <input type="hidden" id="uf">
+                        <input type="hidden" id="fecha">
                     </div>
                 </div>
 
@@ -289,11 +291,20 @@
 </div>  
 
 <script src="{{ URL::asset('plugins/bower_components/jquery/dist/jquery.min.js') }}"></script>
-<!-- Bootstrap Core JavaScript -->
-<script src="{{ URL::asset('bootstrap/dist/js/bootstrap.min.js') }}"></script>
+
 
 <script>
+    $.get("/home/propietario/uf/",function(response,state){
+                                $("#uf").val(response.valor);
+                                $("#fecha").val(response.fecha);
+                             });
+
+
 $(function() {
+
+ 
+
+
  $("#id_contrato").change(function (event) {
         if(event.target.value!=""){
                 $("#meses").empty();
@@ -310,21 +321,47 @@ $(function() {
 
  });
 
+@if(count($pagos_actual)>0)
+
+    
+    var text = '<?php echo $pagos_actual[0]->mes.'/'.$pagos_actual[0]->anio; ?>';
+    tabla({{ $pagos_actual[0]->id_contratofinal or 0 }}, text );
+    $('#id_contrato option[value="{{ $pagos_actual[0]->id_contratofinal or 0 }}"]').prop('selected', true);
+                $("#meses").empty();
+                var meses = ["","Ene","Feb","Mar","Abr","May","Jun","Jul","Ago","Sep","Oct","Nov","Dic"];
+                $.get("/home/propietario/consultameses/" +{{ $pagos_actual[0]->id_contratofinal or 0 }} + "", function (response, state) {
+                    $("#meses").append("<option value=''>Seleccione Mes</option>");
+                    for (i = 0; i < response.length; i++) {
+                        $("#meses").append("<option value='" +  response[i].mes + "/" +  response[i].anio  + "' >" +  meses[response[i].mes]  + "/" +  response[i].anio + "</option>");
+                    }
+                    $('#meses option[value="'+text+'"]').prop('selected', true);
+     });
+                
+    
+
+@endif
+
 
 $("#meses").change(function (event) {
 
+    tabla($("#id_contrato").val() , event.target.value );
+        
+});
 
-        if($("#id_contrato").val()==''){
+
+
+
+
+function tabla(id,txt){
+
+    if(id ==''){
 
             return false;
 
         }
 
-        $.get("/home/propietario/consultapagos/" + $("#id_contrato").val() + "/" + event.target.value ,function(response,state){
+        $.get("/home/propietario/consultapagos/" + id + "/" + txt,function(response,state){
                    
-
-                        
-
                         var meses = ["Ene","Feb","Mar","Abr","May","Jun","Jul","Ago","Sep","Oct","Nov","Dic"];
 
                         document.getElementById("tablearea").innerHTML="";
@@ -333,10 +370,7 @@ $("#meses").change(function (event) {
                                 tbl = document.createElement('table');
 
                             tbl.className='table table-hover manage-u-table';
-                             $.get("/home/propietario/uf/",function(response,state){
-                                valoruf=response.valor;
-                                fechauf=response.fecha;
-                             });
+                            
 
                             
                              
@@ -371,7 +405,7 @@ $("#meses").change(function (event) {
                                         rowheader.appendChild(cell);
 
                                      tbl.appendChild(rowheader);
-                                     var fields = event.target.value.split('/');
+                                     var fields = txt.split('/');
                                      var mes = fields[0];
                                      var anio = fields[1];
 
@@ -413,10 +447,13 @@ $("#meses").change(function (event) {
 
 
                                                 if(newArray[0].moneda=='UF'){
-                                                    subtotal= newArray[0].precio_en_moneda * valoruf;
+                                                    subtotal= newArray[0].precio_en_moneda * $("#uf").val();
                                                 }else{
                                                    subtotal= newArray[0].precio_en_moneda *1;
                                                 }
+
+                                                 
+
                                                 var cell = document.createElement("td");
                                                     var cellText = document.createTextNode(Math.ceil(subtotal));
                                                     cell.appendChild(cellText);
@@ -435,7 +472,14 @@ $("#meses").change(function (event) {
                                                 h1_pago.appendChild(document.createTextNode("Saldo a Depositar : $ " + subtotal));
                                                 div_pago.appendChild(h1_pago);
                                                 div_pago.appendChild(br_pago);
-               
+
+
+                                               
+                                                div_uf = document.createElement('div');
+                                                 h3_uf = document.createElement('h4');
+                                                h3_uf.appendChild(document.createTextNode("Se utiliza el valor UF  " + $("#uf").val() + " del día " + $("#fecha").val() ));
+                                                div_uf.appendChild(h3_uf);
+
                                                 var a = document.createElement("button");
                                                             var linkText1 = document.createTextNode("Descargar Comrpobante");
                                                             a.className=" btn btn-success  btn-lg";
@@ -450,6 +494,7 @@ $("#meses").change(function (event) {
 
                                                 div_pago.appendChild(div_boton);
                                                 div_pago.appendChild(h1_pago); 
+                                                div_pago.appendChild(div_uf); 
 
 
                                             }
@@ -467,8 +512,7 @@ $("#meses").change(function (event) {
                 
             });
 
-
-    });
+}
 
 function comprobante(obj){
     window.location.href = '/home/propietario/comprobantedepago/'+obj.id;

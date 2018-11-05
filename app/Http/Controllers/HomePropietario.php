@@ -10,20 +10,17 @@ use App\Persona;
 use App\ContratoFinalDocs;
 use App\Region;
 use App\Inmueble;
+use App\PagosPropietarios;
 use DB;
 
 class HomePropietario extends Controller
 {
    
 	public function getPagos($id,$mes,$anio) {
-
-        $contrato = DB::table('adm_pagospropietarios as pp')
-                ->where('pp.id_contratofinal', '=', $id)
-                ->where('pp.mes', '=', $mes)
-                ->where('pp.anio', '=', $anio)
-                ->select(DB::raw('pp.id, pp.id_contratofinal, pp.id_publicacion, pp.id_inmueble, pp.tipopago, pp.E_S, pp.idtipopago, pp.tipopropuesta, pp.meses_contrato, pp.fecha_iniciocontrato, pp.dia, pp.mes, pp.anio, pp.cant_diasmes, pp.cant_diasproporcional, pp.moneda, pp.valormoneda, pp.valordia, pp.precio_en_moneda, pp.precio_en_pesos, pp.id_creador, pp.id_modificador, pp.id_estado, pp.gastocomun, pp.canondearriendo, pp.created_at, pp.updated_at, pp.deleted_at, (Select 
-                	id from adm_pagosmensualespropietarios as pm where pm.id_contratofinal=pp.id_contratofinal and pm.mes=pp.mes and pm.anio=pp.anio ) as id_pm '))
-                ->get();
+		$ids=array();
+		array_push($ids, $id);
+		$contrato = PagosPropietarios::pagomensual($ids,$mes,$anio);
+    
         return response()->json($contrato);
     }
 
