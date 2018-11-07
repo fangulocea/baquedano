@@ -136,8 +136,11 @@
 
                     
                 </div>
+                
                 <!-- /.container-fluid -->
-                <footer class="footer text-center"> 2018 &copy; Desarrollado por FAC</footer>
+                <footer class="footer text-center">  <span class="ws-nowrap"><i class="icon-location-pin icons"></i> Av. Apoquindo 3669, piso 18, oficina 1801.
+                                            Las Condes - Santiago de Chile</span>
+                                            <br>2018 &copy; Desarrollado por FAC</footer>
             </div>
             <!-- ============================================================== -->
             <!-- End Page Content -->

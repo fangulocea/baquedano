@@ -9,7 +9,6 @@ use DB;
 use App\Region;
 use App\Inmueble;
 use App\ChkInmuebleFoto;
-use App\ChkInmueble;
 use Image;
 use Auth;
 use Carbon\Carbon;
@@ -17,91 +16,11 @@ use Barryvdh\DomPDF\Facade as PDF;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\File;
-use App\ContratoFinal;
 
 class ChecklistController extends Controller
 {
 
 
-    public function savefotos_propietario(Request $request, $id) {
-        if (!isset($request->foto)) {
-            return redirect()->route('checklist.create_propietario', $id)->with('error', 'Debe seleccionar archivo');
-        }
-
-                    $path='uploads/checklist';
-                    $archivo=rand().$request->foto->getClientOriginalName();
-                    $file = $request->file('foto');
-                    $file->move($path, $archivo);
-                    $imagen = ChkInmuebleFoto::create([
-                                'id_chk'               => $request->id_chk,
-                                'id_inmueble'          => $request->id_inmueble,
-                                'nombre'               => $archivo,
-                                'ruta'                 => $path,
-                                'tipo_chk'             => $request->tipo,
-                                'id_creador'           => $request->id_creador,
-                                'tipo'                 => 'Propietario',
-                                'habitacion'           => $request->habitacion,
-                                'comentarios'          => $request->comentarios
-                            ]);
-        $save = Checklist::where("id","=",$request->id_chk)->update([
-        "id_estado"=>3,
-        "id_modificador" => Auth::user()->id
-    ]);
-        
-        return redirect()->route('checklist.create_propietario', $id)->with('status', 'Documento guardada con éxito');
-    }
-
-
-  public function finalizar_propietario( $id) {
-       $save = Checklist::where("id","=",$id)->update([
-        "id_estado"=>2,
-        "id_modificador" => Auth::user()->id
-    ]);
-        
-        
-        return redirect()->route('checklist.index_propietario')->with('status', 'Finalizado con éxito');
-    }
-
-    public function index_propietario()
-{
-
-        $publica = DB::table('chkinmuebles as chk')
-         ->leftjoin('inmuebles as i', 'chk.id_inmueble', '=', 'i.id')
-         ->leftjoin('comunas as co', 'i.id_comuna', '=', 'co.comuna_id')
-        ->leftjoin('mensajes as m', function($join){
-                 $join->on('m.nombre_modulo', '=',DB::raw("'Checkin'"));
-                 $join->on('m.id_estado', '=', 'chk.id_estado');
-            })
-         ->where('chk.tipo','=','Propietario')
-         ->select(DB::raw('chk.id, i.direccion, i.numero, co.comuna_nombre as comuna, i.departamento, m.nombre as estado,
-                           chk.id_estado, chk.tipo, chk.id_bor_arr, chk.id_cap_pro, chk.created_at, chk.fecha_limite , chk.id_contrato, chk.e_s_r'))
-         ->orderBy('chk.id_contrato')
-         ->get();
-  
-    return view('checklist_propietario.index',compact('publica')); 
-
-}
-
-
- public function create_propietario($id_contrato)
-    {
-
-        $contratos=ContratoFinal::datos_contrato($id_contrato);
-
-
-        $checklist =  DB::table('chkinmuebles')
-                    ->where('id_contrato', '=', $id_contrato)
-                    ->where('tipo', '=', "Propietario")
-                    ->orderBy("id","desc")
-                    ->first();    
-
-        $imagenes = DB::table('chkinmueblefoto')
-                    ->where('id_chk','=', $checklist->id)
-                    ->get();
-
-
-        return view('checklist_propietario.crear',compact('contratos','checklist','imagenes'));  
-    }
     /**
      * Show the form for creating a new resource.
      *

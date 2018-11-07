@@ -8,6 +8,7 @@ use App\User;
 use App\Persona;
 use App\ContratoFinal;
 use App\PagosPropietarios;
+use DB;
 
 class HomeController extends Controller
 {
@@ -40,19 +41,37 @@ class HomeController extends Controller
 
     public function home_propietario()
     {
+      
         $user = User::find(Auth::id());
         $id_persona=$user->id_persona;
         $_persona=Persona::find($id_persona);
         $contratos=ContratoFinal::contratos_activos_propietarios($id_persona);
         $idcontratos=ContratoFinal::id_contratos($id_persona);
+        
+        
         $ids=[];
         foreach ($idcontratos as $k) {
             array_push($ids, $k->id);
         }
 
+
+         $publica = DB::table('chkinmuebles as chk')
+         ->leftjoin('inmuebles as i', 'chk.id_inmueble', '=', 'i.id')
+         ->leftjoin('comunas as co', 'i.id_comuna', '=', 'co.comuna_id')
+        ->leftjoin('mensajes as m', function($join){
+                 $join->on('m.nombre_modulo', '=',DB::raw("'Checkin'"));
+                 $join->on('m.id_estado', '=', 'chk.id_estado');
+            })
+         ->where('chk.tipo','=','Propietario')
+         ->whereIn('chk.id_contrato',$ids)
+         ->select(DB::raw('chk.id, i.direccion, i.numero, co.comuna_nombre as comuna, i.departamento, m.nombre as estado,
+                           chk.id_estado, chk.tipo, chk.id_bor_arr, chk.id_cap_pro, chk.created_at, chk.fecha_limite , chk.id_contrato, chk.e_s_r'))
+         ->orderBy('chk.id_contrato')
+         ->get();
+
         $pagos_actual = PagosPropietarios::pagomensual($ids,date("m"),date("Y"));
 
-        return view('interfaz_propietario.home_propietario',compact('contratos','_persona','pagos_actual'));
+        return view('interfaz_propietario.home_propietario',compact('contratos','_persona','pagos_actual','publica'));
      }
 
     public function home_arrendatario()

@@ -56,13 +56,13 @@
                                     <center>
                                     <ul class="col-in">
                                         <li>
-                                            <span class="circle circle-md bg-primary"><i class="ti-clipboard"></i></span>
+                                            <span class="circle circle-md bg-warning"><i class="ti-clipboard"></i></span>
                                         </li>
                                         <li class="col-last">
                                            
                                         </li>
                                         <li class="col-middle">
-                                            <button class="fcbtn btn btn-outline btn-primary btn-1c"> <h4>Información Propiedad<br> Propietario</h4> </button>
+                                            <button class="fcbtn btn btn-outline btn-warning btn-1c"> <h4>Información Propiedad<br> Propietario</h4> </button>
                                             
  
                                         </li>
@@ -79,8 +79,8 @@
 <div class="row" style="padding: 10px">
 <div class="col-md-12 col-lg-6 col-sm-12" style="padding-right: 30px; border-right: 1px solid #F0FFF0;">
                         <div style="background-color: #F0FFF0;" >
-                   
-                            <h3 class="box-title">LIQUIDACIÓN MENSUAL</h3>
+                            <div class="alert alert-primary">LIQUIDACIÓN MENSUAL</div>
+                            
                             <div class="row">
                                     <div class="col-md-6">
                                             <label for="input-file-now-custom-1">Contrato</label>
@@ -121,35 +121,56 @@
 
                     <div class="col-md-5 col-lg-6 col-sm-12" style="padding-left: 30px">
                     <div class="row" style="background-color: #F8F8FF;">
-                         <h3 class="box-title">CHECK IN DE LA PROPIEDAD</h3>
+                        <div class="alert alert-primary"> CHECK IN DE LA PROPIEDAD</div>
+                         
+                         <h4 class="text-center text-info m-t-20">* Para su tranquilad, debe subir Fotos de su propiedad a mas tardar 5 días de firmar su contrato </h4>
                             <div class="table-responsive">
-                                <table class="table">
-                                    <thead>
-                                        <tr>
-                                            <th>#</th>
-                                            <th>NAME</th>
-                                            <th>STATUS</th>
-                                            <th>DATE</th>
-                                            <th>PRICE</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>1</td>
-                                            <td class="txt-oflo">Elite admin</td>
-                                            <td><span class="label label-success label-rouded">SALE</span> </td>
-                                            <td class="txt-oflo">April 18, 2017</td>
-                                            <td><span class="text-success">$24</span></td>
-                                        </tr>
-                                       
-                                    </tbody>
-                                </table>
+                                <table id="listusers" class="table display compact" cellspacing="0" >
+
+                <thead>
+                    <tr>
+                        
+                        <th>Id Contrato</th>
+                        <th>Dirección</th>
+                        <th>Comuna</th>
+                        <th>Estado</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach($publica as $p)
+
+                            <tr>
+                                
+                                <td>{{ $p->id_contrato }} </td>
+                                <td>{{ $p->direccion }} {{$p->numero }} {{$p->departamento }}</td>
+                                <td>{{ $p->comuna }}</td>
+                                <td>
+                                    @if($p->id_estado==1)
+                                    <span class="label label-danger label-rouded">Pendiente</span>
+                                    @elseif($p->id_estado==3)
+                                    <span class="label label-warning label-rouded">Pendiente Actualizando</span>
+                                    @else
+                                    <span class="label label-success label-rouded">Realizado</span>
+                                    @endif
+                                    </td>
+                                <td width="10px">
+                                    <a href="{{ route('propietario.checkin', $p->id_contrato)}}" class="btn btn-info" style="color:white"><i class="ti-pencil-alt"></i>&nbsp;&nbsp;Check-In</a>
+                                </td>
+                            </tr>
+
+
+                    @endforeach
+
+                </tbody>
+            </table>
                             </div>
                         </div>
                         <hr>
           <div class="row"  >
                             <div class="panel" >
-                            <div class="panel-heading">DATOS PARA TRANSFERENCIAS</div>
+                            <div class="panel-heading">
+                                <div class="alert alert-primary"> DATOS PARA TRANSFERENCIAS</div></div>
                             <div class="table-compact" >
                                 <table class="table table-hover manage-u-table" >
                                     <thead>
@@ -189,7 +210,8 @@
                  
                         <div class="row">
                             <div class="panel">
-                            <div class="panel-heading">CONTACTOS BAQUEDANO</div>
+                            <div class="panel-heading">
+                                <div class="alert alert-primary"> CONTACTOS BAQUEDANO</div></div>
                             <div class="table-responsive">
                                 <table class="table table-hover manage-u-table">
                                     <thead>

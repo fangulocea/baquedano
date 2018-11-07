@@ -128,15 +128,6 @@ Route::get('home/propietario/consultameses/{id}','HomePropietario@getmeses')
 
 Route::get('home/propietario/uf','UfController@ultimo_valor')->middleware('permission:propietario.home');
 
-Route::get('home/propietario/checkin/{id}','HomePropietario@checkin')->name('propietario.checkin')
-->middleware('permission:propietario.home');
-
-
-Route::post('home/propietario/checkin/{id}','HomePropietario@savefotos')->name('propietario.checkin_grabar')
-->middleware('permission:propietario.home');
-
-Route::get('home/propietario/finalizar/{id}','HomePropietario@finalizar')->name('propietario.finalizar')
-->middleware('permission:propietario.home');
 
 //HOME ARRENDATARIO
 
@@ -1279,33 +1270,51 @@ Route::get('contratorenovacionpropietario','ContratoRenovacionPropietarioControl
 		->middleware('permission:mantenedorchecklist.edit');
 
 
-//CHECKLIST PROPIETARIO
+// CHECKLIST
 
+	Route::get('checklist/create/{id_contrato}/{id_chk}/{tipo}/{edr}/{origen}','ChecklistController@create')->name('checklist.create')
+		->middleware('permission:checklist.check');
 
-	Route::get('checklist/prop/index','ChecklistController@index_propietario')->name('checklist.index_propietario')
+	Route::get('checklist/update/{id_contrato}/{id_chk}/{tipo}','ChecklistController@update')->name('checklist.update')
+		->middleware('permission:checklist.check');
+
+	Route::get('checklist/checkindex/{id_contrato}/{id_chk}/{tipo}/{origen}','ChecklistController@checkindex')->name('checklist.checkindex')
+		->middleware('permission:checklist.check');
+
+	Route::get('checklist/checkindexarr/{id_contrato}/{id_chk}/{tipo}/{origen}','ChecklistController@checkindexarr')->name('checklist.checkindexarr')
+		->middleware('permission:checklist.check');
+
+	Route::get('checklist/index/{origen}','ChecklistController@index')->name('checklist.index')
 		->middleware('permission:checklist.index');
 
-	Route::get('checklist/prop/crear/{idc}','ChecklistController@create_propietario')->name('checklist.create_propietario')
-		->middleware('permission:checklist.create');
-
-	Route::post('checklist/prop/foto/{idc}','ChecklistController@savefotos_propietario')->name('checklist.savefotos_propietario')
-		->middleware('permission:checklist.create');
-
-	Route::get('checklist/prop/finalizar/{idc}','ChecklistController@finalizar_propietario')->name('checklist.finalizar_propietario')
-		->middleware('permission:checklist.create');
+	Route::get('checklist/pdf/{id_chk}/{tipo_chk}','ChecklistController@show')->name('checklist.show')
+		->middleware('permission:checklist.edit');
 
 
-//CHECKLIST ARRENDATARIO
+	Route::get('checklist/{tipo}','ChecklistController@creachkportipo')->name('checklist.creachkportipo')
+		->middleware('permission:checklist.edit');
+
+	Route::get('checklist/{id_contrato}/{id_chk}/{tipo}/{edr}','ChecklistController@chkmanual')->name('checklist.chkmanual')
+		->middleware('permission:checklist.edit');
 
 
-	Route::get('arr/checklist/index','ChecklistController@index_arrendatario')->name('checklist.index_arrendatario')
-		->middleware('permission:checklist.index');
+	Route::get('checklist/{id_c}/{id_chk}/{tipo}/{edr}/{origen}/edit','ChecklistController@edit')->name('checklist.edit')
+		->middleware('permission:checklist.edit');	
 
-	Route::get('arr/checklist/crear/{idc}','ChecklistController@create_arrendatario')->name('checklist.create_arrendatario')
-		->middleware('permission:checklist.create');
+	Route::get('checklist/create_detalle/{id_contrato}/{id_chk}/{tipo}/{edr}/{id_tipo_chk}/{origen}','ChecklistController@create_detalle')->name('checklist.create_detalle')
+		->middleware('permission:checklist.edit');
 
-	Route::post('arr/checklist/foto/{idc}','ChecklistController@savefotos_arrendatario')->name('checklist.savefotos_arrendatario')
-		->middleware('permission:checklist.create');
+	Route::delete('checklist/{id}','ChecklistController@destroy')->name('checklist.destroy')
+		->middleware('permission:checklist.destroy');
+
+	Route::post('checklist/foto/{id}','ChecklistController@savefotos')->name('checklist.savefotos')
+		->middleware('permission:checklist.edit');
+
+	Route::get('checklist/eliminararchivo/{idf}/{id_contrato}/{id_chk}/{tipo}/{edr}/{tipo_chk}/{origen}','ChecklistController@eliminararchivo')->name('checklist.eliminararchivo')
+		->middleware('permission:checklist.edit');
+
+
+
 
 
 	//Solicitud de Servicios PROPIETARIO

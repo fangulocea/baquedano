@@ -94,7 +94,7 @@ use App\Http\Controllers\ContratoFinalController;
                                         <a href="{{ route('finalContrato.muestra_cheque',[$p->id,$p->id_pdf,$p->dia_pago]) }}"> <button type="button" class="btn btn-danger"> <i class="fa fa-check"></i> N° Cheques</button></a>
                                     @endif
          
-                             <a class="mytooltip" href="{{ route('checklist.checkindex',[$p->id,0 , 'Propietario',$origen]) }}"> <button  class="btn btn-info btn-circle btn-lg"> <a class="mytooltip"href="{{ route('checklist.checkindex',[$p->id,0 , 'Propietario',$origen]) }}" style="color:white"><i class="fa fa-check"></i> <span class="tooltip-content3" style="font-size: medium;color:white">Realizar <br> Check-In</span></a></button></a>
+                             
 
                                 
                                     @php 
