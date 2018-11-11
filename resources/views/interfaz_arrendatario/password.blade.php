@@ -1,4 +1,5 @@
-    @extends('admin.arrendatario')
+
+@extends('admin.arrendatario')
 
 @section('contenido')
 <div class="container">

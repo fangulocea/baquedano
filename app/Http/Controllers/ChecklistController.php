@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\File;
 use App\ContratoFinal;
+use App\ContratoFinalArr;
 
 class ChecklistController extends Controller
 {
@@ -68,12 +69,13 @@ class ChecklistController extends Controller
         $publica = DB::table('chkinmuebles as chk')
          ->leftjoin('inmuebles as i', 'chk.id_inmueble', '=', 'i.id')
          ->leftjoin('comunas as co', 'i.id_comuna', '=', 'co.comuna_id')
+         ->leftjoin('adm_contratofinal as cf', 'cf.id', '=', 'chk.id_contrato')
         ->leftjoin('mensajes as m', function($join){
                  $join->on('m.nombre_modulo', '=',DB::raw("'Checkin'"));
                  $join->on('m.id_estado', '=', 'chk.id_estado');
             })
-         ->where('chk.tipo','=','Propietario')
-         ->select(DB::raw('chk.id, i.direccion, i.numero, co.comuna_nombre as comuna, i.departamento, m.nombre as estado,
+         ->where('cf.id_estado','=',7)
+         ->select(DB::raw('chk.created_at,chk.updated_at, chk.id, i.direccion, i.numero, co.comuna_nombre as comuna, i.departamento, m.nombre as estado,
                            chk.id_estado, chk.tipo, chk.id_bor_arr, chk.id_cap_pro, chk.created_at, chk.fecha_limite , chk.id_contrato, chk.e_s_r'))
          ->orderBy('chk.id_contrato')
          ->get();
@@ -102,6 +104,90 @@ class ChecklistController extends Controller
 
         return view('checklist_propietario.crear',compact('contratos','checklist','imagenes'));  
     }
+
+
+public function savefotos_arrendatario(Request $request, $id) {
+        if (!isset($request->foto)) {
+            return redirect()->route('checklist.create_arrendatario', $id)->with('error', 'Debe seleccionar archivo');
+        }
+
+                    $path='uploads/checklist';
+                    $archivo=rand().$request->foto->getClientOriginalName();
+                    $file = $request->file('foto');
+                    $file->move($path, $archivo);
+                    $imagen = ChkInmuebleFoto::create([
+                                'id_chk'               => $request->id_chk,
+                                'id_inmueble'          => $request->id_inmueble,
+                                'nombre'               => $archivo,
+                                'ruta'                 => $path,
+                                'tipo_chk'             => $request->tipo,
+                                'id_creador'           => $request->id_creador,
+                                'tipo'                 => 'Arrendatario',
+                                'habitacion'           => $request->habitacion,
+                                'comentarios'          => $request->comentarios
+                            ]);
+        $save = Checklist::where("id","=",$request->id_chk)->update([
+        "id_estado"=>3,
+        "id_modificador" => Auth::user()->id
+    ]);
+        
+        return redirect()->route('checklist.create_arrendatario', $id)->with('status', 'Documento guardada con éxito');
+    }
+
+
+  public function finalizar_arrendatario( $id) {
+       $save = Checklist::where("id","=",$id)->update([
+        "id_estado"=>2,
+        "id_modificador" => Auth::user()->id
+    ]);
+        
+        
+        return redirect()->route('checklist.index_arrendatario')->with('status', 'Finalizado con éxito');
+    }
+
+    public function index_arrendatario()
+{
+
+        $publica = DB::table('chkinmuebles as chk')
+         ->leftjoin('inmuebles as i', 'chk.id_inmueble', '=', 'i.id')
+         ->leftjoin('comunas as co', 'i.id_comuna', '=', 'co.comuna_id')
+         ->leftjoin('adm_contratofinalarr as cf', 'cf.id', '=', 'chk.id_contrato')
+        ->leftjoin('mensajes as m', function($join){
+                 $join->on('m.nombre_modulo', '=',DB::raw("'Checkin'"));
+                 $join->on('m.id_estado', '=', 'chk.id_estado');
+            })
+         ->where('chk.tipo','=','Arrendatario')
+          ->where('cf.id_estado','=',7)
+         ->select(DB::raw('chk.created_at, chk.updated_at, chk.id, i.direccion, i.numero, co.comuna_nombre as comuna, i.departamento, m.nombre as estado,
+                           chk.id_estado, chk.tipo, chk.id_bor_arr, chk.id_cap_pro, chk.created_at, chk.fecha_limite , chk.id_contrato, chk.e_s_r'))
+         ->orderBy('chk.id_contrato')
+         ->get();
+  
+    return view('checklist_arrendatario.index',compact('publica')); 
+
+}
+
+
+ public function create_arrendatario($id_contrato)
+    {
+
+        $contratos=ContratoFinalArr::datos_contrato($id_contrato);
+
+
+        $checklist =  DB::table('chkinmuebles')
+                    ->where('id_contrato', '=', $id_contrato)
+                    ->where('tipo', '=', "Arrendatario")
+                    ->orderBy("id","desc")
+                    ->first();    
+
+        $imagenes = DB::table('chkinmueblefoto')
+                    ->where('id_chk','=', $checklist->id)
+                    ->get();
+
+
+        return view('checklist_arrendatario.crear',compact('contratos','checklist','imagenes'));  
+    }
+
     /**
      * Show the form for creating a new resource.
      *

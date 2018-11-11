@@ -426,7 +426,7 @@ public function savepagofin(Request $request,$id_contrato,$id_publicacion) {
         $contrato = DB::table('adm_pagosmensualesarrendatarios as c')
                 ->leftjoin('adm_contratofinalarr as cp', 'c.id_contratofinal', '=', 'cp.id')
                 ->where('c.id_contratofinal', '=', $id)
-                ->select(DB::raw(' c.id, c.fecha_iniciocontrato, c.mes, c.anio, c.valor_a_pagar, cp.meses_contrato,c.subtotal_entrada, c.subtotal_entrada_moneda, c.subtotal_salida, c.subtotal_salida_moneda, c.pago_a_arrendatario, c.pago_a_arrendatario_moneda, c.pago_a_rentas, c.pago_a_rentas_moneda, c.id_estado'))
+                ->select(DB::raw(' c.moneda,c.id, c.fecha_iniciocontrato, c.mes, c.anio, c.valor_a_pagar, cp.meses_contrato,c.subtotal_entrada, c.subtotal_entrada_moneda, c.subtotal_salida, c.subtotal_salida_moneda, c.pago_a_arrendatario, c.pago_a_arrendatario_moneda, c.pago_a_rentas, c.pago_a_rentas_moneda, c.id_estado, cp.id as id_contrato'))
                 ->orderBy('c.id', 'asc')
                 ->get();
         return response()->json($contrato);
@@ -620,7 +620,10 @@ public function savepagofin(Request $request,$id_contrato,$id_publicacion) {
                 ->where('c.id_estado', '=', "7")
                 ->Orwhere('c.id_estado', '=', "10")
                 ->Orwhere('c.id_estado', '=', "11")
-                ->select(DB::raw('cb.dia_pago, c.id as id_publicacion, DATE_FORMAT(c.created_at, "%d/%m/%Y") as fecha_creacion, c.id_estado as id_estado, CONCAT_WS(" ",p1.nombre,p1.apellido_paterno,p1.apellido_materno) as Arrendatario, p2.name as Creador,
+                ->select(DB::raw('co.id as id_contrato,
+co.fecha_firma,
+                    (select moneda from adm_generapagoarrendatario as gg where gg.id_publicacion=c.id and gg.id_inmueble=i.id order by gg.id desc limit 1 ) as moneda,
+                    cb.dia_pago, c.id as id_publicacion, DATE_FORMAT(c.created_at, "%d/%m/%Y") as fecha_creacion, c.id_estado as id_estado, CONCAT_WS(" ",p1.nombre,p1.apellido_paterno,p1.apellido_materno) as Arrendatario, p2.name as Creador,
 
                   (select CASE WHEN sum(pago_a_rentas) IS NULL THEN 0 ELSE sum(pago_a_rentas) END pago_a_rentas from adm_pagosmensualesarrendatarios where mes=MONTH(DATE_ADD(now(), INTERVAL -6 MONTH)) and anio=YEAR(DATE_ADD(now(), INTERVAL -6 MONTH)) and id_publicacion=c.id and id_inmueble=i.id ) as valoranterior6,
 
@@ -755,7 +758,7 @@ public function savepagofin(Request $request,$id_contrato,$id_publicacion) {
                 ->leftjoin('comunas as c', 'i.id_comuna', '=', 'c.comuna_id')
                 ->where('a.id', '=', $idc)
                 ->select(DB::raw('a.id id_cap_arr, CONCAT_WS(" ",pa.nombre,pa.apellido_paterno,pa.apellido_materno) as arrendatario,
-                CONCAT_WS(" ",i.direccion,i.numero," Dpto: ",i.departamento) as direccion_full,
+                CONCAT_WS(" ",i.direccion,i.numero," Dpto: ",i.departamento) as direccion_full,pa.email,
                 i.direccion,i.numero,c.comuna_nombre as comuna,a.id_estado, a.id_arrendatario as id_arrendatario,i.id as id_inmueble'))
                 ->first();
 
@@ -972,6 +975,16 @@ public function savepagofin(Request $request,$id_contrato,$id_publicacion) {
     }
 
     public function generarpagos(Request $request, $idp) {
+
+        $uf = DB::table('adm_uf')
+                ->where("fecha", "=", Carbon::now()->format('Y/m/d'))
+                ->first();
+        if (count($uf) == 0) {
+            return back()->with('error', 'No hay UF registrada para el día de hoy');
+        }
+
+
+
         $captacion = Arrendatario::find($idp);
         $idinmueble = $captacion->id_inmueble;
 
@@ -1551,6 +1564,16 @@ $pago = PagosArrendatarios::create([
                 $anio = $g->ano;
                 $dias_mes = cal_days_in_month(CAL_GREGORIAN, $mes, $anio);
                 $idtipopago = 11;
+
+        if($tipomoneda=='UF'){
+            $monto_g=$g->valor / $uf->valor;
+            $valorm=$uf->valor;
+         }else{
+            $monto_g=$g->valor ;
+            $valorm=1;
+         }
+
+
                 $precio_proporcional = $g->valor;
                 $valor_en_pesos = $g->valor;
                 $pago = PagosArrendatarios::create([
@@ -1570,11 +1593,11 @@ $pago = PagosArrendatarios::create([
                             'cant_diasmes' => $dias_mes,
                             'cant_diasproporcional' => $dias_mes,
                             'moneda' => $tipomoneda,
-                            'valormoneda' => $valormoneda,
+                            'valormoneda' => $valorm,
                             'fecha_moneda' => Carbon::now()->format('Y/m/d'),
                             'valordia' => 1,
-                            'precio_en_moneda' => $valor_en_pesos,
-                            'precio_en_pesos' => $valor_en_pesos,
+                            'precio_en_moneda' => $monto_g ,
+                            'precio_en_pesos' => $g->valor,
                             'id_creador' => $id_creador,
                             'id_modificador' => $id_creador,
                             'id_estado' => 1,
@@ -1593,6 +1616,14 @@ $reservas = Arr_Reservas::where("id_arr_ges", "=", $idp)->get();
             
             foreach ($reservas as $re) {
          
+
+         if($tipomoneda=='UF'){
+            $monto_reser=$re->monto_reserva / $uf->valor;
+            $valorm=$uf->valor;
+         }else{
+            $monto_reser=$re->monto_reserva ;
+            $valorm=1;
+         }
             $dia = date("d", strtotime($fecha_ini));
             $mes = date("m", strtotime($fecha_ini));
             $anio = date("Y", strtotime($fecha_ini));
@@ -1618,11 +1649,11 @@ $reservas = Arr_Reservas::where("id_arr_ges", "=", $idp)->get();
                             'cant_diasmes' => $dias_mes,
                             'cant_diasproporcional' => $dias_mes,
                             'moneda' => $tipomoneda,
-                            'valormoneda' => $valormoneda,
+                            'valormoneda' => $valorm,
                             'fecha_moneda' => Carbon::now()->format('Y/m/d'),
                             'valordia' => 1,
-                            'precio_en_moneda' => $valor_en_pesos,
-                            'precio_en_pesos' => $valor_en_pesos,
+                            'precio_en_moneda' => $monto_reser,
+                            'precio_en_pesos' => $re->monto_reserva,
                             'id_creador' => $id_creador,
                             'id_modificador' => $id_creador,
                             'id_estado' => 1,

@@ -12,12 +12,13 @@
                     <tr>
                         <th>ID</th>
                         <th>Dirección</th>
+                        <th>Número</th>
+                        <th>Departamento</th>
                         <th>Comuna</th>
                         <th>Propietario</th>
                         <th>Fecha</th>
                         <th>Creador</th>
                         <th>Estado</th>
-                        <th>Portal</th>
                         <th></th>
                         <th></th>
                     </tr>
@@ -26,12 +27,13 @@
                     <tr>
                         <th>ID</th>
                         <th>Dirección</th>
+                        <th>Número</th>
+                        <th>Departamento</th>
                         <th>Comuna</th>
                         <th>Propietario</th>
                         <th>Fecha</th>
                         <th>Creador</th>
                         <th>Estado</th>
-                        <th>Portal</th>
                         <th></th>
                         <th></th>
                     </tr>
@@ -41,14 +43,14 @@
                             <tr>
                                 <td>{{ $p->id_publicacion }}</td>
                                 
-                                <td >{{ $p->direccion }} #{{ $p->numero }} , Dpto {{ $p->departamento }}</td>
-                                
+                                <td >{{ $p->direccion }}</td>
+                                 <td >{{ $p->numero }} </td>
+                                  <td > {{ $p->departamento }}</td>
                                 <td>{{ $p->comuna_nombre }}</td>
                                 <td>{{ $p->nom_p }} {{ $p->apep_p }} {{ $p->apem_p }}</td>
                                 <td>{{ $p->fecha_creacion }}</td>
                                 <td>{{ $p->Propietario }}</td>
                                  <td>{{ trans_choice('mensajes.captacion', $p->id_estado) }}</td>
-                                 <td>{{ substr(substr($p->portal, 4),0,10) }}</td>
                                 @can('borradorContrato.edit')
                                 <td width="10px">
                                     <a href="{{ route('borradorContrato.edit', [$p->id_publicacion,1]) }}"><span class="btn btn-warning btn-circle btn-lg"><i class="ti-pencil-alt"></i></span></a>

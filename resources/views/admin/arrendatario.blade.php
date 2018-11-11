@@ -69,7 +69,9 @@
                     
                     <ul class="nav navbar-top-links navbar-left">
                         <center>
+                             <a class="logo" href="{{ route('home_arrendatario') }}">
                     <img class="img-responsive mb-lg hidden-xs hidden-sm" alt="baquedano rentas" width="300" height="200" src="{{ URL::asset('plugins/images/subpropietario.png') }}" >
+                </a>
                 </center>
                     </ul>
                     <ul class="nav navbar-top-links navbar-right pull-right">

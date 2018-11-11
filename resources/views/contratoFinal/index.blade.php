@@ -18,6 +18,8 @@
                         <th>Comuna</th>
                         <th>Propietario</th>
                         <th>Día Pago</th>
+                        <th>Fecha Firma</th>
+                             <th>Moneda Contrato</th>
                         <th>Estado</th>
                         <th>{{ $meses->mesanterior6 }}</th>
                         <th>{{ $meses->mesanterior5 }}</th>
@@ -44,6 +46,8 @@
                         <th>Comuna</th>
                         <th>Propietario</th>
                         <th>Día Pago</th>
+                        <th>Fecha Firma</th>
+                             <th>Moneda Contrato</th>
                         <th>Estado</th>
                         <th>{{ $meses->mesanterior6 }}</th>
                         <th>{{ $meses->mesanterior5 }}</th>
@@ -76,6 +80,8 @@
                                 <td>{{ $p->comuna_nombre }}</td>
                                 <td>{{ $p->nom_p }} {{ $p->apep_p }} {{ $p->apem_p }}</td>
                                 <td>{{ $p->dia_pago }}</td>
+                                 <td>{{ $p->fecha_firma }}</td>
+                                <td>{{ $p->moneda }}</td>
                                 <td>{{$p->id_estado }}</td>
                                 <td> {{ $p->valoranterior6 - $p->valorpagadoanterior6 }} </td>
                                 <td> {{ $p->valoranterior5 - $p->valorpagadoanterior5 }} </td>

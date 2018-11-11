@@ -13,7 +13,10 @@
                     <tr>
                         <th>ID</th>
                         <th>Arrendatario</th>
+                        <th>Email</th>
                         <th>Dirección</th>
+                        <th>Número</th>
+                        <th>Departamento</th>
                         <th>Comuna</th>
                         <th>Creador</th>
                         <th>Fecha</th>
@@ -26,7 +29,10 @@
                     <tr>
                         <th>ID</th>
                         <th>Arrendatario</th>
+                        <th>Email</th>
                         <th>Dirección</th>
+                        <th>Número</th>
+                        <th>Departamento</th>
                         <th>Comuna</th>
                         <th>Creador</th>
                         <th>Fecha</th>
@@ -40,7 +46,10 @@
                             <tr>
                                 <td>{{ $arr->id }}</td>
                                 <td>{{ $arr->Arrendador }}</td>
-                                <td>{{ $arr->Direccion }}</td>
+                                <td>{{ $arr->email }}</td>
+                                <td>{{ $arr->direccion }}</td>
+                                <td>{{ $arr->numero }}</td>
+                                <td>{{ $arr->departamento }}</td>
                                 <td>{{ $arr->comuna_nombre }}</td>
                                 <td>{{ $arr->Creador }}</td>
                                 <td>{{ $arr->fecha_creacion }}</td>

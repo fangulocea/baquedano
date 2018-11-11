@@ -153,6 +153,7 @@ class UsersController extends Controller
 
         $role = User::create([
             'name' => $arr_propiedad->nombre.' '.$arr_propiedad->apellido_paterno.' '.$arr_propiedad->apellido_materno,
+             'id_persona'=>$arr_propiedad->id_arrendatario,
             'email' => $arr_propiedad->email,
             'password' => bcrypt('123456'),
         ]);

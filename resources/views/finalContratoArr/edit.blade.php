@@ -15,7 +15,7 @@ use App\Http\Controllers\ContratoFinalArrController;
         <center><h3 class="box-title m-b-0">{{ $borrador->direccion_full or null }}</h3></center>
         @endif
         @if( isset($borrador->arrendatario) )
-        <center><h3 class="box-title m-b-0">{{ $borrador->arrendatario or null }}  </h3></center>
+        <center><h3 class="box-title m-b-0">{{ $borrador->arrendatario or null }}   <br>{{ $borrador->email or null}}</h3></center>
         @endif
 </div>
 </div>
@@ -632,8 +632,7 @@ use App\Http\Controllers\ContratoFinalArrController;
     </div>
 </div>
 <script src="{{ URL::asset('plugins/bower_components/jquery/dist/jquery.min.js') }}"></script>
-<!-- Bootstrap Core JavaScript -->
-<script src="{{ URL::asset('bootstrap/dist/js/bootstrap.min.js') }}"></script>
+
 
 <script src="{{ URL::asset('plugins/bower_components/sweetalert/sweetalert.min.js') }}"></script>
 

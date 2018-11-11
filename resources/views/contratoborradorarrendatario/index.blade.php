@@ -14,6 +14,8 @@
                         <th>ID</th>
                         <th>Arrendatario</th>
                         <th>Dirección</th>
+                        <th>Número</th>
+                        <th>Departamento</th>
                         <th>Comuna</th>
                         <th>Estado</th>
                         <th></th>
@@ -25,6 +27,8 @@
                         <th>ID</th>
                         <th>Arrendatario</th>
                         <th>Dirección</th>
+                        <th>Número</th>
+                        <th>Departamento</th>
                         <th>Comuna</th>
                         <th>Estado</th>
                         <th></th>
@@ -36,7 +40,9 @@
                             <tr>
                                 <td>{{ $p->id_cap_arr }}</td>
                                 <td>{{ $p->arrendatario }}</td>
-                                <td>{{ $p->direccion }} #{{ $p->numero }}</td>
+                                <td>{{ $p->direccion }}</td>
+                                <td>{{ $p->numero }}</td>
+                                <td>{{ $p->departamento }}</td>
                                 <td>{{ $p->comuna }}</td>
                                 <td>{{ trans_choice('mensajes.arrendatario', $p->id_estado) }}</td>
                                 @can('cbararrendatario.edit')
@@ -69,10 +75,9 @@
 
 <!-- end - This is for export functionality only -->
 <script>
-$('.sorting_desc').hide();
 
 var table = $('#listusers').DataTable({
-
+"ordering":false,
     dom: 'Bfrtip',
     buttons: [
 'excel'
@@ -123,7 +128,7 @@ var table = $('#listusers').DataTable({
     table.columns().every( function () {
         var that = this;
  
-        $( 'input', this.footer() ).on( 'keyup change', function () {
+        $( 'input', this.header() ).on( 'keyup change', function () {
             if ( that.search() !== this.value ) {
                 that
                     .search( this.value )

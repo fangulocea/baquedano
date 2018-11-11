@@ -19,6 +19,7 @@
                         <th>Número</th>
                         <th>Departamento</th>
                         <th>Comuna</th>
+                         <th>Ultima Modificación</th>
                         <th>Estado</th>
                         <th></th>
                     </tr>
@@ -38,6 +39,7 @@
                                 <td>{{ $p->numero }}</td>
                                 <td>{{ $p->departamento }}</td>
                                 <td>{{ $p->comuna }}</td>
+                                <td>{{ $p->updated_at }}</td>
                                 <td>
                                     @if($p->id_estado==1)
                                     <span class="label label-danger label-rouded">Pendiente</span>

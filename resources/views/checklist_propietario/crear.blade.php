@@ -94,6 +94,7 @@
                             <th>Comentarios</th>
                             <th>Tipo Checkin</th>
                             <th>Habitación</th>
+                             <th>Fecha Creación</th>
                             <th>Ver Documento</th>
                         </tr>
                     </thead>
@@ -110,6 +111,7 @@
                                 @endif
                                 </td>
                              <td > {{ $p->habitacion }}</td>
+                             <td > {{ $p->created_at }}</td>
                               
                             <td  width="10px" height="20px">
                                 <center><a class="btn btn-primary" href="{{ URL::asset($p->ruta.'/'.$p->nombre) }}" target="_blank">BAJAR ARCHIVO</a></center>

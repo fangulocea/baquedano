@@ -56,7 +56,7 @@ class ArrendatarioController extends Controller
         ->leftjoin('inmuebles as i', 'a.id_inmueble', '=', 'i.id')
         ->leftjoin('comunas as o', 'i.id_comuna', '=', 'o.comuna_id')
          ->select(DB::raw('a.id, DATE_FORMAT(a.created_at, "%d/%m/%Y") as fecha_creacion, a.id_estado, CONCAT_WS(" ", p1.nombre, p1.apellido_paterno, p1.apellido_materno) as Arrendador, p2.name as Creador,
-           CASE WHEN i.direccion IS NULL THEN "" ELSE  CONCAT_WS(" ",i.direccion,i.numero," Dpto ",i.departamento) END as Direccion, o.comuna_nombre'))->get();
+           CASE WHEN i.direccion IS NULL THEN "" ELSE  CONCAT_WS(" ",i.direccion,i.numero," Dpto ",i.departamento) END as Direccion1, o.comuna_nombre,i.direccion,i.numero,i.departamento, p1.email'))->get();
 
          return view('arrendatario.index',compact('arrendador',1));
     }

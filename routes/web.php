@@ -143,6 +143,41 @@ Route::get('home/propietario/finalizar/{id}','HomePropietario@finalizar')->name(
 	Route::get('/home/arrendatario', 'HomeController@home_arrendatario')->name('home_arrendatario')
 	->middleware('permission:arrendatario.home');
 
+	Route::get('/home/arrendatario/documentos', 'HomeArrendatario@mostrar_documentos')->name('mostrar_documentos_arrendatario')
+	->middleware('permission:arrendatario.home');
+
+	Route::get('/home/arrendatario/datospropiedad', 'HomeArrendatario@datos_propiedad')->name('datos_propiedad_arrendatario')
+	->middleware('permission:arrendatario.home');
+
+	Route::get('/home/arrendatario/pagospendientes', 'HomeArrendatario@pagos_pendientes')->name('pagos_pendientes_arrendatario')
+	->middleware('permission:arrendatario.home');
+
+
+	Route::get('/home/arrendatario/ver_contrato/{id}', 'ContratoFinalArrController@vercontrato_home')->name('arrendatario.vercontrato')
+	->middleware('permission:arrendatario.home');
+
+	Route::get('home/arrendatario/comprobantedepago/{id}','PagosMensualesArrendatariosController@comprobantedepago')->name('comprobantedepago_arrendatario')
+		->middleware('permission:arrendatario.home');
+
+	Route::get('home/arrendatario/consultapagos/{id}/{mes}/{anio}','HomeArrendatario@getpagos')
+	->middleware('permission:arrendatario.home');
+
+
+	Route::get('home/arrendatario/consultameses/{id}','HomeArrendatario@getmeses')
+	->middleware('permission:arrendatario.home');
+
+	Route::get('home/arrendatario/uf','UfController@ultimo_valor')->middleware('permission:arrendatario.home');
+
+	Route::get('home/arrendatario/checkin/{id}','HomeArrendatario@checkin')->name('arrendatario.checkin')
+	->middleware('permission:arrendatario.home');
+
+
+	Route::post('home/arrendatario/checkin/{id}','HomeArrendatario@savefotos')->name('arrendatario.checkin_grabar')
+	->middleware('permission:arrendatario.home');
+
+	Route::get('home/arrendatario/finalizar/{id}','HomeArrendatario@finalizar')->name('arrendatario.finalizar')
+	->middleware('permission:arrendatario.home');
+
 	//Roles
 	Route::post('roles/store','RoleController@store')->name('roles.store')
 		->middleware('permission:roles.create');
@@ -1305,6 +1340,9 @@ Route::get('contratorenovacionpropietario','ContratoRenovacionPropietarioControl
 		->middleware('permission:checklist.create');
 
 	Route::post('arr/checklist/foto/{idc}','ChecklistController@savefotos_arrendatario')->name('checklist.savefotos_arrendatario')
+		->middleware('permission:checklist.create');
+
+	Route::get('arr/checklist/finalizar/{idc}','ChecklistController@finalizar_arrendatario')->name('checklist.finalizar_arrendatario')
 		->middleware('permission:checklist.create');
 
 

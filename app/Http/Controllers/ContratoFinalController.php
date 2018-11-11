@@ -671,7 +671,10 @@ public function savepagofin(Request $request,$id_contrato,$id_publicacion) {
                  $join->on('m.id_estado', '=', 'c.id_estado');
             })
                 ->whereIn('c.id_estado', [7, 10, 6])
-                ->select(DB::raw('cb.dia_pago,c.id as id_publicacion, DATE_FORMAT(c.created_at, "%d/%m/%Y") as fecha_creacion, m.nombre as id_estado, CONCAT_WS(" ",p1.nombre,p1.apellido_paterno,p1.apellido_materno) as Propietario, p2.name as Creador,
+                ->select(DB::raw('
+co.fecha_firma,
+                    (select moneda from adm_generapagopropietario as gg where gg.id_publicacion=c.id and gg.id_inmueble=i.id order by gg.id desc limit 1 ) as moneda,
+                    cb.dia_pago,c.id as id_publicacion, DATE_FORMAT(c.created_at, "%d/%m/%Y") as fecha_creacion, m.nombre as id_estado, CONCAT_WS(" ",p1.nombre,p1.apellido_paterno,p1.apellido_materno) as Propietario, p2.name as Creador,
 
                   (select pago_propietario from adm_pagosmensualespropietarios where mes=MONTH(DATE_ADD(now(), INTERVAL -6 MONTH)) and anio=YEAR(DATE_ADD(now(), INTERVAL -6 MONTH)) and id_publicacion=c.id and id_inmueble=i.id and id_contratofinal=co.id ) as valoranterior6,
 

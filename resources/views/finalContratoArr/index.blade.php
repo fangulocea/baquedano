@@ -18,6 +18,8 @@
                         <th>Comuna</th>
                         <th>Arrendatario</th>
                         <th>Día Pago</th>
+                        <th>Fecha Firma</th>
+                             <th>Moneda Contrato</th>
                         <th>Estado</th>
                         <th>{{ $meses->mesanterior6 }}</th>
                         <th>{{ $meses->mesanterior5 }}</th>
@@ -44,6 +46,8 @@
                         <th>Comuna</th>
                         <th>Arrendatario</th>
                         <th>Día Pago</th>
+                         <th>Fecha Firma</th>
+                             <th>Moneda Contrato</th>
                         <th>Estado</th>
                         <th>{{ $meses->mesanterior6 }}</th>
                         <th>{{ $meses->mesanterior5 }}</th>
@@ -65,13 +69,15 @@
                     @foreach($publica as $p)
                             <tr>
                                  <td><a href="{{ route('finalContratoArr.edit', [$p->id_cap_arr,0,0,1,"contrato"]) }}">
-                                    <span class="btn btn-success btn-sm"> {{ $p->id_cap_arr }}</span> </a></td>
+                                    <span class="btn btn-success btn-sm"> {{ $p->id_contrato }}</span> </a></td>
                                 <td><a href="{{ route('finalContratoArr.edit', [$p->id_cap_arr,0,0,1,"contrato"]) }}">{{ $p->direccion }} </a></td>
-                                <td><a href="{{ route('finalContratoArr.edit', [$p->id_cap_arr,0,0,1,"contrato"]) }}">{{ $p->direccion }} </a></td>
+                                <td><a href="{{ route('finalContratoArr.edit', [$p->id_cap_arr,0,0,1,"contrato"]) }}">{{ $p->numero }} </a></td>
                                 <td><a href="{{ route('finalContratoArr.edit', [$p->id_cap_arr,0,0,1,"contrato"]) }}">{{ $p->departamento }} </a></td>
                                 <td>{{ $p->comuna }}</td>
                                 <td>{{ $p->arrendatario }}</td>
                                 <td>{{ $p->dia_pago }}</td>
+                                <td>{{ $p->fecha_firma }}</td>
+                                <td>{{ $p->moneda }}</td>
                                 <td>{{ trans_choice('mensajes.arrendatario', $p->id_estado) }} </td>
                                 <td> {{ $p->valoranterior6 - $p->valorpagadoanterior6 }} </td>
                                 <td> {{ $p->valoranterior5 - $p->valorpagadoanterior5 }} </td>

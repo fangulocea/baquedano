@@ -23,7 +23,7 @@
                                 <div class="col-md-3">
                                     <div class="form-group">
                                         <label>Valor UF</label>
-                                        <input name='valor' type="number" class="form-control" value="{{ $uf->valor }}"> </div>
+                                        <input name='valor' type="number" class="form-control" value="{{ $uf->valor }}" step="any"> </div>
                                 </div>
                             </div>
 
