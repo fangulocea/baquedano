@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Uf;
 use Illuminate\Http\Request;
 use DB;
+use Carbon\Carbon;
 
 class UfController extends Controller
 {
@@ -34,9 +35,14 @@ class UfController extends Controller
 
     public function ultimo_valor()
     {
-         $uf = Uf::all();
 
-        return $uf->last();
+        $uf = DB::table('adm_uf')
+                ->where("fecha", "=", Carbon::now()->format('Y/m/d'))
+                ->first();
+
+        // $uf = Uf::all();
+
+        return response()->json($uf);
     }
 
 

@@ -474,7 +474,7 @@ function tabla(id,txt){
                                                    subtotal= newArray[0].precio_en_moneda *1;
                                                 }
 
-                                                 
+                                                 subtotal=Math.round(subtotal);
 
                                                 var cell = document.createElement("td");
                                                     var cellText = document.createTextNode(Math.ceil(subtotal));

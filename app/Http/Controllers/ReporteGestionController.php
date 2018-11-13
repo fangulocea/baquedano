@@ -450,7 +450,7 @@ public function cap_mes_arr(){
 
     public function cap_mes_arr_ajax(Request $request)
     {
-            $publica = DB::table('Arrendatarios as c')
+            $publica = DB::table('arrendatarios as c')
                 ->leftjoin('personas as p1', 'c.id_arrendatario', '=', 'p1.id')
                 ->leftjoin('inmuebles as i', 'c.id_inmueble', '=', 'i.id')
                 ->leftjoin('users as p2', 'c.id_creador', '=', 'p2.id')
@@ -486,7 +486,7 @@ public function cap_mes_arr(){
 
     public function cap_anual_arr_ajax(Request $request)
     {
-            $publica = DB::table('Arrendatarios as c')
+            $publica = DB::table('arrendatarios as c')
                 ->leftjoin('personas as p1', 'c.id_arrendatario', '=', 'p1.id')
                 ->leftjoin('inmuebles as i', 'c.id_inmueble', '=', 'i.id')
                 ->leftjoin('users as p2', 'c.id_creador', '=', 'p2.id')
@@ -522,7 +522,7 @@ public function cap_descartadas_arr(){
 
     public function cap_descartadas_arr_ajax(Request $request)
     {
-            $publica = DB::table('Arrendatarios as c')
+            $publica = DB::table('arrendatarios as c')
                 ->leftjoin('personas as p1', 'c.id_arrendatario', '=', 'p1.id')
                 ->leftjoin('inmuebles as i', 'c.id_inmueble', '=', 'i.id')
                 ->leftjoin('users as p2', 'c.id_creador', '=', 'p2.id')
@@ -557,7 +557,7 @@ public function cap_borrador_arr(){
 
     public function cap_borrador_arr_ajax(Request $request)
     {
-            $publica = DB::table('Arrendatarios as c')
+            $publica = DB::table('arrendatarios as c')
                 ->leftjoin('personas as p1', 'c.id_arrendatario', '=', 'p1.id')
                 ->leftjoin('inmuebles as i', 'c.id_inmueble', '=', 'i.id')
                 ->leftjoin('users as p2', 'c.id_creador', '=', 'p2.id')
@@ -592,7 +592,7 @@ public function cap_borrador_arr(){
 
     public function cap_contrato_arr_ajax(Request $request)
     {
-                  $publica = DB::table('Arrendatarios as c')
+                  $publica = DB::table('arrendatarios as c')
                 ->leftjoin('personas as p1', 'c.id_arrendatario', '=', 'p1.id')
                 ->leftjoin('inmuebles as i', 'c.id_inmueble', '=', 'i.id')
                 ->leftjoin('users as p2', 'c.id_creador', '=', 'p2.id')

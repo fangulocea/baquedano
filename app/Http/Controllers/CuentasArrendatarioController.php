@@ -8,7 +8,7 @@ use Barryvdh\DomPDF\Facade as PDF;
 use Yajra\Datatables\Datatables;
 use Carbon\Carbon;
 use App\EmpresasServicios;
-use App\ContratoFinalARR;
+use App\ContratoFinalArr;
 use App\ContratoFinal;
 use App\ContratoBorradorArrendatario;
 use App\DetalleCuentasArrendatario;
@@ -88,7 +88,7 @@ class CuentasArrendatarioController extends Controller
         $cap_arr=null;
         $contratofinalarr=null;
         foreach ($captacionarr as $k) {
-            $contratofinalarr=ContratoFinalARR::where("id_publicacion","=",$k->id)->wherein("id_estado",[7])->get();
+            $contratofinalarr=ContratoFinalArr::where("id_publicacion","=",$k->id)->wherein("id_estado",[7])->get();
             if(count($contratofinalarr)>0){
                 $cap_arr=$k;
                 break;
@@ -267,7 +267,7 @@ class CuentasArrendatarioController extends Controller
                 ->where("fecha", "=", Carbon::now()->format('Y/m/d'))
                 ->first();
         $servicio = EmpresasServicios::all()->where('id_estado','<>','0');
-        $contratofinal=ContratoFinalARR::find($id);
+        $contratofinal=ContratoFinalArr::find($id);
         $borrador=ContratoBorradorArrendatario::find($contratofinal->id_borrador);
         $captacion=Arrendatario::find($borrador->id_cap_arr);
         $inmueble=Inmueble::find($captacion->id_inmueble);
@@ -342,7 +342,7 @@ class CuentasArrendatarioController extends Controller
                 ->where("fecha", "=", Carbon::now()->format('Y/m/d'))
                 ->first();
 
-        $contratofinal=ContratoFinalARR::find($id);
+        $contratofinal=ContratoFinalArr::find($id);
         $borrador=ContratoBorradorArrendatario::find($contratofinal->id_borrador);
         $publicacion=Arrendatario::find($borrador->id_cap_arr);
         $idcontrato=$id;
@@ -459,7 +459,7 @@ $firma="ARRENDATARIO";
         $cap_arr=null;
         $contratofinalarr=null;
         foreach ($captacionarr as $k) {
-            $contratofinalarr=ContratoFinalARR::where("id_publicacion","=",$k->id)->wherein("id_estado",[7])->first();
+            $contratofinalarr=ContratoFinalArr::where("id_publicacion","=",$k->id)->wherein("id_estado",[7])->first();
             if(count($contratofinalarr)>0){
                 $cap_arr=$k;
                 break;

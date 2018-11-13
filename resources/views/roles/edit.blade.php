@@ -36,6 +36,7 @@
 <script>
 
 $('#listusers').DataTable({
+    paging: false,
     language: {
         "sProcessing": "Procesando...",
         "sLengthMenu": "Mostrar _MENU_ registros",

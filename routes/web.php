@@ -1731,7 +1731,7 @@ Route::get('repfinal/historial/direccion/general','ReportesController@historia_g
 	Route::post('alerta/cap/gestion/hoy_ajax','ReporteGestionController@gestion_hoy_ajax')->name('alertas.gestion_hoy_ajax')
 		->middleware('permission:alerta.captaciones');
 
-	Route::get('alerta/cap/gestion/mes','captaciones@gestion_mes')->name('alertas.gestion_mes')
+	Route::get('alerta/cap/gestion/mes','ReporteGestionController@gestion_mes')->name('alertas.gestion_mes')
 		->middleware('permission:alerta.gestion_mes');
 
 	Route::post('alerta/cap/gestion/mes_ajax','ReporteGestionController@gestion_mes_ajax')->name('alertas.gestion_mes_ajax')

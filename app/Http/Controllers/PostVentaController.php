@@ -422,7 +422,7 @@ class PostVentaController extends Controller
             return back()->with('error', 'No hay UF registrada para el día de hoy');
         }
 
-          $contratofinalarr = ContratoFinalARR::find($id);
+          $contratofinalarr = ContratoFinalArr::find($id);
 
 
           $borrador = ContratoBorradorArrendatario::find($contratofinalarr->id_borrador);

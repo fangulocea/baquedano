@@ -317,6 +317,7 @@
 
 <script>
     $.get("/home/propietario/uf/",function(response,state){
+
                                 $("#uf").val(response.valor);
                                 $("#fecha").val(response.fecha);
                              });
@@ -471,11 +472,11 @@ function tabla(id,txt){
                                                 if(newArray[0].moneda=='UF'){
                                                     subtotal= newArray[0].precio_en_moneda * $("#uf").val();
                                                 }else{
-                                                   subtotal= newArray[0].precio_en_moneda *1;
+                                                   subtotal= newArray[0].precio_en_moneda *1 ;
                                                 }
 
                                                  
-
+                                                subtotal=Math.round(subtotal);
                                                 var cell = document.createElement("td");
                                                     var cellText = document.createTextNode(Math.ceil(subtotal));
                                                     cell.appendChild(cellText);
