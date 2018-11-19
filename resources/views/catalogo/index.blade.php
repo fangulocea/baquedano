@@ -53,21 +53,24 @@
                                 <td>{{ $s->valor_en_pesos }}</td>
                                 <td>{{ $s->unidad_medida }}</td>
                                 <td>{{ trans_choice('mensajes.vigencia', $s->id_estado ) }}</td>
-                                 @can('catalogo.edit')
+                                
                                 <td width="10px">
+                                     @can('catalogo.edit')
                                     <a href="{{ route('catalogo.edit', $s->id) }}"><span class="btn btn-warning btn-circle btn-lg"><i class="ti-pencil-alt"></i></span></a>
+                                    @endcan
                                 </td>
-                                @endcan
-                                @can('catalogo.destroy')
+                                
+                                
                                 <td width="10px">
-
+                                    @can('catalogo.destroy')
                                     {!! Form::open(['route' => ['catalogo.destroy', $s->id], 
                                     'method' => 'DELETE']) !!}
                                         <button class="btn btn-danger btn-circle btn-lg"><i class="ti-trash"></i>
                                         </button>
                                     {!! Form::close() !!}
+                                    @endcan
                                 </td>
-                                @endcan
+                                
                             </tr>
                             @endforeach
 

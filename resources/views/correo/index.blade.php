@@ -34,29 +34,34 @@
                         <td>{{ $cor->id }}</td>
                         <td>{{ $cor->nombre }}</td>
                         <td>{{ trans_choice('mensajes.vigencia', $cor->estado ) }}</td>
-                        @can('correo.show')
+                        
                         <td width="10px">
+                            @can('correo.show')
                             <a href="{{ route('correo.show', $cor->id) }}" 
                                 class="btn btn-success btn-circle btn-lg">
                                 <i class="fa fa-check"></i>
                             </a>
+                            @endcan
                         </td>
-                        @endcan
-                        @can('correo.edit')
+                        
+                        
                         <td width="10px">
+                            @can('correo.edit')
                             <a href="{{ route('correo.edit', $cor->id) }}"><span class="btn btn-warning btn-circle btn-lg"><i class="ti-pencil-alt"></i></span></a>
+                            @endcan
                         </td>
-                        @endcan
-                        @can('correo.destroy')
+                        
+                        
                         <td width="10px">
-
+                            @can('correo.destroy')
                             {!! Form::open(['route' => ['correo.destroy', $cor->id], 
                             'method' => 'DELETE']) !!}
                             <button class="btn btn-danger btn-circle btn-lg"><i class="ti-trash"></i>
                             </button>
                             {!! Form::close() !!}
+                             @endcan
                         </td>
-                        @endcan
+                       
                     </tr>
                     @endforeach
 

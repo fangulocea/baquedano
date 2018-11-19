@@ -69,7 +69,7 @@
                     @foreach($publica as $p)
                             <tr>
                                 <td><a href="{{ route('finalContrato.edit', [$p->id_publicacion,0,0,1,"contrato"]) }}" >
-                                    <span class="btn btn-success btn-sm"> {{ $p->id_publicacion }}</span> </a></td>
+                                    <span class="btn btn-success btn-sm"> {{ $p->id_contrato }}</span> </a></td>
                                 
                                 <td ><a href="{{ route('finalContrato.edit', [$p->id_publicacion,0,0,1,"contrato"]) }}" >
                                     {{ $p->direccion }}</a></td>
@@ -98,11 +98,13 @@
                                 <td> {{ $p->valorsiguiente6 - $p->valorpagadosiguiente6 }} </td>
 
                                  
-                                @can('finalContrato.edit')
+                                
                                 <td width="10px">
+                                    @can('finalContrato.edit')
                                     <a href="{{ route('finalContrato.edit', [$p->id_publicacion,0,0,1,"contrato"]) }}"><span class="btn btn-warning btn-circle btn-lg"><i class="ti-pencil-alt"></i></span></a>
+                                    @endcan
                                 </td>
-                                @endcan
+                                
 
                             </tr>
                             @endforeach

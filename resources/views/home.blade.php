@@ -18,7 +18,7 @@ use App\Http\Controllers\PrimeraGestionController;
         <div class="col-sm-12">
             <div class="white-box">
 
-                        <div class="panel panel-info">
+                        <div class="panel panel-inverse">
                             <div class="panel-heading"> Gestiones Captación Propietarios
                                 <div class="pull-right"><a href="#" data-perform="panel-collapse"><i class="ti-minus"></i></a> <a href="#" data-perform="panel-dismiss"><i class="ti-close"></i></a> </div>
                             </div>
@@ -146,8 +146,149 @@ use App\Http\Controllers\PrimeraGestionController;
                             </div>
                         </div>
 
+                    <div class="panel panel-success">
+                            <div class="panel-heading"> Contratos Propietarios
+                                <div class="pull-right"><a href="#" data-perform="panel-collapse"><i class="ti-minus"></i></a> <a href="#" data-perform="panel-dismiss"><i class="ti-close"></i></a> </div>
+                            </div>
+                            <div class="panel-wrapper collapse in" aria-expanded="true">
+                                <div class="panel-body">
+                                    <div class="row">
+                                        <div class="col-sm-3">
+                                             <center>
+                                                    <h1 class="counter m-t-15">{{ number_format(PrimeraGestionController::MontoPendientePasadoPro() , 0, '.', ',')}}</h1>
+                                                    <a href="{{ route('alertas.adm_contratomespro') }}"> <span class="btn btn-block btn-primary btn-rounded">Salida Mensual<br>Mes Anterior</span></a>
+                                            </center>
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <center>
+                                                <h1 class="counter m-t-15">{{ number_format(PrimeraGestionController::MontoPendienteActualPro() , 0, '.', ',')}}</h1>
+                                                <a href="{{ route('alertas.adm_contratomespro') }}"> <span class="btn btn-block btn-primary btn-rounded">Salida Mensual<br> Mes Actual</span></a>
+                                            </center>
+                                        </div>
+                                        <div class="col-sm-3">
+                                                    <center>
+                                                        <h1 class="counter m-t-15">{{ number_format(PrimeraGestionController::MontoPendienteProximoPro() , 0, '.', ',')}}</h1>
+                                                        
+                                                       <a href="{{ route('alertas.adm_contratomespro') }}"> <span class="btn btn-block btn-primary btn-rounded">Salida Mensual <br>Próximo Mes</span></a>
+                                                   </center>
+                                        </div>
+                                        <div class="col-sm-3">
+                                                    <center>
+                                                       
+                                                        <h1 class="counter m-t-15">{{ number_format(PrimeraGestionController::MorososPasadoPro() , 0, '.', ',')}}</h1>
+                                                       <a href="{{ route('alertas.adm_morosopro') }}"> <span class="btn btn-block btn-danger btn-rounded">Montos Morosos<br>Mes Anterior</span></a>
+                                                   </center>
+                                        </div>
+                                    </div>
 
-    
+                                    <div class="row">
+                                        <div class="col-sm-3">
+                                             <center>
+                                                    <h1 class="counter m-t-15">{{ number_format(PrimeraGestionController::MontoPagadoAnteriorPro() , 0, '.', ',')}}</h1>
+                                                    <a href="{{ route('alertas.adm_pagadospro') }}"> <span class="btn btn-block btn-primary btn-rounded">Monto Pagado<br>Mes Anterior</span></a>
+                                            </center>
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <center>
+                                                <h1 class="counter m-t-15">{{ number_format(PrimeraGestionController::MontoPagadoActualPro() , 0, '.', ',')}}</h1>
+                                                <a href="{{ route('alertas.adm_pagadospro') }}"> <span class="btn btn-block btn-primary btn-rounded">Monto Pagado<br> Mes Actual</span></a>
+                                            </center>
+                                        </div>
+                                        <div class="col-sm-3">
+                                               
+                                        </div>
+                                        <div class="col-sm-3">
+                                                    <center>
+                                                       
+                                                        <h1 class="counter m-t-15">{{ number_format(PrimeraGestionController::MorosoActualPro() , 0, '.', ',')}}</h1>
+                                                       <a href="{{ route('alertas.adm_morosopro') }}"> <span class="btn btn-block btn-danger btn-rounded">Transferencias Atrasadas<br> Mes Actual</span></a>
+                                                   </center>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                                <div class="col-sm-3">
+                                                    <center>
+                                                        <h1 class="counter m-t-15">{{ number_format(PrimeraGestionController::transhoypro() , 0, '.', ',')}}</h1>
+                                                        
+                                                       <a href="{{ route('alertas.gestion_anual') }}"> <span class="btn btn-block btn-info btn-rounded">Hacer Transferencia <br>Hoy</span></a>
+                                                   </center>
+                                        </div>
+                                        <div class="col-sm-3">
+                                                    <center>
+                                                       
+                                                        <h1 class="counter m-t-15">{{ number_format(PrimeraGestionController::transmananaPro() , 0, '.', ',')}}</h1>
+                                                       <a href="{{ route('alertas.gestion_total') }}"> <span class="btn btn-block btn-info btn-rounded">Hacer Transferencia<br> Mañana</span></a>
+                                                   </center>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+    <div class="panel panel-success">
+                            <div class="panel-heading"> Contratos Arrendatarios
+                                <div class="pull-right"><a href="#" data-perform="panel-collapse"><i class="ti-minus"></i></a> <a href="#" data-perform="panel-dismiss"><i class="ti-close"></i></a> </div>
+                            </div>
+                            <div class="panel-wrapper collapse in" aria-expanded="true">
+                                <div class="panel-body">
+                                    <div class="row">
+                                        <div class="col-sm-3">
+                                             <center>
+                                                    <h1 class="counter m-t-15">{{ number_format(PrimeraGestionController::MontoPendientePasadoARR() , 0, '.', ',')}}</h1>
+                                                    <a href="{{ route('alertas.gestion_hoy') }}"> <span class="btn btn-block btn-primary btn-rounded">Entrada Mensual<br>Mes Anterior</span></a>
+                                            </center>
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <center>
+                                                <h1 class="counter m-t-15">{{ number_format(PrimeraGestionController::MontoPendienteActualARR() , 0, '.', ',')}}</h1>
+                                                <a href="{{ route('alertas.gestion_mes') }}"> <span class="btn btn-block btn-primary btn-rounded">Entrada Mensual<br> Mes Actual</span></a>
+                                            </center>
+                                        </div>
+                                        <div class="col-sm-3">
+                                                    <center>
+                                                        <h1 class="counter m-t-15">{{ number_format(PrimeraGestionController::MontoPendienteProximoARR() , 0, '.', ',')}}</h1>
+                                                        
+                                                       <a href="{{ route('alertas.gestion_anual') }}"> <span class="btn btn-block btn-primary btn-rounded">Entrada Mensual <br>Próximo Mes</span></a>
+                                                   </center>
+                                        </div>
+                                        <div class="col-sm-3">
+                                                    <center>
+                                                       
+                                                        <h1 class="counter m-t-15">{{ number_format(PrimeraGestionController::MorososPasadoARR() , 0, '.', ',')}}</h1>
+                                                       <a href="{{ route('alertas.gestion_total') }}"> <span class="btn btn-block btn-danger btn-rounded">Montos Morosos<br>Mes Anterior</span></a>
+                                                   </center>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-sm-3">
+                                             <center>
+                                                    <h1 class="counter m-t-15">{{ number_format(PrimeraGestionController::MontoPagadoAnteriorARR() , 0, '.', ',')}}</h1>
+                                                    <a href="{{ route('alertas.gestion_hoy') }}"> <span class="btn btn-block btn-primary btn-rounded">Monto Pagado<br>Mes Anterior</span></a>
+                                            </center>
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <center>
+                                                <h1 class="counter m-t-15">{{ number_format(PrimeraGestionController::MontoPagadoActualARR() , 0, '.', ',')}}</h1>
+                                                <a href="{{ route('alertas.gestion_mes') }}"> <span class="btn btn-block btn-primary btn-rounded">Monto Pagado<br> Mes Actual</span></a>
+                                            </center>
+                                        </div>
+                                        <div class="col-sm-3">
+                                               
+                                        </div>
+                                        <div class="col-sm-3">
+                                                    <center>
+                                                       
+                                                        <h1 class="counter m-t-15">{{ number_format(PrimeraGestionController::MorosoActualARR() , 0, '.', ',')}}</h1>
+                                                       <a href="{{ route('alertas.gestion_total') }}"> <span class="btn btn-block btn-danger btn-rounded">Pagos Atrasadas<br> Mes Actual</span></a>
+                                                   </center>
+                                        </div>
+                                    </div>
+
+                                  
+                                </div>
+                            </div>
+                        </div>
 
                     </div>
                 </div>

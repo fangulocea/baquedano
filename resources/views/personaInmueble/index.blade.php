@@ -34,29 +34,34 @@
                                 <td>{{ $pein->id }}</td>
                                 <td>{{ $pein->nombre }} {{ $pein->apellido_paterno }} {{ $pein->apellido_materno }}</td>
                                 <td>{{ $pein->direccion }}, {{ $pein->numero }}, {{ $pein->comuna_nombre }}</td>
-                                @can('personaInmueble.show')
+                                
                                 <td width="10px">
+                                    @can('personaInmueble.show')
                                     <a href="{{ route('personaInmueble.show', $pein->id) }}" 
                                     class="btn btn-success btn-circle btn-lg">
                                       <i class="fa fa-check"></i>
                                     </a>
+                                    @endcan
                                 </td>
-                                @endcan
-                                @can('personaInmueble.edit')
+                                
+                                
                                 <td width="10px">
+                                    @can('personaInmueble.edit')
                                     <a href="{{ route('personaInmueble.edit', $pein->id) }}"><span class="btn btn-warning btn-circle btn-lg"><i class="ti-pencil-alt"></i></span></a>
+                                    @endcan
                                 </td>
-                                @endcan
-                                @can('personaInmueble.destroy')
+                                
+                               
                                 <td width="10px">
-
+                                     @can('personaInmueble.destroy')
                                     {!! Form::open(['route' => ['personaInmueble.destroy', $pein->id], 
                                     'method' => 'DELETE']) !!}
                                         <button class="btn btn-danger btn-circle btn-lg"><i class="ti-trash"></i>
                                         </button>
                                     {!! Form::close() !!}
+                                     @endcan
                                 </td>
-                                @endcan
+                               
                             </tr>
                             @endforeach
 

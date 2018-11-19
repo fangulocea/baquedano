@@ -64,15 +64,16 @@
                                                             <center><a data-lightbox="image-1" href="{{ URL::asset($p->ruta.'/'.$p->nombre) }}" ><img src="{{ URL::asset($p->ruta.'/'.$p->nombre) }}" alt="gallery" class="all studio" width="50" height="80" /> </a></center>
 
                                                            
-                                                            @can('captacion.show')
+                                                            
                                                             <td width="10px">
-
+                                                                @can('captacion.show')
                                                                 <a href="{{ route('captacioncorredor.eliminarfoto', [$p->id,$p->id_capcorredor]) }}" 
                                                                    class="btn btn-danger btn-circle btn-lg">
                                                                     <i class="fa fa-check"></i>
                                                                 </a>
+                                                                @endcan
                                                             </td>
-                                                            @endcan
+                                                            
                                                         </tr>
                                                         @endforeach
 
@@ -181,14 +182,15 @@
                                 <td>{{ $p->dir }}</td>
                                 <td>{{ $p->Creador }}</td>
                                 <td>{{ $p->fecha_gestion }} {{ $p->hora_gestion }}</td>
-                                @can('revisioninmueble.edit')
+                                
                                 <td width="10px">
+                                    @can('revisioninmueble.edit')
                                     <div class="col-lg-2 col-sm-3 col-xs-12">
                                     <button class="btn btn-success btn-circle btn-lg" id='via_edit' onclick="mostrar_modal({{ $p->id }})" ><i class="fa fa-check"></i></span></button>
                                 </div>
-
-                                </td>
                                 @endcan
+                                </td>
+                                
                             </tr>
                             @endforeach
 

@@ -44,7 +44,7 @@ protected $table='adm_contratofinalarr';
                  $join->on('m.id_estado', '=', 'c.id_estado');
             })
                 ->where("p.id_arrendatario", "=", $id_arrendatario)
-                ->select(DB::raw("c.id"))
+                ->select(DB::raw("c.id, i.id as id_inmueble"))
                 ->get()->toArray();
 
                 return $direcciones;

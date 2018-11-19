@@ -92,11 +92,13 @@
                                 <td> {{ $p->valorsiguiente4 - $p->valorpagadosiguiente4 }} </td>
                                 <td> {{ $p->valorsiguiente5 - $p->valorpagadosiguiente5 }} </td>
                                 <td> {{ $p->valorsiguiente6 - $p->valorpagadosiguiente6 }} </td>
-                                @can('cbararrendatario.edit')
+                               
                                 <td width="10px">
+                                     @can('cbararrendatario.edit')
                                     <a href="{{ route('finalContratoArr.edit', [$p->id_cap_arr,0,0,1,"contrato"]) }}"><span class="btn btn-warning btn-circle btn-lg"><i class="ti-pencil-alt"></i></span></a>
+                                    @endcan
                                 </td>
-                                @endcan
+                                
 
                             </tr>
                             @endforeach

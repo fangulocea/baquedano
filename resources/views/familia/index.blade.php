@@ -33,21 +33,24 @@
                                 <td>{{ $com->familia }}</td>
                                 <td> {{ $com->id_estado }}</td>
                                
-                                @can('familia.edit')
+                                
                                 <td width="10px">
+                                    @can('familia.edit')
                                     <a href="{{ route('familia.edit', $com->id) }}"><span class="btn btn-warning btn-circle btn-lg"><i class="ti-pencil-alt"></i></span></a>
+                                    @endcan
                                 </td>
-                                @endcan
-                                @can('familia.destroy')
+                                
+                               
                                 <td width="10px">
-
+                                     @can('familia.destroy')
                                     {!! Form::open(['route' => ['familia.destroy', $com->id], 
                                     'method' => 'DELETE']) !!}
                                         <button class="btn btn-danger btn-circle btn-lg"><i class="ti-trash"></i>
                                         </button>
                                     {!! Form::close() !!}
+                                    @endcan
                                 </td>
-                                @endcan
+                                
                             </tr>
                             @endforeach
 

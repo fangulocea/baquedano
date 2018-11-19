@@ -667,12 +667,11 @@ public function savepagofin(Request $request,$id_contrato,$id_publicacion) {
                 ->leftjoin('users as p2', 'c.id_creador', '=', 'p2.id')
                 ->leftjoin('users as p3', 'c.id_modificador', '=', 'p3.id')
                 ->leftjoin('mensajes as m', function($join){
-                 $join->on('m.nombre_modulo', '=',DB::raw("'Captación'"));
-                 $join->on('m.id_estado', '=', 'c.id_estado');
+                 $join->on('m.nombre_modulo', '=',DB::raw("'Contrato Final Propietario'"));
+                 $join->on('m.id_estado', '=', 'co.id_estado');
             })
                 ->whereIn('c.id_estado', [7, 10, 6])
-                ->select(DB::raw('
-co.fecha_firma,
+                ->select(DB::raw('co.id as id_contrato, co.fecha_firma,
                     (select moneda from adm_generapagopropietario as gg where gg.id_publicacion=c.id and gg.id_inmueble=i.id order by gg.id desc limit 1 ) as moneda,
                     cb.dia_pago,c.id as id_publicacion, DATE_FORMAT(c.created_at, "%d/%m/%Y") as fecha_creacion, m.nombre as id_estado, CONCAT_WS(" ",p1.nombre,p1.apellido_paterno,p1.apellido_materno) as Propietario, p2.name as Creador,
 
@@ -1016,7 +1015,7 @@ co.fecha_firma,
                     ->where("id_inmueble", "=", $request->id_inmueble_update)
                     ->where("mes", "=", $mes)
                     ->where("anio", "=", $anio)
-                    ->sum('precio_en_pesos');
+                    ->sum('precio_en_moneda');
             $pagos_mensuales_s = DB::table('adm_pagospropietarios')
                     ->where("id_contratofinal", '=', $idcontrato)
                     ->where("id_publicacion", "=", $idp)
@@ -1024,7 +1023,10 @@ co.fecha_firma,
                     ->where("id_inmueble", "=", $request->id_inmueble_update)
                     ->where("mes", "=", $mes)
                     ->where("anio", "=", $anio)
-                    ->sum('precio_en_pesos');
+                    ->sum('precio_en_moneda');
+
+                 $pagos_mensuales_s = $pagos_mensuales_s  * $valormoneda;
+            $pagos_mensuales_e = $pagos_mensuales_e * $valormoneda;
 
             $pagar_a_propietario = $pagos_mensuales_s - $pagos_mensuales_e;
             $pagar_a_baquedano = $pagos_mensuales_e - $pagos_mensuales_s;
@@ -1377,7 +1379,7 @@ $pago = PagosPropietarios::create([
                             'id_publicacion' => $idp,
                             'id_inmueble' => $idinmueble,
                             'tipopago' => "Otros Cargos",
-                            'E_S' => 's',
+                            'E_S' => 'e',
                             'idtipopago' => 16,
                             'tipopropuesta' => $tipopropuesta,
                             'meses_contrato' => $meses_contrato,
@@ -1612,7 +1614,9 @@ $pago = PagosPropietarios::create([
                 $anio = $g->ano;
                 $dias_mes = cal_days_in_month(CAL_GREGORIAN, $mes, $anio);
                 $idtipopago = 11;
-                $precio_proporcional = $g->valor;
+                $valor_garantia=$g->valor/$valormoneda;
+
+                $precio_proporcional = $valor_garantia;
                 $valor_en_pesos = $g->valor;
                 $pago = PagosPropietarios::create([
                             'id_contratofinal' => $idcontrato,
@@ -1633,8 +1637,8 @@ $pago = PagosPropietarios::create([
                             'moneda' => $tipomoneda,
                             'valormoneda' => $valormoneda,
                             'valordia' => 1,
-                            'precio_en_moneda' => $valor_en_pesos,
-                            'precio_en_pesos' => $valor_en_pesos,
+                            'precio_en_moneda' => $valor_garantia,
+                            'precio_en_pesos' => $g->valor,
                             'id_creador' => $id_creador,
                             'id_modificador' => $id_creador,
                             'id_estado' => 1,
@@ -1926,15 +1930,17 @@ $pago = PagosPropietarios::create([
                         ->whereIn("idtipopago", [1, 2, 8, 11])
                         ->where("id_contratofinal", '=', $idcontrato)
                         ->where("id_inmueble", '=', $idinmueble)
-                        ->sum('precio_en_pesos');
+                        ->sum('precio_en_moneda');
 
                 $pago_a_rentas = PagosPropietarios::where("mes", '=', $mes)
                         ->where("anio", '=', $anio)
                         ->whereIn("idtipopago", [3, 4, 5, 6, 7, 15])
                         ->where("id_contratofinal", '=', $idcontrato)
                         ->where("id_inmueble", '=', $idinmueble)
-                        ->sum('precio_en_pesos');
-
+                        ->sum('precio_en_moneda');
+                        
+                   $saldo_a_favor=$saldo_a_favor*$valormoneda; 
+                   $pago_a_rentas=$pago_a_rentas*$valormoneda; 
                 $saldo_a_depositar = $saldo_a_favor - $pago_a_rentas;
 
                 $pago = PagosPropietarios::create([
@@ -1958,7 +1964,7 @@ $pago = PagosPropietarios::create([
                             'valormoneda' => $valormoneda,
                             'valordia' => $valor_diario,
                             'precio_en_moneda' => $saldo_a_depositar / $valormoneda,
-                            'precio_en_pesos' => $saldo_a_depositar,
+                            'precio_en_pesos' => round($saldo_a_depositar),
                             'id_creador' => $id_creador,
                             'id_modificador' => $id_creador,
                             'id_estado' => 1,
@@ -2245,16 +2251,22 @@ $pago = PagosPropietarios::create([
                         ->whereIn("idtipopago", [1, 2, 8, 11])
                         ->where("id_contratofinal", '=', $idcontrato)
                         ->where("id_inmueble", '=', $idinmueble)
-                        ->sum('precio_en_pesos');
+
+                        ->sum('precio_en_moneda');
+                      
 
                 $pago_a_rentas = PagosPropietarios::where("mes", '=', $mes)
                         ->where("anio", '=', $anio)
                         ->whereIn("idtipopago", [5, 6, 7, 31, 32, 33])
                         ->where("id_contratofinal", '=', $idcontrato)
                         ->where("id_inmueble", '=', $idinmueble)
-                        ->sum('precio_en_pesos');
+                        ->sum('precio_en_moneda');
+
+               $saldo_a_favor=$saldo_a_favor*$valormoneda; 
+               $pago_a_rentas=$pago_a_rentas*$valormoneda;         
 
                 $saldo_a_depositar = $saldo_a_favor - $pago_a_rentas;
+
                 $pago = PagosPropietarios::create([
                             'id_contratofinal' => $idcontrato,
                             'gastocomun' => $gastocomun,
@@ -2276,7 +2288,7 @@ $pago = PagosPropietarios::create([
                             'valormoneda' => $valormoneda,
                             'valordia' => $valor_diario,
                             'precio_en_moneda' => $saldo_a_depositar / $valormoneda,
-                            'precio_en_pesos' => $saldo_a_depositar,
+                            'precio_en_pesos' => round($saldo_a_depositar),
                             'id_creador' => $id_creador,
                             'id_modificador' => $id_creador,
                             'id_estado' => 1,
@@ -2307,7 +2319,7 @@ $pago = PagosPropietarios::create([
                     ->where("id_inmueble", "=", $idinmueble)
                     ->where("mes", "=", $mes)
                     ->where("anio", "=", $anio)
-                    ->sum('precio_en_pesos');
+                    ->sum('precio_en_moneda');
             $pagos_mensuales_s = DB::table('adm_pagospropietarios')
                     ->where("id_publicacion", "=", $idp)
                     ->where("id_contratofinal", '=', $idcontrato)
@@ -2316,10 +2328,17 @@ $pago = PagosPropietarios::create([
                     ->where("id_inmueble", "=", $idinmueble)
                     ->where("mes", "=", $mes)
                     ->where("anio", "=", $anio)
-                    ->sum('precio_en_pesos');
+                    ->sum('precio_en_moneda');
+
+
+            $pagos_mensuales_s = $pagos_mensuales_s  * $valormoneda;
+            $pagos_mensuales_e = $pagos_mensuales_e * $valormoneda;
+
 
             $pagar_a_propietario = $pagos_mensuales_s - $pagos_mensuales_e;
             $pagar_a_baquedano = $pagos_mensuales_e - $pagos_mensuales_s;
+
+
 
             if ($pagar_a_propietario < 0)
                 $pagar_a_propietario = 0;

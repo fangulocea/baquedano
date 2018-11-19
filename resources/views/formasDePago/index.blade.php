@@ -40,29 +40,34 @@
                                 <td>{{ $formasP->pie }} %</td>
                                 <td>{{ $formasP->cuotas }}</td>
                                 <td>{{ trans_choice('mensajes.vigencia', $formasP->estado ) }}</td>
-                                @can('formasDePago.show')
+                                
                                 <td width="10px">
+                                    @can('formasDePago.show')
                                     <a href="{{ route('formasDePago.show', $formasP->id) }}" 
                                     class="btn btn-success btn-circle btn-lg">
                                       <i class="fa fa-check"></i>
                                     </a>
+                                    @endcan
                                 </td>
-                                @endcan
-                                @can('formasDePago.edit')
+                                
+                                
                                 <td width="10px">
+                                    @can('formasDePago.edit')
                                     <a href="{{ route('formasDePago.edit', $formasP->id) }}"><span class="btn btn-warning btn-circle btn-lg"><i class="ti-pencil-alt"></i></span></a>
+                                     @endcan
                                 </td>
-                                @endcan
-                                @can('formasDePago.destroy')
+                               
+                                
                                 <td width="10px">
-
+                                    @can('formasDePago.destroy')
                                     {!! Form::open(['route' => ['formasDePago.destroy', $formasP->id], 
                                     'method' => 'DELETE']) !!}
                                         <button class="btn btn-danger btn-circle btn-lg"><i class="ti-trash"></i>
                                         </button>
                                     {!! Form::close() !!}
+                                    @endcan
                                 </td>
-                                @endcan
+                                
                             </tr>
                             @endforeach
 

@@ -38,16 +38,17 @@
                                     <a href="{{ route('proveedor.edit', $com->id) }}"><span class="btn btn-warning btn-circle btn-lg"><i class="ti-pencil-alt"></i></span></a>
                                 </td>
                                 @endcan
-                                @can('proveedor.destroy')
+                                
                                 <td width="10px">
-
+                                    @can('proveedor.destroy')
                                     {!! Form::open(['route' => ['proveedor.destroy', $com->id], 
                                     'method' => 'DELETE']) !!}
                                         <button class="btn btn-danger btn-circle btn-lg"><i class="ti-trash"></i>
                                         </button>
                                     {!! Form::close() !!}
+                                    @endcan
                                 </td>
-                                @endcan
+                                
                             </tr>
                             @endforeach
 

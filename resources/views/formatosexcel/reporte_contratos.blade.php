@@ -18,7 +18,6 @@
                         <th style="background-color: #F2F4F4;text-align: center;border: 1px solid black;">Propietario</th>
                         <th style="background-color: #F2F4F4;text-align: center;border: 1px solid black;">Teléfono</th>
                         <th style="background-color: #F2F4F4;text-align: center;border: 1px solid black;">Email</th>
-                        <th style="background-color: #F2F4F4;text-align: center;border: 1px solid black;">Propietario</th>
                         <th style="background-color: #F2F4F4;text-align: center;border: 1px solid black;">Día Pago</th>
                         <th style="background-color: #F2F4F4;text-align: center;border: 1px solid black;">Estado</th>
                         <th style="background-color: #F2F4F4;text-align: center;border: 1px solid black;">{{ $meses->mesanterior18 }}</th>

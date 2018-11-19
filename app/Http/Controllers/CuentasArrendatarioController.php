@@ -237,7 +237,11 @@ class CuentasArrendatarioController extends Controller
             "id_estado"  => 1 
         ]);
 
-
+ $asigna=AsignaRevision::create([
+            "id_contrato" => $request->id_contrato,
+            "id_asignado" => Auth::user()->id,
+            "id_estado" => 4
+        ]);
 
  return redirect()->route('revisioncuentas.create',$request->id_contrato)
             ->with('status', 'Revisión Guardada con Exito');  

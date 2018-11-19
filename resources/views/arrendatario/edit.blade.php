@@ -402,11 +402,12 @@
                                         <tr>
                                             <td  width="10px" height="10px">
                                                 <center><a href="{{ URL::asset($p->ruta.'/'.$p->nombre) }}" target="_blank">BAJAR ARCHIVO<br> {{ $p->nombre }} </a></center>
+                                                <td width="10px">
                                                 @can('revisioncomercial.edit')
-                                            <td width="10px">
                                                 <a href="{{ route('arrendatario.eliminararchivo', [$p->id,$persona->id]) }}" class="btn btn-danger btn-circle btn-lg"><i class="fa fa-check"></i></a>
-                                            </td>
                                                 @endcan
+                                            </td>
+                                                
                                         </tr>
                                     @endforeach
                                 </tbody>
@@ -673,16 +674,18 @@
     <td  width="10px" height="10px" style="border: 1px solid black;" >
         <center>
             <a href="{{ URL::asset($p->ruta.'/'.$p->nombre) }}" target="_blank">DESCARGAR ARCHIVO<br/> {{ $p->nombre }} </a></center>
-            @can('captacion.show')
+           
             <td width="10px" style="border: 1px solid black;">
+                 @can('captacion.show')
                 <center>
                     <a href="{{ route('arrendatario.eliminarfoto', [$p->id,$p->id_arrendatario]) }}" 
                      class="btn btn-danger btn-circle btn-lg">
                      <i class="fa fa-check"></i>
                  </a>
              </center>
+             @endcan
          </td>
-         @endcan
+         
      </tr>
 @endforeach
            </tbody>
@@ -816,14 +819,15 @@
                                 <td>{{ $p->nombre }}</td>
                                 <td>{{ $p->nombre_c }}</td>
                                 <td>{{ $p->detalle }}</td>
-                                @can('captacion.edit')
+                               
                                 <td width="10px">
+                                     @can('captacion.edit')
                                     <div class="col-lg-2 col-sm-3 col-xs-12">
                                     <button class="btn btn-success btn-circle btn-lg" id='via_edit' onclick="mostrar_modal({{ $p->id }})" ><i class="fa fa-check"></i></span></button>
                                 </div>
-
+                                    @endcan
                                 </td>
-                                @endcan
+                                
                             </tr>
                             @endforeach
 

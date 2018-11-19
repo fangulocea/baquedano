@@ -475,14 +475,18 @@ if($request->moneda=='UF' && $request->arriendo_sim>300){
 
         $garantias = ArrendatarioGarantia::where("id_publicacion", "=", $idp)->get();
 
+        
+
         if (count($garantias) > 0) {
             foreach ($garantias as $g) {
                 $mes = $g->mes;
                 $anio = $g->ano;
                 $dias_mes = cal_days_in_month(CAL_GREGORIAN, $mes, $anio);
                 $idtipopago = 11;
-                $precio_proporcional = $g->valor;
-                $valor_en_pesos = $g->valor;
+                $valor_garantia=$g->valor/$valormoneda;
+
+                $precio_proporcional = $valor_garantia;
+                $valor_en_pesos = $valor_garantia;
                 $pago = SimulaPagoArrendatario::create([
                             'id_simulacion' => $idsimulacion,
                             'id_publicacion' => $idp,
@@ -737,15 +741,18 @@ if($request->moneda=='UF' && $request->arriendo_sim>300){
                         ->whereIn("idtipopago", [10])
                         ->where("id_simulacion", '=', $idsimulacion)
                         ->where("id_inmueble", '=', $idinmueble)
-                        ->sum('precio_en_pesos');
+                        ->sum('precio_en_moneda');
 
                 $pago_a_rentas = SimulaPagoArrendatario::where("mes", '=', $mes)
                         ->where("anio", '=', $anio)
                         ->whereIn("idtipopago", [1,2,3, 4, 5, 6, 7,8,11,15])
                         ->where("id_simulacion", '=', $idsimulacion)
                         ->where("id_inmueble", '=', $idinmueble)
-                        ->sum('precio_en_pesos');
+                        ->sum('precio_en_moneda');
 
+
+               $saldo_a_favor=$saldo_a_favor*$valormoneda; 
+               $pago_a_rentas=$pago_a_rentas*$valormoneda;     
                 $saldo_a_depositar = $pago_a_rentas-$saldo_a_favor ;
 
 
@@ -770,7 +777,7 @@ if($request->moneda=='UF' && $request->arriendo_sim>300){
                             'valormoneda' => $valormoneda,
                             'valordia' => $valor_diario,
                             'precio_en_moneda' => $saldo_a_depositar,
-                            'precio_en_pesos' => $saldo_a_depositar,
+                            'precio_en_pesos' => round($saldo_a_depositar),
                             'id_creador' => $id_creador,
                             'id_modificador' => $id_creador,
                             'id_estado' => 1,
@@ -961,7 +968,7 @@ if($request->moneda=='UF' && $request->arriendo_sim>300){
                     ->whereIn("idtipopago", [10])
                     ->where("id_simulacion", '=', $idsimulacion)
                     ->where("id_inmueble", '=', $idinmueble)
-                    ->sum('precio_en_pesos');
+                    ->sum('precio_en_moneda');
 
 
             $pago_a_rentas = SimulaPagoArrendatario::where("mes", '=', $mes)
@@ -969,7 +976,11 @@ if($request->moneda=='UF' && $request->arriendo_sim>300){
                     ->whereIn("idtipopago", [1, 2, 5, 6, 7, 8, 9,11, 31, 32, 33])
                     ->where("id_simulacion", '=', $idsimulacion)
                     ->where("id_inmueble", '=', $idinmueble)
-                    ->sum('precio_en_pesos');
+                    ->sum('precio_en_moneda');
+
+            
+               $saldo_a_favor=$saldo_a_favor*$valormoneda; 
+               $pago_a_rentas=$pago_a_rentas*$valormoneda;     
 
             $saldo_a_depositar =$pago_a_rentas - $saldo_a_favor ;
             $pago = SimulaPagoArrendatario::create([

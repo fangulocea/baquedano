@@ -65,14 +65,15 @@
                     <td>{{ $p->dir }}</td>
                     <td>{{ $p->Creador }}</td>
                     <td>{{ $p->fecha_gestion }} {{ $p->hora_gestion }}</td>
-                    @can('captacion.edit')
+                    
                     <td width="10px">
+                        @can('captacion.edit')
                         <div class="col-lg-2 col-sm-3 col-xs-12">
                             <button class="btn btn-success btn-circle btn-lg" id='via_edit' onclick="mostrar_modal({{ $p->id }})" ><i class="fa fa-check"></i></span></button>
                         </div>
-
+                        @endcan
                     </td>
-                    @endcan
+                    
                 </tr>
                 @endforeach
 

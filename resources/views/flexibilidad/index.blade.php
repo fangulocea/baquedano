@@ -37,29 +37,34 @@
                                 <td>{{ $flexi->nombre }}</td>
                                 <td>{{ $flexi->descripcion }}</td>
                                 <td>{{ trans_choice('mensajes.vigencia', $flexi->estado ) }}</td>
-                                @can('flexibilidad.show')
+                               
                                 <td width="10px">
+                                     @can('flexibilidad.show')
                                     <a href="{{ route('flexibilidad.show', $flexi->id) }}" 
                                     class="btn btn-success btn-circle btn-lg">
                                       <i class="fa fa-check"></i>
                                     </a>
+                                    @endcan
                                 </td>
-                                @endcan
-                                @can('flexibilidad.edit')
+                                
+                                
                                 <td width="10px">
+                                    @can('flexibilidad.edit')
                                     <a href="{{ route('flexibilidad.edit', $flexi->id) }}"><span class="btn btn-warning btn-circle btn-lg"><i class="ti-pencil-alt"></i></span></a>
+                                    @endcan
                                 </td>
-                                @endcan
-                                @can('flexibilidad.destroy')
+                                
+                               
                                 <td width="10px">
-
+                                     @can('flexibilidad.destroy')
                                     {!! Form::open(['route' => ['flexibilidad.destroy', $flexi->id], 
                                     'method' => 'DELETE']) !!}
                                         <button class="btn btn-danger btn-circle btn-lg"><i class="ti-trash"></i>
                                         </button>
                                     {!! Form::close() !!}
+                                    @endcan
                                 </td>
-                                @endcan
+                                
                             </tr>
                             @endforeach
 

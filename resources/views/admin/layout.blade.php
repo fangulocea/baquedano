@@ -346,11 +346,11 @@
                             </li>
  
 
-                                 @can('checklist.index')
+                                 @can('checklist.checklist')
                                 <li> <a href="{{ route('checklist.index_propietario' ) }}"><i class=" fa-fw">CHECKIN PROPIETARIO</i><span class="hide-menu"></span></a> </li>
                                 @endcan
 
-                                @can('checklist.index')
+                                @can('checklist.checklist')
                                 <li> <a href="{{ route('checklist.index_arrendatario' ) }}"><i class=" fa-fw">CHECKIN ARRENDATARIO</i><span class="hide-menu"></span></a> </li>
                                 @endcan
 

@@ -54,11 +54,13 @@
                                 <td>{{ $arr->Creador }}</td>
                                 <td>{{ $arr->fecha_creacion }}</td>
                                 <td>{{ trans_choice('mensajes.arrendatario', $arr->id_estado) }} </td>
-                                @can('arrendatario.edit')
+                                
                                 <td width="10px">
+                                    @can('arrendatario.edit')
                                     <a href="{{ route('arrendatario.edit',[$arr->id,1]) }}"><span class="btn btn-warning btn-circle btn-sm"><i class="ti-pencil-alt"></i></span></a>
+                                    @endcan
                                 </td>
-                                @endcan
+                                
                                 @can('arrendatario.destroy')
                                 <td width="10px">
 

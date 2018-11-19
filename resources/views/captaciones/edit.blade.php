@@ -368,14 +368,16 @@
                                                             <td>{{ $p->portal }}</td>
                                                             <td><center>{{ $p->cantGes }}</center></td>
                                                             <td>{{ trans_choice('mensajes.captacion', $p->id_estado) }}</td>
-                                                            @can('captacion.show')
+                                                            
                                                             <td width="10px">
+                                                                @can('captacion.show')
                                                                 <a href="{{ route('captacion.edit', [$p->id_publicacion,2]) }}" 
                                                                    class="btn btn-success btn-circle btn-lg">
                                                                     <i class="fa fa-check"></i>
                                                                 </a>
+                                                                 @endcan
                                                             </td>
-                                                            @endcan
+                                                           
 
                                                         </tr>
                                                         @endforeach
@@ -633,16 +635,18 @@
                                                             <a href="{{ URL::asset($pi->ruta.'/'.$pi->nombre) }}" target="_blank">DESCARGAR ARCHIVO<br/> {{ $pi->nombre }} </a></center>
 
                                                            
-                                                            @can('captacion.show')
+                                                            
                                                             <td width="10px" style="border: 1px solid black;">
+                                                                @can('captacion.show')
                                                                 <center>
                                                                 <a href="{{ route('captacion.eliminarfoto', [$pi->id,$pi->id_captacion]) }}" 
                                                                    class="btn btn-danger btn-circle btn-lg">
                                                                     <i class="fa fa-check"></i>
                                                                 </a>
                                                             </center>
-                                                            </td>
                                                             @endcan
+                                                            </td>
+                                                            
                                                         </tr>
                                                         @endforeach
 
@@ -757,14 +761,15 @@
                                 <td>{{ $p->dir }}</td>
                                 <td>{{ $p->Creador }}</td>
                                 <td>{{ $p->fecha_gestion }} {{ $p->hora_gestion }}</td>
-                                @can('captacion.edit')
+                                
                                 <td width="10px">
+                                    @can('captacion.edit')
                                     <div class="col-lg-2 col-sm-3 col-xs-12">
                                     <button class="btn btn-success btn-circle btn-lg" id='via_edit' onclick="mostrar_modal({{ $p->id }})" ><i class="fa fa-check"></i></span></button>
                                 </div>
-
+                                    @endcan
                                 </td>
-                                @endcan
+                                
                             </tr>
                             @endforeach
 

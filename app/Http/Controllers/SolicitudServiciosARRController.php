@@ -166,7 +166,7 @@ class SolicitudServiciosARRController extends Controller {
                         ->whereIn("idtipopago", [10])
                         ->where("id_contratofinal", '=', $idcontrato)
                         ->where("id_inmueble", '=', $idinmueble)
-                        ->sum('precio_en_pesos');
+                        ->sum('precio_en_moneda');
 
 
 
@@ -175,9 +175,10 @@ class SolicitudServiciosARRController extends Controller {
                         ->whereIn("idtipopago", [1, 2, 3, 4, 5, 6, 7, 8, 9, 11, 12, 15, 18, 16])
                         ->where("id_contratofinal", '=', $idcontrato)
                         ->where("id_inmueble", '=', $idinmueble)
-                        ->sum('precio_en_pesos');
+                        ->sum('precio_en_moneda');
 
-
+                $saldo_a_favor=$saldo_a_favor*$valormoneda; 
+               $pago_a_rentas=$pago_a_rentas*$valormoneda;   
 
                 $saldo_a_depositar = $saldo_a_favor - $pago_a_rentas;
 
@@ -196,7 +197,9 @@ class SolicitudServiciosARRController extends Controller {
                         ->whereIn("idtipopago", [1, 2, 3, 4, 5, 6, 7, 8, 9, 11, 12, 15, 18, 16])
                         ->where("id_contratofinal", '=', $idcontrato)
                         ->where("id_inmueble", '=', $idinmueble)
-                        ->sum('precio_en_pesos');
+                        ->sum('precio_en_moneda');
+
+                $pagomensual = $pagomensual * $valormoneda;
 
                 $saldo = PagosArrendatarios::where("mes", '=', $mes)
                         ->where("anio", '=', $anio)
@@ -215,15 +218,17 @@ class SolicitudServiciosARRController extends Controller {
                     ->whereIn("idtipopago", [10])
                     ->where("id_contratofinal", '=', $idcontrato)
                     ->where("id_inmueble", '=', $idinmueble)
-                    ->sum('precio_en_pesos');
+                    ->sum('precio_en_moneda');
 
             $pago_a_rentas = PagosArrendatarios::where("mes", '=', $mes)
                     ->where("anio", '=', $anio)
                     ->whereIn("idtipopago", [1, 2, 5, 6, 7, 8, 9, 11, 12, 15, 31, 32, 33, 18, 16])
                     ->where("id_contratofinal", '=', $idcontrato)
                     ->where("id_inmueble", '=', $idinmueble)
-                    ->sum('precio_en_pesos');
+                    ->sum('precio_en_moneda');
 
+            $saldo_a_favor=$saldo_a_favor*$valormoneda; 
+               $pago_a_rentas=$pago_a_rentas*$valormoneda; 
             $saldo_a_depositar = $saldo_a_favor - $pago_a_rentas;
 
             $saldo = PagosArrendatarios::where("mes", '=', $mes)
@@ -240,8 +245,9 @@ class SolicitudServiciosARRController extends Controller {
                     ->where("anio", '=', $anio)
                     ->whereIn("idtipopago", [1, 2, 5, 6, 7, 8, 9, 11, 12, 15, 31, 32, 33, 18, 16])
                     ->where("id_contratofinal", '=', $idcontrato)
-                    ->sum('precio_en_pesos');
+                    ->sum('precio_en_moneda');
 
+                    $pagomensual = $pagomensual * $valormoneda;
 
             $saldo = PagosArrendatarios::where("mes", '=', $mes)
                     ->where("anio", '=', $anio)
@@ -279,7 +285,7 @@ class SolicitudServiciosARRController extends Controller {
                         ->whereIn("idtipopago", [10])
                         ->where("id_contratofinal", '=', $idcontrato)
                         ->where("id_inmueble", '=', $idinmueble)
-                        ->sum('precio_en_pesos');
+                        ->sum('precio_en_moneda');
 
 
 
@@ -288,10 +294,11 @@ class SolicitudServiciosARRController extends Controller {
                         ->whereIn("idtipopago", [1, 2, 5, 6, 7, 8, 9, 11, 12, 15, 31, 32, 33, 18, 16])
                         ->where("id_contratofinal", '=', $idcontrato)
                         ->where("id_inmueble", '=', $idinmueble)
-                        ->sum('precio_en_pesos');
+                        ->sum('precio_en_moneda');
 
 
-
+                $saldo_a_favor=$saldo_a_favor*$valormoneda; 
+               $pago_a_rentas=$pago_a_rentas*$valormoneda; 
                 $saldo_a_depositar = $saldo_a_favor - $pago_a_rentas;
 
                 $saldo = PagosArrendatarios::where("mes", '=', $mes)
@@ -309,7 +316,9 @@ class SolicitudServiciosARRController extends Controller {
                         ->whereIn("idtipopago", [1, 2, 5, 6, 7, 8, 9, 11, 12, 15, 31, 32, 33, 18, 16])
                         ->where("id_contratofinal", '=', $idcontrato)
                         ->where("id_inmueble", '=', $idinmueble)
-                        ->sum('precio_en_pesos');
+                        ->sum('precio_en_moneda');
+
+                $pagomensual = $pagomensual * $valormoneda;
 
                 $saldo = PagosArrendatarios::where("mes", '=', $mes)
                         ->where("anio", '=', $anio)
@@ -349,20 +358,19 @@ class SolicitudServiciosARRController extends Controller {
                     ->where("id_inmueble", "=", $idinmueble)
                     ->where("mes", "=", $mes)
                     ->where("anio", "=", $anio)
-                    ->sum('precio_en_pesos');
+                    ->sum('precio_en_moneda');
                     
             $pagos_mensuales_s = DB::table('adm_pagosarrendatarios')
-                    ->where("id_publicacion", "=", $idp)
+                    ->where("id_publicacion", "=", $contrato->id_publicacion)
                     ->whereIn("idTipoPago", [10])
                     ->where("id_contratofinal", '=', $idcontrato)
                     ->where("id_inmueble", "=", $idinmueble)
                     ->where("mes", "=", $mes)
                     ->where("anio", "=", $anio)
-                    ->sum('precio_en_pesos');
+                    ->sum('precio_en_moneda');
 
-            $subt=$pagos_mensuales_e - $pagos_mensuales_s;
 
-            $uf = DB::table('adm_uf')
+             $uf = DB::table('adm_uf')
                     ->where("fecha", "=", Carbon::now()->format('Y/m/d'))
                     ->first();
 
@@ -379,6 +387,15 @@ class SolicitudServiciosARRController extends Controller {
                     }else{
                         $valormoneda = 1;
                     }
+
+
+            $pagos_mensuales_e= $pagos_mensuales_e * $valormoneda;
+
+            $pagos_mensuales_s= $pagos_mensuales_s * $valormoneda;
+            
+            $subt=$pagos_mensuales_e - $pagos_mensuales_s;
+
+       
 
             $delete = PagosMensualesArrendatarios::where("id_contratofinal", "=", $idcontrato)
                     ->where("id_publicacion", "=", $contrato->id_publicacion)

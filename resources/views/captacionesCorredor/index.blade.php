@@ -50,21 +50,24 @@
                                 <td>{{ $p->fecha_creacion }}</td>
                                 <td>{{ $p->nom_c }} {{ $p->apep_c }} {{ $p->apem_c }}</td>
                                  <td>{{ trans_choice('mensajes.vigencia', $p->id_estado) }}</td>
-                                @can('captacion.edit')
+                               
                                 <td width="10px">
+                                     @can('captacion.edit')
                                     <a href="{{ route('corredor.edit', $p->id_publicacion) }}"><span class="btn btn-warning btn-circle btn-sm"><i class="ti-pencil-alt"></i></span></a>
+                                    @endcan
                                 </td>
-                                @endcan
-                                @can('corredor.destroy')
+                                
+                                
                                 <td width="10px">
-
+                                    @can('corredor.destroy')
                                     {!! Form::open(['route' => ['corredor.destroy', $p->id_publicacion], 
                                     'method' => 'DELETE']) !!}
                                         <button class="btn btn-danger btn-circle btn-sm"><i class="ti-trash"></i>
                                         </button>
                                     {!! Form::close() !!}
+                                    @endcan
                                 </td>
-                                @endcan
+                                
                             </tr>
                             @endforeach
 

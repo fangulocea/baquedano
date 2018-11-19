@@ -51,15 +51,19 @@
                                 <td>{{ $p->fecha_creacion }}</td>
                                 <td>{{ $p->Propietario }}</td>
                                  <td>{{ trans_choice('mensajes.captacion', $p->id_estado) }}</td>
-                                @can('borradorContrato.edit')
+                                
                                 <td width="10px">
+                                    @can('borradorContrato.edit')
                                     <a href="{{ route('borradorContrato.edit', [$p->id_publicacion,1]) }}"><span class="btn btn-warning btn-circle btn-lg"><i class="ti-pencil-alt"></i></span></a>
+                                    @endcan
                                 </td>
-                                @endcan
-                                @can('borradorContrato.destroy')
+                                
+                                
                                 <td width="10px">
+                                    @can('borradorContrato.destroy')
+                                    @endcan
                                 </td>
-                                @endcan
+                                
                             </tr>
                             @endforeach
                 </tbody>

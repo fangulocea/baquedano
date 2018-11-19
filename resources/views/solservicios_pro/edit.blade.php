@@ -591,16 +591,20 @@
                                     <td>{{ trans_choice('mensajes.Propuesta',$p->tipopropuesta) }}</td>
                                     <td>{{ trans_choice('mensajes.TipoContrato',$p->tipo_contrato) }}</td>
                                     <td>{{ trans_choice('mensajes.borrador', $p->id_estado) }}</td>
-                                    @can('borradorContrato.edit')
+                                   
                                     <td>
+                                         @can('borradorContrato.edit')
                                         <a href="{{ route('borradorContrato.mostrarGestion', $p->id) }}"><span class="btn btn-warning btn-circle btn-lg"><i class="fa fa-check"></i></span></a>
+                                        @endcan
                                     </td>
-                                    @endcan
-                                    @can('borradorContrato.mail')
+                                    
+                                    
                                     <td>
+                                        @can('borradorContrato.mail')
                                         <a href="{{ route('borradorContrato.mail', $p->id) }}"><span class="btn btn-warning btn-circle btn-lg"><i class="ti ti-email"></i></span></a>
+                                        @endcan
                                     </td>
-                                    @endcan
+                                    
                                     <td>
                                         <a href="{{asset('uploads/pdf/'.$p->nombre)}}" target="_blank"><span class="btn btn-success btn-circle btn-lg"><i class="ti ti-file"></i></span></a>
                                     </td>

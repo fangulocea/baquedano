@@ -36,21 +36,24 @@
                                 <td>{{ $com->item }} </td>
                                 <td>{{ $com->id_estado }}</td>
                                 
-                                @can('item.edit')
+                                
                                 <td width="10px">
+                                    @can('item.edit')
                                     <a href="{{ route('item.edit', $com->id) }}"><span class="btn btn-warning btn-circle btn-lg"><i class="ti-pencil-alt"></i></span></a>
+                                    @endcan
                                 </td>
-                                @endcan
-                                @can('comision.destroy')
+                                
+                                
                                 <td width="10px">
-
+                                    @can('comision.destroy')
                                     {!! Form::open(['route' => ['item.destroy', $com->id], 
                                     'method' => 'DELETE']) !!}
                                         <button class="btn btn-danger btn-circle btn-lg"><i class="ti-trash"></i>
                                         </button>
                                     {!! Form::close() !!}
+                                    @endcan
                                 </td>
-                                @endcan
+                                
                             </tr>
                             @endforeach
 

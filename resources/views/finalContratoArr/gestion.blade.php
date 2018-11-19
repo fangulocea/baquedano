@@ -70,7 +70,7 @@
                                                         <div class="input-group"> 
                                                             <span class="input-group-addon">$</span>
                                                             <input type="hidden" name="id_pagomensual" id="id_pagomensual" value="{{ $pago->id }}">
-                                                            <input name='monto' id='monto' type="number" class="form-control"   placeholder="$" value="{{ $saldo_pesos  }}" required="required"">
+                                                            <input name='monto' id='monto' type="number" class="form-control"   pattern= "[0-9]" step="any" placeholder="$"  value="{{ $saldo_pesos  }}" required="required"">
                                                         </div>
                                                 </div>
                     <div class="col-md-6">

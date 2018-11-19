@@ -41,6 +41,14 @@ class SolicitudServicioController extends Controller {
     }
 
     public function autorizar($id) {
+
+        $uf = DB::table('adm_uf')
+                ->where("fecha", "=", Carbon::now()->format('Y/m/d'))
+                ->first();
+
+      if (count($uf) == 0) {
+            return back()->with('error', 'No hay UF registrada para el día de hoy');
+        }
         $solicitud = SolicitudServicio::find($id);
   
         $contrato = ContratoFinal::find($solicitud->id_contrato);
@@ -63,6 +71,15 @@ class SolicitudServicioController extends Controller {
         if (!isset($tipopropuesta)) {
             return back()->with('error', "No se han generado los pagos para este contrato");
         }
+
+        if($tipopropuesta->moneda=="UF"){
+            $monto_moneda=$montouf;
+            $valor_mon=$uf->valor;
+        }else{
+            $monto_moneda=$montopesos;
+            $valor_mon=1; 
+        }
+        $valormoneda=$valor_mon;
         $pago = PagosPropietarios::create([
                     'id_contratofinal' => $solicitud->id_contrato,
                     'id_publicacion' => $contrato->id_publicacion,
@@ -75,14 +92,14 @@ class SolicitudServicioController extends Controller {
                     'dia' => 1,
                     'mes' => $mes,
                     'anio' => $anio,
-                    'E_S' => 's',
+                    'E_S' => 'e',
                     'descuento' => 0,
                     'cant_diasmes' => $dias_mes,
                     'cant_diasproporcional' => $dias_mes,
-                    'moneda' => 'CLP',
-                    'valormoneda' => '1',
+                    'moneda' => $tipopropuesta->moneda,
+                    'valormoneda' =>  $valor_mon,
                     'valordia' => 1,
-                    'precio_en_moneda' => $montopesos,
+                    'precio_en_moneda' => $monto_moneda,
                     'precio_en_pesos' => $montopesos,
                     'id_creador' => Auth::user()->id,
                     'id_modificador' => Auth::user()->id,
@@ -91,8 +108,10 @@ class SolicitudServicioController extends Controller {
                     'canondearriendo' => 0
         ]);
 
+
+
         $valor_en_pesos = $montopesos;
-        $valor_en_moneda = $montopesos;
+        $valor_en_moneda = $monto_moneda;
 
 
         $idcontrato = $solicitud->id_contrato;
@@ -108,7 +127,7 @@ class SolicitudServicioController extends Controller {
                     ->whereIn("idtipopago", [1, 2, 8, 11, 17, 10])
                     ->where("id_contratofinal", '=', $idcontrato)
                     ->where("id_inmueble", '=', $idinmueble)
-                    ->sum('precio_en_pesos');
+                    ->sum('precio_en_moneda');
 
 
 
@@ -117,9 +136,10 @@ class SolicitudServicioController extends Controller {
                     ->whereIn("idtipopago", [3, 4, 5, 6, 7, 9, 12, 15, 18, 16])
                     ->where("id_contratofinal", '=', $idcontrato)
                     ->where("id_inmueble", '=', $idinmueble)
-                    ->sum('precio_en_pesos');
+                    ->sum('precio_en_moneda');
 
-
+            $pago_a_rentas = $pago_a_rentas  * $valormoneda;
+            $saldo_a_favor = $saldo_a_favor * $valormoneda;
 
             $saldo_a_depositar = $saldo_a_favor - $pago_a_rentas;
 
@@ -138,7 +158,9 @@ class SolicitudServicioController extends Controller {
                     ->whereIn("idtipopago", [3, 4, 5, 6, 7, 12, 15, 16, 18])
                     ->where("id_contratofinal", '=', $idcontrato)
                     ->where("id_inmueble", '=', $idinmueble)
-                    ->sum('precio_en_pesos');
+                    ->sum('precio_en_moneda');
+
+             $pagomensual = $pagomensual * $valormoneda;
 
             $saldo = PagosPropietarios::where("mes", '=', $mes)
                     ->where("anio", '=', $anio)
@@ -173,7 +195,7 @@ class SolicitudServicioController extends Controller {
                         ->whereIn("idtipopago", [1, 2, 8, 11, 17, 10])
                         ->where("id_contratofinal", '=', $idcontrato)
                         ->where("id_inmueble", '=', $idinmueble)
-                        ->sum('precio_en_pesos');
+                        ->sum('precio_en_moneda');
 
 
 
@@ -182,9 +204,10 @@ class SolicitudServicioController extends Controller {
                         ->whereIn("idtipopago", [3, 4, 5, 6, 7, 9, 12, 15, 18, 16])
                         ->where("id_contratofinal", '=', $idcontrato)
                         ->where("id_inmueble", '=', $idinmueble)
-                        ->sum('precio_en_pesos');
+                        ->sum('precio_en_moneda');
 
-
+                        $pago_a_rentas = $pago_a_rentas  * $valormoneda;
+            $saldo_a_favor = $saldo_a_favor * $valormoneda;
 
                 $saldo_a_depositar = $saldo_a_favor - $pago_a_rentas;
 
@@ -203,7 +226,9 @@ class SolicitudServicioController extends Controller {
                         ->whereIn("idtipopago", [3, 4, 5, 6, 7, 12, 15, 16, 18])
                         ->where("id_contratofinal", '=', $idcontrato)
                         ->where("id_inmueble", '=', $idinmueble)
-                        ->sum('precio_en_pesos');
+                        ->sum('precio_en_moneda');
+
+                $pagomensual = $pagomensual * $valormoneda;
 
                 $saldo = PagosPropietarios::where("mes", '=', $mes)
                         ->where("anio", '=', $anio)
@@ -221,16 +246,19 @@ class SolicitudServicioController extends Controller {
                     ->whereIn("idtipopago", [1, 2, 8, 11, 17, 10])
                     ->where("id_contratofinal", '=', $idcontrato)
                     ->where("id_inmueble", '=', $idinmueble)
-                    ->sum('precio_en_pesos');
+                    ->sum('precio_en_moneda');
 
             $pago_a_rentas = PagosPropietarios::where("mes", '=', $mes)
                     ->where("anio", '=', $anio)
                     ->whereIn("idtipopago", [5, 6, 10, 15, 31, 32, 33, 18, 16, 12])
                     ->where("id_contratofinal", '=', $idcontrato)
                     ->where("id_inmueble", '=', $idinmueble)
-                    ->sum('precio_en_pesos');
+                    ->sum('precio_en_moneda');
 
-            $saldo_a_depositar = $pago_a_rentas - $saldo_a_favor;
+            $pago_a_rentas = $pago_a_rentas  * $valormoneda;
+            $saldo_a_favor = $saldo_a_favor * $valormoneda;
+            $saldo_a_depositar = $saldo_a_favor - $pago_a_rentas;
+
 
             $saldo = PagosPropietarios::where("mes", '=', $mes)
                     ->where("anio", '=', $anio)
@@ -246,8 +274,9 @@ class SolicitudServicioController extends Controller {
                     ->where("anio", '=', $anio)
                     ->whereIn("idtipopago", [5, 6, 10, 12, 15, 31, 32, 33, 16, 18])
                     ->where("id_contratofinal", '=', $idcontrato)
-                    ->sum('precio_en_pesos');
+                    ->sum('precio_en_moneda');
 
+            $pagomensual = $pagomensual * $valormoneda;
 
             $saldo = PagosPropietarios::where("mes", '=', $mes)
                     ->where("anio", '=', $anio)
@@ -285,7 +314,7 @@ class SolicitudServicioController extends Controller {
                         ->whereIn("idtipopago", [1, 2, 8, 11, 17, 10])
                         ->where("id_contratofinal", '=', $idcontrato)
                         ->where("id_inmueble", '=', $idinmueble)
-                        ->sum('precio_en_pesos');
+                        ->sum('precio_en_moneda');
 
 
 
@@ -294,10 +323,11 @@ class SolicitudServicioController extends Controller {
                         ->whereIn("idtipopago", [5, 6, 10, 15, 31, 32, 33, 18, 16, 12])
                         ->where("id_contratofinal", '=', $idcontrato)
                         ->where("id_inmueble", '=', $idinmueble)
-                        ->sum('precio_en_pesos');
+                        ->sum('precio_en_moneda');
 
 
-
+                $pago_a_rentas = $pago_a_rentas  * $valormoneda;
+                $saldo_a_favor = $saldo_a_favor * $valormoneda;
                 $saldo_a_depositar = $saldo_a_favor - $pago_a_rentas;
 
                 $saldo = PagosPropietarios::where("mes", '=', $mes)
@@ -315,7 +345,9 @@ class SolicitudServicioController extends Controller {
                         ->whereIn("idtipopago", [5, 6, 10, 12, 15, 31, 32, 33, 16, 18])
                         ->where("id_contratofinal", '=', $idcontrato)
                         ->where("id_inmueble", '=', $idinmueble)
-                        ->sum('precio_en_pesos');
+                        ->sum('precio_en_moneda');
+
+                $pagomensual = $pagomensual * $valormoneda;
 
                 $saldo = PagosPropietarios::where("mes", '=', $mes)
                         ->where("anio", '=', $anio)
@@ -356,7 +388,7 @@ class SolicitudServicioController extends Controller {
                     ->where("id_inmueble", "=", $idinmueble)
                     ->where("mes", "=", $mes)
                     ->where("anio", "=", $anio)
-                    ->sum('precio_en_pesos');
+                    ->sum('precio_en_moneda');
             $pagos_mensuales_s = DB::table('adm_pagospropietarios')
                     ->where("id_publicacion", "=", $contrato->id_publicacion)
                     ->where("id_contratofinal", '=', $idcontrato)
@@ -365,7 +397,29 @@ class SolicitudServicioController extends Controller {
                     ->where("id_inmueble", "=", $idinmueble)
                     ->where("mes", "=", $mes)
                     ->where("anio", "=", $anio)
-                    ->sum('precio_en_pesos');
+                    ->sum('precio_en_moneda');
+
+  $pm = PagosMensualesPropietarios::where("id_contratofinal", "=", $idcontrato)
+                    ->where("id_publicacion", "=", $contrato->id_publicacion)
+                    ->where("id_inmueble", "=", $idinmueble)
+                    ->where("E_S", "=", 's')
+                    ->where("mes", "=", $mes)
+                    ->where("anio", "=", $anio)
+                    ->first();
+
+       $uf = DB::table('adm_uf')
+                    ->where("fecha", "=", Carbon::now()->format('Y/m/d'))
+                    ->first();
+
+      if ($pm->moneda == "UF") {
+                $valormoneda = $uf->valor;
+            } else {
+                $valormoneda = 1;
+            }
+
+          $pagos_mensuales_s = $pagos_mensuales_s  * $valormoneda;
+            $pagos_mensuales_e = $pagos_mensuales_e * $valormoneda;
+
 
             $pagar_a_propietario = $pagos_mensuales_s - $pagos_mensuales_e;
             $pagar_a_baquedano = $pagos_mensuales_e - $pagos_mensuales_s;
@@ -376,24 +430,7 @@ class SolicitudServicioController extends Controller {
             if ($pagar_a_baquedano < 0)
                 $pagar_a_baquedano = 0;
 
-            $uf = DB::table('adm_uf')
-                    ->where("fecha", "=", Carbon::now()->format('Y/m/d'))
-                    ->first();
-
-            $pm = PagosMensualesPropietarios::where("id_contratofinal", "=", $idcontrato)
-                    ->where("id_publicacion", "=", $contrato->id_publicacion)
-                    ->where("id_inmueble", "=", $idinmueble)
-                    ->where("E_S", "=", 's')
-                    ->where("mes", "=", $mes)
-                    ->where("anio", "=", $anio)
-                    ->first();
-            if ($pm->moneda == "UF") {
-                $valormoneda = $uf->valor;
-            } else {
-                $valormoneda = 1;
-            }
-
-
+      
             $delete = PagosMensualesPropietarios::where("id_contratofinal", "=", $idcontrato)
                     ->where("id_publicacion", "=", $contrato->id_publicacion)
                     ->where("id_inmueble", "=", $idinmueble)
@@ -411,7 +448,10 @@ class SolicitudServicioController extends Controller {
                 'subtotal_salida' => $pagos_mensuales_s,
                 'pago_propietario' => $pagar_a_propietario,
                 'pago_rentas' => $pagar_a_baquedano,
+                'id_modificador' => Auth::user()->id
             ]);
+
+
         }
 
 

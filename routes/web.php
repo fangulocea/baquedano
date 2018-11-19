@@ -1791,7 +1791,26 @@ Route::post('alerta/cap/sin_respuesta_ajax','ReporteGestionController@cap_sin_re
 	Route::post('alerta/cap/contrato_ajax','ReporteGestionController@cap_contrato_ajax')->name('alertas.cap_contrato_ajax')
 		->middleware('permission:alerta.captaciones');
 
+	Route::get('alerta/adm/contrato/mes/pro','ReporteGestionController@adm_contratomespro')->name('alertas.adm_contratomespro')
+		->middleware('permission:alerta.captaciones');
 
+	Route::post('alerta/adm/contrato/mes/pro/ajax','ReporteGestionController@adm_contratomespro_ajax')->name('alertas.adm_contratomespro_ajax')
+		->middleware('permission:alerta.administracion');
+
+	Route::get('alerta/adm/contrato/mes/pro','ReporteGestionController@adm_contratomespro')->name('alertas.adm_contratomespro')
+		->middleware('permission:alerta.administracion');
+
+	Route::post('alerta/adm/moroso/pro/ajax','ReporteGestionController@adm_morosopro_ajax')->name('alertas.adm_morosopro_ajax')
+		->middleware('permission:alerta.administracion');
+
+	Route::get('alerta/adm/moroso/pro','ReporteGestionController@adm_morosopro')->name('alertas.adm_morosopro')
+		->middleware('permission:alerta.administracion');
+
+		Route::post('alerta/adm/pagado/pro/ajax','ReporteGestionController@adm_pagadospro_ajax')->name('alertas.adm_pagadospro_ajax')
+		->middleware('permission:alerta.administracion');
+
+	Route::get('alerta/adm/pagado/pro','ReporteGestionController@adm_pagadospro')->name('alertas.adm_pagadospro')
+		->middleware('permission:alerta.administracion');
 
 //ALERTAS ARRENDATARIOS
 

@@ -275,7 +275,9 @@ public function cargosabonos($id) {
         $uf = DB::table('adm_uf')
                 ->where("fecha", "=", Carbon::now()->format('Y/m/d'))
                 ->first();
-
+      if (count($uf) == 0) {
+            return back()->with('error', 'No hay UF registrada para el día de hoy');
+        }
 
         $destinationPath = 'uploads/cargosabonosarrendatarios';
         $archivo = rand() . $request->archivo->getClientOriginalName();
@@ -286,9 +288,11 @@ public function cargosabonos($id) {
         if($request->moneda=="UF"){
             $moneda=$request->moneda;
             $valor_moneda=$uf->valor;
+            $monto=$request->monto / $uf->valor;
         }else{
             $moneda=$request->moneda;
             $valor_moneda=1;
+            $monto=$request->monto / 1;
         }
 
         $cargosabonos=CargosAbonosArrendatarios::create([
@@ -300,8 +304,8 @@ public function cargosabonos($id) {
             "moneda"            =>  $request->moneda,
             "fecha_moneda"      =>  Carbon::now()->format('Y/m/d') ,
             "valor_moneda"      =>  $valor_moneda,
-            "monto_moneda"      =>  $request->monto,
-            "monto_pesos"       =>  round($request->monto * $valor_moneda),
+            "monto_moneda"      =>  $monto,
+            "monto_pesos"       =>  round($monto * $valor_moneda),
             "tipo"              =>  $request->tipo,
             "nombre"            =>  $archivo,
             "ruta"              =>  $destinationPath,
@@ -316,13 +320,13 @@ public function cargosabonos($id) {
         if($request->tipo==17){
             $es='s';
             $tipoop="Otros Abonos";
-            $pago_propietario=($pago->pago_a_rentas_moneda - $request->monto)/$valor_moneda;
-            $pago_propietario_moneda=$pago->pago_a_rentas_moneda - $request->monto;
+            $pago_propietario=($pago->pago_a_rentas_moneda - $monto)/$valor_moneda;
+            $pago_propietario_moneda=$pago->pago_a_rentas_moneda - $monto;
         }else{
             $es='e';
             $tipoop="Otros Cargos";
-            $pago_propietario=($pago->pago_a_rentas_moneda + $request->monto)/$valor_moneda;
-            $pago_propietario_moneda=$pago->pago_a_rentas_moneda + $request->monto;
+            $pago_propietario=($pago->pago_a_rentas_moneda + $monto)/$valor_moneda;
+            $pago_propietario_moneda=$pago->pago_a_rentas_moneda + $monto;
         }
 
         $fechafirma=$pago->fecha_iniciocontrato;
@@ -361,8 +365,8 @@ public function cargosabonos($id) {
                         'moneda' => $request->moneda,
                         'valormoneda' => $valor_moneda,
                         'valordia' => 1,
-                        'precio_en_moneda' => $request->monto,
-                        'precio_en_pesos' => round($request->monto * $valor_moneda),
+                        'precio_en_moneda' => $monto,
+                        'precio_en_pesos' => round($monto * $valor_moneda),
                         'id_creador' => Auth::user()->id,
                         'id_modificador' => Auth::user()->id,
                         'id_estado' => 1,
@@ -380,14 +384,18 @@ if($tipopropuesta->tipopropuesta==1 || $tipopropuesta->tipopropuesta==3 ){
                         ->whereIn("idtipopago", [17,10])
                         ->where("id_contratofinal", '=', $idcontrato)
                         ->where("id_inmueble", '=', $idinmueble)
-                        ->sum('precio_en_pesos');
+                        ->sum('precio_en_moneda');
 
                 $pago_a_rentas = PagosArrendatarios::where("mes", '=', $mes)
                         ->where("anio", '=', $anio)
                         ->whereIn("idtipopago", [1,2,3, 4, 5, 6, 7,8,11, 15,16,18])
                         ->where("id_contratofinal", '=', $idcontrato)
                         ->where("id_inmueble", '=', $idinmueble)
-                        ->sum('precio_en_pesos');
+                        ->sum('precio_en_moneda');
+
+
+                $pago_a_rentas = $pago_a_rentas  * $valor_moneda;
+                $saldo_a_favor = $saldo_a_favor * $valor_moneda;
 
                 $saldo_a_depositar =  $pago_a_rentas-$saldo_a_favor;
 
@@ -406,7 +414,9 @@ if($tipopropuesta->tipopropuesta==1 || $tipopropuesta->tipopropuesta==3 ){
                         ->whereIn("idtipopago", [1,2,3, 4, 5, 6, 7,8,11, 15,16,18])
                         ->where("id_contratofinal", '=', $idcontrato)
                         ->where("id_inmueble", '=', $idinmueble)
-                        ->sum('precio_en_pesos');
+                        ->sum('precio_en_moneda');
+
+                        $pagomensual = $pagomensual * $valor_moneda;
 
                 $saldo=PagosArrendatarios::where("mes", '=', $mes)
                         ->where("anio", '=', $anio)
@@ -424,15 +434,17 @@ if($tipopropuesta->tipopropuesta==1 || $tipopropuesta->tipopropuesta==3 ){
                         ->whereIn("idtipopago", [17,10])
                         ->where("id_contratofinal", '=', $pago->id_contratofinal)
                         ->where("id_inmueble", '=', $pago->id_inmueble)
-                        ->sum('precio_en_pesos');
+                        ->sum('precio_en_moneda');
 
                 $pago_a_rentas = PagosArrendatarios::where("mes", '=', $mes)
                         ->where("anio", '=', $anio)
                         ->whereIn("idtipopago", [1,2,5, 6, 7,8,11,15, 31, 32, 33,16,18])
                         ->where("id_contratofinal", '=', $pago->id_contratofinal)
                         ->where("id_inmueble", '=', $pago->id_inmueble)
-                        ->sum('precio_en_pesos');
+                        ->sum('precio_en_moneda');
 
+            $pago_a_rentas = $pago_a_rentas  * $valor_moneda;
+                $saldo_a_favor = $saldo_a_favor * $valor_moneda;
                 $saldo_a_depositar =$pago_a_rentas- $saldo_a_favor  ;
 
                 $saldo=PagosArrendatarios::where("mes", '=', $mes)
@@ -449,9 +461,9 @@ if($tipopropuesta->tipopropuesta==1 || $tipopropuesta->tipopropuesta==3 ){
                         ->where("anio", '=', $anio)
                         ->whereIn("idtipopago", [1,2,5, 6, 7,8,9,11,15, 31, 32, 33,16,18])
                         ->where("id_contratofinal", '=', $idcontrato)
-                        ->sum('precio_en_pesos');
+                        ->sum('precio_en_moneda');
 
-
+                        $pagomensual = $pagomensual * $valor_moneda;
                 $saldo=PagosArrendatarios::where("mes", '=', $mes)
                         ->where("anio", '=', $anio)
                         ->where("idtipopago", '=', 34)
@@ -467,8 +479,8 @@ if($tipopropuesta->tipopropuesta==1 || $tipopropuesta->tipopropuesta==3 ){
 
 
         $pago = PagosMensualesArrendatarios::find($id)->update([
-            "pago_a_rentas" => $pago_propietario,
-            "pago_a_rentas_moneda" => $pago_propietario_moneda
+            "pago_a_rentas" => $saldo_a_depositar,
+            "pago_a_rentas_moneda" => $saldo_a_depositar / $valor_moneda
         ]);
 
         return redirect()->route('PagosMensualesArrendatarios.cargosabonos', $id)->with('status', 'Pago ingresado con exito');

@@ -771,17 +771,20 @@
                                     <td>{{ $p->contrato }}</td>
                                     <td>{{ $p->creador }}</td>
                                     <td>{{ trans_choice('mensajes.borradorArrendatatio', $p->id_estado) }}</td>
-                                    @can('revisioncomercial.edit')
+                                    
                                     <td>
+                                        @can('revisioncomercial.edit')
                                         <a href="{{ route('cbararrendatario.mostrarGestion', $p->id) }}"><span class="btn btn-success btn-circle btn-lg"><i class="fa fa-check"></i></span></a>
-
+                                        @endcan
                                     </td>
-                                    @endcan
-                                    @can('cbararrendatario.mail')
+                                    
+                                    
                                     <td>
+                                        @can('cbararrendatario.mail')
                                         <a href="{{ route('cbararrendatario.mail', $p->id_cap_arr) }}"><span class="btn btn-warning btn-circle btn-lg"><i class="ti ti-email"></i></span></a>
+                                         @endcan
                                     </td>
-                                    @endcan
+                                   
                                     <td>
                                         <a href="{{asset('uploads/pdf/'.$p->nombre)}}" target="_blank"><span class="btn btn-success btn-circle btn-lg"><i class="ti ti-file"></i></span></a>
                                     </td>

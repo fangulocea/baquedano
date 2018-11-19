@@ -32,21 +32,24 @@
                                 <td>{{ $chk->id }}</td>
                                 <td>{{ $chk->nombre }}</td>
                                 <td>{{ trans_choice('mensajes.vigencia', $chk->estado ) }}</td>
-                                @can('mantenedorchecklist.edit')
+                                
                                 <td width="10px">
+                                    @can('mantenedorchecklist.edit')
                                     <a href="{{ route('mantenedorchecklist.edit', $chk->id) }}"><span class="btn btn-warning btn-circle btn-lg"><i class="ti-pencil-alt"></i></span></a>
+                                    @endcan
                                 </td>
-                                @endcan
-                                @can('mantenedorchecklist.destroy')
+                                
+                                
                                 <td width="10px">
-
+                                    @can('mantenedorchecklist.destroy')
                                     {!! Form::open(['route' => ['mantenedorchecklist.destroy', $chk->id], 
                                     'method' => 'DELETE']) !!}
                                         <button class="btn btn-danger btn-circle btn-lg"><i class="ti-trash"></i>
                                         </button>
                                     {!! Form::close() !!}
+                                    @endcan
                                 </td>
-                                @endcan
+                                
                             </tr>
                     @endforeach
 

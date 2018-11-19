@@ -40,36 +40,44 @@
                         <td>{{ $user->id }}</td>
                         <td>{{ $user->name }}</td>
                         <td>{{ $user->email }}</td>
-                        @can('users.reset')
+                        
                         <td width="10px">
+                            @can('users.reset')
                                     <a href="{{ route('users.reset', $user->id) }}" 
                                     class="btn btn-primary btn-circle btn-lg">
                                       <i class="fa fa-key"></i>
                                     </a>
+                                    @endcan
                         </td>
-                        @endcan
-                        @can('users.show')
+                        
+                        
                         <td width="10px">
+                            @can('users.show')
                                     <a href="{{ route('users.show', $user->id) }}" 
                                     class="btn btn-success btn-circle btn-lg">
                                       <i class="fa fa-check"></i>
                                     </a>
+                                    @endcan
                         </td>
-                        @endcan
-                        @can('users.edit')
+                        
+                        
                         <td width="10px">
+                            @can('users.edit')
                                  <a href="{{ route('users.edit', $user->id) }}"><span class="btn btn-warning btn-circle btn-lg"><i class="ti-pencil-alt"></i></span></a>
+                                 @endcan
                         </td>
-                        @endcan
-                        @can('users.destroy')
+                        
+                        
                         <td width="10px">
+                            @can('users.destroy')
                             {!! Form::open(['route' => ['users.destroy', $user->id], 
                             'method' => 'DELETE']) !!}
                                         <button class="btn btn-danger btn-circle btn-lg"><i class="ti-trash"></i>
                                         </button>
                             {!! Form::close() !!}
+                            @endcan
                         </td>
-                        @endcan
+                        
                     </tr>
                     @endforeach
 

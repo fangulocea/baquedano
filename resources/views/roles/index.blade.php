@@ -35,28 +35,34 @@
                             <tr>
                                 <td>{{ $role->id }}</td>
                                 <td>{{ $role->name }}</td>
-                                @can('roles.show')
+                                
                                 <td width="10px">
+                                    @can('roles.show')
                                     <a href="{{ route('roles.show', $role->id) }}" 
                                     class="btn btn-success btn-circle btn-lg">
                                       <i class="fa fa-check"></i>
                                     </a>
+                                    @endcan
                                 </td>
-                                @endcan
-                                @can('roles.edit')
+                                
+                               
                                 <td width="10px">
+                                     @can('roles.edit')
                                     <a href="{{ route('roles.edit', $role->id) }}"><span class="btn btn-warning btn-circle btn-lg"><i class="ti-pencil-alt"></i></span></a>
+                                    @endcan
                                 </td>
-                                @endcan
-                                @can('roles.destroy')
+                                
+                                
                                 <td width="10px">
+                                    @can('roles.destroy')
                                     {!! Form::open(['route' => ['roles.destroy', $role->id], 
                                     'method' => 'DELETE']) !!}
                                         <button class="btn btn-danger btn-circle btn-lg"><i class="ti-trash"></i>
                                         </button>
                                     {!! Form::close() !!}
+                                    @endcan
                                 </td>
-                                @endcan
+                                
                             </tr>
                             @endforeach
 

@@ -34,29 +34,34 @@
                         <td>{{ $ser->id }}</td>
                         <td>{{ $ser->nombre }}</td>
                         <td>{{ trans_choice('mensajes.vigencia', $ser->estado ) }}</td>
-                        @can('contrato.show')
+                        
                         <td width="10px">
+                            @can('contrato.show')
                             <a href="{{ route('contrato.show', $ser->id) }}" 
                                 class="btn btn-success btn-circle btn-lg">
                                 <i class="fa fa-check"></i>
                             </a>
+                            @endcan
                         </td>
-                        @endcan
-                        @can('contrato.edit')
+                        
+                        
                         <td width="10px">
+                            @can('contrato.edit')
                             <a href="{{ route('contrato.edit', $ser->id) }}"><span class="btn btn-warning btn-circle btn-lg"><i class="ti-pencil-alt"></i></span></a>
+                            @endcan
                         </td>
-                        @endcan
-                        @can('contrato.destroy')
+                        
+                        
                         <td width="10px">
-
+                            @can('contrato.destroy')
                             {!! Form::open(['route' => ['contrato.destroy', $ser->id], 
                             'method' => 'DELETE']) !!}
                             <button class="btn btn-danger btn-circle btn-lg"><i class="ti-trash"></i>
                             </button>
                             {!! Form::close() !!}
+                            @endcan
                         </td>
-                        @endcan
+                        
                     </tr>
                     @endforeach
 

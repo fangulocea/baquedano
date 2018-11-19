@@ -816,8 +816,14 @@ co.fecha_firma,
         $borrach = ArrendatarioCheques::where('id_contrato', '=', $id)->delete();
 
         $pdf = ContratoFinalArrPdf::find($idpdf);
+
+        if(count($pdf)>0){
         File::delete($pdf->ruta . '/' . $pdf->nombre);
         $pdf = ContratoFinalArrPdf::find($idpdf)->delete();
+        }
+        $finaliza = ArrendatarioFinaliza::where("id_contrato","=",$id)->delete();
+
+
         $contrato = ContratoFinalArr::find($id);
         $borrar = ContratoFinalArr::find($id)->delete();
 
@@ -1295,7 +1301,7 @@ $pago = PagosArrendatarios::create([
                             'id_inmueble' => $idinmueble,
                             'tipopago' => "Otros Cargos",
                             'fecha_moneda' => Carbon::now()->format('Y/m/d'),
-                            'E_S' => 's',
+                            'E_S' => 'e',
                             'idtipopago' => 16,
                             'tipopropuesta' => $tipopropuesta,
                             'meses_contrato' => $meses_contrato,
@@ -1860,14 +1866,17 @@ $reservas = Arr_Reservas::where("id_arr_ges", "=", $idp)->get();
                         ->whereIn("idtipopago", [10])
                         ->where("id_contratofinal", '=', $idcontrato)
                         ->where("id_inmueble", '=', $idinmueble)
-                        ->sum('precio_en_pesos');
+                        ->sum('precio_en_moneda');
 
                 $pago_a_rentas = PagosArrendatarios::where("mes", '=', $mes)
                         ->where("anio", '=', $anio)
                         ->whereIn("idtipopago", [1, 2, 3, 4, 5, 6, 7, 8, 11, 15])
                         ->where("id_contratofinal", '=', $idcontrato)
                         ->where("id_inmueble", '=', $idinmueble)
-                        ->sum('precio_en_pesos');
+                        ->sum('precio_en_moneda');
+
+                $saldo_a_favor=$saldo_a_favor*$valormoneda; 
+               $pago_a_rentas=$pago_a_rentas*$valormoneda;         
 
                 $saldo_a_depositar =$pago_a_rentas- $saldo_a_favor ;
 
@@ -1893,7 +1902,7 @@ $reservas = Arr_Reservas::where("id_arr_ges", "=", $idp)->get();
                             'fecha_moneda' => Carbon::now()->format('Y/m/d'),
                             'valordia' => $valor_diario,
                             'precio_en_moneda' => $saldo_a_depositar / $valormoneda,
-                            'precio_en_pesos' => $saldo_a_depositar,
+                            'precio_en_pesos' => round($saldo_a_depositar),
                             'id_creador' => $id_creador,
                             'id_modificador' => $id_creador,
                             'id_estado' => 1,
@@ -2091,14 +2100,18 @@ $reservas = Arr_Reservas::where("id_arr_ges", "=", $idp)->get();
                         ->whereIn("idtipopago", [10])
                         ->where("id_contratofinal", '=', $idcontrato)
                         ->where("id_inmueble", '=', $idinmueble)
-                        ->sum('precio_en_pesos');
+                        ->sum('precio_en_moneda');
 
                 $pago_a_rentas = PagosArrendatarios::where("mes", '=', $mes)
                         ->where("anio", '=', $anio)
                         ->whereIn("idtipopago", [1, 2, 5, 6, 7, 8, 9, 11, 31, 32, 33])
                         ->where("id_contratofinal", '=', $idcontrato)
                         ->where("id_inmueble", '=', $idinmueble)
-                        ->sum('precio_en_pesos');
+                        ->sum('precio_en_moneda');
+
+
+               $saldo_a_favor=$saldo_a_favor*$valormoneda; 
+               $pago_a_rentas=$pago_a_rentas*$valormoneda;     
 
                 $saldo_a_depositar = $pago_a_rentas-$saldo_a_favor ;
                 $pago = PagosArrendatarios::create([
@@ -2123,7 +2136,7 @@ $reservas = Arr_Reservas::where("id_arr_ges", "=", $idp)->get();
                             'fecha_moneda' => Carbon::now()->format('Y/m/d'),
                             'valordia' => $valor_diario,
                             'precio_en_moneda' => $saldo_a_depositar / $valormoneda,
-                            'precio_en_pesos' => $saldo_a_depositar,
+                            'precio_en_pesos' => round($saldo_a_depositar),
                             'id_creador' => $id_creador,
                             'id_modificador' => $id_creador,
                             'id_estado' => 1,
@@ -2154,7 +2167,7 @@ $reservas = Arr_Reservas::where("id_arr_ges", "=", $idp)->get();
                     ->where("id_inmueble", "=", $idinmueble)
                     ->where("mes", "=", $mes)
                     ->where("anio", "=", $anio)
-                    ->sum('precio_en_pesos');
+                    ->sum('precio_en_moneda');
   
             
             $pagos_mensuales_e = DB::table('adm_pagosarrendatarios')
@@ -2164,8 +2177,12 @@ $reservas = Arr_Reservas::where("id_arr_ges", "=", $idp)->get();
                     ->where("id_inmueble", "=", $idinmueble)
                     ->where("mes", "=", $mes)
                     ->where("anio", "=", $anio)
-                    ->sum('precio_en_pesos');
+                    ->sum('precio_en_moneda');
      
+
+        $pagos_mensuales_s = $pagos_mensuales_s  * $valormoneda;
+            $pagos_mensuales_e = $pagos_mensuales_e * $valormoneda;
+
             $subt=$pagos_mensuales_e - $pagos_mensuales_s;
 
 

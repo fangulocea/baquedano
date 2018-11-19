@@ -37,29 +37,34 @@
                                 <td>{{ $com->nombre }}</td>
                                 <td>{{ $com->comision }} %</td>
                                 <td>{{ trans_choice('mensajes.vigencia', $com->estado ) }}</td>
-                                @can('comision.show')
+                                
                                 <td width="10px">
+                                    @can('comision.show')
                                     <a href="{{ route('comision.show', $com->id) }}" 
                                     class="btn btn-success btn-circle btn-lg">
                                       <i class="fa fa-check"></i>
                                     </a>
+                                    @endcan
                                 </td>
-                                @endcan
-                                @can('comision.edit')
+                                
+                                
                                 <td width="10px">
+                                    @can('comision.edit')
                                     <a href="{{ route('comision.edit', $com->id) }}"><span class="btn btn-warning btn-circle btn-lg"><i class="ti-pencil-alt"></i></span></a>
+                                    @endcan
                                 </td>
-                                @endcan
-                                @can('comision.destroy')
+                                
+                                
                                 <td width="10px">
-
+                                    @can('comision.destroy')
                                     {!! Form::open(['route' => ['comision.destroy', $com->id], 
                                     'method' => 'DELETE']) !!}
                                         <button class="btn btn-danger btn-circle btn-lg"><i class="ti-trash"></i>
                                         </button>
                                     {!! Form::close() !!}
+                                     @endcan
                                 </td>
-                                @endcan
+                               
                             </tr>
                             @endforeach
 

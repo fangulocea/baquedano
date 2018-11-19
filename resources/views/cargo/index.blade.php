@@ -37,29 +37,34 @@
                                 <td>{{ $car->nombre }}</td>
                                 <td>{{ $car->descripcion }}</td>
                                 <td>{{ trans_choice('mensajes.vigencia', $car->estado ) }}</td>
-                                @can('cargo.show')
+                                
                                 <td width="10px">
+                                    @can('cargo.show')
                                     <a href="{{ route('cargo.show', $car->id) }}" 
                                     class="btn btn-success btn-circle btn-lg">
                                       <i class="fa fa-check"></i>
                                     </a>
+                                    @endcan
                                 </td>
-                                @endcan
-                                @can('cargo.edit')
+                                
+                                
                                 <td width="10px">
+                                    @can('cargo.edit')
                                     <a href="{{ route('cargo.edit', $car->id) }}"><span class="btn btn-warning btn-circle btn-lg"><i class="ti-pencil-alt"></i></span></a>
+                                    @endcan
                                 </td>
-                                @endcan
-                                @can('cargo.destroy')
+                                
+                                
                                 <td width="10px">
-
+                                    @can('cargo.destroy')
                                     {!! Form::open(['route' => ['cargo.destroy', $car->id], 
                                     'method' => 'DELETE']) !!}
                                         <button class="btn btn-danger btn-circle btn-lg"><i class="ti-trash"></i>
                                         </button>
                                     {!! Form::close() !!}
+                                    @endcan
                                 </td>
-                                @endcan
+                                
                             </tr>
                             @endforeach
 

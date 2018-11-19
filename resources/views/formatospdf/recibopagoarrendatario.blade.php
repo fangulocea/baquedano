@@ -40,6 +40,10 @@
             text-align: center;
             line-height: 30px;
         }
+
+        .page-break {
+    page-break-after: always;
+}
     </style>
 </head>
 
@@ -148,8 +152,9 @@
 
                             </tbody>
                         </table>
+<div class="page-break"></div>
 <br>
-           <strong>PAGOS REALIZADOS</strong>
+           <strong>PAGOS REALIZADOS </strong>
         <table id="listusers1" class="display nowrap" cellspacing="0" width="80%" style="display: table;
   margin: 0 auto;">
                             <thead>

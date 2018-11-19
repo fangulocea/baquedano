@@ -37,20 +37,23 @@
                         <td>{{ $p->tipo }}</td>
                         <td>{{ $p->e_s_r }}</td>
                         <td>{{ ChecklistController::cantDias($fecha_ini,$fecha_fin) }} Días para Finalizar {{ ChecklistController::contrato($p->id_bor_arr,$p->id_cap_pro,$p->tipo) }}</td>
-                        @can('checklist.show')
+                        
                         <td width="10px">
+                            @can('checklist.show')
                             <a href="{{ route('checklist.show', [$p->id, $p->tipo]) }}" 
                                 class="btn btn-success btn-circle btn-lg">
                                 <i class="fa fa-check"></i>
                             </a>
+                             @endcan
                         </td>
-                        @endcan
-                        @can('checklist.edit')
+                       
+                        
                         <td width="10px">
+                            @can('checklist.edit')
                             <a href="{{ route('checklist.create', [$p->id_contrato, $p->id, $p->tipo,"otro",$origen]) }}"><span class="btn btn-warning btn-circle btn-lg"><i class="ti-pencil-alt"></i></span></a>
-                                   
+                                 @endcan  
                         </td>
-                        @endcan
+                        
                         
                     </tr>
                     @endforeach

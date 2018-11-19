@@ -117,6 +117,42 @@
 
                                     </div>
                         </div>
+                                                <hr>
+          <div class="row"  >
+                            <div class="panel" >
+                            <div class="panel-heading">
+                                <div class="alert alert-primary"> DATOS PARA TRANSFERENCIAS</div></div>
+                            <div class="table-compact" >
+                                <table class="table table-hover manage-u-table" >
+                                    <thead>
+                                        <tr>
+                                            <th></th>
+                                            <th>BANCO</th>
+                                            <th>NÚMERO DE CUENTA</th>
+                                            <th>RUT</th>
+                                            <th>EMAIL</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+
+                                        <tr>
+                                            <td></td>
+                                            <td>BANCO ESTADO</td>
+                                            <td>444444444
+                                                </td>
+                                            <td>44444-4</td>
+
+                                            <td>
+                                                contacto@ibaquedano.cl
+                                            </td>
+                                        </tr>
+
+                                       
+                                    </tbody>
+                                </table>
+                            </div>
+                            </div>
+                        </div>
                     </div>
 
                     <div class="col-md-5 col-lg-6 col-sm-12" style="padding-left: 30px">
@@ -166,40 +202,41 @@
             </table>
                             </div>
                         </div>
-                        <hr>
-          <div class="row"  >
-                            <div class="panel" >
-                            <div class="panel-heading">
-                                <div class="alert alert-primary"> DATOS PARA TRANSFERENCIAS</div></div>
-                            <div class="table-compact" >
-                                <table class="table table-hover manage-u-table" >
-                                    <thead>
-                                        <tr>
-                                            <th></th>
-                                            <th>BANCO</th>
-                                            <th>NÚMERO DE CUENTA</th>
-                                            <th>RUT</th>
-                                            <th>EMAIL</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
+<hr>
+                        <div class="row" style="background-color: #F8F8FF;">
+                        <div class="alert alert-primary"> Revisión Cuentas Básicas de la Propiedad</div>
+                         
+                         <h4 class="text-center text-info m-t-20">* Esta información se irá actualizando periódicamente </h4>
+                            <div class="table-responsive">
+                                <table id="listusers" class="table display compact" cellspacing="0" >
 
-                                        <tr>
-                                            <td></td>
-                                            <td>BANCO ESTADO</td>
-                                            <td>444444444
-                                                </td>
-                                            <td>44444-4</td>
+                <thead>
+                    <tr>
+                        
+                        
+                        <th>Dirección</th>
+                        <th>Fecha Revisión</th>
+                        <th>Estado</th>
+                        
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach($cuentas as $p)
 
-                                            <td>
-                                                contacto@ibaquedano.cl
-                                            </td>
-                                        </tr>
+                            <tr>
+                                
+                               
+                                <td>{{ $p->calle }} {{$p->numero }} {{$p->departamento }} {{$p->comuna }}</td>
+                                <td>{{ $p->fecha_revision }}</td>
+                                <td>{{ $p->EstadoCuenta  }}    </td>
+                                                              
+                            </tr>
 
-                                       
-                                    </tbody>
-                                </table>
-                            </div>
+
+                    @endforeach
+
+                </tbody>
+            </table>
                             </div>
                         </div>
 

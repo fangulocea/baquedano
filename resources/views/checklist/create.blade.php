@@ -46,9 +46,9 @@ use App\Http\Controllers\ChecklistController;
         <tr>
             <td style="height: 40px;">{{ $p->id }}</td>
             <td style="height: 40px;">{{ $p->nombre }}</td>
-            @can('checklist.edit')
+            
                 <td width="10px" style="height: 40px;" >
-
+                    @can('checklist.edit')
                     @if(ChecklistController::Valida_boton($id_chk,$p->id))
                         <a href="{{ route('checklist.create_detalle', [ $id_contrato, $id_chk, $tipo, $edr, $p->id, $origen ]) }}">
                             <span class="btn btn-success btn-circle "><i class="ti-check-box"></i></span>
@@ -58,8 +58,9 @@ use App\Http\Controllers\ChecklistController;
                             <span class="btn btn-default btn-circle "><i class="ti-control-stop"></i></span>
                         </a>
                     @endif
+                    @endcan
                 </td>
-            @endcan
+            
         </tr>
     @endforeach
 </tbody>

@@ -294,7 +294,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="col-md-3">
-                                                    <label>Calcula Pie</label>
+                                                    <label>Calcula Pie (Valor en Pesos $)</label>
                                                     <div class="input-group"> 
                                                         <span class="input-group-addon">$</span>
                                                         <input name='calculapie' id='calculapie' type="number" class="form-control"   step="any" value="0" required="required">
@@ -592,16 +592,20 @@
                                     <td>{{ trans_choice('mensajes.Propuesta',$p->tipopropuesta) }}</td>
                                     <td>{{ trans_choice('mensajes.TipoContrato',$p->tipo_contrato) }}</td>
                                     <td>{{ trans_choice('mensajes.borrador', $p->id_estado) }}</td>
-                                    @can('borradorContrato.edit')
+                                    
                                     <td>
+                                        @can('borradorContrato.edit')
                                         <a href="{{ route('borradorContrato.mostrarGestion', $p->id) }}"><span class="btn btn-warning btn-circle btn-lg"><i class="fa fa-check"></i></span></a>
+                                        @endcan
                                     </td>
-                                    @endcan
-                                    @can('borradorContrato.mail')
+                                    
+                                    
                                     <td>
+                                        @can('borradorContrato.mail')
                                         <a href="{{ route('borradorContrato.mail', $p->id) }}"><span class="btn btn-warning btn-circle btn-lg"><i class="ti ti-email"></i></span></a>
+                                        @endcan
                                     </td>
-                                    @endcan
+                                    
                                     <td>
                                         <a href="{{asset('uploads/pdf/'.$p->nombre)}}" target="_blank"><span class="btn btn-success btn-circle btn-lg"><i class="ti ti-file"></i></span></a>
                                     </td>
@@ -1561,7 +1565,15 @@ $("#li_5_c").click(function (event) {
 
 
 $("#calculapie").keyup(function (event) {
-    $("#pie").val(this.value*100/$("#arriendo_sim").val());
+  
+   if($("#valormoneda").val()!=''){
+    valor_en_moneda=$("#calculapie").val()/$("#valormoneda").val();
+    $("#pie").val(valor_en_moneda*100/$("#arriendo_sim").val());
+    
+}else{
+    alert("Antes de calcular el pie debe seleccionar el tipo de Moneda")
+}
+    
 });
 
 $("#moneda").change(function (event) {

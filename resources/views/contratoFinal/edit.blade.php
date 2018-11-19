@@ -258,16 +258,18 @@ use App\Http\Controllers\ContratoFinalController;
                                             <a href="{{ URL::asset($pi->ruta.'/'.$pi->nombre) }}" target="_blank">BAJAR ARCHIVO {{ $pi->nombre }} </a></center>
 
 
-                                        @can('finalContrato.edit')
+                                        
                                         <td width="10px" style="border: 1px solid black;" >
+                                            @can('finalContrato.edit')
                                         <center>
                                             <a href="{{ route('finalContrato.eliminarfoto', $pi->id) }}" 
                                                class="btn btn-danger btn-circle btn-lg">
                                                 <i class="fa fa-check"></i>
                                             </a>
                                         </center>
-                                        </td>
                                         @endcan
+                                        </td>
+                                        
                                         </tr>
                                         @endforeach
 

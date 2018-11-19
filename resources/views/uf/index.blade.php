@@ -34,29 +34,34 @@
                                 <td>{{ $uf->id }}</td>
                                 <td>{{ $uf->fecha }}</td>
                                 <td>{{ $uf->valor }}</td>
-                                @can('uf.show')
+                                
                                 <td width="10px">
+                                    @can('uf.show')
                                     <a href="{{ route('uf.show', $uf->id) }}" 
                                     class="btn btn-success btn-circle btn-lg">
                                       <i class="fa fa-check"></i>
                                     </a>
+                                     @endcan
                                 </td>
-                                @endcan
-                                @can('uf.edit')
+                               
+                                
                                 <td width="10px">
+                                    @can('uf.edit')
                                     <a href="{{ route('uf.edit', $uf->id) }}"><span class="btn btn-warning btn-circle btn-lg"><i class="ti-pencil-alt"></i></span></a>
+                                    @endcan
                                 </td>
-                                @endcan
-                                @can('uf.destroy')
+                                
+                                
                                 <td width="10px">
-
+                                    @can('uf.destroy')
                                     {!! Form::open(['route' => ['uf.destroy', $uf->id], 
                                     'method' => 'DELETE']) !!}
                                         <button class="btn btn-danger btn-circle btn-lg"><i class="ti-trash"></i>
                                         </button>
                                     {!! Form::close() !!}
+                                    @endcan
                                 </td>
-                                @endcan
+                                
                             </tr>
                             @endforeach
 

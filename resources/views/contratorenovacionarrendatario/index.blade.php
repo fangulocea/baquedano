@@ -42,15 +42,17 @@
                                 <td>{{ $p->comuna }}</td>
                                 <td>{{ trans_choice('mensajes.arrendatario', $p->id_estado) }}</td>
                                 <td>{{ $p->contratofin }}</td>
-                                @can('cbararrendatario.edit')
+                                
                                 <td width="10px">
+                                    @can('cbararrendatario.edit')
                                     <a href="{{ route('cbararrendatario.edit', [$p->id_cap_arr,1]) }}"><span class="btn btn-warning btn-circle btn-lg"><i class="ti-pencil-alt"></i></span></a>
+                                     @endcan
                                 </td>
-                                @endcan
-                                @can('cbararrendatario.destroy')
+                               
+                                
                                 <td width="10px">
                                 </td>
-                                @endcan
+                               
                             </tr>
                             @endforeach
 

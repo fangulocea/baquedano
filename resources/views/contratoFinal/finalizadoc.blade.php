@@ -49,11 +49,13 @@
                         <tr>
                             <td  width="10px" height="10px">
                                 <center><a href="{{ URL::asset($p->ruta.'/'.$p->nombre) }}" target="_blank">BAJAR ARCHIVO<br> {{ $p->nombre }} </a></center>
-                                @can('revisioncomercial.edit')
+                                
                                 <td width="10px">
+                                    @can('revisioncomercial.edit')
                                     <a href="{{ route('finalContrato.eliminardocfinal', [$p->id, $id_contrato, $id_publicacion]) }}" class="btn btn-danger btn-circle btn-lg"><i class="fa fa-check"></i></a>
+                                    @endcan
                                 </td>
-                                @endcan
+                                
                             </tr>
                             @endforeach
                         </tbody>

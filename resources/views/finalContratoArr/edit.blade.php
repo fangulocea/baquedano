@@ -174,15 +174,16 @@ use App\Http\Controllers\ContratoFinalArrController;
                                         <center><a href="{{ URL::asset($pi->ruta.'/'.$pi->nombre) }}" target="_blank">BAJAR ARCHIVO<br> {{ $pi->nombre }} </a></center>
 
 
-                                        @can('finalContrato.edit')
+                                        
                                         <td width="10px">
-
+                                            @can('finalContrato.edit')
                                             <a href="{{ route('finalContratoArr.eliminarfoto', $pi->id) }}" 
                                                class="btn btn-danger btn-circle btn-lg">
                                                 <i class="fa fa-check"></i>
                                             </a>
+                                            @endcan
                                         </td>
-                                        @endcan
+                                        
                                         </tr>
                                         @endforeach
 
@@ -1106,7 +1107,7 @@ document.getElementById("pagoarea").innerHTML="";
                                     var cell = document.createElement("th");
                                         cell.style.border="1px solid black";
                                         cell.style.padding="8px";
-                                        cell.innerHTML = 'Pagar a Propietario';
+                                        cell.innerHTML = 'Pagar a Rentas';
                                         rowheader.appendChild(cell);
 
 
@@ -1156,7 +1157,7 @@ document.getElementById("pagoarea").innerHTML="";
            
                                                             var a = document.createElement("button");
                                                             var cell = document.createElement("td");
-                                                            var cellText = document.createTextNode("$ "+response[r].subtotal_entrada_moneda);
+                                                            var cellText = document.createTextNode("$ "+response[r].pago_a_arrendatario_moneda);
                                                             cell.appendChild(cellText);
                                                             cell.style.border="1px solid black";
                                                             cell.style.padding="8px"

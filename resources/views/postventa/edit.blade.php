@@ -813,16 +813,18 @@
                                             <a href="{{ URL::asset($pi->ruta.'/'.$pi->nombre) }}" target="_blank">BAJAR ARCHIVO {{ $pi->nombre }} </a></center>
 
 
-                                        @can('postventa.edit')
+                                        
                                         <td width="10px" style="border: 1px solid black;" >
+                                            @can('postventa.edit')
                                         <center>
                                             <a href="{{ route('postventa.eliminardoc', [$pi->id,$postventa->id]) }}" 
                                                class="btn btn-danger btn-circle btn-lg">
                                                 <i class="fa fa-check"></i>
                                             </a>
                                         </center>
-                                        </td>
                                         @endcan
+                                        </td>
+                                        
                                         </tr>
                                         @endforeach
 
@@ -863,18 +865,18 @@
                                             <td>{{ $p->contacto_con }}</td>
                                             <td>{{ $p->Gestionador }}</td>
                                             <td>{{ $p->fecha_gestion }} {{ $p->hora_gestion }}</td>
-                                            @can('postventa.edit')
+                                            
                                             <td >
-          
+                                                    @can('postventa.edit')
                                                     <button class="btn btn-success btn-circle btn-lg" id='via_edit' onclick="mostrar_modal({{ $p->id }})" ><i class="fa fa-check"></i></span></button>
 
                                                     <a href="/postventa/eliminargestion/{{ $p->id }}"><span class="btn btn-danger btn-circle btn-lg"><i class="ti-trash"></i></span></a>
 
-                    
+                                                    @endcan
                                        
 
                                             </td>
-                                            @endcan
+                                            
                                         </tr>
                                         @endforeach
                                     </tbody>
