@@ -464,8 +464,8 @@ class SolicitudServiciosARRController extends Controller {
                             p1.telefono,
                             ss.fecha_uf,
                             ss.valor_uf,
-                            (select sum(subtotal_uf) from post_detallesolservicios as ds where ds.id_solicitud=ss.id) as valor_en_uf,
-                            (select sum(subtotal_pesos) from post_detallesolservicios as ds where ds.id_solicitud=ss.id) as valor_en_pesos'))
+                            (select sum(subtotal_uf) from post_detallesolserviciosarr as ds where ds.id_solicitud=ss.id) as valor_en_uf,
+                            (select sum(subtotal_pesos) from post_detallesolserviciosarr as ds where ds.id_solicitud=ss.id) as valor_en_pesos'))
                 ->get();
 
         return Datatables::of($sol)

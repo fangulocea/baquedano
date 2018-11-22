@@ -23,7 +23,7 @@ use App\DetalleCuentas;
 use App\ContratoBorrador;
 use App\SolicitudServicio;
 use App\DetalleSolicitudServicio;
-use App\SolicitudServicioArr;
+use App\SolicitudServicioARR;
 use App\DetalleSolicitudServiciosARR;
 use DB;
 use Auth;
@@ -476,7 +476,7 @@ $firma="ARRENDATARIO";
 
           $borrador = ContratoBorradorArrendatario::find($contratofinalarr->id_borrador);
           $captacion = Arrendatario::find($cap_arr->id);
-          $nuevo_servicio = SolicitudServicioArr::create([
+          $nuevo_servicio = SolicitudServicioARR::create([
                       "id_contrato" => $contratofinalarr->id,
                       "id_inmueble" => $captacion->id_inmueble,
                       "id_arrendatario" => $captacion->id_arrendatario,
@@ -523,7 +523,7 @@ $firma="ARRENDATARIO";
                     "id_estado" => 1
         ]);
 
-        $edit = SolicitudServicioArr::find($nuevo_servicio->id)->update(["id_estado" => 2]);
+        $edit = SolicitudServicioARR::find($nuevo_servicio->id)->update(["id_estado" => 2]);
 
         return redirect()->route('arrsolservicio.edit', $nuevo_servicio->id)
                         ->with('status', 'Solicitud ingresado con éxito');

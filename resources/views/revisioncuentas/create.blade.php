@@ -214,25 +214,28 @@ var SweetAlert = function () {};
 
 SweetAlert.prototype.init = function () {
     $("#calcular").click(function (event) {
-        var fecha1 = $("#inicio_lectura").val();
-        var fecha2 = $("#fecha_contrato").val();
+        var f_ini = $("#inicio_lectura").val();
+        var f_fin = $("#fin_lectura").val();
+        var f_con = $("#fecha_contrato").val();
         var monto = $("#monto_boleta").val();
         var valorlectura = $("#valor_medicion").val();
-        if(fecha2=='' || monto=='' ||  valorlectura==''){
+        if(f_con=='' || monto=='' ||  valorlectura==''){
             swal("Debe completar los campos de lectura y montos");
             return false;
         }
 
-        let fecha11 = new Date(fecha1);
-        let fecha22 = new Date(fecha2);
-        let resta = fecha22.getTime() - fecha11.getTime();
-        dias_proporcionales=Math.round(resta/ (1000*60*60*24));
-        dias_del_mes= new Date(fecha11.getFullYear(), fecha11.getMonth()+1, 0).getDate();
-        valor_diario=Math.round(monto/dias_del_mes);
+        let f_ini1 = new Date(f_ini);
+        let f_fin1 = new Date(f_fin);
+        let f_con1 = new Date(f_con);
+        let horas_proporcionales = f_con1.getTime() - f_ini1.getTime() ;
+        let horas_boleta = f_fin1.getTime() - f_ini1.getTime();
+
+        dias_proporcionales=Math.round(horas_proporcionales/ (1000*60*60*24));
+        dias_boleta=Math.round(horas_boleta/ (1000*60*60*24))+1;
+        valor_diario=Math.round(monto/dias_boleta);
         valor_proporcional=valor_diario*dias_proporcionales;
-        if(dias_del_mes==dias_proporcionales){
-            valor_proporcional=monto;
-        }
+        
+     
         if(valor_proporcional<1){
             valor_proporcional=0;
         }
