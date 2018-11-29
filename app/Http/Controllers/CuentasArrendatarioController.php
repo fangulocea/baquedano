@@ -65,7 +65,7 @@ class CuentasArrendatarioController extends Controller
 
         })
         ->addColumn('id_link', function ($publica) {
-                               return  '<a href="/revisioncuentas/'.$publica->id_contrato.'/revisar"><span class="btn btn-success btn-sm"> '.$publica->id_contrato.'</span> </a>';
+                               return  '<a href="/revisioncuentas/'.$publica->id_contrato.'/revisar"><span class="btn btn-success btn-sm"> '.$publica->id_contrato_arr.'</span> </a>';
         })
         ->rawColumns(['id_link','action','opciones'])
         ->make(true);
@@ -346,15 +346,41 @@ class CuentasArrendatarioController extends Controller
                 ->where("fecha", "=", Carbon::now()->format('Y/m/d'))
                 ->first();
 
-        $contratofinal=ContratoFinalArr::find($id);
-        $borrador=ContratoBorradorArrendatario::find($contratofinal->id_borrador);
-        $publicacion=Arrendatario::find($borrador->id_cap_arr);
+        $contratofinal=ContratoFinal::find($id);
+        $borrador=ContratoBorrador::find($contratofinal->id_borrador);
+        $publicacion=Captacion::find($borrador->id_publicacion);
         $idcontrato=$id;
         $inmueble=Inmueble::find($publicacion->id_inmueble);
-        $persona=Persona::find($publicacion->id_arrendatario);
+        $persona=Persona::find($publicacion->id_propietario);
 
 
-     $detalle =  DB::table('post_detallecuentasarr as ds')
+
+
+      $captacionarr=Arrendatario::where("id_inmueble","=",$publicacion->id_inmueble)
+        ->whereIn("id_estado",[6,10,11])->get();
+
+
+        $cap_arr=null;
+        $contratofinalarr=null;
+        foreach ($captacionarr as $k) {
+            $contratofinalarr=ContratoFinalArr::where("id_publicacion","=",$k->id)->wherein("id_estado",[7])->get();
+            if(count($contratofinalarr)>0){
+                $cap_arr=$k;
+                break;
+            }
+        }
+                
+
+        $arrendatario=null;
+        if(count($contratofinalarr)>0){
+            $arrendatario=Persona::find($cap_arr->id_arrendatario);
+        }
+      
+
+
+
+
+     $detalle =  DB::table('post_detallecuentas as ds')
                 ->leftjoin('post_empresasservicios as cs', 'ds.id_serviciobasico', '=', 'cs.id')
                  ->leftjoin('mensajes as m', function($join){
                  $join->on('m.nombre_modulo', '=',DB::raw("'Revisión Cuentas'"));
@@ -362,7 +388,7 @@ class CuentasArrendatarioController extends Controller
             })
                 ->where("ds.id_contrato","=",$id)
                 ->select(DB::raw('ds.id,
-                    ds.valor_en_pesos,
+                    ds.monto_responsable,
                     ds.mes,
                     ds.anio,
                     m.nombre as estado,
@@ -376,7 +402,7 @@ class CuentasArrendatarioController extends Controller
                 ->get();
 $firma="ARRENDATARIO";
 
-        $pdf = PDF::loadView('formatospdf.revisioncuentas', compact('servicio', 'persona', 'inmueble', 'uf','totaluf','totalpesos','detalle','firma'));
+        $pdf = PDF::loadView('formatospdf.revisioncuentas', compact('servicio', 'persona', 'inmueble', 'uf','totaluf','totalpesos','detalle','firma','arrendatario'));
 
         return $pdf->download($inmueble->direccion . ' Nro.' . $inmueble->numero . ' Dpto.' . $inmueble->departamento . ', ' . $inmueble->comuna_nombre . ' - Comprobante de Revisiones de Pagos de Gastos Básicos.pdf');
     }

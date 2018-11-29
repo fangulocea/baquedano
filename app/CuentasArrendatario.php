@@ -25,11 +25,14 @@ class CuentasArrendatario extends Model
                             DATE_FORMAT(co.created_at, "%d/%m/%Y") as FechaCreacion, 
 
                             CONCAT_WS(" ",p1.nombre,p1.apellido_paterno,p1.apellido_materno) as Propietario, 
+                            (select ca.id as id_contrato_arr from adm_contratofinalarr ca 
+                            inner join contratoborradorarrendatarios cba on ca.id_borrador=cba.id
+                            where ca.id_estado=7 and cba.id_inmueble=i.id limit 1) as id_contrato_arr,
                             p2.name as Creador,
                             p3.name as Modificador,
-                            (select name from users where id=(select id_asignado from post_asignarevision where id_contrato=co.id order by 1 desc limit 1)) as Asignado,
-                            (select created_at from post_asignarevision where id_contrato=co.id order by 1 desc limit 1) as fecha_revision,
-                        (select nombre from mensajes where nombre_modulo="Revisión Cuentas" and id_estado=(select id_estado from post_asignarevision where id_contrato=co.id order by 1 desc limit 1)) as EstadoCuenta,
+                            (select name from users where id=(select id_asignado from post_asignarevision where id_contrato=co.id order by id desc limit 1)) as Asignado,
+                            (select created_at from post_asignarevision where id_contrato=co.id order by id desc limit 1) as fecha_revision,
+                        (select nombre from mensajes where nombre_modulo="Revisión Cuentas" and id_estado=(select id_estado from post_asignarevision where id_contrato=co.id order by id desc limit 1)) as EstadoCuenta,
                             m.nombre as Estado,
                             CONCAT_WS(" ",i.direccion,i.numero," Dpto ",i.departamento) as Direccion,
                             i.direccion as calle,i.numero,i.departamento,

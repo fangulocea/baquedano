@@ -17,7 +17,7 @@ use App\Http\Controllers\PrimeraGestionController;
     <div class="row">
         <div class="col-sm-12">
             <div class="white-box">
-
+@can('alerta.captaciones')
                         <div class="panel panel-inverse">
                             <div class="panel-heading"> Gestiones Captación Propietarios
                                 <div class="pull-right"><a href="#" data-perform="panel-collapse"><i class="ti-minus"></i></a> <a href="#" data-perform="panel-dismiss"><i class="ti-close"></i></a> </div>
@@ -103,7 +103,8 @@ use App\Http\Controllers\PrimeraGestionController;
                                 </div>
                             </div>
                         </div>
-
+@endcan
+@can('alerta.captaciones')
                         <div class="panel panel-inverse">
                             <div class="panel-heading"> Gestiones Captación Arrendatarios
                                 <div class="pull-right"><a href="#" data-perform="panel-collapse"><i class="ti-minus"></i></a> <a href="#" data-perform="panel-dismiss"><i class="ti-close"></i></a> </div>
@@ -145,7 +146,8 @@ use App\Http\Controllers\PrimeraGestionController;
                                 </div>
                             </div>
                         </div>
-
+@endcan
+@can('alerta.administracion')
                     <div class="panel panel-success">
                             <div class="panel-heading"> Contratos Propietarios
                                 <div class="pull-right"><a href="#" data-perform="panel-collapse"><i class="ti-minus"></i></a> <a href="#" data-perform="panel-dismiss"><i class="ti-close"></i></a> </div>
@@ -225,6 +227,7 @@ use App\Http\Controllers\PrimeraGestionController;
                                 </div>
                             </div>
                         </div>
+  
     <div class="panel panel-success">
                             <div class="panel-heading"> Contratos Arrendatarios
                                 <div class="pull-right"><a href="#" data-perform="panel-collapse"><i class="ti-minus"></i></a> <a href="#" data-perform="panel-dismiss"><i class="ti-close"></i></a> </div>
@@ -289,7 +292,68 @@ use App\Http\Controllers\PrimeraGestionController;
                                 </div>
                             </div>
                         </div>
+                          @endcan
+@can('alerta.postventa')
+ <div class="panel panel-primary">
+                            <div class="panel-heading"> Post Atención
+                                <div class="pull-right"><a href="#" data-perform="panel-collapse"><i class="ti-minus"></i></a> <a href="#" data-perform="panel-dismiss"><i class="ti-close"></i></a> </div>
+                            </div>
+                            <div class="panel-wrapper collapse in" aria-expanded="true">
+                                <div class="panel-body">
+                                    <div class="row">
+                                        <div class="col-sm-3">
+                                             <center>
+                                                    <h1 class="counter m-t-15">{{ number_format(PrimeraGestionController::solpaarr() , 0, '.', ',')}}</h1>
+                                                    <a href="{{ route('alertas.solpa_arr') }}"> <span class="btn btn-block btn-info btn-rounded">Revisión SOLPA<br>30 Días Arrendatario</span></a>
+                                            </center>
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <center>
+                                                    <h1 class="counter m-t-15">{{ number_format(PrimeraGestionController::solpapro() , 0, '.', ',')}}</h1>
+                                                    <a href="{{ route('alertas.solpa_pro') }}"> <span class="btn btn-block btn-info btn-rounded">Revisión SOLPA<br>30 Días Propietario</span></a>
+                                            </center>
+                                        </div>
+                                        <div class="col-sm-3">
+                                             <center>
+                                                    <h1 class="counter m-t-15">{{ number_format(PrimeraGestionController::sin_solparr() , 0, '.', ',')}}</h1>
+                                                    <a href="{{ route('alertas.solpa_sinrevisar_arr') }}"> <span class="btn btn-block btn-info btn-rounded">Sin Revisar SOLPA<br>Menor a 30 Días Arrendatario</span></a>
+                                            </center>
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <center>
+                                                    <h1 class="counter m-t-15">{{ number_format(PrimeraGestionController::sin_solppro() , 0, '.', ',')}}</h1>
+                                                    <a href="{{ route('alertas.solpa_sinrevisar_pro') }}"> <span class="btn btn-block btn-info btn-rounded">Sin Revisar SOLPA<br>Menor a 30 Días Propietario</span></a>
+                                            </center>
+                                        </div>
+                                    </div>
 
+                                    <div class="row">
+                                        <div class="col-sm-3">
+                                             <center>
+                                                    <h1 class="counter m-t-15">{{ number_format(PrimeraGestionController::sin_revisar() , 0, '.', ',')}}</h1>
+                                                    <a href="{{ route('alertas.cuentas') }}"> <span class="btn btn-block btn-info btn-rounded">Cuentas Básicas<br>Sin Revisar menor 30 días</span></a>
+                                            </center>
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <center>
+                                                <h1 class="counter m-t-15">{{ number_format(PrimeraGestionController::solpv_pro() , 0, '.', ',')}}</h1>
+                                                <a href="{{ route('alertas.solpv_pro') }}"> <span class="btn btn-block btn-info btn-rounded">Solicitud de Pago<br> Activas Propietario</span></a>
+                                            </center>
+                                        </div>
+                                        
+                                        <div class="col-sm-3">
+                                                      <center>
+                                                <h1 class="counter m-t-15">{{ number_format(PrimeraGestionController::solpv_arr() , 0, '.', ',')}}</h1>
+                                                <a href="{{ route('alertas.solpv_arr') }}"> <span class="btn btn-block btn-info btn-rounded">Solicitud de Pago<br> Activas Arrendatarios</span></a>
+                                            </center>
+                                        </div>
+                                    </div>
+
+                                  
+                                </div>
+                            </div>
+                        </div>
+@endcan
                     </div>
                 </div>
             </div>

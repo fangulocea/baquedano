@@ -1013,4 +1013,247 @@ static function MontoPagadoAnteriorARR() {
     }
 
 
+static function solppro() {
+
+        $reporte = DB::table('adm_contratofinalarr as co')
+                ->leftjoin('contratoborradorarrendatarios as cb', 'co.id_borrador', '=', 'cb.id')
+                ->leftjoin('inmuebles as i', 'cb.id_inmueble', '=', 'i.id')
+                ->leftjoin('comunas as o', 'i.id_comuna', '=', 'o.comuna_id')
+                ->leftjoin('arrendatarios as c', 'c.id', '=', 'co.id_publicacion')
+                ->leftjoin('personas as p1', 'c.id_arrendatario', '=', 'p1.id')
+                ->leftjoin('personas as p4', 'c.id_aval', '=', 'p4.id')
+                ->leftjoin('users as p2', 'c.id_creador', '=', 'p2.id')
+                ->leftjoin('users as p3', 'c.id_modificador', '=', 'p3.id')
+            ->leftjoin('mensajes as m', function($join){
+                 $join->on('m.nombre_modulo', '=',DB::raw("'Arrendatario'"));
+                 $join->on('m.id_estado', '=', 'c.id_estado');
+            })
+                ->whereIn('c.id_estado', [10, 6, 11])
+                ->select(DB::raw('co.fecha_firma, m.nombre as estado, p1.telefono as fono_arr, p1.email as email_arr, p4.telefono as fono_aval, p4.email as email_aval, cb.dia_pago,c.id as id_publicacion, DATE_FORMAT(c.created_at, "%d/%m/%Y") as fecha_creacion, c.id_estado as id_estado, CONCAT_WS(" ",p1.nombre,p1.apellido_paterno,p1.apellido_materno) as Arrendatario, p2.name as Creador,CONCAT_WS(" ",p4.nombre,p4.apellido_paterno,p4.apellido_materno) as Aval, p4.rut as rut_aval, p1.rut as rut_arr,
+
+
+                    (select sum(valor_pagado) from adm_detallepagosarrendatarios dt inner join adm_pagosmensualesarrendatarios pm on dt.id_pagomensual=pm.id where pm.mes=MONTH(DATE_ADD(now(), INTERVAL -1 MONTH)) and pm.anio=YEAR(DATE_ADD(now(), INTERVAL -1 MONTH)) and pm.id_publicacion=c.id and pm.id_inmueble=i.id and pm.id_contratofinal=co.id) as valorpagadoanterior1
+
+                    '), 'p1.id as id_arr', 'i.id as id_inmueble', 'i.direccion', 'i.numero', 'i.departamento', 'o.comuna_nombre', 'p1.nombre as nom_p', 'p1.apellido_paterno as apep_p', 'p1.apellido_materno as apem_p', 'p3.name as modifcador')
+                ->orderby("co.fecha_firma","asc")
+                ->get();
+        $r = [];
+        $valor = 0;
+        foreach ($reporte as $k) {
+            if ($k->valorpagadoanterior1 != null)
+                $valor += round($k->valorpagadoanterior1) ;
+            array_push($r, $k);
+        }
+
+        return $valor;
+    }
+
+    static function solpapro() {
+
+        $reporte = DB::table('post_venta as p')
+        ->leftjoin('inmuebles as i', 'i.id', '=', 'p.id_inmueble')
+        ->leftjoin('comunas as c', 'i.id_comuna', '=', 'c.comuna_id')
+        ->leftjoin('users as u', 'p.id_asignacion', '=', 'u.id')
+        ->leftjoin('mensajes as m', function($join){
+                 $join->on('m.nombre_modulo', '=',DB::raw("'Post Venta'"));
+                 $join->on('m.id_estado', '=', 'p.id_estado');
+            })
+        ->where("p.id_modulo","=",1)
+        ->where("p.id_estado","<>",2)
+        ->where('p.updated_at', '>', date('Y-m-d', strtotime('-30 day', strtotime(date("Y-m-d")))))
+            ->select(DB::raw("p.id,CONCAT_WS(' ',i.direccion,i.numero,i.departamento,c.comuna_nombre) as direccion,i.numero,i.departamento,c.comuna_nombre as comuna, i.direccion as calle, m.nombre as estado, u.name as asignacion, p.updated_at as ultima_modificacion, p.created_at as fecha_creacion, 
+                CASE p.id_modulo when 1 then 'CONTRATO PROPIETARIO' when 2 then 'CONTRATO ARRENDATARIO' end as tipo_contrato"))
+            ->orderby("p.id_estado","asc")
+            ->get();
+
+
+        return count($reporte);
+    }
+
+
+    static function solpaarr() {
+
+        $reporte = DB::table('post_venta as p')
+        ->leftjoin('inmuebles as i', 'i.id', '=', 'p.id_inmueble')
+        ->leftjoin('comunas as c', 'i.id_comuna', '=', 'c.comuna_id')
+        ->leftjoin('users as u', 'p.id_asignacion', '=', 'u.id')
+        ->leftjoin('mensajes as m', function($join){
+                 $join->on('m.nombre_modulo', '=',DB::raw("'Post Venta'"));
+                 $join->on('m.id_estado', '=', 'p.id_estado');
+            })
+        ->where("p.id_modulo","=",2)
+         ->where("p.id_estado","<>",2)
+        ->where('p.updated_at', '>', date('Y-m-d', strtotime('-30 day', strtotime(date("Y-m-d")))))
+            ->select(DB::raw("p.id,CONCAT_WS(' ',i.direccion,i.numero,i.departamento,c.comuna_nombre) as direccion,i.numero,i.departamento,c.comuna_nombre as comuna, i.direccion as calle, m.nombre as estado, u.name as asignacion, p.updated_at as ultima_modificacion, p.created_at as fecha_creacion, 
+                CASE p.id_modulo when 1 then 'CONTRATO PROPIETARIO' when 2 then 'CONTRATO ARRENDATARIO' end as tipo_contrato"))
+            ->orderby("p.id_estado","asc")
+            ->get();
+
+
+        return count($reporte);
+    }
+
+
+    static function sin_solppro() {
+
+        $reporte = DB::table('post_venta as p')
+        ->leftjoin('inmuebles as i', 'i.id', '=', 'p.id_inmueble')
+        ->leftjoin('comunas as c', 'i.id_comuna', '=', 'c.comuna_id')
+        ->leftjoin('users as u', 'p.id_asignacion', '=', 'u.id')
+        ->leftjoin('mensajes as m', function($join){
+                 $join->on('m.nombre_modulo', '=',DB::raw("'Post Venta'"));
+                 $join->on('m.id_estado', '=', 'p.id_estado');
+            })
+        ->where("p.id_modulo","=",1)
+        ->where("p.id_estado","<>",2)
+        ->where('p.updated_at', '<', date('Y-m-d', strtotime('-30 day', strtotime(date("Y-m-d")))))
+            ->select(DB::raw("p.id,CONCAT_WS(' ',i.direccion,i.numero,i.departamento,c.comuna_nombre) as direccion,i.numero,i.departamento,c.comuna_nombre as comuna, i.direccion as calle, m.nombre as estado, u.name as asignacion, p.updated_at as ultima_modificacion, p.created_at as fecha_creacion, 
+                CASE p.id_modulo when 1 then 'CONTRATO PROPIETARIO' when 2 then 'CONTRATO ARRENDATARIO' end as tipo_contrato"))
+            ->orderby("p.id_estado","asc")
+            ->get();
+
+
+        return count($reporte);
+    }
+
+
+
+    static function sin_solparr() {
+
+        $reporte = DB::table('post_venta as p')
+        ->leftjoin('inmuebles as i', 'i.id', '=', 'p.id_inmueble')
+        ->leftjoin('comunas as c', 'i.id_comuna', '=', 'c.comuna_id')
+        ->leftjoin('users as u', 'p.id_asignacion', '=', 'u.id')
+        ->leftjoin('mensajes as m', function($join){
+                 $join->on('m.nombre_modulo', '=',DB::raw("'Post Venta'"));
+                 $join->on('m.id_estado', '=', 'p.id_estado');
+            })
+        ->where("p.id_modulo","=",2)
+         ->where("p.id_estado","<>",2)
+        ->where('p.updated_at', '<', date('Y-m-d', strtotime('-30 day', strtotime(date("Y-m-d")))))
+            ->select(DB::raw("p.id,CONCAT_WS(' ',i.direccion,i.numero,i.departamento,c.comuna_nombre) as direccion,i.numero,i.departamento,c.comuna_nombre as comuna, i.direccion as calle, m.nombre as estado, u.name as asignacion, p.updated_at as ultima_modificacion, p.created_at as fecha_creacion, 
+                CASE p.id_modulo when 1 then 'CONTRATO PROPIETARIO' when 2 then 'CONTRATO ARRENDATARIO' end as tipo_contrato"))
+            ->orderby("p.id_estado","asc")
+            ->get();
+
+
+        return count($reporte);
+    }
+
+
+        static function sin_revisar() {
+$publica = DB::table('adm_contratofinal as co')
+                ->leftjoin('cap_publicaciones as cb', 'co.id_publicacion', '=', 'cb.id')
+                ->leftjoin('inmuebles as i', 'cb.id_inmueble', '=', 'i.id')
+                ->leftjoin('comunas as o', 'i.id_comuna', '=', 'o.comuna_id')
+                ->leftjoin('personas as p1', 'cb.id_propietario', '=', 'p1.id')
+                ->leftjoin('users as p2', 'cb.id_creador', '=', 'p2.id')
+                ->leftjoin('users as p3', 'cb.id_modificador', '=', 'p3.id')
+                ->leftjoin('mensajes as m', function($join){
+                 $join->on('m.nombre_modulo', '=',DB::raw("'Captación'"));
+                 $join->on('m.id_estado', '=', 'cb.id_estado');
+            })
+                ->whereIn('co.id_estado', [7])
+         ->select(DB::raw('co.id as id_contrato, 
+                            DATE_FORMAT(co.created_at, "%d/%m/%Y") as FechaCreacion, 
+
+                            CONCAT_WS(" ",p1.nombre,p1.apellido_paterno,p1.apellido_materno) as Propietario, 
+                            p2.name as Creador,
+                            p3.name as Modificador,
+                            (select name from users where id=(select id_asignado from post_asignarevision where id_contrato=co.id order by 1 desc limit 1)) as Asignado,
+                            (select created_at from post_asignarevision where id_contrato=co.id order by 1 desc limit 1) as fecha_revision,
+                        (select nombre from mensajes where nombre_modulo="Revisión Cuentas" and id_estado=(select id_estado from post_asignarevision where id_contrato=co.id order by 1 desc limit 1)) as EstadoCuenta,
+                            m.nombre as Estado,
+                            CONCAT_WS(" ",i.direccion,i.numero," Dpto ",i.departamento) as Direccion,
+                            i.direccion as calle,i.numero,i.departamento,
+                            o.comuna_nombre as Comuna,
+                            p1.email,
+                            p1.telefono'))
+                ->get();
+        $r = [];
+        $valor = 0;
+        foreach ($publica as $k) {
+            if ($k->fecha_revision < date('Y-m-d', strtotime('-30 day', strtotime(date("Y-m-d"))))){
+                array_push($r, $k);
+            }
+                    
+        }
+
+
+        return count($r);
+    }
+
+    static function solpv_arr() {
+   $sol = DB::table('post_solicitudserviciosarr as ss')
+                ->leftjoin('adm_contratofinalarr as cf', "ss.id_contrato", "=", "cf.id")
+                ->leftjoin('personas as p1', 'ss.id_arrendatario', '=', 'p1.id')
+                ->leftjoin('inmuebles as i', 'ss.id_inmueble', '=', 'i.id')
+                ->leftjoin('users as p2', 'ss.id_creador', '=', 'p2.id')
+                ->leftjoin('users as p3', 'ss.id_modificador', '=', 'p3.id')
+                ->leftjoin('users as p4', 'ss.id_autorizador', '=', 'p4.id')
+                ->leftjoin('users as p5', 'ss.id_asignacion', '=', 'p4.id')
+                ->leftjoin('comunas as o', 'i.id_comuna', '=', 'o.comuna_id')
+                ->leftjoin('mensajes as m', function($join) {
+                    $join->on('m.nombre_modulo', '=', DB::raw("'Solicitud Servicio'"));
+                    $join->on('m.id_estado', '=', 'ss.id_estado');
+                })
+                ->whereNotIn('ss.id_estado', [4,5])
+                ->select(DB::raw('ss.id as id_solicitud, 
+                            DATE_FORMAT(ss.created_at, "%d/%m/%Y") as FechaCreacion, 
+                            m.nombre as Estado,
+                            CONCAT_WS(" ",p1.nombre,p1.apellido_paterno,p1.apellido_materno) as Arrendatario, 
+                            p2.name as Creador,
+                            p3.name as Modificador,
+                            p4.name as Autorizador,
+                            p5.name as Asignado,
+                            CONCAT_WS(" ",i.direccion,i.numero," Dpto ",i.departamento) as Direccion,
+                            o.comuna_nombre as Comuna,
+                            ss.fecha_autorizacion,
+                            p1.email,
+                            p1.telefono,
+                            ss.fecha_uf,
+                            ss.valor_uf'))
+                ->get();
+ 
+
+        return count($sol);
+    }
+
+
+    static function solpv_pro() {
+   $sol = DB::table('post_solicitudservicios as ss')
+                ->leftjoin('adm_contratofinal as cf', "ss.id_contrato", "=", "cf.id")
+                ->leftjoin('personas as p1', 'ss.id_propietario', '=', 'p1.id')
+                ->leftjoin('inmuebles as i', 'ss.id_inmueble', '=', 'i.id')
+                ->leftjoin('users as p2', 'ss.id_creador', '=', 'p2.id')
+                ->leftjoin('users as p3', 'ss.id_modificador', '=', 'p3.id')
+                ->leftjoin('users as p4', 'ss.id_autorizador', '=', 'p4.id')
+                ->leftjoin('users as p5', 'ss.id_asignacion', '=', 'p4.id')
+                ->leftjoin('comunas as o', 'i.id_comuna', '=', 'o.comuna_id')
+                ->leftjoin('mensajes as m', function($join) {
+                    $join->on('m.nombre_modulo', '=', DB::raw("'Solicitud Servicio'"));
+                    $join->on('m.id_estado', '=', 'ss.id_estado');
+                })
+                ->whereNotIn('ss.id_estado', [4,5])
+                ->select(DB::raw('ss.id as id_solicitud, 
+                            DATE_FORMAT(ss.created_at, "%d/%m/%Y") as FechaCreacion, 
+                            m.nombre as Estado,
+                            CONCAT_WS(" ",p1.nombre,p1.apellido_paterno,p1.apellido_materno) as Propietario, 
+                            p2.name as Creador,
+                            p3.name as Modificador,
+                            p4.name as Autorizador,
+                            p5.name as Asignado,
+                            CONCAT_WS(" ",i.direccion,i.numero," Dpto ",i.departamento) as Direccion,
+                            o.comuna_nombre as Comuna,
+                            ss.fecha_autorizacion,
+                            p1.email,
+                            p1.telefono,
+                            ss.fecha_uf,
+                            ss.valor_uf'))
+                ->get();
+
+
+
+        return count($sol);
+    }
 }

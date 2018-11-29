@@ -1844,4 +1844,51 @@ Route::post('alerta/cap/sin_respuesta_ajax','ReporteGestionController@cap_sin_re
 
 	Route::post('alerta/cap/contrato_arr_ajax','ReporteGestionController@cap_contrato_arr_ajax')->name('alertas.cap_contrato_arr_ajax')
 		->middleware('permission:alerta.captaciones');
+
+		//alertas PV
+
+
+	Route::get('alerta/pv/solpa_arr','ReporteGestionController@solpa_arr')->name('alertas.solpa_arr')
+		->middleware('permission:alerta.postventa');
+
+	Route::post('alerta/pv/solpa_arr_ajax','ReporteGestionController@solpa_arr_ajax')->name('alertas.solpa_arr_ajax')
+		->middleware('permission:alerta.postventa');
+
+	Route::get('alerta/pv/solpa_pro','ReporteGestionController@solpa_pro')->name('alertas.solpa_pro')
+		->middleware('permission:alerta.postventa');
+
+	Route::post('alerta/pv/solpa_pro_ajax','ReporteGestionController@solpa_pro_ajax')->name('alertas.solpa_pro_ajax')
+		->middleware('permission:alerta.postventa');
+
+
+	Route::get('alerta/pv/solpa_sinrevisar_arr','ReporteGestionController@solpa_sinrevisar_arr')->name('alertas.solpa_sinrevisar_arr')
+		->middleware('permission:alerta.postventa');
+
+	Route::post('alerta/pv/solpa_sinrevisar_arr_ajax','ReporteGestionController@solpa_sinrevisar_arr_ajax')->name('alertas.solpa_sinrevisar_arr_ajax')
+		->middleware('permission:alerta.postventa');
+
+	Route::get('alerta/pv/solpa_sinrevisar_pro','ReporteGestionController@solpa_sinrevisar_pro')->name('alertas.solpa_sinrevisar_pro')
+		->middleware('permission:alerta.postventa');
+
+	Route::post('alerta/pv/solpa_sinrevisar_pro_ajax','ReporteGestionController@solpa_sinrevisar_pro_ajax')->name('alertas.solpa_sinrevisar_pro_ajax')
+		->middleware('permission:alerta.postventa');
+
+		Route::get('alerta/pv/cuentas','ReporteGestionController@cuentas')->name('alertas.cuentas')
+		->middleware('permission:alerta.postventa');
+
+	Route::post('alerta/pv/cuentas_ajax','ReporteGestionController@cuentas_ajax')->name('alertas.cuentas_ajax')
+		->middleware('permission:alerta.postventa');
+
+		Route::get('alerta/pv/solpv_arr','ReporteGestionController@solpv_arr')->name('alertas.solpv_arr')
+		->middleware('permission:alerta.postventa');
+
+	Route::post('alerta/pv/solpv_arr_ajax','ReporteGestionController@solpv_arr_ajax')->name('alertas.solpv_arr_ajax')
+		->middleware('permission:alerta.postventa');
+
+	Route::get('alerta/pv/solpv_pro','ReporteGestionController@solpv_pro')->name('alertas.solpv_pro')
+		->middleware('permission:alerta.postventa');
+
+	Route::post('alerta/pv/solpv_pro_ajax','ReporteGestionController@solpv_pro_ajax')->name('alertas.solpv_pro_ajax')
+		->middleware('permission:alerta.postventa');
+
 });

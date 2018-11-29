@@ -881,4 +881,303 @@ $publica=$publica->where("flag","<>",1);
         ->rawColumns(['id_link','action'])
         ->make(true);
     }
+
+
+
+
+    //PV
+
+        public function solpa_pro(){
+        return view('alertas.pv_solpa_pro');
+    }
+
+    static function solpa_pro_ajax() {
+
+        $postventa = DB::table('post_venta as p')
+        ->leftjoin('inmuebles as i', 'i.id', '=', 'p.id_inmueble')
+        ->leftjoin('comunas as c', 'i.id_comuna', '=', 'c.comuna_id')
+        ->leftjoin('users as u', 'p.id_asignacion', '=', 'u.id')
+        ->leftjoin('mensajes as m', function($join){
+                 $join->on('m.nombre_modulo', '=',DB::raw("'Post Venta'"));
+                 $join->on('m.id_estado', '=', 'p.id_estado');
+            })
+        ->where("p.id_modulo","=",1)
+        ->where("p.id_estado","<>",2)
+        ->where('p.updated_at', '>', date('Y-m-d', strtotime('-30 day', strtotime(date("Y-m-d")))))
+            ->select(DB::raw("p.id,CONCAT_WS(' ',i.direccion,i.numero,i.departamento,c.comuna_nombre) as direccion,i.numero,i.departamento,c.comuna_nombre as comuna, i.direccion as calle, m.nombre as estado, u.name as asignacion, p.updated_at as ultima_modificacion, p.created_at as fecha_creacion, 
+                CASE p.id_modulo when 1 then 'CONTRATO PROPIETARIO' when 2 then 'CONTRATO ARRENDATARIO' end as tipo_contrato"))
+            ->orderby("p.id_estado","asc")
+            ->get();
+
+return Datatables::of($postventa)
+         ->addColumn('action', function ($postventa) {
+                               return  '<a href="/postventa/'.$postventa->id.'/1/edit"><span class="btn btn-warning btn-circle btn-sm"><i class="ti-pencil-alt"></i></span></a>';
+        })
+        ->addColumn('id_link', function ($postventa) {
+                               return  '<a href="/postventa/'.$postventa->id.'/1/edit"><span class="btn btn-success btn-sm"> '.$postventa->id.'</span> </a>';
+        })
+        ->rawColumns(['id_link','action'])
+        ->make(true);
+    }
+
+    public function solpa_arr(){
+        return view('alertas.pv_solpa_arr');
+    }
+
+    static function solpa_arr_ajax() {
+
+        $postventa = DB::table('post_venta as p')
+        ->leftjoin('inmuebles as i', 'i.id', '=', 'p.id_inmueble')
+        ->leftjoin('comunas as c', 'i.id_comuna', '=', 'c.comuna_id')
+        ->leftjoin('users as u', 'p.id_asignacion', '=', 'u.id')
+        ->leftjoin('mensajes as m', function($join){
+                 $join->on('m.nombre_modulo', '=',DB::raw("'Post Venta'"));
+                 $join->on('m.id_estado', '=', 'p.id_estado');
+            })
+        ->where("p.id_modulo","=",2)
+         ->where("p.id_estado","<>",2)
+        ->where('p.updated_at', '>', date('Y-m-d', strtotime('-30 day', strtotime(date("Y-m-d")))))
+            ->select(DB::raw("p.id,CONCAT_WS(' ',i.direccion,i.numero,i.departamento,c.comuna_nombre) as direccion,i.numero,i.departamento,c.comuna_nombre as comuna, i.direccion as calle, m.nombre as estado, u.name as asignacion, p.updated_at as ultima_modificacion, p.created_at as fecha_creacion, 
+                CASE p.id_modulo when 1 then 'CONTRATO PROPIETARIO' when 2 then 'CONTRATO ARRENDATARIO' end as tipo_contrato"))
+            ->orderby("p.id_estado","asc")
+            ->get();
+
+
+   return Datatables::of($postventa)
+         ->addColumn('action', function ($postventa) {
+                               return  '<a href="/postventa/'.$postventa->id.'/1/edit"><span class="btn btn-warning btn-circle btn-sm"><i class="ti-pencil-alt"></i></span></a>';
+        })
+        ->addColumn('id_link', function ($postventa) {
+                               return  '<a href="/postventa/'.$postventa->id.'/1/edit"><span class="btn btn-success btn-sm"> '.$postventa->id.'</span> </a>';
+        })
+        ->rawColumns(['id_link','action'])
+        ->make(true);
+    }
+
+
+
+
+     public function solpa_sinrevisar_pro(){
+        return view('alertas.pv_solpa_sinrevisar_pro');
+    }
+
+    static function solpa_sinrevisar_pro_ajax() {
+
+        $postventa = DB::table('post_venta as p')
+        ->leftjoin('inmuebles as i', 'i.id', '=', 'p.id_inmueble')
+        ->leftjoin('comunas as c', 'i.id_comuna', '=', 'c.comuna_id')
+        ->leftjoin('users as u', 'p.id_asignacion', '=', 'u.id')
+        ->leftjoin('mensajes as m', function($join){
+                 $join->on('m.nombre_modulo', '=',DB::raw("'Post Venta'"));
+                 $join->on('m.id_estado', '=', 'p.id_estado');
+            })
+        ->where("p.id_modulo","=",1)
+        ->where("p.id_estado","<>",2)
+        ->where('p.updated_at', '<', date('Y-m-d', strtotime('-30 day', strtotime(date("Y-m-d")))))
+            ->select(DB::raw("p.id,CONCAT_WS(' ',i.direccion,i.numero,i.departamento,c.comuna_nombre) as direccion,i.numero,i.departamento,c.comuna_nombre as comuna, i.direccion as calle, m.nombre as estado, u.name as asignacion, p.updated_at as ultima_modificacion, p.created_at as fecha_creacion, 
+                CASE p.id_modulo when 1 then 'CONTRATO PROPIETARIO' when 2 then 'CONTRATO ARRENDATARIO' end as tipo_contrato"))
+            ->orderby("p.id_estado","asc")
+            ->get();
+
+return Datatables::of($postventa)
+         ->addColumn('action', function ($postventa) {
+                               return  '<a href="/postventa/'.$postventa->id.'/1/edit"><span class="btn btn-warning btn-circle btn-sm"><i class="ti-pencil-alt"></i></span></a>';
+        })
+        ->addColumn('id_link', function ($postventa) {
+                               return  '<a href="/postventa/'.$postventa->id.'/1/edit"><span class="btn btn-success btn-sm"> '.$postventa->id.'</span> </a>';
+        })
+        ->rawColumns(['id_link','action'])
+        ->make(true);
+    }
+
+    public function solpa_sinrevisar_arr(){
+        return view('alertas.pv_solpa_sinrevisar_arr');
+    }
+
+    static function solpa_sinrevisar_arr_ajax() {
+
+        $postventa = DB::table('post_venta as p')
+        ->leftjoin('inmuebles as i', 'i.id', '=', 'p.id_inmueble')
+        ->leftjoin('comunas as c', 'i.id_comuna', '=', 'c.comuna_id')
+        ->leftjoin('users as u', 'p.id_asignacion', '=', 'u.id')
+        ->leftjoin('mensajes as m', function($join){
+                 $join->on('m.nombre_modulo', '=',DB::raw("'Post Venta'"));
+                 $join->on('m.id_estado', '=', 'p.id_estado');
+            })
+        ->where("p.id_modulo","=",2)
+         ->where("p.id_estado","<>",2)
+        ->where('p.updated_at', '<', date('Y-m-d', strtotime('-30 day', strtotime(date("Y-m-d")))))
+            ->select(DB::raw("p.id,CONCAT_WS(' ',i.direccion,i.numero,i.departamento,c.comuna_nombre) as direccion,i.numero,i.departamento,c.comuna_nombre as comuna, i.direccion as calle, m.nombre as estado, u.name as asignacion, p.updated_at as ultima_modificacion, p.created_at as fecha_creacion, 
+                CASE p.id_modulo when 1 then 'CONTRATO PROPIETARIO' when 2 then 'CONTRATO ARRENDATARIO' end as tipo_contrato"))
+            ->orderby("p.id_estado","asc")
+            ->get();
+
+
+   return Datatables::of($postventa)
+         ->addColumn('action', function ($postventa) {
+                               return  '<a href="/postventa/'.$postventa->id.'/1/edit"><span class="btn btn-warning btn-circle btn-sm"><i class="ti-pencil-alt"></i></span></a>';
+        })
+        ->addColumn('id_link', function ($postventa) {
+                               return  '<a href="/postventa/'.$postventa->id.'/1/edit"><span class="btn btn-success btn-sm"> '.$postventa->id.'</span> </a>';
+        })
+        ->rawColumns(['id_link','action'])
+        ->make(true);
+    }
+
+    public function cuentas(){
+        return view('alertas.pv_revision');
+    }
+
+    static function cuentas_ajax() {
+$publica = DB::table('adm_contratofinal as co')
+                ->leftjoin('cap_publicaciones as cb', 'co.id_publicacion', '=', 'cb.id')
+                ->leftjoin('inmuebles as i', 'cb.id_inmueble', '=', 'i.id')
+                ->leftjoin('comunas as o', 'i.id_comuna', '=', 'o.comuna_id')
+                ->leftjoin('personas as p1', 'cb.id_propietario', '=', 'p1.id')
+                ->leftjoin('users as p2', 'cb.id_creador', '=', 'p2.id')
+                ->leftjoin('users as p3', 'cb.id_modificador', '=', 'p3.id')
+                ->leftjoin('mensajes as m', function($join){
+                 $join->on('m.nombre_modulo', '=',DB::raw("'Captación'"));
+                 $join->on('m.id_estado', '=', 'cb.id_estado');
+            })
+                ->whereIn('co.id_estado', [7])
+         ->select(DB::raw('co.id as id_contrato, 
+                            DATE_FORMAT(co.created_at, "%d/%m/%Y") as FechaCreacion, 
+
+                            CONCAT_WS(" ",p1.nombre,p1.apellido_paterno,p1.apellido_materno) as Propietario, 
+                            p2.name as Creador,
+                            p3.name as Modificador,
+                            (select name from users where id=(select id_asignado from post_asignarevision where id_contrato=co.id order by 1 desc limit 1)) as Asignado,
+                            (select created_at from post_asignarevision where id_contrato=co.id order by 1 desc limit 1) as fecha_revision,
+                        (select nombre from mensajes where nombre_modulo="Revisión Cuentas" and id_estado=(select id_estado from post_asignarevision where id_contrato=co.id order by 1 desc limit 1)) as EstadoCuenta,
+                            m.nombre as Estado,
+                            CONCAT_WS(" ",i.direccion,i.numero," Dpto ",i.departamento) as Direccion,
+                            i.direccion as calle,i.numero,i.departamento,
+                            o.comuna_nombre as Comuna,
+                            p1.email,
+                            p1.telefono'))
+                ->get();
+        $publica = $publica->where('fecha_revision', '<', date('Y-m-d', strtotime('-30 day', strtotime(date("Y-m-d")))));
+
+ return Datatables::of($publica)
+         ->addColumn('action', function ($publica) {
+                               return  '<a href="/revisioncuentas/'.$publica->id_contrato.'/revisar"><span class="btn btn-success  btn-sm">Revisar Cuentas</span></a>
+                                    ';
+        })
+        ->addColumn('opciones', function ($publica) {
+                               return  '<a href="/revisioncuentas/'.$publica->id_contrato.'/pagado"><span class="btn btn-warning btn-circle btn-sm">P</span></a>
+                                        <a href="/revisioncuentas/'.$publica->id_contrato.'/moroso"><span class="btn btn-danger btn-circle btn-sm">M</span></a>
+                               <a href="/revisioncuentas/'.$publica->id_contrato.'/comprobante"><span class="btn btn-success btn-circle btn-sm">C</span></a>';
+
+        })
+        ->addColumn('id_link', function ($publica) {
+                               return  '<a href="/revisioncuentas/'.$publica->id_contrato.'/revisar"><span class="btn btn-success btn-sm"> '.$publica->id_contrato.'</span> </a>';
+        })
+        ->rawColumns(['id_link','action','opciones'])
+        ->make(true);
+    }
+
+
+    public function solpv_arr(){
+        return view('alertas.pv_solpv_arr');
+    }
+
+static function solpv_arr_ajax() {
+   $sol = DB::table('post_solicitudserviciosarr as ss')
+                ->leftjoin('adm_contratofinalarr as cf', "ss.id_contrato", "=", "cf.id")
+                ->leftjoin('personas as p1', 'ss.id_arrendatario', '=', 'p1.id')
+                ->leftjoin('inmuebles as i', 'ss.id_inmueble', '=', 'i.id')
+                ->leftjoin('users as p2', 'ss.id_creador', '=', 'p2.id')
+                ->leftjoin('users as p3', 'ss.id_modificador', '=', 'p3.id')
+                ->leftjoin('users as p4', 'ss.id_autorizador', '=', 'p4.id')
+                ->leftjoin('users as p5', 'ss.id_asignacion', '=', 'p4.id')
+                ->leftjoin('comunas as o', 'i.id_comuna', '=', 'o.comuna_id')
+                ->leftjoin('mensajes as m', function($join) {
+                    $join->on('m.nombre_modulo', '=', DB::raw("'Solicitud Servicio'"));
+                    $join->on('m.id_estado', '=', 'ss.id_estado');
+                })
+                ->whereNotIn('ss.id_estado', [4,5])
+                ->select(DB::raw('ss.id as id_solicitud, 
+                            DATE_FORMAT(ss.created_at, "%d/%m/%Y") as FechaCreacion, 
+                            m.nombre as Estado,
+                            CONCAT_WS(" ",p1.nombre,p1.apellido_paterno,p1.apellido_materno) as Arrendatario, 
+                            p2.name as Creador,
+                            p3.name as Modificador,
+                            p4.name as Autorizador,
+                            p5.name as Asignado,
+                            CONCAT_WS(" ",i.direccion,i.numero," Dpto ",i.departamento) as Direccion,
+                            o.comuna_nombre as Comuna,
+                            ss.fecha_autorizacion,
+                            p1.email,
+                            p1.telefono,
+                            ss.fecha_uf,
+                            ss.valor_uf,
+                            (select sum(subtotal_uf) from post_detallesolserviciosarr as ds where ds.id_solicitud=ss.id) as valor_en_uf,
+                            (select sum(subtotal_pesos) from post_detallesolserviciosarr as ds where ds.id_solicitud=ss.id) as valor_en_pesos'))
+                ->get();
+ 
+
+        return Datatables::of($sol)
+                        ->addColumn('action', function ($sol) {
+                            return '<a href="/solservicio/' . $sol->id_solicitud . '/edit"><span class="btn btn-warning btn-circle btn-sm">E</span></a>
+                               <a href="/solservicio/' . $sol->id_solicitud . '/comprobante"><span class="btn btn-success btn-circle btn-sm">C</span></a>
+                                    <a href="/solservicio/' . $sol->id_solicitud . '/destroy"><span class="btn btn-danger btn-circle btn-sm">B</span></a>';
+                        })
+                        ->addColumn('id_link', function ($sol) {
+                            return '<a href="/solservicio/' . $sol->id_solicitud . '/edit"><span class="btn btn-success btn-sm"> ' . $sol->id_solicitud . '</span> </a>';
+                        })
+                        ->rawColumns(['id_link', 'action'])
+                        ->make(true);
+    }
+
+ public function solpv_pro(){
+        return view('alertas.pv_solpv_pro');
+    }
+
+    static function solpv_pro_ajax() {
+   $sol = DB::table('post_solicitudservicios as ss')
+                ->leftjoin('adm_contratofinal as cf', "ss.id_contrato", "=", "cf.id")
+                ->leftjoin('personas as p1', 'ss.id_propietario', '=', 'p1.id')
+                ->leftjoin('inmuebles as i', 'ss.id_inmueble', '=', 'i.id')
+                ->leftjoin('users as p2', 'ss.id_creador', '=', 'p2.id')
+                ->leftjoin('users as p3', 'ss.id_modificador', '=', 'p3.id')
+                ->leftjoin('users as p4', 'ss.id_autorizador', '=', 'p4.id')
+                ->leftjoin('users as p5', 'ss.id_asignacion', '=', 'p4.id')
+                ->leftjoin('comunas as o', 'i.id_comuna', '=', 'o.comuna_id')
+                ->leftjoin('mensajes as m', function($join) {
+                    $join->on('m.nombre_modulo', '=', DB::raw("'Solicitud Servicio'"));
+                    $join->on('m.id_estado', '=', 'ss.id_estado');
+                })
+                ->whereNotIn('ss.id_estado', [4,5])
+                ->select(DB::raw('ss.id as id_solicitud, 
+                            DATE_FORMAT(ss.created_at, "%d/%m/%Y") as FechaCreacion, 
+                            m.nombre as Estado,
+                            CONCAT_WS(" ",p1.nombre,p1.apellido_paterno,p1.apellido_materno) as Propietario, 
+                            p2.name as Creador,
+                            p3.name as Modificador,
+                            p4.name as Autorizador,
+                            p5.name as Asignado,
+                            CONCAT_WS(" ",i.direccion,i.numero," Dpto ",i.departamento) as Direccion,
+                            o.comuna_nombre as Comuna,
+                            ss.fecha_autorizacion,
+                            p1.email,
+                            p1.telefono,
+                            ss.fecha_uf,
+                            ss.valor_uf,
+                            (select sum(subtotal_uf) from post_detallesolservicios as ds where ds.id_solicitud=ss.id) as valor_en_uf,
+                            (select sum(subtotal_pesos) from post_detallesolservicios as ds where ds.id_solicitud=ss.id) as valor_en_pesos'))
+                ->get();
+
+return Datatables::of($sol)
+                        ->addColumn('action', function ($sol) {
+                            return '<a href="/arrsolservicio/' . $sol->id_solicitud . '/edit"><span class="btn btn-warning btn-circle btn-sm">E</span></a>
+                               <a href="/arrsolservicio/' . $sol->id_solicitud . '/comprobante"><span class="btn btn-success btn-circle btn-sm">C</span></a>
+                                    <a href="/arrsolservicio/' . $sol->id_solicitud . '/destroy"><span class="btn btn-danger btn-circle btn-sm">B</span></a>';
+                        })
+                        ->addColumn('id_link', function ($sol) {
+                            return '<a href="/arrsolservicio/' . $sol->id_solicitud . '/edit"><span class="btn btn-success btn-sm"> ' . $sol->id_solicitud . '</span> </a>';
+                        })
+                        ->rawColumns(['id_link', 'action'])
+                        ->make(true);
+    }
 }

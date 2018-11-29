@@ -91,9 +91,15 @@
             <td width="20%" style="padding: 15px;"><strong>Propiedad</strong></td>
             <td width="80%" style="padding: 15px;">{{ $inmueble->direccion or null }} # {{ $inmueble->numero or null}} Dpto {{ $inmueble->departamento or null}}, {{ $inmueble->comuna_nombre or null}}</td>
         </tr>
+        <!--
+        <tr>
+            <td width="20%" style="padding: 15px;"><strong>Propietario</strong></td>
+            <td width="20%" style="padding: 15px;"> {{ $persona->nombre or null}} {{ $persona->apellido_paterno or null}}, Fono : {{ $persona->telefono or null}}, Email: {{ $persona->email or null}}</td>
+        </tr>
+    -->
         <tr>
             <td width="20%" style="padding: 15px;"><strong>Arrendatario</strong></td>
-            <td width="20%" style="padding: 15px;"> {{ $persona->nombre or null}} {{ $persona->apellido_paterno or null}}, Fono : {{ $persona->telefono or null}}, Email: {{ $persona->email or null}}</td>
+            <td width="20%" style="padding: 15px;"> {{ $arrendatario->nombre or null}} {{ $arrendatario->apellido_paterno or null}}, Fono : {{ $arrendatario->telefono or null}}, Email: {{ $arrendatario->email or null}}</td>
         </tr>
     </table>
 
@@ -138,7 +144,7 @@
                                         {{ $pi->anio }}
                                     </td>  
                                  <td  style="border: 1px solid black; text-align: center" >
-                                        {{ $pi->valor_en_pesos }}
+                                        {{ $pi->monto_responsable }}
                                     </td>  
                                      <td  style="border: 1px solid black; text-align: center" >
                                         {{ $pi->fecha_vencimiento }}
