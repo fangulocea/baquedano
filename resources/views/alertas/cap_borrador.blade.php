@@ -34,16 +34,22 @@
 </div>
 
 
+
 <link href = "{{ URL::asset('plugins/bower_components/datatables/jquery.dataTables.min.css')   }}" rel="stylesheet" type="text/css"   />
 <link href = "{{ URL::asset('plugins/DataTables/Buttons-1.5.1/css/buttons.dataTables.min.css') }}" rel="stylesheet" type="text/css"   />
-
-
 <script  src="{{ URL::asset('plugins/DataTables/datatables.min.js') }}"></script>
 <script src="{{ URL::asset('plugins/DataTables/DataTables-1.10.16/js/jquery.dataTables.min.js') }}"></script>
+<script src="{{ URL::asset('plugins/DataTables/Buttons-1.5.1/js/dataTables.buttons.min.js') }}"></script>
+<script src="{{ URL::asset('plugins/DataTables/Buttons-1.5.1/js/buttons.html5.min.js') }}"></script>
 <!-- end - This is for export functionality only -->
 <script>
 
 var table = $('#listusers').DataTable({
+paging: false,
+     dom: 'Bfrtip',
+    buttons: [
+        'excel'
+    ],
     "ordering": false,
        "processing": true,
         "serverSide": true,

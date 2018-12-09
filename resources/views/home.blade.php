@@ -213,14 +213,21 @@ use App\Http\Controllers\PrimeraGestionController;
                                                     <center>
                                                         <h1 class="counter m-t-15">{{ number_format(PrimeraGestionController::transhoypro() , 0, '.', ',')}}</h1>
                                                         
-                                                       <a href="{{ route('alertas.gestion_anual') }}"> <span class="btn btn-block btn-info btn-rounded">Hacer Transferencia <br>Hoy</span></a>
+                                                       <a href="{{ route('alertas.adm_transfhoypro') }}"> <span class="btn btn-block btn-info btn-rounded">Hacer Transferencia <br>Hoy</span></a>
                                                    </center>
                                         </div>
                                         <div class="col-sm-3">
                                                     <center>
                                                        
                                                         <h1 class="counter m-t-15">{{ number_format(PrimeraGestionController::transmananaPro() , 0, '.', ',')}}</h1>
-                                                       <a href="{{ route('alertas.gestion_total') }}"> <span class="btn btn-block btn-info btn-rounded">Hacer Transferencia<br> Mañana</span></a>
+                                                       <a href="{{ route('alertas.adm_transfmananapro') }}"> <span class="btn btn-block btn-info btn-rounded">Hacer Transferencia<br> Mañana</span></a>
+                                                   </center>
+                                        </div>
+                                        <div class="col-sm-3">
+                                                    <center>
+                                                       
+                                                        <h1 class="counter m-t-15">{{ number_format(PrimeraGestionController::transubsgtePro() , 0, '.', ',')}}</h1>
+                                                       <a href="{{ route('alertas.adm_transfsubsgtepro') }}"> <span class="btn btn-block btn-info btn-rounded">Hacer Transferencia<br> Pasado Mañana</span></a>
                                                    </center>
                                         </div>
                                     </div>

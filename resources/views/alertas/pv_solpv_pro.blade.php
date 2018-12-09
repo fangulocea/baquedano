@@ -52,11 +52,10 @@
 <script src="{{ URL::asset('plugins/DataTables/Buttons-1.5.1/js/buttons.html5.min.js') }}"></script>
 <!-- end - This is for export functionality only -->
 <script>
-$('.sorting_desc').hide();
 
 var table = $('#listusers').DataTable({
-
-    dom: 'Bfrtip',
+paging: false,
+     dom: 'Bfrtip',
     buttons: [
         'excel'
     ],

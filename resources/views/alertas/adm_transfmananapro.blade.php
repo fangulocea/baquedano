@@ -1,42 +1,38 @@
 @extends('admin.layout')
 
 @section('contenido')
-<div class="row">
-    <div class="col-md-12">
-        <div class="panel panel-info">
-            <div class="panel-heading"> SOLICITUD DE POST ATENCIÓN ARRENDATARIO</div>
-            <div class="panel-wrapper collapse in" aria-expanded="true">
-                <div class="panel-body">
-                        <div id="tabla" >
-                            <div class="white-box">
-                                <div class="table-responsive" style="padding-bottom: 50px;">
-                                    <table id="listusers" class="display compact" >
-                              
-                                        <thead>
-                                            <tr>
-                                                <th>ID</th>
-                                                <th>Tipo Contrato</th>
-                                                <th>Dirección</th>
-                                                <th>Número</th>
-                                                <th>Departamento</th>
-                                                <th>Comuna</th>
-                                                <th>Asignado</th>
-                                                <th>Estado</th>
-                                                <th>Fecha Ultima Revisión</th>
-                                                <th>Fecha Creación</th>
-                                                <th>Acción_Realizar</th>
-                                            </tr>
-                                        </thead>
-                                        
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                </div>
+
+<div id="tabla" class="col-sm-12">
+    <div class="white-box">
+        <h3 class="box-title m-b-0">Resumen de Salidas</h3>
+        <p class="text-muted m-b-30"></p>
+        <hr>
+
+            <div class="table-responsive" style="padding-bottom: 50px;">
+                <table id="listusers" class="display compact" cellspacing="0" width="100%">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Dirección</th>
+                        <th>Número</th>
+                        <th>Dpto</th>
+                        <th>Comuna</th>
+                        <th>Propietario</th>
+                        <th>Fecha Firma</th>
+                        <th>Día Pago</th>
+                        <th>Fecha Actual</th>
+                        <th>Valor a Pagar</th>
+                        <th>Estado</th>
+                        <th>Acción</th>
+                    </tr>
+                </thead>
+                </table>
+
             </div>
-        </div>
-    </div>
+
+     </div>
 </div>
+
 
 <link href = "{{ URL::asset('plugins/bower_components/datatables/jquery.dataTables.min.css')   }}" rel="stylesheet" type="text/css"   />
 <link href = "{{ URL::asset('plugins/DataTables/Buttons-1.5.1/css/buttons.dataTables.min.css') }}" rel="stylesheet" type="text/css"   />
@@ -48,7 +44,7 @@
 <script>
 
 var table = $('#listusers').DataTable({
-paging: false,
+ paging: false,
      dom: 'Bfrtip',
     buttons: [
         'excel'
@@ -60,27 +56,24 @@ paging: false,
         "dataType": "json",
         "type": "POST",
         "data":{ _token: "{{csrf_token()}}"},
-       "url": "{{ route('alertas.solpa_sinrevisar_arr_ajax') }}"
+       "url": "{{ route('alertas.adm_transfmananapro_ajax') }}"
+
     },
-            "columns": [
+          "columns": [
                 {data: 'id_link', name: 'id_link'},
-                {data: 'tipo_contrato', name: 'tipo_contrato'},
-                
-                {data: 'calle', name: 'calle'},
+                {data: 'direccion', name: 'direccion'},
                 {data: 'numero', name: 'numero'},
                 {data: 'departamento', name: 'departamento'},
-                {data: 'comuna', name: 'comuna'},
-                {data: 'asignacion', name: 'asignacion'},
+                {data: 'comuna_nombre', name: 'comuna_nombre'},
+                {data: 'Propietario', name: 'Propietario'},
+                {data: 'fecha_firma', name: 'fecha_firma'},
+                {data: 'dia_pago', name: 'dia_pago'},
+                 {data: 'fechaactual', name: 'fechaactual'},
+                 {data: 'valor_restante', name: 'valor_restante'},
                 {data: 'estado', name: 'estado'},
-                {data: 'ultima_modificacion', name: 'ultima_modificacion'},
-                {data: 'fecha_creacion', name: 'fecha_creacion'},
                 {data: 'action', name: 'action'}
             ],
-    buttons: [
-        'excel'
-    ],
-   
-   
+     
     language: {
         "sProcessing": "Procesando...",
         "sLengthMenu": "Mostrar _MENU_ registros",
@@ -117,7 +110,7 @@ paging: false,
     $('#listusers thead th').each( function () {
         var title = $(this).text();
         if(title!='ID' && title!= "")
-        $(this).html( title+'<br><input type="text" style="width:80px"  />' );
+        $(this).html( title+'<br/><input type="text" style="width:70px" placeholder="" />' );
     } );
  
 
@@ -126,7 +119,7 @@ paging: false,
     table.columns().every( function () {
         var that = this;
  
-        $( 'input', this.footer() ).on( 'keyup change', function () {
+        $( 'input', this.header() ).on( 'keyup change', function () {
             if ( that.search() !== this.value ) {
                 that
                     .search( this.value )

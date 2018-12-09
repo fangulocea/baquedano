@@ -37,6 +37,7 @@
         </div>
     </div>
 </div>
+
 <link href = "{{ URL::asset('plugins/bower_components/datatables/jquery.dataTables.min.css')   }}" rel="stylesheet" type="text/css"   />
 <link href = "{{ URL::asset('plugins/DataTables/Buttons-1.5.1/css/buttons.dataTables.min.css') }}" rel="stylesheet" type="text/css"   />
 <script  src="{{ URL::asset('plugins/DataTables/datatables.min.js') }}"></script>
@@ -45,11 +46,13 @@
 <script src="{{ URL::asset('plugins/DataTables/Buttons-1.5.1/js/buttons.html5.min.js') }}"></script>
 <!-- end - This is for export functionality only -->
 <script>
-$('.sorting_desc').hide();
 
 var table = $('#listusers').DataTable({
-
-    dom: 'Bfrtip',
+paging: false,
+     dom: 'Bfrtip',
+    buttons: [
+        'excel'
+    ],
     "ordering": false,
        "processing": true,
         "serverSide": true,

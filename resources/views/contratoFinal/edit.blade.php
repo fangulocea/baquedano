@@ -994,6 +994,9 @@ document.getElementById("tablearea").innerHTML="";
                             var rowheader = header.insertRow(0);
                             var fecha_iniciocontrato=new Date(response[0].fecha_iniciocontrato+'T00:00:00');
                             var meses_contrato=response[0].meses_contrato;
+                            $subtotal=0;
+                            var fecha_inicio=new Date(response[0].fecha_iniciocontrato+'T00:00:00');
+                                                            fecha_inicio.setDate(1);
                            
                                     //HEAD
                                     var head_fecha=fecha_iniciocontrato;
@@ -1017,14 +1020,96 @@ document.getElementById("tablearea").innerHTML="";
 
                                      }
                                      tbl.appendChild(rowheader);
+                                    
+                                    var array_solp = response.filter(function (el) {
+                                               return  el.idtipopago==12  ;
+                                      });
 
+                                var row = document.createElement("tr");
+                                var cell = document.createElement("td");
+                                 var cellText = document.createTextNode("Solicitud Post Venta");
+                                   cell.appendChild(cellText);
+                                    cell.style.border="1px solid black";
+                                    cell.style.padding="8px"
+                                    row.appendChild(cell);
+
+
+                                    for (var d = 0; d < meses_contrato+1; d++) 
+                                      {
+
+                                                  var newArray2 = array_solp.filter(function (el) {
+                                                                  return el.mes==fecha_inicio.getMonth()+1 && el.anio==fecha_inicio.getFullYear();
+                                                                });
+                                                   
+                                     
+                                                    $subtotal=0;
+                                                    
+
+                                                                 
+                                                            if (!$.isEmptyObject(newArray2)) 
+                                                            {
+
+                                                                    var total_precio_en_moneda = 0;
+                                                                    for (var i = 0; i < newArray2.length; i++) {total_precio_en_moneda += newArray2[i].precio_en_moneda;
+
+                                                                    }
+                                                                    
+                                                                    var idtp=newArray2.idtipopago;
+
+                                                                    $subtotal+=newArray2[0].precio_en_moneda;
+                                                                    var a = document.createElement("button");
+                                                                    var linkText = document.createTextNode(total_precio_en_moneda);
+                                                                    a.appendChild(linkText);
+                                                                    if(newArray2[0].E_S=='e'){
+                                                                        a.className="btn btn-block btn-outline btn-success";
+                                                                    }else{
+                                                                        if(newArray2[0].idtipopago==11){
+                                                                            a.className="btn btn-block btn-outline btn-info";
+                                                                        }else{
+                                                                           a.className="btn btn-block btn-outline btn-danger"; 
+                                                                        }
+                                                                        
+                                                                    }
+                                                                
+                                                                    var cell = document.createElement("td");
+                                                                    cell.appendChild(a);
+                                                                    cell.style.border="1px solid black";
+                                                                    cell.style.padding="8px"
+                                                                    cell.style.textAlign="center"
+                                                                    row.appendChild(cell);
+
+
+                                                                }else{
+                                                                    var a = document.createElement("button");
+                                                                    a.className="btn btn-block btn-outline btn-default";
+                                                                    var linkText = document.createTextNode(0);
+                                                                    a.appendChild(linkText);
+                                                                    var cell = document.createElement("td");
+                                                                    cell.appendChild(a);
+                                                                    cell.style.border="1px solid black";
+                                                                    cell.style.padding="8px"
+                                                                    cell.style.textAlign="center"
+                                                                    row.appendChild(cell);
+                                                                }
+                                                            
+                                                   
+                                                    
+                                                        
+                                                  fecha_inicio.setMonth(fecha_inicio.getMonth()+1);  
+                                                } 
+
+                                    tbl.appendChild(row);
+
+                                                                            
+                                    
                                     // LINEAS
                                     for (var r = 0; r < 50; r++) 
                                     {
                                         var row = document.createElement("tr");
                                         var newArray = response.filter(function (el) {
-                                              return el.idtipopago==r;
+                                              return el.idtipopago==r && el.idtipopago!=12  ;
                                             });
+
 
                                         
                                      // CONTENIDO
@@ -1046,9 +1131,10 @@ document.getElementById("tablearea").innerHTML="";
                                                 $subtotal=0;
                                                  var fecha_inicio=new Date(response[0].fecha_iniciocontrato+'T00:00:00');
                                                             fecha_inicio.setDate(1);
-                                                 for (var c = 0; c < meses_contrato+1; c++) 
-                                                 {
 
+
+                                                 for (var c = 0; c < meses_contrato+1; c++) 
+                                                {
 
                                                     if (!$.isEmptyObject(newArray[c])) 
                                                     {
@@ -1060,13 +1146,13 @@ document.getElementById("tablearea").innerHTML="";
                                                                  
                                                             if (!$.isEmptyObject(newArray2)) 
                                                             {
-
                                                                     var total_precio_en_moneda = 0;
                                                                     for (var i = 0; i < newArray2.length; i++) {total_precio_en_moneda += newArray2[i].precio_en_moneda;
 
                                                                     }
                                                                     
                                                                     var idtp=newArray2.idtipopago;
+
                                                                     $subtotal+=newArray2[0].precio_en_moneda;
                                                                     var a = document.createElement("button");
                                                                     var linkText = document.createTextNode(total_precio_en_moneda);
@@ -1095,6 +1181,8 @@ document.getElementById("tablearea").innerHTML="";
                                                                     cell.style.padding="8px"
                                                                     cell.style.textAlign="center"
                                                                     row.appendChild(cell);
+
+
                                                                 }else{
                                                                     var a = document.createElement("button");
                                                                     a.className="btn btn-block btn-outline btn-default";
@@ -1117,6 +1205,8 @@ document.getElementById("tablearea").innerHTML="";
                                                 tbl.appendChild(row); // AGREGA EL PAGO
                                         }
                                     }
+
+
                                 
                                  tablearea.appendChild(tbl);
                         }

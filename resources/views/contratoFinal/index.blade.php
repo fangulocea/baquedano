@@ -176,7 +176,7 @@ var table = $('#listusers').DataTable({
     // Setup - add a text input to each footer cell
     $('#listusers thead th').each( function () {
         var title = $(this).text();
-        if(title!='ID' && title!= "")
+        if(title!= "")
         $(this).html( title+'<br/><input type="text" style="width:70px" placeholder="" />' );
     } );
  

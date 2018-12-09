@@ -155,7 +155,7 @@ $publica = DB::table('adm_contratofinal as co')
 
      public function genera_captacion_pro(Request $request){
         //dd($request);
-      
+      ini_set('max_execution_time', 2000);
          $reporte = DB::table('cap_publicaciones as c')
                 ->leftjoin('personas as p1', 'c.id_propietario', '=', 'p1.id')
                 ->leftjoin('inmuebles as i', 'c.id_inmueble', '=', 'i.id')
@@ -199,7 +199,7 @@ $publica = DB::table('adm_contratofinal as co')
                      po.nombre as portal,
                      o.comuna_nombre'))
                 ->orderBy($request->orden,$request->tipoorden)
-                ->get();
+                ->cursor();
 
         if(!in_array('todos', $request->estado)){
             $reporte = $reporte->whereIn("id_estado",$request->estado);         ;
@@ -222,7 +222,7 @@ $publica = DB::table('adm_contratofinal as co')
         }
         if(isset($request->departamento)){
             $reporte = $reporte->where("departamento","=",$request->departamento); 
-        }                
+        }  
 
         return Excel::create('Captaciones Propietario'.$request->fechainicio.' '.$request->fechafin, function ($excel) use ($reporte) {
                         $excel->sheet('Reporte', function ($sheet) use ($reporte) {

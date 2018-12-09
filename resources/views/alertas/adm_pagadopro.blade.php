@@ -25,6 +25,8 @@
                         <th>Pagado Actual</th>
                         <th>Fecha Siguiente</th>
                         <th>Pagado Siguiente</th>
+                        <th>Fecha Sub Siguiente</th>
+                        <th>Pagado Sub Siguiente</th>
                         <th>Estado</th>
                         <th>Acción</th>
                     </tr>
@@ -76,6 +78,8 @@ var table = $('#listusers').DataTable({
                  {data: 'valorpagadoactual', name: 'valorpagadoactual'},
                  {data: 'fechasiguiente', name: 'fechasiguiente'},
                  {data: 'valorpagadosiguiente', name: 'valorpagadosiguiente'},
+                 {data: 'fechasubsiguiente', name: 'fechasubsiguiente'},
+                 {data: 'valorpagadosubsiguiente', name: 'valorpagadosubsiguiente'},
                 {data: 'estado', name: 'estado'},
                 {data: 'action', name: 'action'}
             ],

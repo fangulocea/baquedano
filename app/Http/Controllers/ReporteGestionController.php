@@ -17,6 +17,7 @@ use Image;
 use DateTime;
 use Excel;
 use Yajra\Datatables\Datatables;
+use Carbon\Carbon;
 
 
 class ReporteGestionController extends Controller
@@ -835,6 +836,7 @@ $publica=$publica->where("flag","<>",1);
                     $join->on('m.id_estado', '=', 'c.id_estado');
                 })
                 ->whereIn('c.id_estado', [7,10,6])
+                ->where("cb.dia_pago","=",Carbon::now()->day)
                 ->select(DB::raw('co.id as id_contrato, co.fecha_firma, m.nombre as estado, cb.dia_pago,c.id as id_publicacion, DATE_FORMAT(c.created_at, "%d/%m/%Y") as fecha_creacion, c.id_estado as id_estado, CONCAT_WS(" ",p1.nombre,p1.apellido_paterno,p1.apellido_materno) as Propietario, p2.name as Creador, p1.rut, p1.email, p1.telefono,
 
               CONCAT_WS("/", MONTH(DATE_ADD(now(), INTERVAL 1 MONTH)), YEAR(DATE_ADD(now(), INTERVAL 1 MONTH))) as fechasiguiente,
@@ -858,6 +860,7 @@ $publica=$publica->where("flag","<>",1);
                          (select pago_propietario from adm_pagosmensualespropietarios where mes=MONTH(DATE_ADD(now(), INTERVAL +1 MONTH)) and anio=YEAR(DATE_ADD(now(), INTERVAL +1 MONTH)) and id_publicacion=c.id and id_inmueble=i.id and id_contratofinal=co.id) as valorsiguiente1,
 
                     (select sum(valor_pagado) from adm_detallepagospropietarios dt inner join adm_pagosmensualespropietarios pm on dt.id_pagomensual=pm.id where pm.mes=MONTH(DATE_ADD(now(), INTERVAL +1 MONTH)) and pm.anio=YEAR(DATE_ADD(now(), INTERVAL +1 MONTH)) and pm.id_publicacion=c.id and pm.id_inmueble=i.id and pm.id_contratofinal=co.id) as valorpagadosiguiente
+
 
                     '), 'p1.id as id_propietario', 'i.id as id_inmueble', 'i.direccion', 'i.numero', 'i.departamento', 'o.comuna_nombre', 'p1.nombre as nom_p', 'p1.apellido_paterno as apep_p', 'p1.apellido_materno as apem_p', 'p3.name as modifcador')
                 ->orderby("co.fecha_firma", "asc")
@@ -884,6 +887,177 @@ $publica=$publica->where("flag","<>",1);
 
 
 
+
+    public function adm_transfhoypro(){
+        return view('alertas.adm_transfpro');
+    }
+
+     static function adm_transfhoypro_ajax() {
+
+          
+        $publica = DB::table('adm_contratofinal as co')
+                ->leftjoin('borradores as cb', 'co.id_borrador', '=', 'cb.id')
+                ->leftjoin('adm_contratodirpropietarios as cd', 'cd.id_contratofinal', '=', 'co.id')
+                ->leftjoin('inmuebles as i', 'cd.id_inmueble', '=', 'i.id')
+                ->leftjoin('comunas as o', 'i.id_comuna', '=', 'o.comuna_id')
+                ->leftjoin('cap_publicaciones as c', 'c.id', '=', 'co.id_publicacion')
+                ->leftjoin('personas as p1', 'c.id_propietario', '=', 'p1.id')
+                ->leftjoin('users as p2', 'c.id_creador', '=', 'p2.id')
+                ->leftjoin('users as p3', 'c.id_modificador', '=', 'p3.id')
+                ->leftjoin('mensajes as m', function($join) {
+                    $join->on('m.nombre_modulo', '=', DB::raw("'Captación'"));
+                    $join->on('m.id_estado', '=', 'c.id_estado');
+                })
+                ->whereIn('c.id_estado', [7, 10, 6])
+                ->where("cb.dia_pago","=",Carbon::now()->day)
+                ->select(DB::raw('co.id as id_contrato, co.fecha_firma, m.nombre as estado, cb.dia_pago,c.id as id_publicacion, DATE_FORMAT(c.created_at, "%d/%m/%Y") as fecha_creacion, c.id_estado as id_estado, CONCAT_WS(" ",p1.nombre,p1.apellido_paterno,p1.apellido_materno) as Propietario, p2.name as Creador, p1.rut, p1.email, p1.telefono,
+CONCAT_WS("/", MONTH(DATE_ADD(now(), INTERVAL 1 MONTH)), YEAR(DATE_ADD(now(), INTERVAL 1 MONTH))) as fechasiguiente,
+                    CONCAT_WS("/",MONTH(now()), YEAR(now())) as fechaactual,
+                    
+                    (select pago_propietario from adm_pagosmensualespropietarios where mes=MONTH(now()) and anio=YEAR(now()) and id_publicacion=c.id and id_inmueble=i.id and id_contratofinal=co.id) as valoractual,
+
+                    (select sum(valor_pagado) from adm_detallepagospropietarios dt inner join adm_pagosmensualespropietarios pm on dt.id_pagomensual=pm.id where pm.mes=MONTH(now()) and pm.anio=YEAR(now()) and pm.id_publicacion=c.id and pm.id_inmueble=i.id and pm.id_contratofinal=co.id) as valorpagadoactual
+
+
+                    '), 'p1.id as id_propietario', 'i.id as id_inmueble', 'i.direccion', 'i.numero', 'i.departamento', 'o.comuna_nombre', 'p1.nombre as nom_p', 'p1.apellido_paterno as apep_p', 'p1.apellido_materno as apem_p', 'p3.name as modifcador')
+                ->orderby("co.fecha_firma", "asc")
+                ->get();
+
+
+
+            return Datatables::of($publica)
+
+
+            ->addColumn('valor_restante', function ($publica) {
+                               return  $publica->valoractual-$publica->valorpagadoactual;
+        })
+
+         ->addColumn('action', function ($publica) {
+                               return  "<a href='/finalContrato/edit/".$publica->id_publicacion."/0/0/1/contrato' >
+                                    <span class='btn btn-success btn-sm'>".$publica->id_contrato."</span> </a>
+                                    ";
+        })
+        ->addColumn('id_link', function ($publica) {
+                               return  "<a href='/finalContrato/edit/".$publica->id_publicacion."/0/0/1/contrato' >
+                                    <span class='btn btn-success btn-sm'>".$publica->id_contrato."</span> </a>
+                                    ";
+        })
+        ->rawColumns(['id_link','action'])
+        ->make(true);
+    }
+
+
+  public function adm_transfmananapro(){
+        return view('alertas.adm_transfmananapro');
+    }
+
+    static function adm_transfmananapro_ajax() {
+
+          $publica = DB::table('adm_contratofinal as co')
+                ->leftjoin('borradores as cb', 'co.id_borrador', '=', 'cb.id')
+                ->leftjoin('adm_contratodirpropietarios as cd', 'cd.id_contratofinal', '=', 'co.id')
+                ->leftjoin('inmuebles as i', 'cd.id_inmueble', '=', 'i.id')
+                ->leftjoin('comunas as o', 'i.id_comuna', '=', 'o.comuna_id')
+                ->leftjoin('cap_publicaciones as c', 'c.id', '=', 'co.id_publicacion')
+                ->leftjoin('personas as p1', 'c.id_propietario', '=', 'p1.id')
+                ->leftjoin('users as p2', 'c.id_creador', '=', 'p2.id')
+                ->leftjoin('users as p3', 'c.id_modificador', '=', 'p3.id')
+                ->leftjoin('mensajes as m', function($join) {
+                    $join->on('m.nombre_modulo', '=', DB::raw("'Captación'"));
+                    $join->on('m.id_estado', '=', 'c.id_estado');
+                })
+                ->whereIn('c.id_estado', [7, 10, 6])
+                ->where("cb.dia_pago","=",Carbon::tomorrow()->day)
+                ->select(DB::raw('co.id as id_contrato, co.fecha_firma, m.nombre as estado, cb.dia_pago,c.id as id_publicacion, DATE_FORMAT(c.created_at, "%d/%m/%Y") as fecha_creacion, c.id_estado as id_estado, CONCAT_WS(" ",p1.nombre,p1.apellido_paterno,p1.apellido_materno) as Propietario, p2.name as Creador, p1.rut, p1.email, p1.telefono,
+CONCAT_WS("/", MONTH(DATE_ADD(now(), INTERVAL 1 MONTH)), YEAR(DATE_ADD(now(), INTERVAL 1 MONTH))) as fechasiguiente,
+                    CONCAT_WS("/",MONTH(now()), YEAR(now())) as fechaactual,
+                    
+                    (select pago_propietario from adm_pagosmensualespropietarios where mes=MONTH(now()) and anio=YEAR(now()) and id_publicacion=c.id and id_inmueble=i.id and id_contratofinal=co.id) as valoractual,
+
+                    (select sum(valor_pagado) from adm_detallepagospropietarios dt inner join adm_pagosmensualespropietarios pm on dt.id_pagomensual=pm.id where pm.mes=MONTH(now()) and pm.anio=YEAR(now()) and pm.id_publicacion=c.id and pm.id_inmueble=i.id and pm.id_contratofinal=co.id) as valorpagadoactual
+
+
+                    '), 'p1.id as id_propietario', 'i.id as id_inmueble', 'i.direccion', 'i.numero', 'i.departamento', 'o.comuna_nombre', 'p1.nombre as nom_p', 'p1.apellido_paterno as apep_p', 'p1.apellido_materno as apem_p', 'p3.name as modifcador')
+                ->orderby("co.fecha_firma", "asc")
+                ->get();
+
+
+            return Datatables::of($publica)
+
+->addColumn('valor_restante', function ($publica) {
+                               return  $publica->valoractual-$publica->valorpagadoactual;
+        })
+         ->addColumn('action', function ($publica) {
+                               return  "<a href='/finalContrato/edit/".$publica->id_publicacion."/0/0/1/contrato' >
+                                    <span class='btn btn-success btn-sm'>".$publica->id_contrato."</span> </a>
+                                    ";
+        })
+        ->addColumn('id_link', function ($publica) {
+                               return  "<a href='/finalContrato/edit/".$publica->id_publicacion."/0/0/1/contrato' >
+                                    <span class='btn btn-success btn-sm'>".$publica->id_contrato."</span> </a>
+                                    ";
+        })
+        ->rawColumns(['id_link','action'])
+        ->make(true);
+    }
+
+
+    public function adm_transfsubsgtepro(){
+        return view('alertas.adm_transfpasadopro');
+    }
+
+    static function adm_transfsubsgtepro_ajax() {
+
+          $publica = DB::table('adm_contratofinal as co')
+                ->leftjoin('borradores as cb', 'co.id_borrador', '=', 'cb.id')
+                ->leftjoin('adm_contratodirpropietarios as cd', 'cd.id_contratofinal', '=', 'co.id')
+                ->leftjoin('inmuebles as i', 'cd.id_inmueble', '=', 'i.id')
+                ->leftjoin('comunas as o', 'i.id_comuna', '=', 'o.comuna_id')
+                ->leftjoin('cap_publicaciones as c', 'c.id', '=', 'co.id_publicacion')
+                ->leftjoin('personas as p1', 'c.id_propietario', '=', 'p1.id')
+                ->leftjoin('users as p2', 'c.id_creador', '=', 'p2.id')
+                ->leftjoin('users as p3', 'c.id_modificador', '=', 'p3.id')
+                ->leftjoin('mensajes as m', function($join) {
+                    $join->on('m.nombre_modulo', '=', DB::raw("'Captación'"));
+                    $join->on('m.id_estado', '=', 'c.id_estado');
+                })
+                ->whereIn('c.id_estado', [7, 10, 6])
+                ->where("cb.dia_pago","=",Carbon::now()->addDays(2)->day)
+                ->select(DB::raw('co.id as id_contrato, co.fecha_firma, m.nombre as estado, cb.dia_pago,c.id as id_publicacion, DATE_FORMAT(c.created_at, "%d/%m/%Y") as fecha_creacion, c.id_estado as id_estado, CONCAT_WS(" ",p1.nombre,p1.apellido_paterno,p1.apellido_materno) as Propietario, p2.name as Creador, p1.rut, p1.email, p1.telefono,
+CONCAT_WS("/", MONTH(DATE_ADD(now(), INTERVAL 1 MONTH)), YEAR(DATE_ADD(now(), INTERVAL 1 MONTH))) as fechasiguiente,
+                    CONCAT_WS("/",MONTH(now()), YEAR(now())) as fechaactual,
+                    
+                    (select pago_propietario from adm_pagosmensualespropietarios where mes=MONTH(now()) and anio=YEAR(now()) and id_publicacion=c.id and id_inmueble=i.id and id_contratofinal=co.id) as valoractual,
+
+                    (select sum(valor_pagado) from adm_detallepagospropietarios dt inner join adm_pagosmensualespropietarios pm on dt.id_pagomensual=pm.id where pm.mes=MONTH(now()) and pm.anio=YEAR(now()) and pm.id_publicacion=c.id and pm.id_inmueble=i.id and pm.id_contratofinal=co.id) as valorpagadoactual
+
+
+                    '), 'p1.id as id_propietario', 'i.id as id_inmueble', 'i.direccion', 'i.numero', 'i.departamento', 'o.comuna_nombre', 'p1.nombre as nom_p', 'p1.apellido_paterno as apep_p', 'p1.apellido_materno as apem_p', 'p3.name as modifcador')
+                ->orderby("co.fecha_firma", "asc")
+                ->get();
+
+ 
+
+
+            return Datatables::of($publica)
+
+            ->addColumn('valor_restante', function ($publica) {
+                               return  $publica->valoractual-$publica->valorpagadoactual;
+        })
+
+         ->addColumn('action', function ($publica) {
+                               return  "<a href='/finalContrato/edit/".$publica->id_publicacion."/0/0/1/contrato' >
+                                    <span class='btn btn-success btn-sm'>".$publica->id_contrato."</span> </a>
+                                    ";
+        })
+        ->addColumn('id_link', function ($publica) {
+                               return  "<a href='/finalContrato/edit/".$publica->id_publicacion."/0/0/1/contrato' >
+                                    <span class='btn btn-success btn-sm'>".$publica->id_contrato."</span> </a>
+                                    ";
+        })
+        ->rawColumns(['id_link','action'])
+        ->make(true);
+    }
 
     //PV
 

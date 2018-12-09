@@ -1812,6 +1812,24 @@ Route::post('alerta/cap/sin_respuesta_ajax','ReporteGestionController@cap_sin_re
 	Route::get('alerta/adm/pagado/pro','ReporteGestionController@adm_pagadospro')->name('alertas.adm_pagadospro')
 		->middleware('permission:alerta.administracion');
 
+			Route::post('alerta/adm/transhoy/pro/ajax','ReporteGestionController@adm_transfhoypro_ajax')->name('alertas.adm_transfhoypro_ajax')
+		->middleware('permission:alerta.administracion');
+
+	Route::get('alerta/adm/transhoy/pro','ReporteGestionController@adm_transfhoypro')->name('alertas.adm_transfhoypro')
+		->middleware('permission:alerta.administracion');
+
+	Route::post('alerta/adm/transmanana/pro/ajax','ReporteGestionController@adm_transfmananapro_ajax')->name('alertas.adm_transfmananapro_ajax')
+		->middleware('permission:alerta.administracion');
+
+	Route::get('alerta/adm/transmanana/pro','ReporteGestionController@adm_transfmananapro')->name('alertas.adm_transfmananapro')
+		->middleware('permission:alerta.administracion');
+
+	Route::post('alerta/adm/transfsubsgtepro/pro/ajax','ReporteGestionController@adm_transfsubsgtepro_ajax')->name('alertas.adm_transfsubsgtepro_ajax')
+		->middleware('permission:alerta.administracion');
+
+	Route::get('alerta/adm/transfsubsgtepro/pro','ReporteGestionController@adm_transfsubsgtepro')->name('alertas.adm_transfsubsgtepro')
+		->middleware('permission:alerta.administracion');
+
 //ALERTAS ARRENDATARIOS
 
 
